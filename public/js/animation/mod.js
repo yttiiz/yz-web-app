@@ -1,1 +1,1 @@
-export * from "./burger.js"
+export * from "./burger.js";

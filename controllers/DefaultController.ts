@@ -1,59 +1,62 @@
-import * as layers from '../components/mod.ts';
+import * as layers from "../components/mod.ts";
 import {
-    RouterAppType,
-    PageDataIdType,
-    AuthPathType,
-    RouterContextAppType
+  AuthPathType,
+  PageDataIdType,
+  RouterAppType,
+  RouterContextAppType,
 } from "./mod.ts";
 
 export class DefaultController {
-    router
+  router;
 
-    constructor(router: RouterAppType) {
-        this.router = router
+  constructor(router: RouterAppType) {
+    this.router = router;
+  }
+
+  #file(kind: layers.ComponentNameType): string {
+    if (kind === "Body") {
+      return layers.Body.content;
     }
 
-    #file(kind: layers.ComponentNameType): string {
-        if (kind === 'Body') {
-            return layers.Body.content;
-        }
+    return layers[kind].content;
+  }
 
-        return layers[kind].content;
+  protected createComponents(...args: layers.ComponentNameType[]) {
+    const components = [];
+
+    for (const arg of args) {
+      components.push(this.#file(arg));
     }
 
-    protected createComponents(...args: layers.ComponentNameType[]) {
-        const components = [];
+    return components;
+  }
 
-        for (const arg of args) {
-            components.push(this.#file(arg));
-        }
+  protected response<T extends AuthPathType>(
+    ctx: RouterContextAppType<T>,
+    data: unknown,
+  ) {
+    typeof data === "string"
+      ? ctx.response.body = data
+      : ctx.response.body = JSON.stringify(data);
 
-        return components;
-    }
+    ctx.response.status = 200;
+  }
 
-    protected response<T extends AuthPathType>(
-        ctx: RouterContextAppType<T>,
-        data: unknown
-    ) {
-        typeof data === 'string'
-        ? ctx.response.body = data
-        : ctx.response.body = JSON.stringify(data);
-        
-        ctx.response.status = 200;
-    }
+  protected createHtmlFile(id: PageDataIdType, title?: string) {
+    let [page, header, main, footer] = this.createComponents(
+      "Body",
+      "Header",
+      "Main",
+      "Footer",
+    );
 
-    protected createHtmlFile(id: PageDataIdType, title?: string) {
-        let [page, header, main, footer] = this.createComponents('Body', 'Header', 'Main', 'Footer')
+    title ? page = page.replace("</title>", " " + title + "</title>") : null;
 
-        title
-        ? page = page.replace('</title>', ' ' + title + '</title>')
-        : null;
+    main = main.replace("{{ id }}", id);
 
-        main = main.replace("{{ id }}", id);
+    const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
+    page = page.replace("{{ application-content }}", content);
 
-        const content = '\n' + header + '\n' + main + '\n' + footer + '\n';
-        page = page.replace('{{ application-content }}', content);
-
-        return page;
-    }
+    return page;
+  }
 }

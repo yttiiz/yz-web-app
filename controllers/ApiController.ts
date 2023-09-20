@@ -2,54 +2,57 @@ import { RouterAppType, RouterContextAppType } from "./mod.ts";
 import { FindCursorType, UserSchemaWithIDType } from "../mongo/mod.ts";
 
 export class ApiController {
-    #router
-    #collection
+  #router;
+  #collection;
 
-    constructor(router: RouterAppType, collection: () => Promise<FindCursorType>) {
-        this.#router = router
-        this.#collection = collection
-        this.#users()
-        this.#loginFile()
-        this.#registerFile()
-    }
+  constructor(
+    router: RouterAppType,
+    collection: () => Promise<FindCursorType>,
+  ) {
+    this.#router = router;
+    this.#collection = collection;
+    this.#users();
+    this.#loginFile();
+    this.#registerFile();
+  }
 
-    #users() {
-        this.#router.get('/api', async (ctx: RouterContextAppType<'/api'>) => {
-            const users: { [key: number]: UserSchemaWithIDType } = {};
-            const cursor = await this.#collection();
-            
-            await cursor.map((document, i) => users[i] = document);
+  #users() {
+    this.#router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
+      const users: { [key: number]: UserSchemaWithIDType } = {};
+      const cursor = await this.#collection();
 
-            this.#response(ctx, JSON.stringify(users));
-        })
-    }
+      await cursor.map((document, i) => users[i] = document);
 
-    #loginFile() {
-        this.#getData('login');
-    }
+      this.#response(ctx, JSON.stringify(users));
+    });
+  }
 
-    #registerFile() {
-        this.#getData('register');
-    }
+  #loginFile() {
+    this.#getData("login");
+  }
 
-    #getData(dataName: string) {
-        const route = `/${dataName}-data`;
-        
-        this.#router.get(route, async (ctx: RouterContextAppType<typeof route>) => {
-            const decoder = new TextDecoder('utf-8')
-            const file = await Deno.readFile(`${Deno.cwd()}/data/${dataName}.json`)
-            const json = decoder.decode(file)
+  #registerFile() {
+    this.#getData("register");
+  }
 
-            this.#response(ctx, json)
-        });
-    }
+  #getData(dataName: string) {
+    const route = `/${dataName}-data`;
 
-    #response<T extends string>(
-        ctx: RouterContextAppType<T>,
-        data: string
-    ) {
-        ctx.response.headers.append('Content-Type', 'application/json');
-        ctx.response.body = data;
-        ctx.response.status = 200
-    }
+    this.#router.get(route, async (ctx: RouterContextAppType<typeof route>) => {
+      const decoder = new TextDecoder("utf-8");
+      const file = await Deno.readFile(`${Deno.cwd()}/data/${dataName}.json`);
+      const json = decoder.decode(file);
+
+      this.#response(ctx, json);
+    });
+  }
+
+  #response<T extends string>(
+    ctx: RouterContextAppType<T>,
+    data: string,
+  ) {
+    ctx.response.headers.append("Content-Type", "application/json");
+    ctx.response.body = data;
+    ctx.response.status = 200;
+  }
 }

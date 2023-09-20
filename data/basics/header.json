@@ -1,24 +1,24 @@
 {
-    "logo": {
-        "link": "/",
-        "text": "Yz Deno Application"
+  "logo": {
+    "link": "/",
+    "text": "Yz Deno Application"
+  },
+  "items": [
+    {
+      "link": "/register",
+      "text": "s'enregister"
     },
-    "items": [
-        {
-            "link": "/register",
-            "text": "s'enregister"
-        },
-        {
-            "link": "/login",
-            "text": "se connecter"
-        },
-        {
-            "link": "#",
-            "text": "Item 3"
-        },
-        {
-            "link": "#",
-            "text": "Item 4"
-        }
-    ]
+    {
+      "link": "/login",
+      "text": "se connecter"
+    },
+    {
+      "link": "#",
+      "text": "Item 3"
+    },
+    {
+      "link": "#",
+      "text": "Item 4"
+    }
+  ]
 }

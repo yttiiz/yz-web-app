@@ -1,6 +1,14 @@
-import { oak } from '../dependencies/dept.ts';
-import { AuthController, HomeController, ApiController } from '../controllers/mod.ts';
-import { connectionToUsers, selectUserFromDB, insertDataIntoDB } from '../mongo/mod.ts';
+import { oak } from "../dependencies/dept.ts";
+import {
+  ApiController,
+  AuthController,
+  HomeController,
+} from "../controllers/mod.ts";
+import {
+  connectionToUsers,
+  insertDataIntoDB,
+  selectUserFromDB,
+} from "../mongo/mod.ts";
 
 //Creating 'Router'.
 export const router = new oak.Router();

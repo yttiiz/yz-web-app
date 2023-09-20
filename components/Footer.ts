@@ -2,28 +2,28 @@ import { ComponentType, FooterType } from "./mod.ts";
 import { Helper } from "../utils/mod.ts";
 
 const {
-    basicItems,
-    relatedItems
-}: FooterType = await Helper.convertJsonToObject('/data/basics/footer.json');
+  basicItems,
+  relatedItems,
+}: FooterType = await Helper.convertJsonToObject("/data/basics/footer.json");
 
 export const Footer: ComponentType = {
-    name: 'Footer',
-    content: `<footer>
+  name: "Footer",
+  content: `<footer>
     <div class="container">
         <ul>
             ${
-                basicItems
-                .map(item => `<li><a href="${item.link}">${item.text}</a></li>`)
-                .join('')
-            }
+    basicItems
+      .map((item) => `<li><a href="${item.link}">${item.text}</a></li>`)
+      .join("")
+  }
         </ul>
         <ul>
             ${
-                relatedItems
-                .map(item => `<li><a href="${item.link}">${item.text}</a></li>`)
-                .join('')
-            }
+    relatedItems
+      .map((item) => `<li><a href="${item.link}">${item.text}</a></li>`)
+      .join("")
+  }
         </ul>
     </div>
-</footer>`
+</footer>`,
 };

@@ -1,1 +1,1 @@
-export * from './staticsFilesMiddleware.ts';
+export * from "./staticsFilesMiddleware.ts";

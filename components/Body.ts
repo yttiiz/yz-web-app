@@ -2,13 +2,13 @@ import { Helper } from "../utils/mod.ts";
 import { ComponentType, PageType } from "./mod.ts";
 
 const {
-    title,
-    description
-}: PageType = await Helper.convertJsonToObject('/data/basics/app.json');
+  title,
+  description,
+}: PageType = await Helper.convertJsonToObject("/data/basics/app.json");
 
 export const Body: ComponentType = {
-    name: 'Body',
-    content: `<!DOCTYPE html>
+  name: "Body",
+  content: `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -22,5 +22,5 @@ export const Body: ComponentType = {
     {{ application-content }}
     <script type="module" src="./js/index.js"></script>
     </body>
-    </html>`
+    </html>`,
 };
