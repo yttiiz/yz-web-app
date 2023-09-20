@@ -1,4 +1,4 @@
-import { Helper } from "../utils/mod.ts";
+import { Helper } from "@utils";
 import { ComponentType, HeaderType } from "./mod.ts";
 
 const {

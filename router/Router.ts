@@ -1,9 +1,9 @@
-import { oak } from "../dependencies/dept.ts";
+import { oak } from "@depts";
 import {
   ApiController,
   AuthController,
   HomeController,
-} from "../controllers/mod.ts";
+} from "@controllers";
 import {
   connectionToUsers,
   insertDataIntoDB,

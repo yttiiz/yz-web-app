@@ -1,9 +1,9 @@
-import { oak } from "../dependencies/dept.ts";
+import { oak } from "@depts";
 export type {
   FindCursorType,
   UserSchemaType,
   UserSchemaWithIDType,
-} from "../mongo/mod.ts";
+} from "@mongo";
 
 type CtxType =
   | number

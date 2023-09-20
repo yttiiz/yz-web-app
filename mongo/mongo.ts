@@ -1,5 +1,5 @@
 import { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
-import { MongoClient } from "../dependencies/dept.ts";
+import { MongoClient } from "@depts";
 
 const client = new MongoClient();
 const clientConnectTo = async (collection: string) => {

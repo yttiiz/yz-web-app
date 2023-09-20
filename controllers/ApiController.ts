@@ -1,5 +1,5 @@
 import { RouterAppType, RouterContextAppType } from "./mod.ts";
-import { FindCursorType, UserSchemaWithIDType } from "../mongo/mod.ts";
+import { FindCursorType, UserSchemaWithIDType } from "@mongo";
 
 export class ApiController {
   #router;

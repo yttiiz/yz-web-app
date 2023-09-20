@@ -1,4 +1,4 @@
-import { Context, oak } from "../dependencies/dept.ts";
+import { Context, oak } from "@depts";
 
 export const staticsFilesMiddleware = async (
   ctx: Context,

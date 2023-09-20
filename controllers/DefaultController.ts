@@ -1,4 +1,4 @@
-import * as layers from "../components/mod.ts";
+import * as layers from "@components";
 import {
   AuthPathType,
   PageDataIdType,
