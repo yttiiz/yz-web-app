@@ -1,0 +1,55 @@
+{
+    "title": "Renseigner vos informations",
+    "content": [ 
+        {
+            "type": "text",
+            "placeholder": "Prénom",
+            "name": "firstname",
+            "required": true,
+            "minLength": 2,
+            "maxLength": 40
+        },
+         {
+            "type": "text",
+            "placeholder": "Nom",
+            "name": "lastname",
+            "required": true,
+            "minLength": 2,
+            "maxLength": 40
+        },
+         {
+            "type": "text",
+            "placeholder": "Profession",
+            "name": "job",
+            "required": true,
+            "minLength": 2,
+            "maxLength": 40
+        },
+        {
+            "type": "email",
+            "placeholder": "Email",
+            "name": "email",
+            "required": true,
+            "minLength": 2,
+            "maxLength": 40
+        },
+        {
+            "type": "date",
+            "name": "birth",
+            "required": true
+        },
+        {
+            "type": "file",
+            "name": "photo",
+            "required": false,
+            "accept": ".png, .jpg, .jpeg"
+        },
+        {
+            "type": "submit",
+            "value": "Envoyer"
+        }
+    ],
+    "error": {
+        "msg": "Une erreur est survenue lors de l'envoi de votre formulaire. Veuillez rechargez la page.\nSi le problème persiste, envoyez-moi un message à : contact@dominiquetalis.com"
+    }
+}

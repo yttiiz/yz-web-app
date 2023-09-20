@@ -1,0 +1,30 @@
+{
+    "basicItems": [
+        {
+            "link": "/",
+            "text": "Accueil"
+        },
+        {
+            "link": "#",
+            "text": "Contactez-nous"
+        },
+        {
+            "link": "#",
+            "text": "Mentions légales"
+        }
+    ],
+    "relatedItems": [
+        {
+            "link": "#",
+            "text": "Découverte de l'histoire"
+        },
+        {
+            "link": "#",
+            "text": "En avant"
+        },
+        {
+            "link": "#",
+            "text": "Garde à vous !"
+        }   
+    ]
+}

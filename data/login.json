@@ -1,0 +1,20 @@
+{
+    "title": "Renseigner vos informations",
+    "content": [ 
+        {
+            "type": "email",
+            "placeholder": "Email",
+            "name": "email",
+            "required": true,
+            "minLength": 2,
+            "maxLength": 40
+        },
+        {
+            "type": "submit",
+            "value": "Envoyer"
+        }
+    ],
+    "error": {
+        "msg": "Une erreur est survenue lors de l'envoi de votre formulaire. Veuillez rechargez la page.\nSi le problème persiste, envoyez-moi un message à : contact@dominiquetalis.com"
+    }
+}
