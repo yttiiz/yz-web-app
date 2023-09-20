@@ -1,0 +1,22 @@
+{
+  "imports": {
+    "@/": "./",
+    "@components": "./components/",
+    "@controllers": "./controllers/",
+    "@data": "./data/",
+    "@dependencies": "./dependencies/",
+    "@middlewares": "./middlewares/",
+    "@mongo": "./mongo/",
+    "@router": "./router/",
+    "@utils": "./utils/",
+    "oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
+    "mongoose": "https://deno.land/x/mongo@v0.31.2/mod.ts",
+    "mongo-find": "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts",
+    "context": "https://deno.land/x/oak@v12.5.0/context.ts"
+  },
+  "lock": false,
+  "tasks": {
+    "fmt": "deno fmt",
+    "start": "deno run -A --watch --allow-write --allow-read --allow-net server.ts"
+  }
+}

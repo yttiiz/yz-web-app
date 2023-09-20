@@ -1,6 +1,9 @@
 import { Context, oak } from "../dependencies/dept.ts";
 
-export const staticsFilesMiddleware = async (ctx: Context, next: () => unknown) => {
+export const staticsFilesMiddleware = async (
+  ctx: Context,
+  next: () => unknown,
+) => {
   const opts: oak.SendOptions = { root: "" };
 
   switch (ctx.request.method) {
