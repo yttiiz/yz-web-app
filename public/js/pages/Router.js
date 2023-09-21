@@ -31,25 +31,11 @@ export class Router {
       }
 
       case this.host + "register": {
-        const res = await this.#fetchData("register-data");
-
-        if (res.ok && res.status === 200) {
-          const data = await res.json();
-
-          this.#register.renderForm(data, `${this.host}register`);
-          break;
-        }
+        this.#register.renderForm(`${this.host}register`);
       }
 
       case this.host + "login": {
-        const res = await this.#fetchData("login-data");
-
-        if (res.ok && res.status === 200) {
-          const data = await res.json();
-
-          this.#login.renderForm(data, `${this.host}login`);
-          break;
-        }
+        this.#login.renderForm(`${this.host}login`);
       }
     }
   }

@@ -32,13 +32,15 @@ export class Builder {
     }
   }
 
-  submitHandler = async (e, data) => {
+  submitHandler = async (e) => {
     e.preventDefault();
 
     const res = await fetch(e.target.action, {
       method: "POST",
       body: new FormData(e.target),
     });
+
+    console.log(e.target.dataset);
 
     FormHelper.removeInputsValues(e.target.children);
 

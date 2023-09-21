@@ -10,6 +10,17 @@ type ItemType = {
   text: string;
 };
 
+type InputType = {
+  type: string;
+  placeholder?: string;
+  name?: string;
+  required?: string;
+  value?: string;
+  maxLength?: string;
+  minLength?: string;
+  accept?: string;
+};
+
 export type PageType = {
   title: string;
   description: string;
@@ -23,4 +34,12 @@ export type HeaderType = {
 export type FooterType = {
   basicItems: ItemType[];
   relatedItems: ItemType[];
+};
+
+export type FormType = {
+  title: string;
+  content: InputType[];
+  error: {
+    msg: string;
+  };
 };

@@ -5,6 +5,7 @@ import {
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
+import { Helper } from "@utils";
 
 export class DefaultController {
   router;
@@ -19,6 +20,26 @@ export class DefaultController {
     }
 
     return layers[kind].content;
+  }
+
+  #createForm(data: layers.FormType) {
+    return `<h1>${data.title}</h1>
+    <form data-error="${data.error.msg}">
+      ${
+      data.content
+        .map((input) => (
+          `<input type="${input.type}"
+          ${input.name ? ` name="${input.name}"` : ""}
+          ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
+          ${input.required ? ` required` : ""}
+          ${input.minLength ? ` minLength="${input.minLength}"` : ""}
+          ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
+          ${input.value ? ` value="${input.value}"` : ""}
+        >`
+        ))
+        .join("")
+    }
+    </form>`;
   }
 
   protected createComponents(...args: layers.ComponentNameType[]) {
@@ -42,7 +63,11 @@ export class DefaultController {
     ctx.response.status = 200;
   }
 
-  protected createHtmlFile(id: PageDataIdType, title?: string) {
+  protected async createHtmlFile(
+    id: PageDataIdType,
+    title?: string,
+    path?: string,
+  ) {
     let [page, header, main, footer] = this.createComponents(
       "Body",
       "Header",
@@ -53,6 +78,13 @@ export class DefaultController {
     title ? page = page.replace("</title>", " " + title + "</title>") : null;
 
     main = main.replace("{{ id }}", id);
+
+    if (path) {
+      const data = await Helper.convertJsonToObject(`/data${path}.json`);
+      main = main.replace("{{ content-insertion }}", this.#createForm(data));
+    } else {
+      main = main.replace("{{ content-insertion }}", "");
+    }
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
     page = page.replace("{{ application-content }}", content);

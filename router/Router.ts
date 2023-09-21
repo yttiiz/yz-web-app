@@ -1,9 +1,5 @@
 import { oak } from "@depts";
-import {
-  ApiController,
-  AuthController,
-  HomeController,
-} from "@controllers";
+import { ApiController, AuthController, HomeController } from "@controllers";
 import {
   connectionToUsers,
   insertDataIntoDB,

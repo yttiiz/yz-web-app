@@ -51,8 +51,8 @@ export class AuthController extends DefaultController {
   }
 
   #getRoute(path: AuthPathType, title: string) {
-    this.router.get(path, (ctx: RouterContextAppType<typeof path>) => {
-      const body = this.createHtmlFile("data-users-form", title);
+    this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
+      const body = await this.createHtmlFile("data-users-form", title, path);
       this.response(ctx, body);
     });
   }

@@ -12,8 +12,6 @@ export class ApiController {
     this.#router = router;
     this.#collection = collection;
     this.#users();
-    this.#loginFile();
-    this.#registerFile();
   }
 
   #users() {
@@ -24,26 +22,6 @@ export class ApiController {
       await cursor.map((document, i) => users[i] = document);
 
       this.#response(ctx, JSON.stringify(users));
-    });
-  }
-
-  #loginFile() {
-    this.#getData("login");
-  }
-
-  #registerFile() {
-    this.#getData("register");
-  }
-
-  #getData(dataName: string) {
-    const route = `/${dataName}-data`;
-
-    this.#router.get(route, async (ctx: RouterContextAppType<typeof route>) => {
-      const decoder = new TextDecoder("utf-8");
-      const file = await Deno.readFile(`${Deno.cwd()}/data/${dataName}.json`);
-      const json = decoder.decode(file);
-
-      this.#response(ctx, json);
     });
   }
 

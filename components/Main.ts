@@ -5,7 +5,7 @@ export const Main: ComponentType = {
   content: `<main>
     <div class="container">
         <section>
-            <div id="{{ id }}"></div>
+            <div id="{{ id }}">{{ content-insertion }}</div>
         </section>
     </div>
     </main>`,

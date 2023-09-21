@@ -8,8 +8,8 @@ export class HomeController extends DefaultController {
   }
 
   #index() {
-    this.router.get("/", (ctx: RouterContextAppType<"/">) => {
-      const body = this.createHtmlFile("data-users");
+    this.router.get("/", async (ctx: RouterContextAppType<"/">) => {
+      const body = await this.createHtmlFile("data-users");
       this.response(ctx, body);
     });
   }
