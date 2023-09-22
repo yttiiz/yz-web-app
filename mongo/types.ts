@@ -1,4 +1,4 @@
-import { Collection, FindCursor, ObjectId } from "@depts";
+import { Collection, FindCursor, ObjectId } from "@deps";
 
 export type UserSchemaType = {
   dateOfBirth: Date;

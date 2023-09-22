@@ -1,6 +1,6 @@
-import { oak } from "./dependencies/dept.ts";
-import { staticsFilesMiddleware } from "./middlewares/mod.ts";
-import { router } from "./router/Router.ts";
+import { oak } from "@deps";
+import { staticsFilesMiddleware } from "@middlewares";
+import { router } from "@router";
 
 const { Application } = oak;
 const port = 3000, hostname = "127.0.0.1";

@@ -1,4 +1,4 @@
-import { Context, oak } from "@depts";
+import { Context, oak } from "@deps";
 
 export const staticsFilesMiddleware = async (
   ctx: Context,
