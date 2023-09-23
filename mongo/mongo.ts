@@ -12,7 +12,7 @@ export const connectionToUsers = async () => {
   return users.find();
 };
 
-export const insertDataIntoDB = async (data: UserSchemaType) => {
+export const insertUserIntoDB = async (data: UserSchemaType) => {
   const users = await clientConnectTo("users");
   const id = await users.insertOne(data);
   return id.toHexString();

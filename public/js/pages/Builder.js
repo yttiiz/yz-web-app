@@ -1,11 +1,5 @@
-import { FormHelper } from "./FormHelper.js";
-
 // deno-lint-ignore-file
-export class Builder {
-  getAge(date) {
-    return new Date(Date.now() - new Date(date).getTime())
-      .getFullYear() - 1970;
-  }
+export class PageBuilder {
 
   createHTMLElements(...elts) {
     const temp = [];
@@ -31,21 +25,5 @@ export class Builder {
       root.appendChild(child);
     }
   }
-
-  submitHandler = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch(e.target.action, {
-      method: "POST",
-      body: new FormData(e.target),
-    });
-
-    console.log(e.target.dataset);
-
-    FormHelper.removeInputsValues(e.target.children);
-
-    res.ok && res.status === 200
-      ? FormHelper.showLoginDetails(res)
-      : alert(data.error.msg);
-  };
+  
 }

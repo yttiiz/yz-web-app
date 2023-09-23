@@ -1,6 +1,6 @@
-import { Builder } from "../../utils/Builder.js";
+import { PageBuilder } from "../Builder.js";
 
-export class HomePage extends Builder {
+export class HomePage extends PageBuilder {
   #root;
   constructor() {
     super();
@@ -52,5 +52,10 @@ export class HomePage extends Builder {
     }
 
     this.insertChildren(this.#root, title, text);
+  };
+
+  getAge = (date) => {
+    return new Date(Date.now() - new Date(date).getTime())
+      .getFullYear() - 1970;
   };
 }

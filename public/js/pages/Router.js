@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { HomePage, LoginPage, RegisterPage } from "./mod.js";
+import { HomePage, FormPage } from "./mod.js";
 
 export class Router {
   #home;
@@ -10,8 +10,8 @@ export class Router {
     this.route = route;
     this.host = "http://127.0.0.1:3000/";
     this.#home = new HomePage();
-    this.#login = new LoginPage();
-    this.#register = new RegisterPage();
+    this.#login = new FormPage();
+    this.#register = new FormPage();
     this.#router();
   }
 
@@ -32,10 +32,12 @@ export class Router {
 
       case this.host + "register": {
         this.#register.renderForm(`${this.host}register`);
+        break;
       }
 
       case this.host + "login": {
         this.#login.renderForm(`${this.host}login`);
+        break;
       }
     }
   }
