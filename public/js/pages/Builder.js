@@ -25,5 +25,4 @@ export class PageBuilder {
       root.appendChild(child);
     }
   }
-  
 }
