@@ -1,10 +1,6 @@
 import { oak } from "@deps";
 import { ApiController, AuthController, HomeController } from "@controllers";
-import {
-  connectionToUsers,
-  insertUserIntoDB,
-  selectUserFromDB,
-} from "@mongo";
+import { connectionToUsers, insertUserIntoDB, selectUserFromDB } from "@mongo";
 
 //Creating 'Router'.
 export const router = new oak.Router();

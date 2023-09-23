@@ -10,12 +10,12 @@ type CtxType =
   | string
   | { [x: string | number]: string | number };
 
-export type AuthPathType = 
+export type AuthPathType =
   | "/"
   | "/register"
   | "/login"
   | "/update";
-  
+
 export type RouterAppType = oak.Router<Record<string, CtxType>>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 export type FilesDataType = oak.FormDataFile[];

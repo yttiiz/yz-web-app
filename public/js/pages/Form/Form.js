@@ -30,18 +30,17 @@ export class FormPage extends PageBuilder {
     FormHelper.removeInputsValues(e.target.children);
 
     if (res.ok && res.status === 200) {
-      switch(e.target.action) {
-        case location.origin + '/login':
+      switch (e.target.action) {
+        case location.origin + "/login":
           FormHelper.showLoginDetails(res);
           break;
 
-        case location.origin + '/register':
+        case location.origin + "/register":
           FormHelper.showRegisterDetails(res);
           break;
       }
     } else {
       alert(e.target.dataset.error);
     }
-        
   };
 }

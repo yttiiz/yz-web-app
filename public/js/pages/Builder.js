@@ -1,6 +1,5 @@
 // deno-lint-ignore-file
 export class PageBuilder {
-
   createHTMLElements(...elts) {
     const temp = [];
     for (const el of elts) {
