@@ -3,7 +3,7 @@ import { MongoClient } from "@deps";
 
 const client = new MongoClient();
 const clientConnectTo = async (collection: string) => {
-  const db = await client.connect("mongodb://localhost:27017/main");
+  const db = await client.connect(Deno.env.get("DATABASE_URL") as string);
   return db.collection<UserSchemaWithIDType>(collection);
 };
 
