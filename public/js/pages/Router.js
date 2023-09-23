@@ -5,13 +5,15 @@ export class Router {
   #home;
   #login;
   #register;
+  #update;
 
-  constructor(route) {
-    this.route = route;
-    this.host = "http://127.0.0.1:3000/";
+  constructor() {
+    this.route = location.href;
+    this.host = location.origin + '/';
     this.#home = new HomePage();
     this.#login = new FormPage();
     this.#register = new FormPage();
+    this.#update = new FormPage();
     this.#router();
   }
 
@@ -36,6 +38,11 @@ export class Router {
       }
 
       case this.host + "login": {
+        this.#login.renderForm(`${this.host}login`);
+        break;
+      }
+
+      case this.host + "update": {
         this.#login.renderForm(`${this.host}login`);
         break;
       }

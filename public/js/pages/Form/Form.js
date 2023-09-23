@@ -29,11 +29,19 @@ export class FormPage extends PageBuilder {
 
     FormHelper.removeInputsValues(e.target.children);
 
-    res.ok && res.status === 200
-      ? (e.target.action.includes('login')
-        ? FormHelper.showLoginDetails(res)
-        : FormHelper.showRegisterDetails(res)
-        )
-      : alert(e.target.dataset.error);
+    if (res.ok && res.status === 200) {
+      switch(e.target.action) {
+        case location.origin + '/login':
+          FormHelper.showLoginDetails(res);
+          break;
+
+        case location.origin + '/register':
+          FormHelper.showRegisterDetails(res);
+          break;
+      }
+    } else {
+      alert(e.target.dataset.error);
+    }
+        
   };
 }
