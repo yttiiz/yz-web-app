@@ -1,9 +1,5 @@
 import { oak } from "@deps";
-export type {
-  FindCursorType,
-  UserSchemaType,
-  UserSchemaWithIDType,
-} from "@mongo";
+import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
 
 type CtxType =
   | number
@@ -16,7 +12,18 @@ export type AuthPathType =
   | "/login"
   | "/update";
 
+//Router
 export type RouterAppType = oak.Router<Record<string, CtxType>>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
+
+//Files
 export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
+
+//DB
+export type UserDataType = Record<number, UserSchemaWithIDType>;
+export type GetCollectionType = () => Promise<FindCursorType>;
+export type InsertIntoDBType = (data: UserSchemaType) => Promise<string>;
+export type SelectFromDBType = (
+  data: string,
+) => Promise<UserSchemaWithIDType | string>;

@@ -1,5 +1,9 @@
-import { RouterAppType, RouterContextAppType } from "./mod.ts";
-import { FindCursorType, UserSchemaWithIDType } from "@mongo";
+import {
+  GetCollectionType,
+  RouterAppType,
+  RouterContextAppType,
+  UserDataType,
+} from "./mod.ts";
 
 export class ApiController {
   #router;
@@ -7,7 +11,7 @@ export class ApiController {
 
   constructor(
     router: RouterAppType,
-    collection: () => Promise<FindCursorType>,
+    collection: GetCollectionType,
   ) {
     this.#router = router;
     this.#collection = collection;
@@ -16,7 +20,7 @@ export class ApiController {
 
   #users() {
     this.#router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
-      const users: { [key: number]: UserSchemaWithIDType } = {};
+      const users: UserDataType = {};
 
       try {
         const cursor = await this.#collection();

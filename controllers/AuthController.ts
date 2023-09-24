@@ -3,10 +3,10 @@ import { DefaultController } from "./DefaultController.ts";
 import {
   AuthPathType,
   FilesDataType,
+  InsertIntoDBType,
   RouterAppType,
   RouterContextAppType,
-  UserSchemaType,
-  UserSchemaWithIDType,
+  SelectFromDBType,
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
@@ -21,8 +21,8 @@ export class AuthController extends DefaultController {
    */
   constructor(
     router: RouterAppType,
-    insertIntoDB: (data: UserSchemaType) => Promise<string>,
-    selectFromDB: (data: string) => Promise<UserSchemaWithIDType | string>,
+    insertIntoDB: InsertIntoDBType,
+    selectFromDB: SelectFromDBType,
   ) {
     super(router);
     this.#insertIntoDB = insertIntoDB;
