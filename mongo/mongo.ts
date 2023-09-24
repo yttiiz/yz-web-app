@@ -1,28 +1,33 @@
 import { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
 import { MongoClient } from "@deps";
 
-const client = new MongoClient();
-const clientConnectTo = async (collection: string) => {
-  const db = await client.connect(Deno.env.get("DATABASE_URL") as string);
-  return db.collection<UserSchemaWithIDType>(collection);
-};
+export class Mongo {
+  private static client = new MongoClient();
 
-export const connectionToUsers = async () => {
-  const users = await clientConnectTo("users");
-  return users.find();
-};
+  public static connectionToUsers = async () => {
+    const users = await Mongo.clientConnectTo("users");
+    return users.find();
+  };
 
-export const insertUserIntoDB = async (data: UserSchemaType) => {
-  const users = await clientConnectTo("users");
-  const id = await users.insertOne(data);
-  return id.toHexString();
-};
+  public static insertUserIntoDB = async (data: UserSchemaType) => {
+    const users = await Mongo.clientConnectTo("users");
+    const id = await users.insertOne(data);
+    return id.toHexString();
+  };
 
-export const selectUserFromDB = async (data: string) => {
-  const users = await clientConnectTo("users");
-  const user = await users.findOne({ email: data });
+  public static selectUserFromDB = async (data: string) => {
+    const users = await Mongo.clientConnectTo("users");
+    const user = await users.findOne({ email: data });
 
-  if (user) return user;
+    if (user) return user;
 
-  return "no user found";
-};
+    return "no user found";
+  };
+
+  private static clientConnectTo = async (collection: string) => {
+    const db = await Mongo.client.connect(
+      Deno.env.get("DATABASE_URL") as string,
+    );
+    return db.collection<UserSchemaWithIDType>(collection);
+  };
+}

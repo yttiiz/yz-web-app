@@ -17,9 +17,13 @@ export class ApiController {
   #users() {
     this.#router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
       const users: { [key: number]: UserSchemaWithIDType } = {};
-      const cursor = await this.#collection();
 
-      await cursor.map((document, i) => users[i] = document);
+      try {
+        const cursor = await this.#collection();
+        await cursor.map((document, i) => users[i] = document);
+      } catch (error) {
+        console.log(error.message);
+      }
 
       this.#response(ctx, JSON.stringify(users));
     });
@@ -29,8 +33,22 @@ export class ApiController {
     ctx: RouterContextAppType<T>,
     data: string,
   ) {
-    ctx.response.headers.append("Content-Type", "application/json");
-    ctx.response.body = data;
-    ctx.response.status = 200;
+    const fillResponse = (
+      contentType: string,
+      body: string,
+      status: number,
+    ) => {
+      ctx.response.headers.append("Content-Type", contentType);
+      ctx.response.body = body;
+      ctx.response.status = status;
+    };
+
+    data.length > 2
+      ? fillResponse("application/json", data, 200)
+      : fillResponse(
+        "text/plain; charset=UTF-8",
+        "Impossible de se connecter à la base de données.",
+        500,
+      );
   }
 }

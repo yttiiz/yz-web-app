@@ -9,7 +9,7 @@ const app = new Application();
 const env = await load();
 
 Object.keys(env)
-.map(key => Deno.env.set(key, env[key]))
+  .map((key) => Deno.env.set(key, env[key]));
 
 //Environnements variables
 const { PORT, HOST: hostname } = Deno.env.toObject();
