@@ -4,18 +4,21 @@ import { MongoClient } from "@deps";
 export class Mongo {
   private static client = new MongoClient();
 
-  public static connectionToUsers = async () => {
-    const users = await Mongo.clientConnectTo("users");
+  public static connectionTo = async (collection: string) => {
+    const users = await Mongo.clientConnectTo(collection);
     return users.find();
   };
 
-  public static insertUserIntoDB = async (data: UserSchemaType) => {
-    const users = await Mongo.clientConnectTo("users");
+  public static insertIntoDB = async (
+    data: UserSchemaType,
+    collection: string,
+  ) => {
+    const users = await Mongo.clientConnectTo(collection);
     const id = await users.insertOne(data);
     return id.toHexString();
   };
 
-  public static selectUserFromDB = async (data: string) => {
+  public static selectFromDB = async (data: string) => {
     const users = await Mongo.clientConnectTo("users");
     const user = await users.findOne({ email: data });
 

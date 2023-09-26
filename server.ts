@@ -11,7 +11,7 @@ const env = await load();
 Object.keys(env)
   .map((key) => Deno.env.set(key, env[key]));
 
-//Environnements variables
+//Environnement variables
 const { PORT, HOST: hostname } = Deno.env.toObject();
 
 //Middlewares

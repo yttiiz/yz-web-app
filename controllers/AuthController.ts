@@ -69,7 +69,7 @@ export class AuthController extends DefaultController {
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
     const { fields: { email } } = await data.read();
-    const user = await this.#selectFromDB(email);
+    const user = await this.#selectFromDB(email, "users");
 
     this.response(ctx, user);
   };
@@ -107,7 +107,7 @@ export class AuthController extends DefaultController {
       role: "user",
       job,
       photo,
-    });
+    }, "users");
 
     this.response(ctx, {
       id: userId,

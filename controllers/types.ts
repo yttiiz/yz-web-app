@@ -22,8 +22,12 @@ export type PageDataIdType = `data-${string}`;
 
 //DB
 export type UserDataType = Record<number, UserSchemaWithIDType>;
-export type GetCollectionType = () => Promise<FindCursorType>;
-export type InsertIntoDBType = (data: UserSchemaType) => Promise<string>;
+export type GetCollectionType = (collection: string) => Promise<FindCursorType>;
+export type InsertIntoDBType = (
+  data: UserSchemaType,
+  collection: string,
+) => Promise<string>;
 export type SelectFromDBType = (
   data: string,
+  collection: string,
 ) => Promise<UserSchemaWithIDType | string>;

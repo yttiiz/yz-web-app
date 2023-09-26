@@ -23,7 +23,7 @@ export class ApiController {
       const users: UserDataType = {};
 
       try {
-        const cursor = await this.#collection();
+        const cursor = await this.#collection("users");
         await cursor.map((document, i) => users[i] = document);
       } catch (error) {
         console.log(error.message);

@@ -6,6 +6,6 @@ import { Mongo } from "@mongo";
 export const router = new oak.Router();
 
 //Creating all 'Routes' controllers.
-new AuthController(router, Mongo.insertUserIntoDB, Mongo.selectUserFromDB);
+new AuthController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
 new HomeController(router);
-new ApiController(router, Mongo.connectionToUsers);
+new ApiController(router, Mongo.connectionTo);
