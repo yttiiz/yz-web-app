@@ -4,10 +4,10 @@ import { RouterAppType, RouterContextAppType } from "./mod.ts";
 export class HomeController extends DefaultController {
   constructor(router: RouterAppType) {
     super(router);
-    this.#index();
+    this.index();
   }
 
-  #index() {
+  private index() {
     this.router.get("/", async (ctx: RouterContextAppType<"/">) => {
       const body = await this.createHtmlFile("data-users");
       this.response(ctx, body);

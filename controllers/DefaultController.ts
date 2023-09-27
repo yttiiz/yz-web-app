@@ -14,7 +14,7 @@ export class DefaultController {
     this.router = router;
   }
 
-  #file(kind: layers.ComponentNameType): string {
+  private file(kind: layers.ComponentNameType): string {
     if (kind === "Body") {
       return layers.Body.content;
     }
@@ -22,7 +22,7 @@ export class DefaultController {
     return layers[kind].content;
   }
 
-  #createForm(data: layers.FormType) {
+  private createForm(data: layers.FormType) {
     return `<h1>${data.title}</h1>
     <form data-error="${data.error.msg}">
       ${
@@ -46,7 +46,7 @@ export class DefaultController {
     const components = [];
 
     for (const arg of args) {
-      components.push(this.#file(arg));
+      components.push(this.file(arg));
     }
 
     return components;
@@ -81,7 +81,7 @@ export class DefaultController {
 
     if (path) {
       const data = await Helper.convertJsonToObject(`/data${path}.json`);
-      main = main.replace("{{ content-insertion }}", this.#createForm(data));
+      main = main.replace("{{ content-insertion }}", this.createForm(data));
     } else {
       main = main.replace("{{ content-insertion }}", "");
     }

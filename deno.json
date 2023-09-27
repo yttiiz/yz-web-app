@@ -12,8 +12,7 @@
     "env": "https://deno.land/std@0.202.0/dotenv/mod.ts",
     "oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
     "mongoose": "https://deno.land/x/mongo@v0.31.2/mod.ts",
-    "mongo-find": "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts",
-    "context": "https://deno.land/x/oak@v12.5.0/context.ts"
+    "mongo-find": "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts"
   },
   "lock": false,
   "tasks": {

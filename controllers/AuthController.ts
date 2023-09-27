@@ -10,9 +10,9 @@ import {
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
-  #insertIntoDB;
-  #selectFromDB;
-  #defaultImg;
+  insertIntoDB;
+  selectFromDB;
+  defaultImg;
 
   /**
    * @param router The app router
@@ -25,56 +25,56 @@ export class AuthController extends DefaultController {
     selectFromDB: SelectFromDBType,
   ) {
     super(router);
-    this.#insertIntoDB = insertIntoDB;
-    this.#selectFromDB = selectFromDB;
-    this.#defaultImg = "/img/users/default.png";
-    this.#getLoginRoute();
-    this.#getRegisterRoute();
-    this.#postLoginRoute();
-    this.#postRegisterRoute();
+    this.insertIntoDB = insertIntoDB;
+    this.selectFromDB = selectFromDB;
+    this.defaultImg = "/img/users/default.png";
+    this.getLoginRoute();
+    this.getRegisterRoute();
+    this.postLoginRoute();
+    this.postRegisterRoute();
   }
 
-  #getLoginRoute() {
-    this.#getRoute("/login", "- se connecter");
+  private getLoginRoute() {
+    this.getRoute("/login", "- se connecter");
   }
 
-  #postLoginRoute() {
-    this.#postRoute("/login", this.#loginRouteHandler);
+  private postLoginRoute() {
+    this.postRoute("/login", this.loginRouteHandler);
   }
 
-  #getRegisterRoute() {
-    this.#getRoute("/register", "- s'enregister");
+  private getRegisterRoute() {
+    this.getRoute("/register", "- s'enregister");
   }
 
-  #postRegisterRoute() {
-    this.#postRoute("/register", this.#registerRouteHandler);
+  private postRegisterRoute() {
+    this.postRoute("/register", this.registerRouteHandler);
   }
 
-  #getRoute(path: AuthPathType, title: string) {
+  private getRoute(path: AuthPathType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile("data-users-form", title, path);
       this.response(ctx, body);
     });
   }
 
-  #postRoute(
+  private postRoute(
     path: AuthPathType,
     handler: (ctx: RouterContextAppType<typeof path>) => Promise<void>,
   ) {
     this.router.post(path, handler);
   }
 
-  #loginRouteHandler = async <T extends AuthPathType>(
+  private loginRouteHandler = async <T extends AuthPathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
     const { fields: { email } } = await data.read();
-    const user = await this.#selectFromDB(email, "users");
+    const user = await this.selectFromDB(email, "users");
 
     this.response(ctx, user);
   };
 
-  #registerRouteHandler = async <T extends AuthPathType>(
+  private registerRouteHandler = async <T extends AuthPathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     let photo: string;
@@ -92,14 +92,14 @@ export class AuthController extends DefaultController {
     } = await data.read({ maxSize: 10_000_000 });
 
     files
-      ? photo = this.#fileHandler(
+      ? photo = this.fileHandler(
         files,
         firstname,
         lastname,
       )
-      : photo = this.#defaultImg;
+      : photo = this.defaultImg;
 
-    const userId = await this.#insertIntoDB({
+    const userId = await this.insertIntoDB({
       firstname,
       lastname,
       email,
@@ -115,12 +115,12 @@ export class AuthController extends DefaultController {
     });
   };
 
-  #fileHandler(
+  private fileHandler(
     files: FilesDataType,
     firstname: string,
     lastname: string,
   ) {
-    let photo = this.#defaultImg;
+    let photo = this.defaultImg;
 
     files
       .map(async (file) => {

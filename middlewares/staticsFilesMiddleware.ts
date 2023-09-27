@@ -1,7 +1,7 @@
-import { Context, oak } from "../dependencies/deps.ts";
+import { oak } from "../dependencies/deps.ts";
 
 export const staticsFilesMiddleware = async (
-  ctx: Context,
+  ctx: oak.Context,
   next: () => unknown,
 ) => {
   const opts: oak.SendOptions = { root: "" };

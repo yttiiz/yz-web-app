@@ -6,34 +6,35 @@ import {
 } from "./mod.ts";
 
 export class ApiController {
-  #router;
-  #collection;
+  private router;
+  private collection;
 
   constructor(
     router: RouterAppType,
     collection: GetCollectionType,
   ) {
-    this.#router = router;
-    this.#collection = collection;
-    this.#users();
+    this.router = router;
+    this.collection = collection;
+    this.users();
   }
 
-  #users() {
-    this.#router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
+  private users() {
+    this.router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
       const users: UserDataType = {};
 
       try {
-        const cursor = await this.#collection("users");
+        const cursor = await this.collection("users");
         await cursor.map((document, i) => users[i] = document);
+
       } catch (error) {
         console.log(error.message);
       }
 
-      this.#response(ctx, JSON.stringify(users));
+      this.response(ctx, JSON.stringify(users));
     });
   }
 
-  #response<T extends string>(
+  private response<T extends string>(
     ctx: RouterContextAppType<T>,
     data: string,
   ) {
