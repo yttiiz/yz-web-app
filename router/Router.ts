@@ -1,4 +1,4 @@
-import { oak } from "@deps";
+import { oak } from "../dependencies/deps.ts";
 import { ApiController, AuthController, HomeController } from "@controllers";
 import { Mongo } from "@mongo";
 

@@ -1,4 +1,4 @@
-import { oak } from "@deps";
+import { oak } from "../dependencies/deps.ts";
 import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
 
 type CtxType =

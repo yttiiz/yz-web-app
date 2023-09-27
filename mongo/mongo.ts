@@ -1,5 +1,5 @@
 import { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
-import { MongoClient } from "@deps";
+import { MongoClient } from "../dependencies/deps.ts";
 
 export class Mongo {
   private static client = new MongoClient();
@@ -18,8 +18,11 @@ export class Mongo {
     return id.toHexString();
   };
 
-  public static selectFromDB = async (data: string) => {
-    const users = await Mongo.clientConnectTo("users");
+  public static selectFromDB = async (
+    data: string,
+    collection: string,
+  ) => {
+    const users = await Mongo.clientConnectTo(collection);
     const user = await users.findOne({ email: data });
 
     if (user) return user;

@@ -1,4 +1,4 @@
-import { Collection, FindCursor, ObjectId } from "@deps";
+import { Collection, FindCursor, ObjectId } from "../dependencies/deps.ts";
 
 export type UserSchemaType = {
   dateOfBirth: Date;

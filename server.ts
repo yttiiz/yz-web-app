@@ -1,4 +1,4 @@
-import { oak } from "@deps";
+import { oak } from "./dependencies/deps.ts";
 import { load } from "env";
 import { staticsFilesMiddleware } from "@middlewares";
 import { router } from "@router";

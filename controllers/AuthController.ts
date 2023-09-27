@@ -1,4 +1,4 @@
-import { oak } from "@deps";
+import { oak } from "../dependencies/deps.ts";
 import { DefaultController } from "./DefaultController.ts";
 import {
   AuthPathType,
