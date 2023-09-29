@@ -43,12 +43,12 @@ export class HomePage extends PageBuilder {
     };
 
     switch (status) {
-      case 500:
-        displayError("Le serveur de l'api ne répond pas.");
+      case 404:
+        displayError();
         break;
 
       default:
-        displayError();
+        displayError("Le serveur de l'api ne répond pas.");
     }
 
     this.insertChildren(this.#root, title, text);
