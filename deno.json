@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "allowJs": true
+  },
   "imports": {
     "@/": "./",
     "@components": "./components/mod.ts",

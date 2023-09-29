@@ -4,6 +4,7 @@ import {
   RouterContextAppType,
   UserDataType,
 } from "./mod.ts";
+import { Http } from "@utils";
 
 export class ApiController {
   private router;
@@ -25,7 +26,6 @@ export class ApiController {
       try {
         const cursor = await this.collection("users");
         await cursor.map((document, i) => users[i] = document);
-
       } catch (error) {
         console.log(error.message);
       }
@@ -43,7 +43,7 @@ export class ApiController {
       body: string,
       status: number,
     ) => {
-      ctx.response.headers.append("Content-Type", contentType);
+      Http.setHeaders(ctx, { name: "Content-Type", value: contentType });
       ctx.response.body = body;
       ctx.response.status = status;
     };

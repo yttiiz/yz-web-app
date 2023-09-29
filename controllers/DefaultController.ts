@@ -55,12 +55,20 @@ export class DefaultController {
   protected response<T extends AuthPathType>(
     ctx: RouterContextAppType<T>,
     data: unknown,
+    redirect?: string,
   ) {
+    if (redirect) {
+      const url = new URL(redirect, Deno.env.get("APP_URL"));
+      ctx.response.redirect(url);
+    } else {
+      ctx.response.status = 200;
+    }
+
     typeof data === "string"
       ? ctx.response.body = data
       : ctx.response.body = JSON.stringify(data);
 
-    ctx.response.status = 200;
+    console.log(ctx.response);
   }
 
   protected async createHtmlFile(

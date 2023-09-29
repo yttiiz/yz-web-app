@@ -71,7 +71,7 @@ export class AuthController extends DefaultController {
     const { fields: { email } } = await data.read();
     const user = await this.selectFromDB(email, "users");
 
-    this.response(ctx, user);
+    this.response(ctx, user, "/");
   };
 
   private registerRouteHandler = async <T extends AuthPathType>(
