@@ -18,4 +18,17 @@ export class FormHelper {
       inputs[i].value = "";
     }
   };
+
+  static setFormData = (form) => {
+    const formData = new FormData(form);
+
+    for (const [key, value] of formData) {
+      //Check for file field.
+      if (typeof value === "object" && value.size === 0) {
+        formData.delete(key)
+      }
+    }
+
+    return formData;
+  }
 }

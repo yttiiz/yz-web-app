@@ -8,8 +8,8 @@ export class Http<T extends string> {
     this.ctx = ctx;
   }
 
-  public setHeaders(...content: ContentHeadersType[]) {
-    for (const { name, value } of content) {
+  public setHeaders(...contents: ContentHeadersType[]) {
+    for (const { name, value } of contents) {
       this.ctx.response.headers.append(name, value);
     }
     return this;

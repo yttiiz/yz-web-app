@@ -22,9 +22,11 @@ export class FormPage extends PageBuilder {
   submitHandler = async (e) => {
     e.preventDefault();
 
+    const formData = FormHelper.setFormData(e.target);
+
     const res = await fetch(e.target.action, {
       method: "POST",
-      body: new FormData(e.target),
+      body: formData,
     });
 
     FormHelper.removeInputsValues(e.target.children);

@@ -92,7 +92,7 @@ export class AuthController extends DefaultController {
     } = await data.read({ maxSize: 10_000_000 });
 
     files
-      ? photo = this.fileHandler(
+      ? photo = await this.fileHandler(
         files,
         firstname,
         lastname,
@@ -115,24 +115,19 @@ export class AuthController extends DefaultController {
     });
   };
 
-  private fileHandler(
+  private async fileHandler(
     files: FilesDataType,
     firstname: string,
     lastname: string,
   ) {
-    let photo = this.defaultImg;
 
-    files
-      .map(async (file) => {
-        if (file.filename) {
-          const ext = file.contentType.split("/").at(1) as string;
-          photo =
-            `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+    const [file] = files;
+    const ext = file.contentType.split("/").at(1) as string;
+    const photo =
+      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
 
-          await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
-        }
-      });
-
+    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
+    
     return photo;
   }
 }
