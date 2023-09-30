@@ -35,7 +35,7 @@ export class HomePage extends PageBuilder {
     this.insertChildren(this.#root, title, list);
   };
 
-  renderError = (status) => {
+  renderError = (status, { errorMsg }) => {
     const [title, text] = this.createHTMLElements("h1", "p");
     const displayError = (msg = "Aucune api trouvée à cette adresse.") => {
       title.textContent = "Erreur code : " + status;
@@ -48,7 +48,7 @@ export class HomePage extends PageBuilder {
         break;
 
       default:
-        displayError("Le serveur de l'api ne répond pas.");
+        displayError(errorMsg);
     }
 
     this.insertChildren(this.#root, title, text);

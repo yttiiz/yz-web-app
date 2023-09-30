@@ -23,12 +23,11 @@ export class Router {
         const res = await this.#fetchData("api");
 
         if (res.ok && res.status === 200) {
-          const users = await res.json();
-          this.#home.renderUsers(users);
+          this.#home.renderUsers(await res.json());
           break;
         }
 
-        this.#home.renderError(res.status);
+        this.#home.renderError(res.status, await res.json());
         break;
       }
 

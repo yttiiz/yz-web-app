@@ -22,40 +22,32 @@ export class ApiController {
   private users() {
     this.router.get("/api", async (ctx: RouterContextAppType<"/api">) => {
       const users: UserDataType = {};
+      const contentType = {
+        name: "Content-Type",
+        value: "application/json"
+      };
 
       try {
         const cursor = await this.collection("users");
         await cursor.map((document, i) => users[i] = document);
 
-        this.response(ctx, JSON.stringify(users));
+        new Http(ctx)
+        .setHeaders(contentType)
+        .setResponse(JSON.stringify(users), 200)
+        
       } catch (error) {
         this.writeLog(error);
+
+        new Http(ctx)
+        .setHeaders(contentType)
+        .setResponse(
+          JSON.stringify({
+            errorMsg: "Impossible de se connecter à la base de données."
+          }),
+          500,
+        )
       }
     });
-  }
-
-  private response<T extends string>(
-    ctx: RouterContextAppType<T>,
-    data: string,
-    http = new Http(ctx),
-  ) {
-    data.length > 2
-      ? (
-        http
-          .setHeaders({ name: "Content-Type", value: "application/json" })
-          .setResponse(data, 200)
-      )
-      : (
-        http
-          .setHeaders({
-            name: "Content-Type",
-            value: "text/plain; charset=UTF-8",
-          })
-          .setResponse(
-            "Impossible de se connecter à la base de données.",
-            500,
-          )
-      );
   }
 
   private async writeLog(
