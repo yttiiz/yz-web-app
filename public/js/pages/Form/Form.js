@@ -23,7 +23,6 @@ export class FormPage extends PageBuilder {
     e.preventDefault();
 
     const formData = FormHelper.setFormData(e.target);
-
     const res = await fetch(e.target.action, {
       method: "POST",
       body: formData,
@@ -32,24 +31,22 @@ export class FormPage extends PageBuilder {
     FormHelper.removeInputsValues(e.target.children);
 
     if (res.ok && res.status === 200) {
-      switch (res.redirected) {
-        case true:
-          window.location.href = res.url;
-          break;
+      if (res.redirected) {
+        window.location.href = res.url;
 
-        default:
-          switch (e.target.action) {
-            case location.origin + "/login":
-              FormHelper.showLoginDetails(res);
-              break;
-
-            case location.origin + "/register":
-              FormHelper.showRegisterDetails(res);
-              break;
-          }
+      } else {
+        switch (e.target.action) {
+          case location.origin + "/login":
+            FormHelper.showLoginDetails(res);
+            break;
+  
+          case location.origin + "/register":
+            FormHelper.showRegisterDetails(res);
+            break;
+        }
       }
     } else {
-      alert(e.target.dataset.error);
+      FormHelper.showErrorMsg(res);
     }
   };
 }

@@ -1,16 +1,30 @@
 export class FormHelper {
+  static id = "#data-users-form";
+
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
-    const container = document.querySelector("#data-users-form");
-    const box = document.createElement("div");
-    box.textContent = `${name} a été enregistré avec succès sous l'id : ${id}`;
-    container.appendChild(box);
+    FormHelper.#createDivToShowInfo(
+      `${name} a été enregistré avec succès sous l'id : ${id}`
+    );
   };
 
   static showLoginDetails = async (response) => {
     const { firstname } = await response.json();
-    const h1 = document.querySelector("#data-users-form > h1");
+    const h1 = document.querySelector(FormHelper.id + " > h1");
     h1.textContent = "Bienvenue " + firstname;
+  };
+
+  static showErrorMsg = async (response) => {
+    const status = response.status;
+    const { errorMsg } = await response.json();
+    FormHelper.#createDivToShowInfo(errorMsg + status)
+  };
+
+  static #createDivToShowInfo = (msg) => {
+    const container = document.querySelector(FormHelper.id);
+    const box = document.createElement("div");
+    box.textContent = msg;
+    container.appendChild(box);
   };
 
   static removeInputsValues = (inputs) => {

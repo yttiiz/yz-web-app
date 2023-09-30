@@ -23,4 +23,9 @@ export class Http<T extends string> {
     this.ctx.response.status = status;
     return this;
   }
+
+  public redirect(url: URL) {
+    this.ctx.response.redirect(url);
+    return this;
+  }
 }

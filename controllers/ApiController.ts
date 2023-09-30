@@ -4,11 +4,12 @@ import {
   RouterContextAppType,
   UserDataType,
 } from "./mod.ts";
-import { Http } from "@utils";
+import { Http, Helper } from "@utils";
 
 export class ApiController {
   private router;
   private collection;
+  private helper
 
   constructor(
     router: RouterAppType,
@@ -16,6 +17,7 @@ export class ApiController {
   ) {
     this.router = router;
     this.collection = collection;
+    this.helper = Helper;
     this.users();
   }
 
@@ -36,7 +38,7 @@ export class ApiController {
         .setResponse(JSON.stringify(users), 200)
         
       } catch (error) {
-        this.writeLog(error);
+        this.helper.writeLog(error);
 
         new Http(ctx)
         .setHeaders(contentType)
@@ -48,28 +50,5 @@ export class ApiController {
         )
       }
     });
-  }
-
-  private async writeLog(
-    error: { message: string },
-    encoder = new TextEncoder(),
-    opts = { append: true },
-  ) {
-    const DateOpts: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    };
-    const date = Intl
-      .DateTimeFormat("fr-FR", DateOpts)
-      .format(new Date());
-
-    const errorMsg = `(${date}) ${error.message},\n`;
-    const content = encoder.encode(errorMsg);
-
-    await Deno.writeFile("log/log.txt", content, opts);
   }
 }

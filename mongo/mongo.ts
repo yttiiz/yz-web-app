@@ -27,7 +27,7 @@ export class Mongo {
 
     if (user) return user;
 
-    return "no user found";
+    return { message: "no user found" };
   };
 
   private static clientConnectTo = async (collection: string) => {

@@ -5,13 +5,16 @@ import {
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
-import { Helper } from "@utils";
+import { Helper, Http } from "@utils";
+import { UserSchemaWithIDType } from "@mongo";
 
 export class DefaultController {
   router;
+  helper;
 
   constructor(router: RouterAppType) {
     this.router = router;
+    this.helper = Helper;
   }
 
   private file(kind: layers.ComponentNameType): string {
@@ -54,21 +57,34 @@ export class DefaultController {
 
   protected response<T extends AuthPathType>(
     ctx: RouterContextAppType<T>,
-    data: unknown,
+    data: string | UserSchemaWithIDType | Record<string, string>,
+    status: number,
     redirect?: string,
   ) {
+    const http = new Http(ctx);
+
+    http.setHeaders({
+      name: "Content-Type",
+      value: status === 200
+      ? "text/html; charset=UTF-8"
+      : "application/json"
+    });
+
+    data = typeof data === "string"
+    ? data
+    : JSON.stringify(data);
+
     if (redirect) {
       const url = new URL(redirect, Deno.env.get("APP_URL"));
-      ctx.response.redirect(url);
+
+      http
+      .redirect(url)
+      .setResponse(data, status);
+
     } else {
-      ctx.response.status = 200;
+      http
+      .setResponse(data, status);
     }
-
-    typeof data === "string"
-      ? ctx.response.body = data
-      : ctx.response.body = JSON.stringify(data);
-
-    console.log(ctx.response);
   }
 
   protected async createHtmlFile(
@@ -88,7 +104,7 @@ export class DefaultController {
     main = main.replace("{{ id }}", id);
 
     if (path) {
-      const data = await Helper.convertJsonToObject(`/data${path}.json`);
+      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
       main = main.replace("{{ content-insertion }}", this.createForm(data));
     } else {
       main = main.replace("{{ content-insertion }}", "");

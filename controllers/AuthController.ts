@@ -53,7 +53,7 @@ export class AuthController extends DefaultController {
   private getRoute(path: AuthPathType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile("data-users-form", title, path);
-      this.response(ctx, body);
+      this.response(ctx, body, 200);
     });
   }
 
@@ -69,9 +69,20 @@ export class AuthController extends DefaultController {
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
     const { fields: { email } } = await data.read();
-    const user = await this.selectFromDB(email, "users");
+    try {
+      const user = await this.selectFromDB(email, "users");
+      this.response(ctx, user, 302, "/");
 
-    this.response(ctx, user, "/");
+    } catch(error) {
+      this.helper.writeLog(error);
+      this.response(
+        ctx,
+        {
+          errorMsg: "Impossible de se connecter à la base de données. Code erreur : "
+        },
+        500,
+      );
+    }
   };
 
   private registerRouteHandler = async <T extends AuthPathType>(
@@ -109,10 +120,14 @@ export class AuthController extends DefaultController {
       photo,
     }, "users");
 
-    this.response(ctx, {
-      id: userId,
-      name: `${firstname} ${lastname}`,
-    });
+    this.response(
+      ctx,
+      {
+        id: userId,
+        name: `${firstname} ${lastname}`,
+      },
+      200
+    );
   };
 
   private async fileHandler(
