@@ -33,13 +33,12 @@ export class FormPage extends PageBuilder {
     if (res.ok && res.status === 200) {
       if (res.redirected) {
         window.location.href = res.url;
-
       } else {
         switch (e.target.action) {
           case location.origin + "/login":
             FormHelper.showLoginDetails(res);
             break;
-  
+
           case location.origin + "/register":
             FormHelper.showRegisterDetails(res);
             break;

@@ -65,25 +65,20 @@ export class DefaultController {
 
     http.setHeaders({
       name: "Content-Type",
-      value: status === 200
-      ? "text/html; charset=UTF-8"
-      : "application/json"
+      value: status === 200 ? "text/html; charset=UTF-8" : "application/json",
     });
 
-    data = typeof data === "string"
-    ? data
-    : JSON.stringify(data);
+    data = typeof data === "string" ? data : JSON.stringify(data);
 
     if (redirect) {
       const url = new URL(redirect, Deno.env.get("APP_URL"));
 
       http
-      .redirect(url)
-      .setResponse(data, status);
-
+        .redirect(url)
+        .setResponse(data, status);
     } else {
       http
-      .setResponse(data, status);
+        .setResponse(data, status);
     }
   }
 

@@ -72,13 +72,13 @@ export class AuthController extends DefaultController {
     try {
       const user = await this.selectFromDB(email, "users");
       this.response(ctx, user, 302, "/");
-
-    } catch(error) {
+    } catch (error) {
       this.helper.writeLog(error);
       this.response(
         ctx,
         {
-          errorMsg: "Impossible de se connecter à la base de données. Code erreur : "
+          errorMsg:
+            "Impossible de se connecter à la base de données. Code erreur : ",
         },
         500,
       );
@@ -126,7 +126,7 @@ export class AuthController extends DefaultController {
         id: userId,
         name: `${firstname} ${lastname}`,
       },
-      200
+      200,
     );
   };
 
@@ -135,14 +135,13 @@ export class AuthController extends DefaultController {
     firstname: string,
     lastname: string,
   ) {
-
     const [file] = files;
     const ext = file.contentType.split("/").at(1) as string;
     const photo =
       `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
 
     await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
-    
+
     return photo;
   }
 }

@@ -4,7 +4,7 @@ export class FormHelper {
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
     FormHelper.#createDivToShowInfo(
-      `${name} a été enregistré avec succès sous l'id : ${id}`
+      `${name} a été enregistré avec succès sous l'id : ${id}`,
     );
   };
 
@@ -17,7 +17,7 @@ export class FormHelper {
   static showErrorMsg = async (response) => {
     const status = response.status;
     const { errorMsg } = await response.json();
-    FormHelper.#createDivToShowInfo(errorMsg + status)
+    FormHelper.#createDivToShowInfo(errorMsg + status);
   };
 
   static #createDivToShowInfo = (msg) => {
@@ -39,10 +39,10 @@ export class FormHelper {
     for (const [key, value] of formData) {
       //Check for file field.
       if (typeof value === "object" && value.size === 0) {
-        formData.delete(key)
+        formData.delete(key);
       }
     }
 
     return formData;
-  }
+  };
 }

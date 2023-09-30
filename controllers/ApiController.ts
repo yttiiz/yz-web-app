@@ -4,12 +4,12 @@ import {
   RouterContextAppType,
   UserDataType,
 } from "./mod.ts";
-import { Http, Helper } from "@utils";
+import { Helper, Http } from "@utils";
 
 export class ApiController {
   private router;
   private collection;
-  private helper
+  private helper;
 
   constructor(
     router: RouterAppType,
@@ -26,7 +26,7 @@ export class ApiController {
       const users: UserDataType = {};
       const contentType = {
         name: "Content-Type",
-        value: "application/json"
+        value: "application/json",
       };
 
       try {
@@ -34,20 +34,19 @@ export class ApiController {
         await cursor.map((document, i) => users[i] = document);
 
         new Http(ctx)
-        .setHeaders(contentType)
-        .setResponse(JSON.stringify(users), 200)
-        
+          .setHeaders(contentType)
+          .setResponse(JSON.stringify(users), 200);
       } catch (error) {
         this.helper.writeLog(error);
 
         new Http(ctx)
-        .setHeaders(contentType)
-        .setResponse(
-          JSON.stringify({
-            errorMsg: "Impossible de se connecter à la base de données."
-          }),
-          500,
-        )
+          .setHeaders(contentType)
+          .setResponse(
+            JSON.stringify({
+              errorMsg: "Impossible de se connecter à la base de données.",
+            }),
+            500,
+          );
       }
     });
   }
