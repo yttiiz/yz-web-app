@@ -1,10 +1,6 @@
-import { oak } from "../dependencies/deps.ts";
+import { oak } from "@deps";
 import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
-
-type CtxType =
-  | number
-  | string
-  | { [x: string | number]: string | number };
+import { AppState } from "@session";
 
 export type AuthPathType =
   | "/"
@@ -13,7 +9,7 @@ export type AuthPathType =
   | "/update";
 
 //Router
-export type RouterAppType = oak.Router<Record<string, CtxType>>;
+export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 //Files

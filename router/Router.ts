@@ -1,9 +1,9 @@
-import { oak } from "../dependencies/deps.ts";
+import { oak } from "@deps";
 import { ApiController, AuthController, HomeController } from "@controllers";
 import { Mongo } from "@mongo";
+import { AppState } from "@session";
 
-//Creating 'Router'.
-export const router = new oak.Router();
+export const router = new oak.Router<AppState>();
 
 //Creating all 'Routes' controllers.
 new AuthController(router, Mongo.insertIntoDB, Mongo.selectFromDB);

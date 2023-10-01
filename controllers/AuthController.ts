@@ -10,15 +10,10 @@ import {
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
-  insertIntoDB;
-  selectFromDB;
-  defaultImg;
+  public insertIntoDB;
+  public selectFromDB;
+  private defaultImg;
 
-  /**
-   * @param router The app router
-   * @param insertIntoDB Creates a new user in BD and returns it's ID.
-   * @param selectFromDB Select a user according to a given email.
-   */
   constructor(
     router: RouterAppType,
     insertIntoDB: InsertIntoDBType,
@@ -71,7 +66,25 @@ export class AuthController extends DefaultController {
     const { fields: { email } } = await data.read();
     try {
       const user = await this.selectFromDB(email, "users");
-      this.response(ctx, user, 302, "/");
+
+      //Handle session and potential redirection.
+      if (user._id) {
+        ctx.state.session.set("email", email);
+        ctx.state.session.set("failed-login-attempts", null);
+        ctx.state.session.flash(
+          "message",
+          "connexion réussie pour l'utilisateur avec l'email : " + email,
+        );
+
+        this.response(ctx, user, 302, "/");
+      } else {
+        const failedLoginAttempts =
+          (await ctx.state.session.get("failed-login-attempts") || 0) as number;
+        ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
+        ctx.state.session.flash("error", "Incorrect username or password");
+
+        this.response(ctx, user, 200);
+      }
     } catch (error) {
       this.helper.writeLog(error);
       this.response(

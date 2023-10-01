@@ -38,8 +38,6 @@ export type FooterType = {
 
 export type FormType = {
   title: string;
+  action: string;
   content: InputType[];
-  error: {
-    msg: string;
-  };
 };

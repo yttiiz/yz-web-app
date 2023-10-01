@@ -27,7 +27,11 @@ export class DefaultController {
 
   private createForm(data: layers.FormType) {
     return `<h1>${data.title}</h1>
-    <form data-error="${data.error.msg}">
+    <form
+      action="${data.action}"
+      method="POST"
+      type="multipart/form-data"
+    >
       ${
       data.content
         .map((input) => (

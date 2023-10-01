@@ -3,15 +3,9 @@ import { FormHelper } from "../../utils/FormHelper.js";
 
 export class FormPage extends PageBuilder {
   renderForm = (
-    route,
     root = document.querySelector("#data-users-form"),
   ) => {
     const form = root.querySelector("form");
-
-    //Set form
-    this.setSameHTMLElementAttributes("method", "post", form);
-    this.setSameHTMLElementAttributes("type", "multipart/form-data", form);
-    this.setSameHTMLElementAttributes("action", route, form);
 
     form.addEventListener(
       "submit",

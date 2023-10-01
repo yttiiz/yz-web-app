@@ -9,9 +9,10 @@ export class FormHelper {
   };
 
   static showLoginDetails = async (response) => {
-    const { firstname } = await response.json();
-    const h1 = document.querySelector(FormHelper.id + " > h1");
-    h1.textContent = "Bienvenue " + firstname;
+    const { message } = await response.json();
+    FormHelper.#createDivToShowInfo(
+      `Veuillez réessayer de nouveau : (${message}).`,
+    );
   };
 
   static showErrorMsg = async (response) => {

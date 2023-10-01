@@ -32,17 +32,17 @@ export class Router {
       }
 
       case this.host + "register": {
-        this.#register.renderForm(`${this.host}register`);
+        this.#register.renderForm();
         break;
       }
 
       case this.host + "login": {
-        this.#login.renderForm(`${this.host}login`);
+        this.#login.renderForm();
         break;
       }
 
       case this.host + "update": {
-        this.#login.renderForm(`${this.host}login`);
+        this.#login.renderForm();
         break;
       }
     }
