@@ -17,38 +17,6 @@ export class DefaultController {
     this.helper = Helper;
   }
 
-  private file(kind: layers.ComponentNameType): string {
-    if (kind === "Body") {
-      return layers.Body.content;
-    }
-
-    return layers[kind].content;
-  }
-
-  private createForm(data: layers.FormType) {
-    return `<h1>${data.title}</h1>
-    <form
-      action="${data.action}"
-      method="POST"
-      type="multipart/form-data"
-    >
-      ${
-      data.content
-        .map((input) => (
-          `<input type="${input.type}"
-          ${input.name ? ` name="${input.name}"` : ""}
-          ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
-          ${input.required ? ` required` : ""}
-          ${input.minLength ? ` minLength="${input.minLength}"` : ""}
-          ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
-          ${input.value ? ` value="${input.value}"` : ""}
-        >`
-        ))
-        .join("")
-    }
-    </form>`;
-  }
-
   protected createComponents(...args: layers.ComponentNameType[]) {
     const components = [];
 
@@ -86,22 +54,94 @@ export class DefaultController {
     }
   }
 
-  protected async createHtmlFile(
+  protected async createHtmlFile<T extends string>(
+    ctx: RouterContextAppType<T>,
     id: PageDataIdType,
     title?: string,
     path?: string,
   ) {
-    let [page, header, main, footer] = this.createComponents(
+    let [html, header, main, footer] = this.createComponents(
       "Body",
       "Header",
       "Main",
       "Footer",
     );
 
-    title ? page = page.replace("</title>", " " + title + "</title>") : null;
+    html = this.setTitle(html, title);
+    header = await this.setHeaderHtml(ctx, header);
+    main = await this.setMainHtml(main, path, id);
 
+    const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
+    html = html.replace("{{ application-content }}", content);
+
+    return html;
+  }
+
+  private file(kind: layers.ComponentNameType): string {
+    if (kind === "Body") {
+      return layers.Body.content;
+    }
+
+    return layers[kind].content;
+  }
+
+  private createForm(data: layers.FormType): string {
+    return `<h1>${data.title}</h1>
+    <form
+      action="${data.action}"
+      method="POST"
+      type="multipart/form-data"
+    >
+      ${
+      data.content
+        .map((input) => (
+          `<input type="${input.type}"
+          ${input.name ? ` name="${input.name}"` : ""}
+          ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
+          ${input.required ? ` required` : ""}
+          ${input.minLength ? ` minLength="${input.minLength}"` : ""}
+          ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
+          ${input.value ? ` value="${input.value}"` : ""}
+        >`
+        ))
+        .join("")
+    }
+    </form>`;
+  }
+
+  private setTitle(
+    html: string,
+    title: string | undefined,
+  ): string {
+    return title
+    ? html = html.replace("</title>", " " + title + "</title>")
+    : html;
+  }
+
+  private async setHeaderHtml<T extends string>(
+    ctx: RouterContextAppType<T>,
+    header: string,
+  ): Promise<string> {
+
+    if (ctx.state.session.has("firstname")) {
+      const firstname = await ctx.state.session.get("firstname");
+      header = header.replace("{{ application-session }}", "Bonjour " + firstname)
+    
+    } else {
+      header = header.replace("{{ application-session }}", "");
+    }
+
+    return header;
+  }
+
+  private async setMainHtml(
+    main: string,
+    path: string | undefined,
+    id: string,
+  ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
+    //Form render check
     if (path) {
       const data = await this.helper.convertJsonToObject(`/data${path}.json`);
       main = main.replace("{{ content-insertion }}", this.createForm(data));
@@ -109,9 +149,6 @@ export class DefaultController {
       main = main.replace("{{ content-insertion }}", "");
     }
 
-    const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
-    page = page.replace("{{ application-content }}", content);
-
-    return page;
+    return main;
   }
 }

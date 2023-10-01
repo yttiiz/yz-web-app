@@ -66,91 +66,95 @@ b {
 
 header {
     background: var(--primary-color);
-}
+        
+    & > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
 
-header > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
+        & > div:last-child {
+            display: inherit;
+            gap: 2rem;
+        }
+    }
 }
 
 #logo > a {
     color: var(--light);
     font-size: 2rem;
     font-weight: 600;
-    transition: opacity .5s;
+    transition: opacity var(--smooth);
 }
 
-footer > div li > a:hover {
-    opacity: .7;
+#user-session {
+    color: var(--light);
 }
 
 #burger {
     position: relative;
-}
 
-#burger > button {
-    display: flex;
-    width: 3rem;
-    height: var(--burger-height);
-    flex-direction: column;
-    justify-content: space-between;
-    padding: .5rem;
-}
+    & > button {
+        display: flex;
+        width: 3rem;
+        height: var(--burger-height);
+        flex-direction: column;
+        justify-content: space-between;
+        padding: .5rem;
 
-#burger > button > span {
-    background: var(--light);
-    height: .1rem;
-    width: 100%;
-    transition: var(--smooth);
-}
+        & > span {
+            background: var(--light);
+            height: .1rem;
+            width: 100%;
+            transition: var(--smooth);
+        }
+    }
 
-#burger > nav,
-#burger > nav::before {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--light);
-}
+    & > nav,
+    & > nav::before {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--light);
+    }
 
-#burger > nav {
-    width: max-content;
-    top: calc(var(--burger-height) + 2.5rem);
-    box-shadow: var(--box-shadow);
-}
+    & > nav {
+        width: max-content;
+        top: calc(var(--burger-height) + 2.5rem);
+        box-shadow: var(--box-shadow);
+    }
 
-#burger > nav::before {
-    --height: 1.1rem;
-    content: '';
-    top: calc(var(--height) * -1);
-    width: 2rem;
-    height: var(--height);
-    clip-path: polygon(0 100%, 50% 0, 100% 100%);
-}
+    & > nav::before {
+        --height: 1.1rem;
+        content: '';
+        top: calc(var(--height) * -1);
+        width: 2rem;
+        height: var(--height);
+        clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    }
 
-#burger > nav.none {
-    display: none;
-}
+    & > nav.none {
+        display: none;
+    }
 
-#burger > nav > ul {
-    list-style: none;
-}
+    & > nav > ul {
+        list-style: none;
+    }
 
-#burger > nav > ul li:not(:last-child) {
-    border-bottom: 1px solid rgb(0 0 0 / .1);
-}
+    & > nav > ul li:not(:last-child) {
+        border-bottom: 1px solid rgb(0 0 0 / .1);
+    }
 
-#burger > nav > ul li a {
-    display: block;
-    padding: .75rem 2rem;
-}
+    & > nav > ul li a {
+        display: block;
+        padding: .75rem 2rem;
+    }
 
-#burger > nav > ul li a:hover {
-    background: var(--secondary-color);
-    color: var(--vanilla);
+    & > nav > ul li a:hover {
+        background: var(--secondary-color);
+        color: var(--vanilla);
+    }
 }
-
 
 .line-1 {
     transform: rotate(-45deg) translate(-.5rem, .4rem);
@@ -259,21 +263,25 @@ h1 {
 
 footer {
     background: var(--dark);
-}
 
-footer > div {
-    display: flex;
-    gap: 2rem;
-}
+    & > div {
+        display: flex;
+        gap: 2rem;
+    }
 
-footer > div li::marker {
-    color: var(--primary-color);
-    font-size: 1rem;
-}
+    & > div li::marker {
+        color: var(--primary-color);
+        font-size: 1rem;
+    }
 
-footer > div li > a {
-    color: var(--light);
-    text-decoration: none;
+    & > div li > a {
+        color: var(--light);
+        text-decoration: none;
+    }
+
+    & > div li > a:hover {
+        opacity: .7;
+    }
 }
 
 @media screen and (max-width: 750px) {

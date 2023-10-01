@@ -47,7 +47,7 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: AuthPathType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      const body = await this.createHtmlFile("data-users-form", title, path);
+      const body = await this.createHtmlFile(ctx, "data-users-form", title, path);
       this.response(ctx, body, 200);
     });
   }
@@ -70,6 +70,7 @@ export class AuthController extends DefaultController {
       //Handle session and potential redirection.
       if (user._id) {
         ctx.state.session.set("email", email);
+        ctx.state.session.set("firstname", user.firstname);
         ctx.state.session.set("failed-login-attempts", null);
         ctx.state.session.flash(
           "message",

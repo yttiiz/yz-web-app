@@ -2,7 +2,7 @@ import { load, oak, Session } from "@deps";
 import { staticsFilesMiddleware } from "@middlewares";
 import { Mongo } from "@mongo";
 import { router } from "@router";
-import type { AppState } from "@session";
+import type { AppState } from "@utils";
 
 const { Application } = oak;
 

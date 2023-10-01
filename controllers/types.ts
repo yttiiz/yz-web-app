@@ -1,6 +1,6 @@
 import { oak } from "@deps";
 import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
-import { AppState } from "@session";
+import { AppState } from "@utils";
 
 export type AuthPathType =
   | "/"
