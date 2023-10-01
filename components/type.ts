@@ -1,4 +1,9 @@
-export type ComponentNameType = "Body" | "Header" | "Main" | "Footer";
+export type ComponentNameType = 
+  | "Body"
+  | "Header"
+  | "Main"
+  | "Footer"
+  | "UserSvg";
 
 export type ComponentType = {
   name: ComponentNameType;

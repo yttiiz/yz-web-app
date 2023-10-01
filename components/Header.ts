@@ -1,3 +1,4 @@
+// deno-fmt-ignore-file
 import { Helper } from "@utils";
 import { ComponentType, HeaderType } from "./mod.ts";
 
@@ -10,13 +11,7 @@ export const Header: ComponentType = {
   name: "Header",
   content: `<header>
     <div class="container">
-      <div id="logo">
-        <a href="${link}">${text}</a>
-      </div>
       <div>
-      <div id="user-session">
-        {{ application-session }}
-      </div>
         <div id="burger">
           <button>
             <span></span>
@@ -25,19 +20,23 @@ export const Header: ComponentType = {
           </button>
           <nav class="none">
             <ul>
-              ${
-    items
-      .map((item) => (
-        `<li>
-                  <a href="${item.link}">
-                    ${item.text}
-                  </a>
-                </li>`
-      ))
-      .join("")
-  }
-            </ul>
-          </nav> 
+            ${items.map((item) => (
+            `<li>
+              <a href="${item.link}">
+                ${item.text}
+              </a>
+            </li>`))
+            .join("")}
+          </ul>
+        </nav> 
+      </div>
+        <div id="logo">
+          <a href="${link}">${text}</a>
+        </div>
+      </div>
+      <div>
+        <div id="user-session">
+          {{ application-session }}
         </div>
       </div>
     </div>

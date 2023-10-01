@@ -73,8 +73,9 @@ header {
         justify-content: space-between;
         height: 100%;
 
-        & > div:last-child {
+        & > div {
             display: inherit;
+            align-items: center;
             gap: 2rem;
         }
     }
@@ -88,7 +89,21 @@ header {
 }
 
 #user-session {
-    color: var(--light);
+    display: inherit;
+    align-items: inherit;
+    gap: 1rem;
+
+    & > span {
+        color: var(--light);
+    }
+
+    & > svg {
+        aspect-ratio: 1 / 1;
+    }
+
+    & > svg path {
+        fill: var(--light);
+    }
 }
 
 #burger {
@@ -122,6 +137,7 @@ header {
         width: max-content;
         top: calc(var(--burger-height) + 2.5rem);
         box-shadow: var(--box-shadow);
+        z-index: 1;
     }
 
     & > nav::before {
