@@ -25,16 +25,17 @@ export const Header: ComponentType = {
           </button>
           <nav class="none">
             <ul>
-              ${items
-              .map((item) => (
-                `<li>
+              ${
+    items
+      .map((item) => (
+        `<li>
                   <a href="${item.link}">
                     ${item.text}
                   </a>
                 </li>`
-              ))
-              .join("")
-              }
+      ))
+      .join("")
+  }
             </ul>
           </nav> 
         </div>

@@ -114,19 +114,20 @@ export class DefaultController {
     title: string | undefined,
   ): string {
     return title
-    ? html = html.replace("</title>", " " + title + "</title>")
-    : html;
+      ? html = html.replace("</title>", " " + title + "</title>")
+      : html;
   }
 
   private async setHeaderHtml<T extends string>(
     ctx: RouterContextAppType<T>,
     header: string,
   ): Promise<string> {
-
     if (ctx.state.session.has("firstname")) {
       const firstname = await ctx.state.session.get("firstname");
-      header = header.replace("{{ application-session }}", "Bonjour " + firstname)
-    
+      header = header.replace(
+        "{{ application-session }}",
+        "Bonjour " + firstname,
+      );
     } else {
       header = header.replace("{{ application-session }}", "");
     }
