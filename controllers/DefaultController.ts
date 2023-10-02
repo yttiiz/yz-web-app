@@ -129,7 +129,6 @@ export class DefaultController {
     header: string,
   ): Promise<string> {
     if (ctx.state.session.has("firstname")) {
-      const [userSvg] = this.createComponents("UserSvg");
       const firstname = await ctx.state.session.get("firstname");
       
       header = header.replace(
@@ -137,7 +136,7 @@ export class DefaultController {
         this.setHtmlTagWithContent(
           "span", 
           `Bonjour ${firstname}`
-        ) + userSvg,
+        ),
       );
     } else {
       header = header.replace("{{ application-session }}", "");

@@ -66,6 +66,10 @@ b {
 
 header {
     background: var(--primary-color);
+
+    & * {
+        color: var(--light);
+    }
         
     & > div {
         display: flex;
@@ -82,7 +86,6 @@ header {
 }
 
 #logo > a {
-    color: var(--light);
     font-size: 2rem;
     font-weight: 600;
     transition: opacity var(--smooth);
@@ -92,10 +95,6 @@ header {
     display: inherit;
     align-items: inherit;
     gap: 1rem;
-
-    & > span {
-        color: var(--light);
-    }
 
     & > svg {
         aspect-ratio: 1 / 1;

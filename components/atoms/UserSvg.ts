@@ -1,4 +1,4 @@
-import { ComponentType } from "./mod.ts";
+import { ComponentType } from "../mod.ts";
 
 export const UserSvg: ComponentType = {
   name: "UserSvg",
