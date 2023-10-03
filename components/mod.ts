@@ -3,4 +3,4 @@ export * from "./Header.ts";
 export * from "./Main.ts";
 export * from "./Footer.ts";
 export * from "./atoms/UserSvg.ts";
-export * from "./type.ts";
+export * from "./types.ts";

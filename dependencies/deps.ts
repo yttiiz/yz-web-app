@@ -4,11 +4,13 @@ import { MongoStore, Session } from "oak-session";
 import { load } from "env";
 import { Bson, Collection, MongoClient, ObjectId } from "mongoose";
 import { FindCursor } from "mongo-find";
-import * as uuid from "uuid";
+import { encode, decode } from "encode";
 
 export {
   Bson,
   Collection,
+  decode,
+  encode,
   FindCursor,
   load,
   MongoClient,
@@ -16,5 +18,4 @@ export {
   oak,
   ObjectId,
   Session,
-  uuid,
 };
