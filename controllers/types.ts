@@ -26,4 +26,4 @@ export type InsertIntoDBType = (
 export type SelectFromDBType = (
   data: string,
   collection: string,
-) => Promise<UserSchemaWithIDType | Record<string, string>>;
+) => Promise<UserSchemaWithIDType>;

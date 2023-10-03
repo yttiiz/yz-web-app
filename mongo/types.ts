@@ -8,10 +8,8 @@ export type UserSchemaType = {
   role: string;
   job: string;
   photo: string;
-  // __v: number;
-  // hash: string;
-  // salt: string;
-  // token: string;
+  hash: string;
+  key: Uint8Array;
 };
 
 export type UserSchemaWithIDType = UserSchemaType & {

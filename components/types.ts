@@ -1,4 +1,4 @@
-export type ComponentNameType = 
+export type ComponentNameType =
   | "Body"
   | "Header"
   | "Main"

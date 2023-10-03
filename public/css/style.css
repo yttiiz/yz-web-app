@@ -43,6 +43,13 @@ button, input[type="submit"] {
     cursor: pointer;
 }
 
+input[type=password]:not(:placeholder-shown) {
+    font: small-caption;
+    font-size: 2rem;
+    letter-spacing: .35rem;
+    color: var(--dark);
+}
+
 li {
     list-style-position: inside;
 }
@@ -66,10 +73,6 @@ b {
 
 header {
     background: var(--primary-color);
-
-    & * {
-        color: var(--light);
-    }
         
     & > div {
         display: flex;
@@ -88,6 +91,7 @@ header {
 #logo > a {
     font-size: 2rem;
     font-weight: 600;
+    color: var(--light);
     transition: opacity var(--smooth);
 }
 
@@ -95,6 +99,10 @@ header {
     display: inherit;
     align-items: inherit;
     gap: 1rem;
+
+    & > span {
+        color: var(--light);
+    }
 
     & > svg {
         aspect-ratio: 1 / 1;

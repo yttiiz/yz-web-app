@@ -1,5 +1,6 @@
-import { oak } from "../dependencies/deps.ts";
+import { oak } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
+import { Auth } from "@auth";
 import {
   AuthPathType,
   FilesDataType,
@@ -68,12 +69,18 @@ export class AuthController extends DefaultController {
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
-    const { fields: { email } } = await data.read();
+    const { fields: { email, password } } = await data.read();
+
     try {
       const user = await this.selectFromDB(email, "users");
+      const key = await Auth.importRawKey(user.key);
+
+      const passwordStored = await Auth.decryptPassword(user.hash, key);
 
       //Handle session and potential redirection.
-      if (user._id) {
+      if (email === user.email &&
+        Auth.isPasswordOk(password, passwordStored)
+      ) {
         ctx.state.session.set("email", email);
         ctx.state.session.set("firstname", user.firstname);
         ctx.state.session.set("failed-login-attempts", null);
@@ -116,6 +123,7 @@ export class AuthController extends DefaultController {
         firstname,
         email,
         birth,
+        password,
         job,
       },
       files,
@@ -129,6 +137,9 @@ export class AuthController extends DefaultController {
       )
       : photo = this.defaultImg;
 
+    const { hash, key } = await Auth.encryptPassword(password);
+    const rawKey = await Auth.rawKey(key)
+    
     const userId = await this.insertIntoDB({
       firstname,
       lastname,
@@ -136,6 +147,8 @@ export class AuthController extends DefaultController {
       dateOfBirth: new Date(birth),
       role: "user",
       job,
+      hash,
+      key: rawKey,
       photo,
     }, "users");
 

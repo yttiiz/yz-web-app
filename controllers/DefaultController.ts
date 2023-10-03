@@ -110,9 +110,9 @@ export class DefaultController {
   }
   private setHtmlTagWithContent(
     tag: string,
-    content: string
+    content: string,
   ) {
-    return `<${tag}>${content}</${tag}>`
+    return `<${tag}>${content}</${tag}>`;
   }
 
   private setTitle(
@@ -130,12 +130,12 @@ export class DefaultController {
   ): Promise<string> {
     if (ctx.state.session.has("firstname")) {
       const firstname = await ctx.state.session.get("firstname");
-      
+
       header = header.replace(
         "{{ application-session }}",
         this.setHtmlTagWithContent(
-          "span", 
-          `Bonjour ${firstname}`
+          "span",
+          `Bonjour ${firstname}`,
         ),
       );
     } else {

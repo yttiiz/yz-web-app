@@ -1,4 +1,6 @@
-import { encode, decode } from "@deps";
+// https://medium.com/deno-the-complete-reference/private-key-aes-encryption-decryption-in-deno-10cf33b41eaf
+
+import { decode, encode } from "@deps";
 
 export class Auth {
   private static AES_CBC_128: AesKeyGenParams = {
@@ -12,8 +14,8 @@ export class Auth {
   };
 
   private static usages: KeyUsage[] = [
-    "decrypt",
     "encrypt",
+    "decrypt",
   ];
 
   private static textEncoder(str: string) {
@@ -24,19 +26,31 @@ export class Auth {
     return new TextDecoder().decode(data);
   }
 
-  private static async key() {
+  public static async key() {
     return await crypto.subtle.generateKey(
       Auth.AES_CBC_128,
       true,
-      Auth.usages
+      Auth.usages,
     );
   }
 
-  private static async rawKey(key: CryptoKey) {
-    return new Int8Array(await crypto.subtle.exportKey(
+  public static async rawKey(key: CryptoKey) {
+    return new Uint8Array(
+      await crypto.subtle.exportKey(
+        "raw",
+        key,
+      ),
+    );
+  }
+
+  public static async importRawKey(binStream: Uint8Array) {
+    return await crypto.subtle.importKey(
       "raw",
-      key,
-    ))
+      binStream.buffer,
+      "AES-CBC",
+      true,
+      Auth.usages
+    );
   }
 
   public static async encryptPassword(password: string) {
@@ -45,33 +59,32 @@ export class Auth {
       Auth.AES_CBC_16,
       key,
       new TextEncoder().encode(password.trim()),
-    )
+    );
 
-    const data = new Uint8Array(encrypted)
+    const data = new Uint8Array(encrypted);
     const hash = Auth.textDecoder(encode(data));
 
     return { hash, key };
   }
 
   public static async decryptPassword(
-    data: string,
-    key: CryptoKey
+    hash: string,
+    key: CryptoKey,
   ) {
     const decrypted = await crypto.subtle.decrypt(
       Auth.AES_CBC_16,
       key,
-      decode(Auth.textEncoder(data))
+      decode(Auth.textEncoder(hash)),
     );
-
     const decryptedBytes = new Uint8Array(decrypted);
+    
     return Auth.textDecoder(decryptedBytes);
   }
 
-  public static isPasswordCorrect(
+  public static isPasswordOk(
     givenPassword: string,
-    passwordStored: string
+    passwordStored: string,
   ) {
     return givenPassword === passwordStored;
   }
-
 }

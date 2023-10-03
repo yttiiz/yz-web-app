@@ -35,6 +35,14 @@
       "maxLength": 40
     },
     {
+      "type": "password",
+      "placeholder": "Votre mot de passe",
+      "name": "password",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
       "type": "date",
       "name": "birth",
       "required": true

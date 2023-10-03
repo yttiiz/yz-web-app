@@ -4,7 +4,7 @@ import { MongoStore, Session } from "oak-session";
 import { load } from "env";
 import { Bson, Collection, MongoClient, ObjectId } from "mongoose";
 import { FindCursor } from "mongo-find";
-import { encode, decode } from "encode";
+import { decode, encode } from "encode";
 
 export {
   Bson,
