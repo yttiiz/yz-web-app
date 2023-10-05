@@ -34,7 +34,7 @@ export class Auth {
     );
   }
 
-  public static async rawKey(key: CryptoKey) {
+  public static async exportKey(key: CryptoKey) {
     return new Uint8Array(
       await crypto.subtle.exportKey(
         "raw",
@@ -43,7 +43,7 @@ export class Auth {
     );
   }
 
-  public static async importRawKey(binStream: Uint8Array) {
+  public static async importKey(binStream: Uint8Array) {
     return await crypto.subtle.importKey(
       "raw",
       binStream.buffer,
@@ -79,12 +79,5 @@ export class Auth {
     const decryptedBytes = new Uint8Array(decrypted);
     
     return Auth.textDecoder(decryptedBytes);
-  }
-
-  public static isPasswordOk(
-    givenPassword: string,
-    passwordStored: string,
-  ) {
-    return givenPassword === passwordStored;
   }
 }

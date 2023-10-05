@@ -9,6 +9,7 @@ import {
   RouterContextAppType,
   SelectFromDBType,
 } from "./mod.ts";
+import { Helper } from "@utils";
 
 export class AuthController extends DefaultController {
   public insertIntoDB;
@@ -73,20 +74,18 @@ export class AuthController extends DefaultController {
 
     try {
       const user = await this.selectFromDB(email, "users");
-      const key = await Auth.importRawKey(user.key);
+      const key = await Auth.importKey(user.key);
 
       const passwordStored = await Auth.decryptPassword(user.hash, key);
 
       //Handle session and potential redirection.
-      if (email === user.email &&
-        Auth.isPasswordOk(password, passwordStored)
-      ) {
+      if (email === user.email && password === passwordStored) {
         ctx.state.session.set("email", email);
         ctx.state.session.set("firstname", user.firstname);
         ctx.state.session.set("failed-login-attempts", null);
         ctx.state.session.flash(
           "message",
-          "connexion réussie pour l'utilisateur avec l'email : " + email,
+          `connexion réussie : ${email}`,
         );
 
         this.response(ctx, user, 302, "/");
@@ -138,7 +137,14 @@ export class AuthController extends DefaultController {
       : photo = this.defaultImg;
 
     const { hash, key } = await Auth.encryptPassword(password);
-    const rawKey = await Auth.rawKey(key)
+    const rawKey = await Auth.exportKey(key)
+    
+    //TODO writing key in a ts file.
+    await Helper.writeKey(
+      email,
+      rawKey,
+      [firstname, lastname]
+    );
     
     const userId = await this.insertIntoDB({
       firstname,
