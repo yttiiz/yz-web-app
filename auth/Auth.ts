@@ -1,7 +1,6 @@
 // https://medium.com/deno-the-complete-reference/private-key-aes-encryption-decryption-in-deno-10cf33b41eaf
 
-import { decode, encode } from "@deps";
-import { Binary } from "mongoose";
+import { decode, encode, Binary } from "@deps";
 
 export class Auth {
   private static AES_CBC_128: AesKeyGenParams = {

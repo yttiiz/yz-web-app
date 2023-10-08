@@ -17,6 +17,7 @@ export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
 
 //DB
+export type UserNotFoundMessageType = { message: string; };
 export type UserDataType = Record<number, UserSchemaWithIDType>;
 export type GetCollectionType = (collection: string) => Promise<FindCursorType>;
 export type InsertIntoDBType = (
@@ -26,4 +27,4 @@ export type InsertIntoDBType = (
 export type SelectFromDBType = (
   data: string,
   collection: string,
-) => Promise<UserSchemaWithIDType>;
+) => Promise<UserSchemaWithIDType | UserNotFoundMessageType>;
