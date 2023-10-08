@@ -22,7 +22,7 @@ export class HomePage extends PageBuilder {
       img.src = users[key].photo;
       img.alt = `photo de ${users[key].firstname} ${users[key].lastname}`;
       spec.innerHTML = `<b>${users[key].firstname} ${users[key].lastname}</b>`;
-      age.textContent = `${this.getAge(users[key].dateOfBirth)} ans`;
+      age.textContent = `${this.getAge(users[key].birth)} ans`;
       job.textContent = users[key].job;
 
       this.insertChildren(figure, img);
@@ -59,3 +59,5 @@ export class HomePage extends PageBuilder {
       .getFullYear() - 1970;
   };
 }
+
+

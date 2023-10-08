@@ -19,19 +19,6 @@ export class Helper {
     return JSON.parse(decoder.decode(file));
   }
 
-  public static async writeKey(
-    email: string,
-    rawKey: Uint8Array,
-    userInfo: string[],
-    encoder = new TextEncoder(),
-
-  ) {
-    const text = `//${Helper.dateNow()}\nconst __${userInfo.join("")}__ = {\n\temail: "${email}",\n\trawKey: [${rawKey}],\n};\n\n`;
-    const content = encoder.encode(text);
-
-    await Deno.writeFile("log/user.key.ts", content, Helper.WriteOpts);
-  }
-
   public static async writeLog(
     error: { message: string },
     encoder = new TextEncoder(),

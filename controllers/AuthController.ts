@@ -9,7 +9,6 @@ import {
   RouterContextAppType,
   SelectFromDBType,
 } from "./mod.ts";
-import { Helper } from "@utils";
 
 export class AuthController extends DefaultController {
   public insertIntoDB;
@@ -74,21 +73,23 @@ export class AuthController extends DefaultController {
 
     try {
       const user = await this.selectFromDB(email, "users");
-      const key = await Auth.importKey(user.key);
 
-      const passwordStored = await Auth.decryptPassword(user.hash, key);
+      if (user) {
+        const key = await Auth.importKey(user.key);
+        const passwordStored = await Auth.decryptPassword(user.hash, key);
 
-      //Handle session and potential redirection.
-      if (email === user.email && password === passwordStored) {
-        ctx.state.session.set("email", email);
-        ctx.state.session.set("firstname", user.firstname);
-        ctx.state.session.set("failed-login-attempts", null);
-        ctx.state.session.flash(
-          "message",
-          `connexion réussie : ${email}`,
-        );
-
-        this.response(ctx, user, 302, "/");
+        //Handle session and potential redirection.
+        if (email === user.email && password === passwordStored) {
+          ctx.state.session.set("email", email);
+          ctx.state.session.set("firstname", user.firstname);
+          ctx.state.session.set("failed-login-attempts", null);
+          ctx.state.session.flash(
+            "message",
+            `connexion réussie : ${email}`,
+          );
+  
+          this.response(ctx, user, 302, "/");
+        }
       } else {
         const failedLoginAttempts =
           (await ctx.state.session.get("failed-login-attempts") || 0) as number;
@@ -139,18 +140,11 @@ export class AuthController extends DefaultController {
     const { hash, key } = await Auth.encryptPassword(password);
     const rawKey = await Auth.exportKey(key)
     
-    //TODO writing key in a ts file.
-    await Helper.writeKey(
-      email,
-      rawKey,
-      [firstname, lastname]
-    );
-    
     const userId = await this.insertIntoDB({
       firstname,
       lastname,
       email,
-      dateOfBirth: new Date(birth),
+      birth: new Date(birth),
       role: "user",
       job,
       hash,

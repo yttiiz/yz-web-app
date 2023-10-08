@@ -51,7 +51,7 @@
       "type": "file",
       "name": "photo",
       "required": false,
-      "accept": ".png, .jpg, .jpeg"
+      "accept": ".png, .jpg, .webp, .jpeg"
     },
     {
       "type": "submit",

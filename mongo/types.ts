@@ -1,7 +1,7 @@
 import { Collection, FindCursor, ObjectId } from "../dependencies/deps.ts";
 
 export type UserSchemaType = {
-  dateOfBirth: Date;
+  birth: Date;
   firstname: string;
   email: string;
   lastname: string;
