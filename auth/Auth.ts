@@ -1,6 +1,4 @@
-// https://medium.com/deno-the-complete-reference/private-key-aes-encryption-decryption-in-deno-10cf33b41eaf
-
-import { decode, encode, Binary } from "@deps";
+import { Binary, decode, encode } from "@deps";
 
 export class Auth {
   private static AES_CBC_128: AesKeyGenParams = {
@@ -48,13 +46,13 @@ export class Auth {
 
     if (binOrUint8 instanceof Binary) {
       const binSequence = binOrUint8.value(true);
-      
+
       if (typeof binSequence !== "string") {
-        const convertedUint = new Uint8Array(binSequence)
-        buffer = convertedUint.buffer
+        const convertedUint = new Uint8Array(binSequence);
+        buffer = convertedUint.buffer;
       }
     } else {
-      buffer = binOrUint8.buffer
+      buffer = binOrUint8.buffer;
     }
 
     return await crypto.subtle.importKey(
@@ -62,7 +60,7 @@ export class Auth {
       buffer,
       "AES-CBC",
       true,
-      Auth.usages
+      Auth.usages,
     );
   }
 
@@ -90,7 +88,7 @@ export class Auth {
       decode(Auth.textEncoder(hash)),
     );
     const decryptedBytes = new Uint8Array(decrypted);
-    
+
     return Auth.textDecoder(decryptedBytes);
   }
 }

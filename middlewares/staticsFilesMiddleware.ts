@@ -1,4 +1,4 @@
-import { oak } from "../dependencies/deps.ts";
+import { oak } from "@deps";
 
 export const staticsFilesMiddleware = async (
   ctx: oak.Context,

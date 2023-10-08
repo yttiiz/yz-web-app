@@ -1,5 +1,5 @@
-import { ContentHeadersType } from "@utils";
-import { RouterContextAppType } from "@controllers";
+import type { ContentHeadersType } from "@utils";
+import type { RouterContextAppType } from "@controllers";
 
 export class Http<T extends string> {
   private ctx: RouterContextAppType<T>;

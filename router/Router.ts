@@ -1,7 +1,7 @@
 import { oak } from "@deps";
-import { ApiController, AuthController, HomeController } from "@controllers";
 import { Mongo } from "@mongo";
 import { AppState } from "@utils";
+import { ApiController, AuthController, HomeController } from "@controllers";
 
 export const router = new oak.Router<AppState>();
 

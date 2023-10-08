@@ -1,7 +1,7 @@
 import { oak } from "@deps";
-import { DefaultController } from "./DefaultController.ts";
 import { Auth } from "@auth";
-import {
+import { DefaultController } from "./DefaultController.ts";
+import type {
   AuthPathType,
   FilesDataType,
   InsertIntoDBType,
@@ -87,7 +87,7 @@ export class AuthController extends DefaultController {
             "message",
             `connexion réussie : ${email}`,
           );
-  
+
           this.response(ctx, user, 302, "/");
         }
       } else {
@@ -138,8 +138,8 @@ export class AuthController extends DefaultController {
       : photo = this.defaultImg;
 
     const { hash, key } = await Auth.encryptPassword(password);
-    const rawKey = await Auth.exportKey(key)
-    
+    const rawKey = await Auth.exportKey(key);
+
     const userId = await this.insertIntoDB({
       firstname,
       lastname,

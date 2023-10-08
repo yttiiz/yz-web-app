@@ -9,11 +9,13 @@ export class Helper {
   };
 
   private static WriteOpts: Deno.WriteFileOptions = {
-    append: true
+    append: true,
   };
 
-  public static async convertJsonToObject(path: string) {
-    const decoder = new TextDecoder("utf-8");
+  public static async convertJsonToObject(
+    path: string,
+    decoder = new TextDecoder("utf-8"),
+  ) {
     const file = await Deno.readFile(Deno.cwd() + path);
 
     return JSON.parse(decoder.decode(file));
@@ -31,7 +33,7 @@ export class Helper {
 
   private static dateNow() {
     return Intl
-    .DateTimeFormat("fr-FR", Helper.DateOpts)
-    .format(new Date());
+      .DateTimeFormat("fr-FR", Helper.DateOpts)
+      .format(new Date());
   }
 }

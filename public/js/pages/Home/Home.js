@@ -59,5 +59,3 @@ export class HomePage extends PageBuilder {
       .getFullYear() - 1970;
   };
 }
-
-

@@ -1,5 +1,5 @@
-import { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
 import { MongoClient, MongoStore } from "@deps";
+import type { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
 
 /**
  * The app MongoDB Manager.

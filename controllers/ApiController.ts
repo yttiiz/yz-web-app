@@ -1,10 +1,10 @@
-import {
+import { Helper, Http } from "@utils";
+import type {
   GetCollectionType,
   RouterAppType,
   RouterContextAppType,
   UserDataType,
 } from "./mod.ts";
-import { Helper, Http } from "@utils";
 
 export class ApiController {
   private router;

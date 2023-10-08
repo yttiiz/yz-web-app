@@ -1,5 +1,5 @@
 import { Helper } from "@utils";
-import { ComponentType, PageType } from "./mod.ts";
+import type { ComponentType, PageType } from "./mod.ts";
 
 const {
   title,

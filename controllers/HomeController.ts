@@ -1,5 +1,5 @@
 import { DefaultController } from "./DefaultController.ts";
-import { RouterAppType, RouterContextAppType } from "./mod.ts";
+import type { RouterAppType, RouterContextAppType } from "./mod.ts";
 
 export class HomeController extends DefaultController {
   constructor(router: RouterAppType) {

@@ -1,4 +1,4 @@
-import { ComponentType } from "./mod.ts";
+import type { ComponentType } from "./mod.ts";
 
 export const Main: ComponentType = {
   name: "Main",

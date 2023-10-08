@@ -1,5 +1,5 @@
 import { Helper } from "@utils";
-import { ComponentType, FooterType } from "./mod.ts";
+import type { ComponentType, FooterType } from "./mod.ts";
 
 const {
   basicItems,

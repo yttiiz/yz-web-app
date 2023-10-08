@@ -1,12 +1,12 @@
 import * as layers from "@components";
-import {
+import { Helper, Http } from "@utils";
+import { UserSchemaWithIDType } from "@mongo";
+import type {
   AuthPathType,
   PageDataIdType,
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
-import { Helper, Http } from "@utils";
-import { UserSchemaWithIDType } from "@mongo";
 
 export class DefaultController {
   router;
