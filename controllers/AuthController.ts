@@ -74,7 +74,7 @@ export class AuthController extends DefaultController {
     try {
       const user = await this.selectFromDB(email, "users");
 
-      if (user && "_id" in user) {
+      if ("_id" in user) {
         const key = await Auth.importKey(user.key);
         const passwordStored = await Auth.decryptPassword(user.hash, key);
 

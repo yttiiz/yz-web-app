@@ -94,13 +94,24 @@ export class DefaultController {
     >
       ${
       data.content
-        .map((input) => (
+        .map((input) => input.type !== "submit"
+        ? 
+        (
+        `<label>
+          ${input.label}
+          <input type="${input.type}"
+            ${input.name ? ` name="${input.name}"` : ""}
+            ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
+            ${input.required ? ` required` : ""}
+            ${input.minLength ? ` minLength="${input.minLength}"` : ""}
+            ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
+            ${input.value ? ` value="${input.value}"` : ""}
+          >
+        </label>`
+        )
+        :
+        (
           `<input type="${input.type}"
-          ${input.name ? ` name="${input.name}"` : ""}
-          ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
-          ${input.required ? ` required` : ""}
-          ${input.minLength ? ` minLength="${input.minLength}"` : ""}
-          ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
           ${input.value ? ` value="${input.value}"` : ""}
         >`
         ))

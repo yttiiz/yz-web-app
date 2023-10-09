@@ -11,7 +11,7 @@ export class FormHelper {
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
     FormHelper.#createDivToShowInfo(
-      `Veuillez réessayer de nouveau : (${message}).`,
+      `Veuillez réessayer de nouveau, ${message}.`,
     );
   };
 

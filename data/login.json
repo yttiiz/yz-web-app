@@ -4,7 +4,8 @@
   "content": [
     {
       "type": "email",
-      "placeholder": "Email",
+      "label": "Email",
+      "placeholder": "Votre email...",
       "name": "email",
       "required": true,
       "minLength": 2,
@@ -12,7 +13,8 @@
     },
     {
       "type": "password",
-      "placeholder": "Votre mot de passe",
+      "label": "Mot de passe",
+      "placeholder": "Votre mot de passe...",
       "name": "password",
       "required": true,
       "minLength": 2,

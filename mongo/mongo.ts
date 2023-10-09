@@ -23,15 +23,15 @@ export class Mongo {
   }
 
   public static async selectFromDB(
-    data: string,
+    email: string,
     collection: string,
   ) {
     const users = await Mongo.clientConnectTo(collection);
-    const user = await users.findOne({ email: data });
+    const user = await users.findOne({ email });
 
     if (user) return user;
 
-    return { message: "aucun utilisateur trouvé." };
+    return { message: "aucun utilisateur lié à cet email : " + email };
   }
 
   public static async setStore() {

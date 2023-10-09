@@ -25,6 +25,6 @@ export type InsertIntoDBType = (
   collection: string,
 ) => Promise<string>;
 export type SelectFromDBType = (
-  data: string,
+  email: string,
   collection: string,
 ) => Promise<UserSchemaWithIDType | UserNotFoundMessageType>;

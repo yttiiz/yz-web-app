@@ -17,6 +17,7 @@ type ItemType = {
 
 type InputType = {
   type: string;
+  label?: string;
   placeholder?: string;
   name?: string;
   required?: string;
