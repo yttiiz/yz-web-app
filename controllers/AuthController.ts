@@ -28,6 +28,7 @@ export class AuthController extends DefaultController {
     this.getRegisterRoute();
     this.postLoginRoute();
     this.postRegisterRoute();
+    this.postLogoutRoute();
   }
 
   private getLoginRoute() {
@@ -36,6 +37,10 @@ export class AuthController extends DefaultController {
 
   private postLoginRoute() {
     this.postRoute("/login", this.loginRouteHandler);
+  }
+
+  private postLogoutRoute() {
+    this.postRoute("/logout", this.logoutRouteHandler);
   }
 
   private getRegisterRoute() {
@@ -109,6 +114,16 @@ export class AuthController extends DefaultController {
         500,
       );
     }
+  };
+
+  private logoutRouteHandler = async <T extends AuthPathType>(
+    ctx: RouterContextAppType<T>,
+  ) => {
+    await ctx.state.session.deleteSession();
+    const msg = {
+      message: "Utilisateur déconnecté",
+    };
+    this.response(ctx, msg, 302, "/");
   };
 
   private registerRouteHandler = async <T extends AuthPathType>(

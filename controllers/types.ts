@@ -6,6 +6,7 @@ export type AuthPathType =
   | "/"
   | "/register"
   | "/login"
+  | "/logout"
   | "/update";
 
 //Router

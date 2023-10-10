@@ -3,7 +3,9 @@ export type ComponentNameType =
   | "Header"
   | "Main"
   | "Footer"
-  | "UserSvg";
+  | "LogoutForm"
+  | "UserSvg"
+  | "OnOffSvg";
 
 export type ComponentType = {
   name: ComponentNameType;

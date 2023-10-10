@@ -92,38 +92,39 @@ export class DefaultController {
       method="POST"
       type="multipart/form-data"
     >
-      ${
-      data.content
-        .map((input) => input.type !== "submit"
+      ${data.content
+        .map(({
+          type,
+          label,
+          name,
+          placeholder,
+          required,
+          minLength,
+          maxLength,
+          value
+        }) => type !== "submit"
         ? 
         (
         `<label>
-          ${input.label}
-          <input type="${input.type}"
-            ${input.name ? ` name="${input.name}"` : ""}
-            ${input.placeholder ? ` placeholder="${input.placeholder}"` : ""}
-            ${input.required ? ` required` : ""}
-            ${input.minLength ? ` minLength="${input.minLength}"` : ""}
-            ${input.maxLength ? ` maxLength="${input.maxLength}"` : ""}
-            ${input.value ? ` value="${input.value}"` : ""}
+          ${label}
+          <input type="${type}"
+            ${name ? ` name="${name}"` : ""}
+            ${placeholder ? ` placeholder="${placeholder}"` : ""}
+            ${required ? ` required` : ""}
+            ${minLength ? ` minLength="${minLength}"` : ""}
+            ${maxLength ? ` maxLength="${maxLength}"` : ""}
+            ${value ? ` value="${value}"` : ""}
           >
         </label>`
         )
         :
         (
-          `<input type="${input.type}"
-          ${input.value ? ` value="${input.value}"` : ""}
+          `<input type="${type}"
+          ${value ? ` value="${value}"` : ""}
         >`
         ))
-        .join("")
-    }
+        .join("")}
     </form>`;
-  }
-  private setHtmlTagWithContent(
-    tag: string,
-    content: string,
-  ) {
-    return `<${tag}>${content}</${tag}>`;
   }
 
   private setTitle(
@@ -144,10 +145,10 @@ export class DefaultController {
 
       header = header.replace(
         "{{ application-session }}",
-        this.setHtmlTagWithContent(
-          "span",
-          `Bonjour ${firstname}`,
-        ),
+         layers.LogoutForm.content
+         .replace(
+          "{{ user-infos }}",
+          "Bonjour " + firstname),
       );
     } else {
       header = header.replace("{{ application-session }}", "");
