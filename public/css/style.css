@@ -286,11 +286,38 @@ h1 {
 
     & > form > label {
         display: inherit;
+        position: relative;
         flex-direction: column;
         gap: .5rem;
 
         & > input {
             border: .1rem solid var(--dark);
+        }
+
+        & > input[type="password"] {
+            padding-right: 4rem;
+        }
+
+        & > div {
+            display: flex;
+            position: absolute;
+            bottom: 15%;
+            right: 3%;
+        }
+
+        & > div span {
+            cursor: pointer;
+        }
+
+        & > div span.none {
+            display: none;
+        }
+
+        & > div svg {
+            fill: var(--primary-color);
+            width: 2rem;
+            aspect-ratio: 1 / 1;
+            display: block;
         }
     }
 

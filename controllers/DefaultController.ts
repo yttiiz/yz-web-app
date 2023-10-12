@@ -92,7 +92,8 @@ export class DefaultController {
       method="POST"
       type="multipart/form-data"
     >
-      ${data.content
+      ${
+      data.content
         .map(({
           type,
           label,
@@ -101,29 +102,37 @@ export class DefaultController {
           required,
           minLength,
           maxLength,
-          value
-        }) => type !== "submit"
-        ? 
-        (
-        `<label>
-          ${label}
-          <input type="${type}"
-            ${name ? ` name="${name}"` : ""}
-            ${placeholder ? ` placeholder="${placeholder}"` : ""}
-            ${required ? ` required` : ""}
-            ${minLength ? ` minLength="${minLength}"` : ""}
-            ${maxLength ? ` maxLength="${maxLength}"` : ""}
-            ${value ? ` value="${value}"` : ""}
-          >
-        </label>`
-        )
-        :
-        (
-          `<input type="${type}"
-          ${value ? ` value="${value}"` : ""}
-        >`
-        ))
-        .join("")}
+          value,
+        }) =>
+          type !== "submit"
+            ? (
+              `<label>
+                <span>${label}</span>
+                <input type="${type}"
+                  ${name ? ` name="${name}"` : ""}
+                  ${placeholder ? ` placeholder="${placeholder}"` : ""}
+                  ${required ? ` required` : ""}
+                  ${minLength ? ` minLength="${minLength}"` : ""}
+                  ${maxLength ? ` maxLength="${maxLength}"` : ""}
+                  ${value ? ` value="${value}"` : ""}
+                >
+              ${type === "password"
+                  ? (
+                    `<div id="eye-password">
+                        <span>${layers.EyeShutSvg.content}</span>
+                        <span class="none">${layers.EyeOpenSvg.content}</span>
+                      </div>`
+                    )
+                  : ""}
+              </label>`
+            )
+            : (
+              `<input type="${type}"
+                ${value ? ` value="${value}"` : ""}
+              >`
+            ))
+        .join("")
+    }
     </form>`;
   }
 
@@ -145,10 +154,11 @@ export class DefaultController {
 
       header = header.replace(
         "{{ application-session }}",
-         layers.LogoutForm.content
-         .replace(
-          "{{ user-infos }}",
-          "Bonjour " + firstname),
+        layers.LogoutForm.content
+          .replace(
+            "{{ user-infos }}",
+            "Bonjour " + firstname,
+          ),
       );
     } else {
       header = header.replace("{{ application-session }}", "");

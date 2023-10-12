@@ -5,6 +5,8 @@ export type ComponentNameType =
   | "Footer"
   | "LogoutForm"
   | "UserSvg"
+  | "EyeOpenSvg"
+  | "EyeShutSvg"
   | "OnOffSvg";
 
 export type ComponentType = {
