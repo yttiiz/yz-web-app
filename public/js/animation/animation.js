@@ -1,13 +1,5 @@
 export const handleBurger = () => {
-  const burger = document.querySelector("#burger");
-  /**
-   * @param {Event} e
-   * @param {number} i
-   */
-  const handler = (e, i = 0) => {
-    const lines = e.currentTarget.querySelectorAll("button > span");
-    const nav = e.currentTarget.querySelector("nav");
-
+  const toggleElementClasslist = (lines, nav, i = 0) => {
     for (const line of lines) {
       line.classList.toggle(`line-${i + 1}`);
       i++;
@@ -16,14 +8,35 @@ export const handleBurger = () => {
     nav.classList.toggle("none");
   };
 
-  burger.addEventListener("click", handler);
+  /** @param {Event} e **/
+  const burgerHandler = (e) => {
+    const lines = e.currentTarget.querySelectorAll("button > span");
+    const nav = e.currentTarget.querySelector("nav");
+
+    toggleElementClasslist(lines, nav);
+  };
+
+  /** @param {Event} e **/
+  const windowHandler = (e) => {
+    const lines = document.querySelectorAll("#burger > button > span");
+    const nav = document.querySelector("#burger > nav");
+
+    if (e.target.closest("#burger")) {
+      return;
+    } else if (!nav.classList.contains("none")) {
+      toggleElementClasslist(lines, nav);
+    }
+  };
+
+  document.querySelector("#burger")
+    .addEventListener("click", burgerHandler);
+  window.addEventListener("click", windowHandler);
 };
 
 export const handleShowPassword = () => {
   const eyeIcons = document.querySelectorAll("#eye-password span");
-  /**
-   * @param {Event} e
-   */
+
+  /** @param {Event} e **/
   const handler = (e) => {
     //handle eye icon
     e.currentTarget.closest("div")
