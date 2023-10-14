@@ -9,15 +9,15 @@ export type AuthPathType =
   | "/logout"
   | "/update";
 
-//Router
+// Router
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
-//Files
+// Files
 export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
 
-//DB
+// DB
 export type UserNotFoundMessageType = { message: string };
 export type UserDataType = Record<number, UserSchemaWithIDType>;
 export type GetCollectionType = (collection: string) => Promise<FindCursorType>;

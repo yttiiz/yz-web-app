@@ -83,7 +83,7 @@ export class AuthController extends DefaultController {
         const key = await Auth.importKey(user.key);
         const passwordStored = await Auth.decryptPassword(user.hash, key);
 
-        //Handle session and potential redirection.
+        // Handle session and potential redirection.
         if (email === user.email && password === passwordStored) {
           ctx.state.session.set("email", email);
           ctx.state.session.set("firstname", user.firstname);

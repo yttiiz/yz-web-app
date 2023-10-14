@@ -175,7 +175,7 @@ export class DefaultController {
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    //Form render check
+    // Form render check
     if (path) {
       const data = await this.helper.convertJsonToObject(`/data${path}.json`);
       main = main.replace("{{ content-insertion }}", this.createForm(data));

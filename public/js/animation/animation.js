@@ -30,6 +30,7 @@ export const handleBurger = () => {
 
   document.querySelector("#burger")
     .addEventListener("click", burgerHandler);
+  // deno-lint-ignore no-window-prefix
   window.addEventListener("click", windowHandler);
 };
 
@@ -38,14 +39,14 @@ export const handleShowPassword = () => {
 
   /** @param {Event} e **/
   const handler = (e) => {
-    //handle eye icon
+    // handle eye icon
     e.currentTarget.closest("div")
       .querySelector(".none")
       .classList.remove("none");
 
     e.currentTarget.classList.add("none");
 
-    //handle input type
+    // handle input type
     const input = e.currentTarget.closest("div")
       .previousElementSibling;
 

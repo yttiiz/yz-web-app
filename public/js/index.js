@@ -3,6 +3,6 @@ import { handleBurger, handleShowPassword } from "./animation/mod.js";
 
 new Router();
 
-//Animation
+// Animation
 handleBurger();
 handleShowPassword();

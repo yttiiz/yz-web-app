@@ -3,22 +3,31 @@ import { staticsFilesMiddleware } from "@middlewares";
 import { Mongo } from "@mongo";
 import { router } from "@router";
 import type { AppState } from "@utils";
+import { Auth } from "@auth";
 
 const { Application } = oak;
 
 const app = new Application<AppState>();
 const env = await load();
 
-//Set environnement variables from '.env' file.
+// Set environnement variables from '.env' file.
 Object.keys(env)
   .map((key) => Deno.env.set(key, env[key]));
 
 const { PORT, HOST: hostname } = Deno.env.toObject();
 
-//Set session store.
+const password = "Vingt";
+const { hash, key } = await Auth.encryptPassword(password);
+const rawKey = await Auth.exportKey(key);
+const storedKey = await Auth.importKey(rawKey);
+const passwrd = await Auth.decryptPassword(hash, storedKey);
+
+console.log(passwrd)
+
+// Set session store.
 const store = await Mongo.setStore();
 
-//Set Middlewares.
+// Set Middlewares.
 app.use(Session.initMiddleware(store));
 app.use(router.routes());
 app.use(router.allowedMethods());
