@@ -80,17 +80,18 @@ export class AuthController extends DefaultController {
       const user = await this.selectFromDB(email, "users");
 
       if ("_id" in user) {
-        const key = await Auth.importKey(user.key);
-        const passwordStored = await Auth.decryptPassword(user.hash, key);
+        // const key = await Auth.importKey(user.key);
+        // const userPassword = await Auth.decryptPassword(user.hash, key);
+        const isPasswordOk = await Auth.comparePassword(password, user.hash)
 
         // Handle session and potential redirection.
-        if (email === user.email && password === passwordStored) {
+        if (email === user.email && isPasswordOk) {
           ctx.state.session.set("email", email);
           ctx.state.session.set("firstname", user.firstname);
           ctx.state.session.set("failed-login-attempts", null);
           ctx.state.session.flash(
             "message",
-            `connexion réussie : ${email}`,
+            `connexion réussie pour : ${email}`,
           );
 
           this.response(ctx, user, 302, "/");
@@ -152,8 +153,7 @@ export class AuthController extends DefaultController {
       )
       : photo = this.defaultImg;
 
-    const { hash, key } = await Auth.encryptPassword(password);
-    const rawKey = await Auth.exportKey(key);
+    const hash = await Auth.hashPassword(password);
 
     const userId = await this.insertIntoDB({
       firstname,
@@ -163,7 +163,6 @@ export class AuthController extends DefaultController {
       role: "user",
       job,
       hash,
-      key: rawKey,
       photo,
     }, "users");
 

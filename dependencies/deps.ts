@@ -5,8 +5,10 @@ import { load } from "env";
 import { Binary, Bson, Collection, MongoClient, ObjectId } from "mongoose";
 import { FindCursor } from "mongo-find";
 import { decode, encode } from "encode";
+import * as bcrypt from "bcrypt";
 
 export {
+  bcrypt,
   Binary,
   Bson,
   Collection,

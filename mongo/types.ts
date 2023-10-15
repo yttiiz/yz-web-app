@@ -9,7 +9,6 @@ export type UserSchemaType = {
   job: string;
   photo: string;
   hash: string;
-  key: Uint8Array;
 };
 
 export type UserSchemaWithIDType = UserSchemaType & {

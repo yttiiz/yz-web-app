@@ -1,4 +1,7 @@
-import { Binary, decode, encode } from "@deps";
+import { bcrypt, Binary, decode, encode } from "@deps";
+
+// To understand how to use the `Web Crypto API`, click on the link below :
+// https://medium.com/deno-the-complete-reference/private-key-aes-encryption-decryption-in-deno-10cf33b41eaf
 
 export class Auth {
   private static AES_CBC_128: AesKeyGenParams = {
@@ -90,5 +93,13 @@ export class Auth {
     const decryptedBytes = new Uint8Array(decrypted);
 
     return Auth.textDecoder(decryptedBytes);
+  }
+
+  public static async hashPassword(password: string) {
+    return await bcrypt.hash(password);
+  }
+
+  public static async comparePassword(password: string, hash: string) {
+    return await bcrypt.compare(password, hash);
   }
 }
