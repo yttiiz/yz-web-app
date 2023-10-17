@@ -334,6 +334,22 @@ h1 {
         color: var(--light);
         font-weight: 500;
     }
+
+    & > div[data-msg-infos="success"],
+    & > div[data-msg-infos="error"] {
+        padding: 1rem;
+        line-height: 1;
+    }
+
+    & > div[data-msg-infos="success"] {
+        border: .1rem solid rgb(0, 128, 0);
+        background: rgb(0 128 0 / .2);
+    }
+
+    & > div[data-msg-infos="error"] {
+        border: .1rem solid rgb(128, 0, 0);
+        background: rgb(128 0 0 / .2);
+    }
 }
 
 /*=================================================| FOOTER |=================================================*/

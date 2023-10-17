@@ -31,7 +31,7 @@ export class Mongo {
 
     if (user) return user;
 
-    return { message: "aucun utilisateur lié à cet email : " + email };
+    return { message: "aucun utilisateur n'est lié à cet email : " + email };
   }
 
   public static async setStore() {
