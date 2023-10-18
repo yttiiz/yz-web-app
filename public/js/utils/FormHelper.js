@@ -32,12 +32,11 @@ export class FormHelper {
 
     if (container.querySelector("div[data-msg-infos]")) {
       box = container.querySelector("div[data-msg-infos]");
-
     } else {
       box = document.createElement("div");
       container.appendChild(box);
     }
-    
+
     box.dataset.msgInfos = dataSet;
     box.textContent = msg;
   };

@@ -5,7 +5,7 @@ export const LogoutForm: ComponentType = {
   content: `
   <div>
     <form action="/logout" method="post">
-      <button>
+      <button type="submit" title="déconnexion">
         ${OnOffSvg.content}
       </button>
     </form>

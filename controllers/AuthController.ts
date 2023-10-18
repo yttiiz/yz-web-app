@@ -76,16 +76,21 @@ export class AuthController extends DefaultController {
     const data = await ctx.request.body().value as oak.FormDataReader;
     const { fields: { email, password } } = await data.read();
 
+    const failedLogin = async (message: string) => {
+      const failedLoginAttempts =
+        (await ctx.state.session.get("failed-login-attempts") || 0) as number;
+      ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
+      ctx.state.session.flash("error", message);
+    };
+
     try {
       const user = await this.selectFromDB(email, "users");
 
       if ("_id" in user) {
-        // const key = await Auth.importKey(user.key);
-        // const userPassword = await Auth.decryptPassword(user.hash, key);
-        const isPasswordOk = await Auth.comparePassword(password, user.hash)
+        const isPasswordOk = await Auth.comparePassword(password, user.hash);
 
-        // Handle session and potential redirection.
-        if (email === user.email && isPasswordOk) {
+        // Handle session and redirection.
+        if (isPasswordOk) {
           ctx.state.session.set("email", email);
           ctx.state.session.set("firstname", user.firstname);
           ctx.state.session.set("failed-login-attempts", null);
@@ -94,14 +99,21 @@ export class AuthController extends DefaultController {
             `connexion réussie pour : ${email}`,
           );
 
+          ctx.state.session.has("error")
+            ? ctx.state.session.set("error", null)
+            : null;
+
           this.response(ctx, user, 302, "/");
+        } else {
+          await failedLogin("mot de passe incorrect");
+          this.response(
+            ctx,
+            { message: "votre mot de passe est incorrect" },
+            200,
+          );
         }
       } else {
-        const failedLoginAttempts =
-          (await ctx.state.session.get("failed-login-attempts") || 0) as number;
-        ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
-        ctx.state.session.flash("error", "Incorrect username or password");
-
+        await failedLogin(user.message);
         this.response(ctx, user, 200);
       }
     } catch (error) {

@@ -103,20 +103,28 @@ header {
     & > div {
         display: inherit;
         align-items: center;
-        gap: inherit;
 
         & > form button,
         & > form svg {
             display: block;
-            width: 2rem;
             aspect-ratio: 1 / 1;
         }
     
+        & > form button {
+            width: 3rem;
+            padding: .5rem;
+        }
+
         & > form button > svg {
             width: 100%;
             height: auto;
+            transition: opacity var(--smooth);
         }
-        
+
+        & > form button > svg:hover {
+            opacity: .7;
+        }
+
         & > span {
             color: var(--light);
         }
@@ -124,6 +132,11 @@ header {
 
     & svg path {
         fill: var(--light);
+    }
+
+    & a {
+        font-weight: 500;
+        color: var(--secondary-color)
     }
 }
 

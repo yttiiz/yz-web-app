@@ -158,7 +158,7 @@ export class DefaultController {
         layers.LogoutForm.content
           .replace(
             "{{ user-infos }}",
-            "Bonjour " + firstname,
+            "Bonjour <a href=\"/profil\">" + firstname + "</a>",
           ),
       );
     } else {
