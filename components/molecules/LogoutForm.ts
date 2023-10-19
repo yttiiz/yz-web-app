@@ -1,4 +1,4 @@
-import { ComponentType, OnOffSvg } from "../mod.ts";
+import { ComponentType, OnOffSvg, UserSvg } from "../mod.ts";
 
 export const LogoutForm: ComponentType = {
   name: "LogoutForm",
@@ -10,5 +10,6 @@ export const LogoutForm: ComponentType = {
       </button>
     </form>
     <span>{{ user-infos }}</span>
+    ${UserSvg.content}
   </div>`,
 };

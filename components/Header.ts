@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { ComponentType, HeaderType, UserSvg } from "./mod.ts";
+import type { ComponentType, HeaderType } from "./mod.ts";
 
 const {
   logo: { link, text },
@@ -37,7 +37,6 @@ export const Header: ComponentType = {
       <div>
         <div id="user-session">
           {{ application-session }}
-          ${UserSvg.content}
         </div>
       </div>
     </div>

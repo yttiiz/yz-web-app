@@ -4,6 +4,7 @@ export type ComponentNameType =
   | "Main"
   | "Footer"
   | "LogoutForm"
+  | "Login"
   | "UserSvg"
   | "EyeOpenSvg"
   | "EyeShutSvg"
@@ -17,6 +18,7 @@ export type ComponentType = {
 type ItemType = {
   link: string;
   text: string;
+  className?: string;
 };
 
 type InputType = {
@@ -39,6 +41,7 @@ export type PageType = {
 export type HeaderType = {
   logo: ItemType;
   items: ItemType[];
+  login: ItemType[];
 };
 
 export type FooterType = {

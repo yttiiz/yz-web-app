@@ -103,6 +103,7 @@ header {
     & > div {
         display: inherit;
         align-items: center;
+        gap: 1rem;
 
         & > form button,
         & > form svg {
@@ -111,8 +112,7 @@ header {
         }
     
         & > form button {
-            width: 3rem;
-            padding: .5rem;
+            width: 2.5rem;
         }
 
         & > form button > svg {
@@ -137,6 +137,21 @@ header {
     & a {
         font-weight: 500;
         color: var(--secondary-color)
+    }
+
+    & a:hover {
+        filter: contrast(1.5);
+    }
+
+    & a:not(.register):hover {
+        text-decoration: underline;
+    }
+
+    & a.register {
+        padding: .5rem .8rem;
+        background: var(--secondary-color);
+        color: var(--primary-color);
+        border-radius: .5rem;
     }
 }
 
@@ -201,8 +216,7 @@ header {
     }
 
     & > nav > ul li a:hover {
-        background: var(--secondary-color);
-        color: var(--vanilla);
+        background: rgb(0 0 0 / .1);
     }
 }
 

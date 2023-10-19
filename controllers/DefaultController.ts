@@ -18,16 +18,6 @@ export class DefaultController {
     this.helper = Helper;
   }
 
-  protected createComponents(...args: layers.ComponentNameType[]) {
-    const components = [];
-
-    for (const arg of args) {
-      components.push(this.file(arg));
-    }
-
-    return components;
-  }
-
   protected response<T extends AuthPathType>(
     ctx: RouterContextAppType<T>,
     data: string | UserSchemaWithIDType | Record<string, string>,
@@ -69,7 +59,7 @@ export class DefaultController {
     );
 
     html = this.setTitle(html, title);
-    header = await this.setHeaderHtml(ctx, header);
+    header = await this.setHeaderHtml(header, ctx);
     main = await this.setMainHtml(main, path, id);
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
@@ -84,6 +74,16 @@ export class DefaultController {
     }
 
     return layers[kind].content;
+  }
+
+  private createComponents(...args: layers.ComponentNameType[]) {
+    const components = [];
+
+    for (const arg of args) {
+      components.push(this.file(arg));
+    }
+
+    return components;
   }
 
   private createForm(data: layers.FormType): string {
@@ -147,8 +147,8 @@ export class DefaultController {
   }
 
   private async setHeaderHtml<T extends string>(
-    ctx: RouterContextAppType<T>,
     header: string,
+    ctx: RouterContextAppType<T>,
   ): Promise<string> {
     if (ctx.state.session.has("firstname")) {
       const firstname = await ctx.state.session.get("firstname");
@@ -162,7 +162,10 @@ export class DefaultController {
           ),
       );
     } else {
-      header = header.replace("{{ application-session }}", "");
+      header = header.replace(
+        "{{ application-session }}",
+        layers.Login.content,
+      );
     }
 
     return header;
