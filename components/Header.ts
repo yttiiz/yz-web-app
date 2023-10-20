@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import type { ComponentType, HeaderType } from "./mod.ts";
+import { ComponentType, HeaderType, Logo } from "./mod.ts";
 
 const {
   logo: { link, text },
@@ -31,7 +31,10 @@ export const Header: ComponentType = {
         </nav> 
       </div>
         <div id="logo">
-          <a href="${link}">${text}</a>
+          <a href="${link}">
+            ${Logo.content}
+            <span>${text}</span>
+          </a>
         </div>
       </div>
       <div>

@@ -6,6 +6,7 @@ export type ComponentNameType =
   | "LogoutForm"
   | "Login"
   | "UserSvg"
+  | "Logo"
   | "EyeOpenSvg"
   | "EyeShutSvg"
   | "OnOffSvg";

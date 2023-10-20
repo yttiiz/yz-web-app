@@ -9,7 +9,8 @@ export const Login: ComponentType = {
   name: "Login",
   content: `
   <div class="login">
-    ${login.map(item => (
+    ${
+    login.map((item) => (
       `<a
         href="${item.link}"
         ${item.className ? `class="${item.className}"` : ""}
@@ -17,6 +18,7 @@ export const Login: ComponentType = {
         ${item.text}
       </a>`
     ))
-    .join("")}
+      .join("")
+  }
   </div>`,
 };

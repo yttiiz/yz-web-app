@@ -23,13 +23,13 @@
   ],
   "login": [
     {
-      "link": "/register",
-      "text": "s'enregister",
-      "className": "register"
-    },
-    {
       "link": "/login",
       "text": "se connecter"
+    },
+    {
+      "link": "/register",
+      "text": "s'inscrire",
+      "className": "register"
     }
   ]
 }

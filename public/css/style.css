@@ -88,11 +88,29 @@ header {
     }
 }
 
-#logo > a {
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--light);
-    transition: opacity var(--smooth);
+#logo {
+    > a {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        transition: filter var(--smooth);
+        
+        > svg {
+            width: 3rem;
+            height: auto;
+            fill: var(--light);
+        }
+        
+        > span {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+    }
+
+    > a:hover {
+        filter: contrast(1.5)
+    }
 }
 
 #user-session {
@@ -407,5 +425,13 @@ footer {
 @media screen and (max-width: 750px) {
     #data-users > ul {
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #logo {
+        > a span {
+            display: none;
+        }
     }
 }

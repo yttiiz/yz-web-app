@@ -16,7 +16,7 @@ export const Body: ComponentType = {
       <title>${title}</title>
       <meta name="description" content="${description}">
       <link rel="stylesheet" href="./css/style.css">
-      <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+      <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     </head>
     <body>
       {{ application-content }}
