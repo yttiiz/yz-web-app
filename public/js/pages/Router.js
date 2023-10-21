@@ -16,7 +16,7 @@ export class Router {
   async #router() {
     switch (this.route) {
       case this.host: {
-        const res = await this.#fetchData("api");
+        const res = await this.#fetchData("users");
 
         if (res.ok && res.status === 200) {
           this.#home.renderUsers(await res.json());
@@ -38,8 +38,15 @@ export class Router {
       }
 
       case this.host + "profil": {
-        this.#form.renderForm();
-        break;
+        const res = await this.#fetchData("user-profil");
+
+        if (res.ok && res.status === 200) {
+          this.#form.renderProfilForm(
+            "profil",
+            await res.json(),
+          );
+          break;
+        }
       }
     }
   }

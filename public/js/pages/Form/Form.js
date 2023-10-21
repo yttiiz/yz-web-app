@@ -3,9 +3,9 @@ import { FormHelper } from "../../utils/FormHelper.js";
 
 export class FormPage extends PageBuilder {
   renderForm = (
-    root = document.querySelector("#data-users-form"),
+    id = "users",
   ) => {
-    const form = root.querySelector("form");
+    const form = document.querySelector(`#data-${id}-form form`)
 
     form.addEventListener(
       "submit",
@@ -42,4 +42,27 @@ export class FormPage extends PageBuilder {
       FormHelper.showErrorMsg(res);
     }
   };
+
+  renderProfilForm = (
+    id,
+    {
+      firstname,
+      lastname,
+      email,
+      job,
+      birth,
+      photo,
+    },
+  ) => {
+    const content = document.querySelector(`#data-${id}-form div`);
+    const [img] = this.createHTMLElements("img");
+    
+    // Set photo
+    img.src = photo;
+    img.alt = `photo de ${firstname} ${lastname}`;
+
+    this.insertChildren(content, img);
+
+    this.renderForm(id);
+  }
 }

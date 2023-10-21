@@ -2,9 +2,9 @@ import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  PathType,
   FilesDataType,
   InsertIntoDBType,
+  PathType,
   RouterAppType,
   RouterContextAppType,
   SelectFromDBType,
@@ -28,7 +28,7 @@ export class AuthController extends DefaultController {
   }
 
   private getLoginRoute() {
-    this.getRoute("/login", "- se connecter");
+    this.getRoute("/login", "se connecter");
   }
 
   private postLoginRoute() {
@@ -40,7 +40,7 @@ export class AuthController extends DefaultController {
   }
 
   private getRegisterRoute() {
-    this.getRoute("/register", "- s'enregister");
+    this.getRoute("/register", "s'enregister");
   }
 
   private postRegisterRoute() {

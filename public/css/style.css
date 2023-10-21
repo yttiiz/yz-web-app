@@ -265,7 +265,8 @@ h1 {
 }
 
 #data-users > ul,
-#data-users-form > form {
+#data-users-form > form,
+#data-profil-form > form {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -324,11 +325,28 @@ h1 {
     gap: 3rem;
 }
 
-#data-users-form {
+#data-users-form,
+#data-profil-form {
     & > form {
         margin-bottom: 1.5rem;
     }
 
+    & > form input {
+        padding: 1rem;
+        font-size: 1.6rem;
+        border-radius: .5rem;
+    }
+
+    & > form > input[type="submit"] {
+        height: max-content;
+        align-self: end;
+        background: var(--primary-color);
+        color: var(--light);
+        font-weight: 500;
+    }
+}
+
+#data-users-form {
     & > form > label {
         display: inherit;
         position: relative;
@@ -366,20 +384,6 @@ h1 {
         }
     }
 
-    & > form input {
-        padding: 1rem;
-        font-size: 1.6rem;
-        border-radius: .5rem;
-    }
-
-    & > form > input[type="submit"] {
-        height: max-content;
-        align-self: end;
-        background: var(--primary-color);
-        color: var(--light);
-        font-weight: 500;
-    }
-
     & > div[data-msg-infos="success"],
     & > div[data-msg-infos="error"] {
         padding: 1rem;
@@ -395,6 +399,10 @@ h1 {
         border: .1rem solid rgb(128, 0, 0);
         background: rgb(128 0 0 / .2);
     }
+}
+
+#data-profil-form {
+
 }
 
 /*=================================================| FOOTER |=================================================*/

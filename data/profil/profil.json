@@ -1,0 +1,10 @@
+{
+  "title": "Modifier vos informations",
+  "action": "/profil",
+  "content": [
+    {
+      "type": "submit",
+      "value": "Modifier"
+    }
+  ]
+}

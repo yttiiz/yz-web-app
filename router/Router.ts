@@ -1,6 +1,6 @@
 import { oak } from "@deps";
 import { Mongo } from "@mongo";
-import { AppState } from "@utils";
+import type { AppState } from "@utils";
 import {
   ApiController,
   AuthController,
@@ -14,4 +14,4 @@ export const router = new oak.Router<AppState>();
 new AuthController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
 new ProfilController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
 new HomeController(router);
-new ApiController(router, Mongo.connectionTo);
+new ApiController(router, Mongo.connectionTo, Mongo.selectFromDB);

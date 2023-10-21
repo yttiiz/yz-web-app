@@ -1,8 +1,8 @@
 import { DefaultController } from "./DefaultController.ts";
 import type {
+  InsertIntoDBType,
   RouterAppType,
   RouterContextAppType,
-  InsertIntoDBType,
   SelectFromDBType,
 } from "./mod.ts";
 
@@ -18,8 +18,19 @@ export class ProfilController extends DefaultController {
 
   private profil() {
     this.router.get("/profil", async (ctx: RouterContextAppType<"/profil">) => {
-      const body = await this.createHtmlFile(ctx, "data-users");
-      this.response(ctx, body, 200);
+      try {
+        const body = await this.createHtmlFile(
+          ctx,
+          "data-profil-form",
+          "modifier votre profil"
+        );
+
+        this.response(ctx, body, 200);
+      
+      } catch(error) {
+        this.helper.writeLog(error);
+        console.log(error);
+      }
     });
   }
 }

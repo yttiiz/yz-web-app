@@ -100,7 +100,7 @@ export class DefaultController {
     return components;
   }
 
-  private createForm(data: layers.FormType): string {
+  private createAuthForm(data: layers.FormType): string {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
@@ -153,12 +153,26 @@ export class DefaultController {
     </form>`;
   }
 
+  private createProfilForm(data: layers.FormType): string {
+    return `<h1>${data.title}</h1>
+    <form
+      action="${data.action}"
+      method="POST"
+      type="multipart/form-data"
+    >
+      <div>
+      </div>
+      <input type="${data.content[0].type}" value="${data.content[0].value}"/>
+    </form>
+    `;
+  }
+
   private setTitle(
     html: string,
     title: string | undefined,
   ): string {
     return title
-      ? html = html.replace("</title>", " " + title + "</title>")
+      ? html = html.replace("</title>", ` - ${title}</title>`)
       : html;
   }
 
@@ -194,14 +208,18 @@ export class DefaultController {
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    // Form render check
-    if (path) {
-      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
-      main = main.replace("{{ content-insertion }}", this.createForm(data));
-    } else {
-      main = main.replace("{{ content-insertion }}", "");
+    // Profil form render check
+    if (id === "data-profil-form") {
+      const data = await this.helper.convertJsonToObject(`/data/profil/profil.json`);
+      return main.replace("{{ content-insertion }}", this.createProfilForm(data));
     }
 
-    return main;
+    // Auth form render check
+    if (path) {
+      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
+      return main.replace("{{ content-insertion }}", this.createAuthForm(data));
+    }
+    
+    return main.replace("{{ content-insertion }}", "");
   }
 }
