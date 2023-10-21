@@ -3,17 +3,13 @@ import { FormPage, HomePage } from "./mod.js";
 
 export class Router {
   #home;
-  #login;
-  #register;
-  #update;
+  #form;
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
     this.#home = new HomePage();
-    this.#login = new FormPage();
-    this.#register = new FormPage();
-    this.#update = new FormPage();
+    this.#form = new FormPage();
     this.#router();
   }
 
@@ -32,17 +28,17 @@ export class Router {
       }
 
       case this.host + "register": {
-        this.#register.renderForm();
+        this.#form.renderForm();
         break;
       }
 
       case this.host + "login": {
-        this.#login.renderForm();
+        this.#form.renderForm();
         break;
       }
 
-      case this.host + "update": {
-        this.#login.renderForm();
+      case this.host + "profil": {
+        this.#form.renderForm();
         break;
       }
     }

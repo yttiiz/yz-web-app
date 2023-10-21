@@ -2,11 +2,12 @@ import { oak } from "@deps";
 import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
 import { AppState } from "@utils";
 
-export type AuthPathType =
+export type PathType =
   | "/"
   | "/register"
   | "/login"
   | "/logout"
+  | "/profil"
   | "/update";
 
 // Router

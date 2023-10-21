@@ -32,6 +32,7 @@ type InputType = {
   maxLength?: string;
   minLength?: string;
   accept?: string;
+  autocomplete?: string;
 };
 
 export type PageType = {

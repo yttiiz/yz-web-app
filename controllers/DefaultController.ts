@@ -3,22 +3,36 @@ import * as layers from "@components";
 import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 import type {
-  AuthPathType,
+  PathType,
   PageDataIdType,
   RouterAppType,
+  InsertIntoDBType,
+  SelectFromDBType,
   RouterContextAppType,
 } from "./mod.ts";
 
 export class DefaultController {
   router;
   helper;
+  public insertIntoDB;
+  public selectFromDB;
 
-  constructor(router: RouterAppType) {
+  constructor(
+    router: RouterAppType,
+    insertIntoDB?: InsertIntoDBType,
+    selectFromDB?: SelectFromDBType,
+    ) {
     this.router = router;
     this.helper = Helper;
+    insertIntoDB
+      ? this.insertIntoDB = insertIntoDB
+      : null;
+    selectFromDB
+      ? this.selectFromDB = selectFromDB
+      : null;
   }
 
-  protected response<T extends AuthPathType>(
+  protected response<T extends PathType>(
     ctx: RouterContextAppType<T>,
     data: string | UserSchemaWithIDType | Record<string, string>,
     status: number,
@@ -104,6 +118,7 @@ export class DefaultController {
           minLength,
           maxLength,
           value,
+          autocomplete,
         }) =>
           type !== "submit"
             ? (
@@ -116,6 +131,7 @@ export class DefaultController {
                   ${minLength ? ` minLength="${minLength}"` : ""}
                   ${maxLength ? ` maxLength="${maxLength}"` : ""}
                   ${value ? ` value="${value}"` : ""}
+                  ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
                 >
               ${type === "password"
                   ? (

@@ -2,7 +2,7 @@ import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  AuthPathType,
+  PathType,
   FilesDataType,
   InsertIntoDBType,
   RouterAppType,
@@ -11,8 +11,6 @@ import type {
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
-  public insertIntoDB;
-  public selectFromDB;
   private defaultImg;
 
   constructor(
@@ -20,9 +18,7 @@ export class AuthController extends DefaultController {
     insertIntoDB: InsertIntoDBType,
     selectFromDB: SelectFromDBType,
   ) {
-    super(router);
-    this.insertIntoDB = insertIntoDB;
-    this.selectFromDB = selectFromDB;
+    super(router, insertIntoDB, selectFromDB);
     this.defaultImg = "/img/users/default.png";
     this.getLoginRoute();
     this.getRegisterRoute();
@@ -51,7 +47,7 @@ export class AuthController extends DefaultController {
     this.postRoute("/register", this.registerRouteHandler);
   }
 
-  private getRoute(path: AuthPathType, title: string) {
+  private getRoute(path: PathType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile(
         ctx,
@@ -64,13 +60,13 @@ export class AuthController extends DefaultController {
   }
 
   private postRoute(
-    path: AuthPathType,
+    path: PathType,
     handler: (ctx: RouterContextAppType<typeof path>) => Promise<void>,
   ) {
     this.router.post(path, handler);
   }
 
-  private loginRouteHandler = async <T extends AuthPathType>(
+  private loginRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
@@ -84,7 +80,7 @@ export class AuthController extends DefaultController {
     };
 
     try {
-      const user = await this.selectFromDB(email, "users");
+      const user = await this.selectFromDB!(email, "users");
 
       if ("_id" in user) {
         const isPasswordOk = await Auth.comparePassword(password, user.hash);
@@ -129,7 +125,7 @@ export class AuthController extends DefaultController {
     }
   };
 
-  private logoutRouteHandler = async <T extends AuthPathType>(
+  private logoutRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     await ctx.state.session.deleteSession();
@@ -139,7 +135,7 @@ export class AuthController extends DefaultController {
     this.response(ctx, msg, 302, "/");
   };
 
-  private registerRouteHandler = async <T extends AuthPathType>(
+  private registerRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     let photo: string;
@@ -167,7 +163,7 @@ export class AuthController extends DefaultController {
 
     const hash = await Auth.hashPassword(password);
 
-    const userId = await this.insertIntoDB({
+    const userId = await this.insertIntoDB!({
       firstname,
       lastname,
       email,
