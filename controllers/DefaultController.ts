@@ -104,7 +104,7 @@ export class DefaultController {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
-      method="POST"
+      method="${data.method}"
       type="multipart/form-data"
     >
       ${this.setInputsForm(data.content, false)}
@@ -115,7 +115,7 @@ export class DefaultController {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
-      method="POST"
+      method="${data.method}"
       type="multipart/form-data"
     >
       <div>
@@ -136,7 +136,7 @@ export class DefaultController {
     title: string | undefined,
   ): string {
     return title
-      ? html = html.replace("</title>", ` - ${title}</title>`)
+      ? html.replace("</title>", ` - ${title}</title>`)
       : html;
   }
 
@@ -189,7 +189,8 @@ export class DefaultController {
 
   private setInputsForm(
     content: layers.InputType[],
-    isProfilInput = true) {
+    isProfilInputs = true
+  ) {
     return content
     .map(({ type,
       label,
@@ -223,7 +224,7 @@ export class DefaultController {
           : ""}
       </label>`
       )
-    : isProfilInput
+    : isProfilInputs
     ? ""
     : (
       `<input type="${type}"

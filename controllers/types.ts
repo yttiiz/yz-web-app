@@ -7,8 +7,7 @@ export type PathType =
   | "/register"
   | "/login"
   | "/logout"
-  | "/profil"
-  | "/update";
+  | "/profil";
 
 // Router
 export type RouterAppType = oak.Router<AppState>;

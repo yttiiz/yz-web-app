@@ -1,6 +1,7 @@
 {
   "title": "Renseigner vos informations pour vous connecter",
   "action": "/login",
+  "method": "POST",
   "content": [
     {
       "type": "email",

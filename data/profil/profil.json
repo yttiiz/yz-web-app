@@ -1,13 +1,13 @@
 {
   "title": "Modifier vos informations",
   "action": "/profil",
+  "method": "PUT",
   "content": [
     {
       "type": "text",
       "label": "Prénom",
       "placeholder": "Votre prénom...",
       "name": "firstname",
-      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -16,7 +16,6 @@
       "label": "Nom",
       "placeholder": "Votre nom...",
       "name": "lastname",
-      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -25,7 +24,6 @@
       "label": "Profession",
       "placeholder": "Votre profession...",
       "name": "job",
-      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -34,17 +32,20 @@
       "label": "Email",
       "placeholder": "Votre email...",
       "name": "email",
-      "required": true,
       "minLength": 2,
       "maxLength": 40,
       "autocomplete": "email"
+    },
+    {
+      "type": "date",
+      "label": "Date de naissance",
+      "name": "birth"
     },
     {
       "type": "password",
       "label": "Changer votre mot de passe",
       "placeholder": "Votre mot de passe...",
       "name": "password",
-      "required": true,
       "minLength": 2,
       "maxLength": 40,
       "autocomplete": "current-password"

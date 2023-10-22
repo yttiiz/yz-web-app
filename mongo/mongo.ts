@@ -13,6 +13,14 @@ export class Mongo {
     return users.find();
   }
 
+  public static async updateToDB(
+    data: UserSchemaWithIDType,
+    collection: string,
+  ) {
+    const users = await Mongo.clientConnectTo(collection);
+    //TODO see documentation for 'users.updateOne'.
+  }
+
   public static async insertIntoDB(
     data: UserSchemaType,
     collection: string,

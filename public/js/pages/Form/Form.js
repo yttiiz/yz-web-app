@@ -16,13 +16,19 @@ export class FormPage extends PageBuilder {
   submitHandler = async (e) => {
     e.preventDefault();
 
+    const method = location.pathname === "/profil"  
+    ? "PUT"
+    : null;
+
     const formData = FormHelper.setFormData(e.target);
     const res = await fetch(e.target.action, {
-      method: "POST",
+      method: method ?? "POST",
       body: formData,
     });
 
-    FormHelper.removeInputsValues(e.target.children);
+    if (location.pathname !== "/profil") {
+      FormHelper.removeInputsValues(e.target.children);
+    }
 
     if (res.ok && res.status === 200) {
       if (res.redirected) {
@@ -60,7 +66,9 @@ export class FormPage extends PageBuilder {
     // Set inputs
     for (const input of userInfosInputs) {
       if (input.type !== "password") {
-        input.value = data[input.name];
+        input.type === "date"
+        ? input.value = data[input.name].split("T").at(0)
+        : input.value = data[input.name];
       }
     }
 

@@ -1,3 +1,4 @@
+import { oak } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   InsertIntoDBType,
@@ -12,6 +13,7 @@ export class ProfilController extends DefaultController {
   ) {
     super(router, insertIntoDB);
     this.getProfil();
+    this.putProfil();
   }
 
   private getProfil() {
@@ -29,6 +31,24 @@ export class ProfilController extends DefaultController {
         this.helper.writeLog(error);
         console.log(error);
       }
+    });
+  }
+
+  private putProfil() {
+    this.router.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
+    
+      const data = await ctx.request.body().value as oak.FormDataReader;
+      const { fields:
+        { firstname,
+          lastname,
+          job,
+          email,
+          birth,
+          password,
+        }
+      } = await data.read();
+
+      //TODO Work in progress
     });
   }
 }

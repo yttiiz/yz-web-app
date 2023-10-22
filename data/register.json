@@ -1,6 +1,7 @@
 {
   "title": "Renseigner vos informations pour vous enregistrer",
   "action": "/register",
+  "method": "POST",
   "content": [
     {
       "type": "text",
