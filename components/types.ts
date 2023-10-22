@@ -22,7 +22,7 @@ type ItemType = {
   className?: string;
 };
 
-type InputType = {
+export type InputType = {
   type: string;
   label?: string;
   placeholder?: string;

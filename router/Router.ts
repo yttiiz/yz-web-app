@@ -12,6 +12,6 @@ export const router = new oak.Router<AppState>();
 
 // Creating all 'Routes' controllers.
 new AuthController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
-new ProfilController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
+new ProfilController(router, Mongo.insertIntoDB);
 new HomeController(router);
 new ApiController(router, Mongo.connectionTo, Mongo.selectFromDB);

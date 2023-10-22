@@ -3,20 +3,18 @@ import type {
   InsertIntoDBType,
   RouterAppType,
   RouterContextAppType,
-  SelectFromDBType,
 } from "./mod.ts";
 
 export class ProfilController extends DefaultController {
   constructor(
     router: RouterAppType,
     insertIntoDB: InsertIntoDBType,
-    selectFromDB: SelectFromDBType,
   ) {
-    super(router, insertIntoDB, selectFromDB);
-    this.profil();
+    super(router, insertIntoDB);
+    this.getProfil();
   }
 
-  private profil() {
+  private getProfil() {
     this.router.get("/profil", async (ctx: RouterContextAppType<"/profil">) => {
       try {
         const body = await this.createHtmlFile(

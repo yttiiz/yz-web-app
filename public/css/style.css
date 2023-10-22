@@ -265,8 +265,7 @@ h1 {
 }
 
 #data-users > ul,
-#data-users-form > form,
-#data-profil-form > form {
+#data-users-form > form {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -331,10 +330,21 @@ h1 {
         margin-bottom: 1.5rem;
     }
 
+    & > form label {
+        position: relative;
+        display: grid;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
     & > form input {
         padding: 1rem;
         font-size: 1.6rem;
         border-radius: .5rem;
+    }
+
+    & > form input:not(input[type="submit"]) {
+        border: .1rem solid var(--dark);
     }
 
     & > form > input[type="submit"] {
@@ -344,46 +354,13 @@ h1 {
         color: var(--light);
         font-weight: 500;
     }
+
+    & > form input[type="password"] {
+        padding-right: 4rem;
+    }
 }
 
 #data-users-form {
-    & > form > label {
-        display: inherit;
-        position: relative;
-        flex-direction: column;
-        gap: .5rem;
-
-        & > input {
-            border: .1rem solid var(--dark);
-        }
-
-        & > input[type="password"] {
-            padding-right: 4rem;
-        }
-
-        & > div {
-            display: flex;
-            position: absolute;
-            bottom: 15%;
-            right: 3%;
-        }
-
-        & > div span {
-            cursor: pointer;
-        }
-
-        & > div span.none {
-            display: none;
-        }
-
-        & > div svg {
-            fill: var(--primary-color);
-            width: 2rem;
-            aspect-ratio: 1 / 1;
-            display: block;
-        }
-    }
-
     & > div[data-msg-infos="success"],
     & > div[data-msg-infos="error"] {
         padding: 1rem;
@@ -402,7 +379,57 @@ h1 {
 }
 
 #data-profil-form {
+    & > form {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
 
+        & > div {
+            display: inherit;
+            gap: inherit;
+        }
+
+        & .user-photo figure {
+            width: 20rem;
+        }
+
+        & .user-photo img {
+            display: block;
+            border-radius: 50%;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        & .user-infos {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 1.2rem;
+            column-gap: 2rem;
+        }
+    }
+}
+
+#eye-password {
+        display: flex;
+        position: absolute;
+        bottom: 15%;
+        right: 3%;
+
+    & > span {
+        cursor: pointer;
+    }
+
+    & > span.none {
+        display: none;
+    }
+
+    & > span svg {
+        fill: var(--primary-color);
+        width: 2rem;
+        height: auto;
+        display: block;
+    }
 }
 
 /*=================================================| FOOTER |=================================================*/

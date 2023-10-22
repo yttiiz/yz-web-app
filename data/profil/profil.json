@@ -3,8 +3,55 @@
   "action": "/profil",
   "content": [
     {
+      "type": "text",
+      "label": "Prénom",
+      "placeholder": "Votre prénom...",
+      "name": "firstname",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "text",
+      "label": "Nom",
+      "placeholder": "Votre nom...",
+      "name": "lastname",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "text",
+      "label": "Profession",
+      "placeholder": "Votre profession...",
+      "name": "job",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "email",
+      "label": "Email",
+      "placeholder": "Votre email...",
+      "name": "email",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40,
+      "autocomplete": "email"
+    },
+    {
+      "type": "password",
+      "label": "Changer votre mot de passe",
+      "placeholder": "Votre mot de passe...",
+      "name": "password",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 40,
+      "autocomplete": "current-password"
+    },
+    {
       "type": "submit",
-      "value": "Modifier"
+      "value": "Mettre à jour"
     }
   ]
 }

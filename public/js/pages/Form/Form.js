@@ -45,24 +45,26 @@ export class FormPage extends PageBuilder {
 
   renderProfilForm = (
     id,
-    {
-      firstname,
-      lastname,
-      email,
-      job,
-      birth,
-      photo,
-    },
+    data,
   ) => {
-    const content = document.querySelector(`#data-${id}-form div`);
+    const userPhotoFigure = document.querySelector(".user-photo figure");
+    const userInfosInputs = document.querySelectorAll(".user-infos input");
+    
+    // Set user photo
     const [img] = this.createHTMLElements("img");
     
-    // Set photo
-    img.src = photo;
-    img.alt = `photo de ${firstname} ${lastname}`;
+    img.src = data.photo;
+    img.alt = `photo de ${data.firstname} ${data.lastname}`;
+    this.insertChildren(userPhotoFigure, img);
 
-    this.insertChildren(content, img);
+    // Set inputs
+    for (const input of userInfosInputs) {
+      if (input.type !== "password") {
+        input.value = data[input.name];
+      }
+    }
 
+    // Set form
     this.renderForm(id);
   }
 }

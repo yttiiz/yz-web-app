@@ -107,49 +107,7 @@ export class DefaultController {
       method="POST"
       type="multipart/form-data"
     >
-      ${
-      data.content
-        .map(({
-          type,
-          label,
-          name,
-          placeholder,
-          required,
-          minLength,
-          maxLength,
-          value,
-          autocomplete,
-        }) =>
-          type !== "submit"
-            ? (
-              `<label>
-                <span>${label}</span>
-                <input type="${type}"
-                  ${name ? ` name="${name}"` : ""}
-                  ${placeholder ? ` placeholder="${placeholder}"` : ""}
-                  ${required ? ` required` : ""}
-                  ${minLength ? ` minLength="${minLength}"` : ""}
-                  ${maxLength ? ` maxLength="${maxLength}"` : ""}
-                  ${value ? ` value="${value}"` : ""}
-                  ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
-                >
-              ${type === "password"
-                  ? (
-                    `<div id="eye-password">
-                        <span>${layers.EyeShutSvg.content}</span>
-                        <span class="none">${layers.EyeOpenSvg.content}</span>
-                      </div>`
-                    )
-                  : ""}
-              </label>`
-            )
-            : (
-              `<input type="${type}"
-                ${value ? ` value="${value}"` : ""}
-              >`
-            ))
-        .join("")
-    }
+      ${this.setInputsForm(data.content, false)}
     </form>`;
   }
 
@@ -161,8 +119,14 @@ export class DefaultController {
       type="multipart/form-data"
     >
       <div>
+        <div class="user-photo">
+          <figure></figure>
+        </div>
+        <div class="user-infos">
+          ${this.setInputsForm(data.content)}
+        </div>
       </div>
-      <input type="${data.content[0].type}" value="${data.content[0].value}"/>
+      <input type="${data.content.at(-1)!.type}" value="${data.content.at(-1)!.value}"/>
     </form>
     `;
   }
@@ -221,5 +185,51 @@ export class DefaultController {
     }
     
     return main.replace("{{ content-insertion }}", "");
+  }
+
+  private setInputsForm(
+    content: layers.InputType[],
+    isProfilInput = true) {
+    return content
+    .map(({ type,
+      label,
+      name,
+      placeholder,
+      required,
+      minLength,
+      maxLength,
+      value,
+      autocomplete,
+    }) => type !== "submit"
+    ? (
+      `<label>
+        <span>${label}</span>
+        <input type="${type}"
+          ${name ? ` name="${name}"` : ""}
+          ${placeholder ? ` placeholder="${placeholder}"` : ""}
+          ${required ? ` required` : ""}
+          ${minLength ? ` minLength="${minLength}"` : ""}
+          ${maxLength ? ` maxLength="${maxLength}"` : ""}
+          ${value ? ` value="${value}"` : ""}
+          ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
+        >
+        ${type === "password"
+          ? (
+            `<div id="eye-password">
+                <span>${layers.EyeShutSvg.content}</span>
+                <span class="none">${layers.EyeOpenSvg.content}</span>
+              </div>`
+            )
+          : ""}
+      </label>`
+      )
+    : isProfilInput
+    ? ""
+    : (
+      `<input type="${type}"
+        ${value ? ` value="${value}"` : ""}
+      >`
+    ))
+    .join("")
   }
 }
