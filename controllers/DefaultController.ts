@@ -6,30 +6,18 @@ import type {
   PathType,
   PageDataIdType,
   RouterAppType,
-  InsertIntoDBType,
-  SelectFromDBType,
   RouterContextAppType,
 } from "./mod.ts";
 
 export class DefaultController {
-  router;
-  helper;
-  public insertIntoDB;
-  public selectFromDB;
+  public router;
+  public helper;
 
   constructor(
     router: RouterAppType,
-    insertIntoDB?: InsertIntoDBType,
-    selectFromDB?: SelectFromDBType,
     ) {
     this.router = router;
     this.helper = Helper;
-    insertIntoDB
-      ? this.insertIntoDB = insertIntoDB
-      : null;
-    selectFromDB
-      ? this.selectFromDB = selectFromDB
-      : null;
   }
 
   protected response<T extends PathType>(

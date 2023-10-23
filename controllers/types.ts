@@ -1,5 +1,10 @@
 import { oak } from "@deps";
-import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
+import type {
+  FindCursorType,
+  UserSchemaType,
+  UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType
+} from "@mongo";
 import { AppState } from "@utils";
 
 export type PathType =
@@ -29,3 +34,8 @@ export type SelectFromDBType = (
   email: string,
   collection: string,
 ) => Promise<UserSchemaWithIDType | UserNotFoundMessageType>;
+export type UpdateToDBType = (
+  email: string,
+  data: UserSchemaWithOptionalFieldsType,
+  collection: string,
+) => Promise<boolean>;

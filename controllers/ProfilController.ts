@@ -1,17 +1,22 @@
 import { oak } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  InsertIntoDBType,
   RouterAppType,
   RouterContextAppType,
+  UpdateToDBType,
 } from "./mod.ts";
+import { Auth } from "@auth";
+import type { UserSchemaWithOptionalFieldsType } from "@mongo";
 
 export class ProfilController extends DefaultController {
+  private updateToDB;
+
   constructor(
     router: RouterAppType,
-    insertIntoDB: InsertIntoDBType,
+    updateToDB: UpdateToDBType,
   ) {
-    super(router, insertIntoDB);
+    super(router);
+    this.updateToDB = updateToDB;
     this.getProfil();
     this.putProfil();
   }
@@ -38,17 +43,35 @@ export class ProfilController extends DefaultController {
     this.router.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
     
       const data = await ctx.request.body().value as oak.FormDataReader;
-      const { fields:
-        { firstname,
-          lastname,
-          job,
-          email,
-          birth,
-          password,
-        }
-      } = await data.read();
+      const { fields, files } = await data.read();
+      //TODO WIP handle files field and required field (e.g: "email")
+      const updatedData = await this.removeEmptyFields(fields);
+      const isUserUpdate = await this.updateToDB(fields.email, updatedData, "users");
 
-      //TODO Work in progress
+      isUserUpdate
+      ? this.response(ctx, { message: "User updated"}, 200)
+      : this.response(ctx, { message: "User not update" }, 200);
     });
+  }
+
+  private async removeEmptyFields(
+    fields: Record<string, string>,
+  ) {
+    const trustData = Object.keys(fields)
+    .filter(key => fields[key] !== "")
+    .reduce((acc, key) => {
+      key === "birth"
+      ? acc["birth"] = new Date(fields[key])
+      : acc[key as keyof Omit<typeof acc, "birth">] = fields[key];
+      
+      return acc;
+    }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
+
+    if (trustData["password"]) {
+      trustData["hash"] = await Auth.hashPassword(trustData["password"]);
+      delete trustData["password"];
+    }
+
+    return trustData;
   }
 }

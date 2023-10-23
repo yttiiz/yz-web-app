@@ -1,5 +1,9 @@
 import { MongoClient, MongoStore } from "@deps";
-import type { UserSchemaType, UserSchemaWithIDType } from "./mod.ts";
+import type {
+  UserSchemaType,
+  UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType
+} from "./mod.ts";
 
 /**
  * The app MongoDB Manager.
@@ -14,11 +18,14 @@ export class Mongo {
   }
 
   public static async updateToDB(
-    data: UserSchemaWithIDType,
+    email: string,
+    data: UserSchemaWithOptionalFieldsType,
     collection: string,
   ) {
     const users = await Mongo.clientConnectTo(collection);
-    //TODO see documentation for 'users.updateOne'.
+    const { matchedCount, modifiedCount } = await users.updateOne({ email }, { $set: { ...data } });
+
+    return matchedCount + modifiedCount === 2;
   }
 
   public static async insertIntoDB(

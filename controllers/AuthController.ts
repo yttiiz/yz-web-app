@@ -12,13 +12,17 @@ import type {
 
 export class AuthController extends DefaultController {
   private defaultImg;
+  private insertIntoDB;
+  private selectFromDB;
 
   constructor(
     router: RouterAppType,
     insertIntoDB: InsertIntoDBType,
     selectFromDB: SelectFromDBType,
   ) {
-    super(router, insertIntoDB, selectFromDB);
+    super(router);
+    this.insertIntoDB = insertIntoDB;
+    this.selectFromDB = selectFromDB;
     this.defaultImg = "/img/users/default.png";
     this.getLoginRoute();
     this.getRegisterRoute();
@@ -80,7 +84,7 @@ export class AuthController extends DefaultController {
     };
 
     try {
-      const user = await this.selectFromDB!(email, "users");
+      const user = await this.selectFromDB(email, "users");
 
       if ("_id" in user) {
         const isPasswordOk = await Auth.comparePassword(password, user.hash);
@@ -163,7 +167,7 @@ export class AuthController extends DefaultController {
 
     const hash = await Auth.hashPassword(password);
 
-    const userId = await this.insertIntoDB!({
+    const userId = await this.insertIntoDB({
       firstname,
       lastname,
       email,
