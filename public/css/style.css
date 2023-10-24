@@ -360,7 +360,8 @@ h1 {
     }
 }
 
-#data-users-form {
+#data-users-form,
+#data-profil-form {
     & > div[data-msg-infos="success"],
     & > div[data-msg-infos="error"] {
         padding: 1rem;

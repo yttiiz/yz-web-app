@@ -12,6 +12,7 @@ import type {
 export class DefaultController {
   public router;
   public helper;
+  protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
 
   constructor(
     router: RouterAppType,

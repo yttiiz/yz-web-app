@@ -1,13 +1,16 @@
 import { Collection, FindCursor, ObjectId } from "@deps";
 
-export type UserSchemaType = {
-  birth: Date;
+export type UserSchemaWithoutSensitiveData = {
   firstname: string;
   email: string;
   lastname: string;
   role: string;
   job: string;
   photo: string;
+  birth: Date;
+};
+
+export type UserSchemaType = UserSchemaWithoutSensitiveData & {
   hash: string;
 };
 

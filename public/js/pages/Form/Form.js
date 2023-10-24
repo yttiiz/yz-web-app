@@ -42,6 +42,10 @@ export class FormPage extends PageBuilder {
           case location.origin + "/register":
             FormHelper.showRegisterDetails(res);
             break;
+
+          case location.origin + "/profil":
+            FormHelper.showProfilDetails(res);
+            break;
         }
       }
     } else {

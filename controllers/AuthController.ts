@@ -118,14 +118,7 @@ export class AuthController extends DefaultController {
       }
     } catch (error) {
       this.helper.writeLog(error);
-      this.response(
-        ctx,
-        {
-          errorMsg:
-            "Impossible de se connecter à la base de données. Code erreur : ",
-        },
-        500,
-      );
+      this.response(ctx, { errorMsg: this.errorMsg }, 500);
     }
   };
 

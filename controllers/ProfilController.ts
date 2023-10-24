@@ -34,7 +34,7 @@ export class ProfilController extends DefaultController {
       
       } catch(error) {
         this.helper.writeLog(error);
-        console.log(error);
+        this.response(ctx, { errorMsg: this.errorMsg }, 500);
       }
     });
   }
@@ -49,8 +49,8 @@ export class ProfilController extends DefaultController {
       const isUserUpdate = await this.updateToDB(fields.email, updatedData, "users");
 
       isUserUpdate
-      ? this.response(ctx, { message: "User updated"}, 200)
-      : this.response(ctx, { message: "User not update" }, 200);
+      ? this.response(ctx, { message: "Votre profil a bien été mis à jour" }, 200)
+      : this.response(ctx, { message: "Vos informations n'ont pas été mis à jour" }, 200);
     });
   }
 

@@ -3,7 +3,8 @@ import type {
   FindCursorType,
   UserSchemaType,
   UserSchemaWithIDType,
-  UserSchemaWithOptionalFieldsType
+  UserSchemaWithOptionalFieldsType,
+  UserSchemaWithoutSensitiveData
 } from "@mongo";
 import { AppState } from "@utils";
 
@@ -24,7 +25,7 @@ export type PageDataIdType = `data-${string}`;
 
 // DB
 export type UserNotFoundMessageType = { message: string };
-export type UserDataType = Record<number, UserSchemaWithIDType>;
+export type UserDataType = Record<number, UserSchemaWithoutSensitiveData>;
 export type GetCollectionType = (collection: string) => Promise<FindCursorType>;
 export type InsertIntoDBType = (
   data: UserSchemaType,

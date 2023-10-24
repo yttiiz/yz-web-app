@@ -23,7 +23,10 @@ export class Mongo {
     collection: string,
   ) {
     const users = await Mongo.clientConnectTo(collection);
-    const { matchedCount, modifiedCount } = await users.updateOne({ email }, { $set: { ...data } });
+    const {
+      matchedCount,
+      modifiedCount
+    } = await users.updateOne({ email }, { $set: { ...data } });
 
     return matchedCount + modifiedCount === 2;
   }
