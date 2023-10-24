@@ -3,11 +3,11 @@ import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   FilesDataType,
-  InsertIntoDBType,
+  InsertUserIntoDBType,
   PathType,
   RouterAppType,
   RouterContextAppType,
-  SelectFromDBType,
+  SelectUserFromDBType,
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
@@ -17,8 +17,8 @@ export class AuthController extends DefaultController {
 
   constructor(
     router: RouterAppType,
-    insertIntoDB: InsertIntoDBType,
-    selectFromDB: SelectFromDBType,
+    insertIntoDB: InsertUserIntoDBType,
+    selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
     this.insertIntoDB = insertIntoDB;
@@ -96,7 +96,7 @@ export class AuthController extends DefaultController {
           ctx.state.session.set("failed-login-attempts", null);
           ctx.state.session.flash(
             "message",
-            `connexion réussie pour : ${email}`,
+            this.sessionFlashMsg(email),
           );
 
           ctx.state.session.has("error")

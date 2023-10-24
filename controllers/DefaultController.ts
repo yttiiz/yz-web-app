@@ -13,6 +13,7 @@ export class DefaultController {
   public router;
   public helper;
   protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
+  protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
 
   constructor(
     router: RouterAppType,

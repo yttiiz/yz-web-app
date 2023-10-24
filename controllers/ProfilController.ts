@@ -3,7 +3,7 @@ import { DefaultController } from "./DefaultController.ts";
 import type {
   RouterAppType,
   RouterContextAppType,
-  UpdateToDBType,
+  UpdateUserToDBType,
 } from "./mod.ts";
 import { Auth } from "@auth";
 import type { UserSchemaWithOptionalFieldsType } from "@mongo";
@@ -13,7 +13,7 @@ export class ProfilController extends DefaultController {
 
   constructor(
     router: RouterAppType,
-    updateToDB: UpdateToDBType,
+    updateToDB: UpdateUserToDBType,
   ) {
     super(router);
     this.updateToDB = updateToDB;
@@ -43,10 +43,18 @@ export class ProfilController extends DefaultController {
     this.router.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
     
       const data = await ctx.request.body().value as oak.FormDataReader;
-      const { fields, files } = await data.read();
+      const { fields, files } = await data.read({ maxSize: 10_000_000 });
+      
       //TODO WIP handle files field and required field (e.g: "email")
       const updatedData = await this.removeEmptyFields(fields);
       const isUserUpdate = await this.updateToDB(fields.email, updatedData, "users");
+
+      if (fields.firstname) {
+        ctx.state.session.set("firstname", fields.firstname);
+      }
+      
+      ctx.state.session.set("email", fields.email);
+      ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
 
       isUserUpdate
       ? this.response(ctx, { message: "Votre profil a bien été mis à jour" }, 200)

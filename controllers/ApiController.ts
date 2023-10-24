@@ -1,9 +1,9 @@
 import { Helper, Http } from "@utils";
 import type {
-  GetCollectionType,
+  GetCollectionUserType,
   RouterAppType,
   RouterContextAppType,
-  SelectFromDBType,
+  SelectUserFromDBType,
   UserDataType,
 } from "./mod.ts";
 import type { UserSchemaWithIDType } from "@mongo";
@@ -20,8 +20,8 @@ export class ApiController {
 
   constructor(
     router: RouterAppType,
-    collection: GetCollectionType,
-    selectFromDB: SelectFromDBType
+    collection: GetCollectionUserType,
+    selectFromDB: SelectUserFromDBType
   ) {
     this.router = router;
     this.collection = collection;
@@ -37,7 +37,15 @@ export class ApiController {
 
       try {
         const cursor = await this.collection("users");
-        await cursor.map((document, i) => users[i] = document);
+        await cursor.map((document, key) => users[key + 1] = document);
+
+        // Remove "_id" and "hash" properties from `users` object.
+        for (const key in users) {
+          for (const prop in users[key]) {
+            if (prop === "_id") delete users[key][prop];
+            if (prop === "hash") delete users[key][prop];
+          }
+        }
 
         this.setReponse(ctx, JSON.stringify(users), 200);
 
