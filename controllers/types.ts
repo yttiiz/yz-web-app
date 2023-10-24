@@ -1,6 +1,5 @@
-import { ObjectId, oak } from "@deps";
+import { Document, ObjectId, oak } from "@deps";
 import type {
-  FindCursorUserType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -23,6 +22,7 @@ export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
 
 // DB Generics
+export type GetCollectionType = (collection: string) => Promise<Document>;
 export type InsertIntoDBType<T> = (
   data: T,
   collection: string,
@@ -46,7 +46,6 @@ export type UserDataType = Record<
   UserSchemaWithOptionalFieldsType &
   { _id?: ObjectId }
 >;
-export type GetCollectionUserType = (collection: string) => Promise<FindCursorUserType>;
 export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
 export type SelectUserFromDBType = SelectFromDBType<
    UserSchemaWithIDType | UserNotFoundMessageType

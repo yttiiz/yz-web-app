@@ -1,5 +1,10 @@
 import { oak } from "@deps";
-import { Mongo } from "@mongo";
+import {
+  Mongo,
+  UserSchemaType,
+  UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType,
+} from "@mongo";
 import type { AppState } from "@utils";
 import {
   ApiController,
@@ -11,7 +16,18 @@ import {
 export const router = new oak.Router<AppState>();
 
 // Creating all 'Routes' controllers.
-new AuthController(router, Mongo.insertIntoDB, Mongo.selectFromDB);
-new ProfilController(router, Mongo.updateToDB);
 new HomeController(router);
-new ApiController(router, Mongo.connectionTo, Mongo.selectFromDB);
+new AuthController(
+  router,
+  Mongo.insertIntoDB<UserSchemaType>,
+  Mongo.selectFromDB<UserSchemaWithIDType>,
+);
+new ProfilController(
+  router,
+  Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
+);
+new ApiController(
+  router,
+  Mongo.connectionTo,
+  Mongo.selectFromDB<UserSchemaWithIDType>,
+);

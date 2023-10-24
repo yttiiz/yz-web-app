@@ -1,9 +1,13 @@
-import { MongoClient, MongoStore } from "@deps";
+import {
+  MongoClient,
+  MongoStore,
+  ObjectId
+} from "@deps";
 import type {
-  UserSchemaType,
-  UserSchemaWithIDType,
-  UserSchemaWithOptionalFieldsType
-} from "./mod.ts";
+  Document,
+  Filter,
+  UpdateFilter
+} from "@deps";
 
 /**
  * The app MongoDB Manager.
@@ -17,37 +21,40 @@ export class Mongo {
     return users.find();
   }
 
-  public static async updateToDB(
+  public static async updateToDB<T extends Document>(
     email: string,
-    data: UserSchemaWithOptionalFieldsType,
+    data: T,
     collection: string,
   ) {
-    const users = await Mongo.clientConnectTo(collection);
+    const users = await Mongo.clientConnectTo<T>(collection);
     const {
       matchedCount,
       modifiedCount
-    } = await users.updateOne({ email }, { $set: { ...data } });
+    } = await users.updateOne(
+      { email } as unknown as Filter<T>,
+      { $set: { ...data } } as unknown as UpdateFilter<T>,
+    );
 
     return matchedCount + modifiedCount === 2;
   }
 
-  public static async insertIntoDB(
-    data: UserSchemaType,
+  public static async insertIntoDB<T extends Document>(
+    data: T,
     collection: string,
   ) {
-    const users = await Mongo.clientConnectTo(collection);
-    const id = await users.insertOne(data);
+    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const id: ObjectId = await selectedCollection.insertOne(data);
     return id.toHexString();
   }
 
-  public static async selectFromDB(
+  public static async selectFromDB<T extends Document>(
     email: string,
     collection: string,
   ) {
-    const users = await Mongo.clientConnectTo(collection);
-    const user = await users.findOne({ email });
+    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const selectedDocument = await selectedCollection.findOne({ email } as unknown as Filter<T>);
 
-    if (user) return user;
+    if (selectedDocument) return selectedDocument;
 
     return { message: "aucun utilisateur n'est lié à cet email : " + email };
   }
@@ -59,10 +66,10 @@ export class Mongo {
     return new MongoStore(db, "session");
   }
 
-  private static async clientConnectTo(collection: string) {
+  private static async clientConnectTo<T extends Document>(collection: string) {
     const db = await Mongo.client.connect(
       Deno.env.get("DATABASE_URL") as string,
     );
-    return db.collection<UserSchemaWithIDType>(collection);
+    return db.collection<T>(collection);
   }
 }

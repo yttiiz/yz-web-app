@@ -1,12 +1,12 @@
 import { Helper, Http } from "@utils";
 import type {
-  GetCollectionUserType,
+  GetCollectionType,
   RouterAppType,
   RouterContextAppType,
   SelectUserFromDBType,
   UserDataType,
 } from "./mod.ts";
-import type { UserSchemaWithIDType } from "@mongo";
+import type { FindCursorUserType, UserSchemaWithIDType } from "@mongo";
 
 export class ApiController {
   private router;
@@ -20,7 +20,7 @@ export class ApiController {
 
   constructor(
     router: RouterAppType,
-    collection: GetCollectionUserType,
+    collection: GetCollectionType,
     selectFromDB: SelectUserFromDBType
   ) {
     this.router = router;
@@ -36,7 +36,7 @@ export class ApiController {
       const users: UserDataType = {};
 
       try {
-        const cursor = await this.collection("users");
+        const cursor = await this.collection("users") as FindCursorUserType;
         await cursor.map((document, key) => users[key + 1] = document);
 
         // Remove "_id" and "hash" properties from `users` object.

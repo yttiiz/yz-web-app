@@ -110,7 +110,9 @@ export class DefaultController {
     >
       <div>
         <div class="user-photo">
-          <figure></figure>
+          <figure>
+            <img src="/img/users/default.png" alt="default user image" />
+          </figure>
         </div>
         <div class="user-infos">
           ${this.setInputsForm(data.content)}

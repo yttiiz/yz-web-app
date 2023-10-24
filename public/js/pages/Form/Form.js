@@ -57,15 +57,14 @@ export class FormPage extends PageBuilder {
     id,
     data,
   ) => {
-    const userPhotoFigure = document.querySelector(".user-photo figure");
+    const userImg = document.querySelector(".user-photo figure img");
     const userInfosInputs = document.querySelectorAll(".user-infos input");
     
     // Set user photo
-    const [img] = this.createHTMLElements("img");
-    
-    img.src = data.photo;
-    img.alt = `photo de ${data.firstname} ${data.lastname}`;
-    this.insertChildren(userPhotoFigure, img);
+    if (!data.photo.includes("default.png")) {
+      userImg.src = data.photo;
+      userImg.alt = `photo de ${data.firstname} ${data.lastname}`;
+    }
 
     // Set inputs
     for (const input of userInfosInputs) {
