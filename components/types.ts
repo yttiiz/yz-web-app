@@ -56,4 +56,5 @@ export type FormType = {
   action: string;
   method: string;
   content: InputType[];
+  changePhoto?: string; 
 };

@@ -2,6 +2,7 @@
   "title": "Modifier vos informations",
   "action": "/profil",
   "method": "PUT",
+  "changePhoto": "changer votre photo",
   "content": [
     {
       "type": "text",

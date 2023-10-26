@@ -3,6 +3,7 @@ import * as layers from "@components";
 import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 import type {
+  FilesDataType,
   PathType,
   PageDataIdType,
   RouterAppType,
@@ -72,6 +73,21 @@ export class DefaultController {
     return html;
   }
 
+  protected async fileHandler(
+    files: FilesDataType,
+    firstname: string,
+    lastname: string,
+  ) {
+    const [file] = files;
+    const ext = file.contentType.split("/").at(1) as string;
+    const photo =
+      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+
+    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
+
+    return photo;
+  }
+
   private file(kind: layers.ComponentNameType): string {
     if (kind === "Body") {
       return layers.Body.content;
@@ -113,6 +129,7 @@ export class DefaultController {
           <figure>
             <img src="/img/users/default.png" alt="default user image" />
           </figure>
+          <button type="button">${data.changePhoto ?? "change"}</button>
         </div>
         <div class="user-infos">
           ${this.setInputsForm(data.content)}

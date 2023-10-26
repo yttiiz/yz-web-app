@@ -2,7 +2,6 @@ import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  FilesDataType,
   InsertUserIntoDBType,
   PathType,
   RouterAppType,
@@ -180,19 +179,4 @@ export class AuthController extends DefaultController {
       200,
     );
   };
-
-  private async fileHandler(
-    files: FilesDataType,
-    firstname: string,
-    lastname: string,
-  ) {
-    const [file] = files;
-    const ext = file.contentType.split("/").at(1) as string;
-    const photo =
-      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
-
-    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
-
-    return photo;
-  }
 }

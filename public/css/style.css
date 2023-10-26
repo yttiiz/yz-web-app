@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Merriweather:wght@400;700&family=Roboto:wght@300;500;700&display=swap');
 
 :root {
+    /*=====| Colors |===== */
     --primary-color: #335C67;
     --secondary-color: #E09F3E;
     --vanilla: #FFF3B0;
@@ -9,9 +10,16 @@
     --dark: #1e1d1d;
     --light: #ebebeb;
     --box-shadow: 0 0 15px rgb(0 0 0 / .1);
-    --width-container: clamp(30rem, 90%, 96rem);
-    --smooth: .3s ease;
+
+    /*=====| Sizes |===== */
+    --base-size: 1.6rem;
+    --btn-border-radius: .5rem;
+    --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
     --burger-height: 2.4rem;
+    --width-container: clamp(30rem, 90%, 96rem);
+
+    /*=====| Transitions |===== */
+    --smooth: .3s ease;
 }
 
 /*=================================================| BASIC RESET |=================================================*/
@@ -21,7 +29,7 @@ html {
 }
 
 body {
-    font-size: 1.6rem;
+    font-size: var(--base-size);
     min-height: 100vh;
     display: grid;
     grid-template-rows: 7rem auto max-content;
@@ -166,10 +174,10 @@ header {
     }
 
     & a.register {
-        padding: .5rem .8rem;
+        padding: var(--btn-padding);
         background: var(--secondary-color);
         color: var(--primary-color);
-        border-radius: .5rem;
+        border-radius: var(--btn-border-radius);
     }
 }
 
@@ -258,7 +266,7 @@ footer > div {
 }
 
 h1 {
-    font-size: 3.5rem;
+    font-size: calc(var(--base-size) * 2.1875);
     margin-bottom: 3rem;
     padding-bottom: .75rem;
     border-bottom: .1rem solid var(--primary-color);
@@ -321,13 +329,13 @@ h1 {
 #data-users > ul,
 #data-users > ul > li,
 #data-users-form > form {
-    gap: 3rem;
+    gap: calc(var(--base-size) * 1.8);
 }
 
 #data-users-form,
 #data-profil-form {
     & > form {
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--base-size);
     }
 
     & > form label {
@@ -340,7 +348,7 @@ h1 {
     & > form input {
         padding: 1rem;
         font-size: 1.6rem;
-        border-radius: .5rem;
+        border-radius: var(--btn-border-radius);
     }
 
     & > form input:not(input[type="submit"]) {
@@ -348,6 +356,7 @@ h1 {
     }
 
     & > form > input[type="submit"] {
+        padding: var(--btn-padding);
         height: max-content;
         align-self: end;
         background: var(--primary-color);
@@ -383,15 +392,25 @@ h1 {
     & > form {
         display: flex;
         flex-direction: column;
-        gap: 3rem;
+        gap: calc(var(--base-size) * 2);
+
+        & > div,
+        & .user-photo {
+            display: inherit;
+        }
 
         & > div {
-            display: inherit;
             gap: inherit;
+        }
+        
+        & .user-photo {
+            flex-direction: column;
+            align-items: center;
+            gap: var(--base-size);
         }
 
         & .user-photo figure {
-            width: 20rem;
+            width: calc(var(--base-size) * 12.5);
         }
 
         & .user-photo img {
@@ -399,6 +418,20 @@ h1 {
             border-radius: 50%;
             width: 100%;
             aspect-ratio: 1 / 1;
+        }
+
+        & .user-photo input {
+            display: none;
+        }
+
+        & .user-photo button {
+            width: max-content;
+            height: max-content;
+            padding: var(--btn-padding);
+            font-size: var(--base-size);
+            color: var(--light);
+            background: var(--secondary-color);
+            border-radius: var(--btn-border-radius);
         }
 
         & .user-infos {

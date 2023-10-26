@@ -42,11 +42,21 @@ export class ProfilController extends DefaultController {
   private putProfil() {
     this.router.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
     
+      let photo = "";
       const data = await ctx.request.body().value as oak.FormDataReader;
       const { fields, files } = await data.read({ maxSize: 10_000_000 });
       
-      //TODO WIP handle files field and required field (e.g: "email")
+      files
+      ? photo = await this.fileHandler(
+        files,
+        fields.firstname,
+        fields.lastname
+      )
+      : null; 
+
       const updatedData = await this.removeEmptyFields(fields);
+      photo ? updatedData.photo = photo : null;
+
       const isUserUpdate = await this.updateToDB(fields.email, updatedData, "users");
 
       if (fields.firstname) {
