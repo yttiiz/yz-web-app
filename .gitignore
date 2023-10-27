@@ -1,5 +1,5 @@
 deno.lock
 .env
 .vscode
-log/*
+server/log/*
 public/img/*

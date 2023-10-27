@@ -5,7 +5,7 @@ import { ComponentType, HeaderType, Logo } from "./mod.ts";
 const {
   logo: { link, text },
   items,
-}: HeaderType = await Helper.convertJsonToObject("/data/basics/header.json");
+}: HeaderType = await Helper.convertJsonToObject("/server/data/basics/header.json");
 
 export const Header: ComponentType = {
   name: "Header",

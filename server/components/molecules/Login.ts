@@ -3,7 +3,7 @@ import type { ComponentType, HeaderType } from "../mod.ts";
 
 const {
   login,
-}: HeaderType = await Helper.convertJsonToObject("/data/basics/header.json");
+}: HeaderType = await Helper.convertJsonToObject("/server/data/basics/header.json");
 
 export const Login: ComponentType = {
   name: "Login",

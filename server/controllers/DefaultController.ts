@@ -183,13 +183,13 @@ export class DefaultController {
 
     // Profil form render check
     if (id === "data-profil-form") {
-      const data = await this.helper.convertJsonToObject(`/data/profil/profil.json`);
+      const data = await this.helper.convertJsonToObject(`/server/data/profil/profil.json`);
       return main.replace("{{ content-insertion }}", this.createProfilForm(data));
     }
 
     // Auth form render check
     if (path) {
-      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
+      const data = await this.helper.convertJsonToObject(`/server/data/authentication${path}.json`);
       return main.replace("{{ content-insertion }}", this.createAuthForm(data));
     }
     

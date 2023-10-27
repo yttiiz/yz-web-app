@@ -1,4 +1,4 @@
-import type { ContentHeadersType } from "@utils";
+import type { ContentHeadersType } from "./mod.ts";
 import type { RouterContextAppType } from "@controllers";
 
 export class Http<T extends string> {

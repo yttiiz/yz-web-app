@@ -4,7 +4,7 @@ import type { ComponentType, FooterType } from "./mod.ts";
 const {
   basicItems,
   relatedItems,
-}: FooterType = await Helper.convertJsonToObject("/data/basics/footer.json");
+}: FooterType = await Helper.convertJsonToObject("/server/data/basics/footer.json");
 
 export const Footer: ComponentType = {
   name: "Footer",
