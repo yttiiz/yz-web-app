@@ -1,13 +1,17 @@
 import { Collection, FindCursor, ObjectId } from "@deps";
 
-export type UserSchemaType = {
-  birth: Date;
+// Users types
+export type UserType = {
   firstname: string;
-  email: string;
   lastname: string;
-  role: string;
+  email: string;
   job: string;
   photo: string;
+  role: string;
+  birth: Date;
+};
+
+export type UserSchemaType = UserType & {
   hash: string;
 };
 
@@ -15,5 +19,7 @@ export type UserSchemaWithIDType = UserSchemaType & {
   _id: ObjectId;
 };
 
-export type CollectionType = Collection<UserSchemaWithIDType>;
-export type FindCursorType = FindCursor<UserSchemaWithIDType>;
+export type UserSchemaWithOptionalFieldsType = Partial<UserSchemaType>;
+
+export type CollectionUserType = Collection<UserSchemaWithIDType>;
+export type FindCursorUserType = FindCursor<UserSchemaWithIDType>;

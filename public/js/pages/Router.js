@@ -3,24 +3,20 @@ import { FormPage, HomePage } from "./mod.js";
 
 export class Router {
   #home;
-  #login;
-  #register;
-  #update;
+  #form;
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
     this.#home = new HomePage();
-    this.#login = new FormPage();
-    this.#register = new FormPage();
-    this.#update = new FormPage();
+    this.#form = new FormPage();
     this.#router();
   }
 
   async #router() {
     switch (this.route) {
       case this.host: {
-        const res = await this.#fetchData("api");
+        const res = await this.#fetchData("users");
 
         if (res.ok && res.status === 200) {
           this.#home.renderUsers(await res.json());
@@ -32,18 +28,25 @@ export class Router {
       }
 
       case this.host + "register": {
-        this.#register.renderForm();
+        this.#form.renderForm();
         break;
       }
 
       case this.host + "login": {
-        this.#login.renderForm();
+        this.#form.renderForm();
         break;
       }
 
-      case this.host + "update": {
-        this.#login.renderForm();
-        break;
+      case this.host + "profil": {
+        const res = await this.#fetchData("user-profil");
+
+        if (res.ok && res.status === 200) {
+          this.#form.renderProfilForm(
+            "profil",
+            await res.json(),
+          );
+          break;
+        }
       }
     }
   }

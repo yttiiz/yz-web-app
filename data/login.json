@@ -1,6 +1,7 @@
 {
   "title": "Renseigner vos informations pour vous connecter",
   "action": "/login",
+  "method": "POST",
   "content": [
     {
       "type": "email",
@@ -9,7 +10,8 @@
       "name": "email",
       "required": true,
       "minLength": 2,
-      "maxLength": 40
+      "maxLength": 40,
+      "autocomplete": "email"
     },
     {
       "type": "password",
@@ -18,7 +20,8 @@
       "name": "password",
       "required": true,
       "minLength": 2,
-      "maxLength": 40
+      "maxLength": 40,
+      "autocomplete": "current-password"
     },
     {
       "type": "submit",

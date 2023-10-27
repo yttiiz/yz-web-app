@@ -3,22 +3,27 @@ import * as layers from "@components";
 import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 import type {
-  AuthPathType,
+  FilesDataType,
+  PathType,
   PageDataIdType,
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
 
 export class DefaultController {
-  router;
-  helper;
+  public router;
+  public helper;
+  protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
+  protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
 
-  constructor(router: RouterAppType) {
+  constructor(
+    router: RouterAppType,
+    ) {
     this.router = router;
     this.helper = Helper;
   }
 
-  protected response<T extends AuthPathType>(
+  protected response<T extends PathType>(
     ctx: RouterContextAppType<T>,
     data: string | UserSchemaWithIDType | Record<string, string>,
     status: number,
@@ -68,6 +73,21 @@ export class DefaultController {
     return html;
   }
 
+  protected async fileHandler(
+    files: FilesDataType,
+    firstname: string,
+    lastname: string,
+  ) {
+    const [file] = files;
+    const ext = file.contentType.split("/").at(1) as string;
+    const photo =
+      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+
+    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
+
+    return photo;
+  }
+
   private file(kind: layers.ComponentNameType): string {
     if (kind === "Body") {
       return layers.Body.content;
@@ -86,55 +106,38 @@ export class DefaultController {
     return components;
   }
 
-  private createForm(data: layers.FormType): string {
+  private createAuthForm(data: layers.FormType): string {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
-      method="POST"
+      method="${data.method}"
       type="multipart/form-data"
     >
-      ${
-      data.content
-        .map(({
-          type,
-          label,
-          name,
-          placeholder,
-          required,
-          minLength,
-          maxLength,
-          value,
-        }) =>
-          type !== "submit"
-            ? (
-              `<label>
-                <span>${label}</span>
-                <input type="${type}"
-                  ${name ? ` name="${name}"` : ""}
-                  ${placeholder ? ` placeholder="${placeholder}"` : ""}
-                  ${required ? ` required` : ""}
-                  ${minLength ? ` minLength="${minLength}"` : ""}
-                  ${maxLength ? ` maxLength="${maxLength}"` : ""}
-                  ${value ? ` value="${value}"` : ""}
-                >
-              ${type === "password"
-                  ? (
-                    `<div id="eye-password">
-                        <span>${layers.EyeShutSvg.content}</span>
-                        <span class="none">${layers.EyeOpenSvg.content}</span>
-                      </div>`
-                    )
-                  : ""}
-              </label>`
-            )
-            : (
-              `<input type="${type}"
-                ${value ? ` value="${value}"` : ""}
-              >`
-            ))
-        .join("")
-    }
+      ${this.setInputsForm(data.content, false)}
     </form>`;
+  }
+
+  private createProfilForm(data: layers.FormType): string {
+    return `<h1>${data.title}</h1>
+    <form
+      action="${data.action}"
+      method="${data.method}"
+      type="multipart/form-data"
+    >
+      <div>
+        <div class="user-photo">
+          <figure>
+            <img src="/img/users/default.png" alt="default user image" />
+          </figure>
+          <button type="button">${data.changePhoto ?? "change"}</button>
+        </div>
+        <div class="user-infos">
+          ${this.setInputsForm(data.content)}
+        </div>
+      </div>
+      <input type="${data.content.at(-1)!.type}" value="${data.content.at(-1)!.value}"/>
+    </form>
+    `;
   }
 
   private setTitle(
@@ -142,7 +145,7 @@ export class DefaultController {
     title: string | undefined,
   ): string {
     return title
-      ? html = html.replace("</title>", " " + title + "</title>")
+      ? html.replace("</title>", ` - ${title}</title>`)
       : html;
   }
 
@@ -178,14 +181,65 @@ export class DefaultController {
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    // Form render check
-    if (path) {
-      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
-      main = main.replace("{{ content-insertion }}", this.createForm(data));
-    } else {
-      main = main.replace("{{ content-insertion }}", "");
+    // Profil form render check
+    if (id === "data-profil-form") {
+      const data = await this.helper.convertJsonToObject(`/data/profil/profil.json`);
+      return main.replace("{{ content-insertion }}", this.createProfilForm(data));
     }
 
-    return main;
+    // Auth form render check
+    if (path) {
+      const data = await this.helper.convertJsonToObject(`/data${path}.json`);
+      return main.replace("{{ content-insertion }}", this.createAuthForm(data));
+    }
+    
+    return main.replace("{{ content-insertion }}", "");
+  }
+
+  private setInputsForm(
+    content: layers.InputType[],
+    isProfilInputs = true
+  ) {
+    return content
+    .map(({ type,
+      label,
+      name,
+      placeholder,
+      required,
+      minLength,
+      maxLength,
+      value,
+      autocomplete,
+    }) => type !== "submit"
+    ? (
+      `<label>
+        <span>${label}</span>
+        <input type="${type}"
+          ${name ? ` name="${name}"` : ""}
+          ${placeholder ? ` placeholder="${placeholder}"` : ""}
+          ${required ? ` required` : ""}
+          ${minLength ? ` minLength="${minLength}"` : ""}
+          ${maxLength ? ` maxLength="${maxLength}"` : ""}
+          ${value ? ` value="${value}"` : ""}
+          ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
+        >
+        ${type === "password"
+          ? (
+            `<div id="eye-password">
+                <span>${layers.EyeShutSvg.content}</span>
+                <span class="none">${layers.EyeOpenSvg.content}</span>
+              </div>`
+            )
+          : ""}
+      </label>`
+      )
+    : isProfilInputs
+    ? ""
+    : (
+      `<input type="${type}"
+        ${value ? ` value="${value}"` : ""}
+      >`
+    ))
+    .join("")
   }
 }

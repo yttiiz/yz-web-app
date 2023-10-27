@@ -7,6 +7,14 @@ export class PageBuilder {
     }
     return temp;
   }
+  
+  createSameHTMLElements(type, howMuch) {
+    const temp = [];
+    for (let i = 0; i < howMuch; i++) {
+      temp.push(document.createElement(type));
+    }
+    return temp;
+  }
 
   setSameHTMLElementAttributes(attr, value, ...args) {
     if (args.length === 1) {

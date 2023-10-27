@@ -1,13 +1,17 @@
-import { oak } from "@deps";
-import { FindCursorType, UserSchemaType, UserSchemaWithIDType } from "@mongo";
+import { Document, ObjectId, oak } from "@deps";
+import type {
+  UserSchemaType,
+  UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType,
+} from "@mongo";
 import { AppState } from "@utils";
 
-export type AuthPathType =
+export type PathType =
   | "/"
   | "/register"
   | "/login"
   | "/logout"
-  | "/update";
+  | "/profil";
 
 // Router
 export type RouterAppType = oak.Router<AppState>;
@@ -17,15 +21,33 @@ export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
 
-// DB
-export type UserNotFoundMessageType = { message: string };
-export type UserDataType = Record<number, UserSchemaWithIDType>;
-export type GetCollectionType = (collection: string) => Promise<FindCursorType>;
-export type InsertIntoDBType = (
-  data: UserSchemaType,
+// DB Generics
+export type GetCollectionType = (collection: string) => Promise<Document>;
+export type InsertIntoDBType<T> = (
+  data: T,
   collection: string,
 ) => Promise<string>;
-export type SelectFromDBType = (
+
+export type SelectFromDBType<T> = (
   email: string,
   collection: string,
-) => Promise<UserSchemaWithIDType | UserNotFoundMessageType>;
+) => Promise<T>;
+
+export type UpdateToDBType<T> = (
+  email: string,
+  data: T,
+  collection: string,
+) => Promise<boolean>;
+
+// Users in DB
+export type UserNotFoundMessageType = { message: string };
+export type UserDataType = Record<
+  number,
+  UserSchemaWithOptionalFieldsType &
+  { _id?: ObjectId }
+>;
+export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
+export type SelectUserFromDBType = SelectFromDBType<
+   UserSchemaWithIDType | UserNotFoundMessageType
+>;
+export type UpdateUserToDBType = UpdateToDBType<UserSchemaWithOptionalFieldsType>;

@@ -2,23 +2,22 @@ import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  AuthPathType,
-  FilesDataType,
-  InsertIntoDBType,
+  InsertUserIntoDBType,
+  PathType,
   RouterAppType,
   RouterContextAppType,
-  SelectFromDBType,
+  SelectUserFromDBType,
 } from "./mod.ts";
 
 export class AuthController extends DefaultController {
-  public insertIntoDB;
-  public selectFromDB;
   private defaultImg;
+  private insertIntoDB;
+  private selectFromDB;
 
   constructor(
     router: RouterAppType,
-    insertIntoDB: InsertIntoDBType,
-    selectFromDB: SelectFromDBType,
+    insertIntoDB: InsertUserIntoDBType,
+    selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
     this.insertIntoDB = insertIntoDB;
@@ -32,7 +31,7 @@ export class AuthController extends DefaultController {
   }
 
   private getLoginRoute() {
-    this.getRoute("/login", "- se connecter");
+    this.getRoute("/login", "se connecter");
   }
 
   private postLoginRoute() {
@@ -44,14 +43,14 @@ export class AuthController extends DefaultController {
   }
 
   private getRegisterRoute() {
-    this.getRoute("/register", "- s'enregister");
+    this.getRoute("/register", "s'enregister");
   }
 
   private postRegisterRoute() {
     this.postRoute("/register", this.registerRouteHandler);
   }
 
-  private getRoute(path: AuthPathType, title: string) {
+  private getRoute(path: PathType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile(
         ctx,
@@ -64,13 +63,13 @@ export class AuthController extends DefaultController {
   }
 
   private postRoute(
-    path: AuthPathType,
+    path: PathType,
     handler: (ctx: RouterContextAppType<typeof path>) => Promise<void>,
   ) {
     this.router.post(path, handler);
   }
 
-  private loginRouteHandler = async <T extends AuthPathType>(
+  private loginRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
@@ -96,7 +95,7 @@ export class AuthController extends DefaultController {
           ctx.state.session.set("failed-login-attempts", null);
           ctx.state.session.flash(
             "message",
-            `connexion réussie pour : ${email}`,
+            this.sessionFlashMsg(email),
           );
 
           ctx.state.session.has("error")
@@ -118,18 +117,11 @@ export class AuthController extends DefaultController {
       }
     } catch (error) {
       this.helper.writeLog(error);
-      this.response(
-        ctx,
-        {
-          errorMsg:
-            "Impossible de se connecter à la base de données. Code erreur : ",
-        },
-        500,
-      );
+      this.response(ctx, { errorMsg: this.errorMsg }, 500);
     }
   };
 
-  private logoutRouteHandler = async <T extends AuthPathType>(
+  private logoutRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     await ctx.state.session.deleteSession();
@@ -139,7 +131,7 @@ export class AuthController extends DefaultController {
     this.response(ctx, msg, 302, "/");
   };
 
-  private registerRouteHandler = async <T extends AuthPathType>(
+  private registerRouteHandler = async <T extends PathType>(
     ctx: RouterContextAppType<T>,
   ) => {
     let photo: string;
@@ -187,19 +179,4 @@ export class AuthController extends DefaultController {
       200,
     );
   };
-
-  private async fileHandler(
-    files: FilesDataType,
-    firstname: string,
-    lastname: string,
-  ) {
-    const [file] = files;
-    const ext = file.contentType.split("/").at(1) as string;
-    const photo =
-      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
-
-    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
-
-    return photo;
-  }
 }

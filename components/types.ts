@@ -22,7 +22,7 @@ type ItemType = {
   className?: string;
 };
 
-type InputType = {
+export type InputType = {
   type: string;
   label?: string;
   placeholder?: string;
@@ -32,6 +32,7 @@ type InputType = {
   maxLength?: string;
   minLength?: string;
   accept?: string;
+  autocomplete?: string;
 };
 
 export type PageType = {
@@ -53,5 +54,7 @@ export type FooterType = {
 export type FormType = {
   title: string;
   action: string;
+  method: string;
   content: InputType[];
+  changePhoto?: string; 
 };
