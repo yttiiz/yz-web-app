@@ -25,7 +25,11 @@ app.use(router.allowedMethods());
 app.use(staticsFilesMiddleware);
 
 app.listen({ port: +PORT, hostname });
-app.addEventListener("listen", ({ hostname, port, secure }) => {
+app.addEventListener("listen", ({
+  hostname,
+  port,
+  secure
+}) => {
   console.log(`
     ++++++++++++++++++++++++++++++++++++++++
     Server listening on ${secure ? "https" : "http"}://${hostname}:${port}

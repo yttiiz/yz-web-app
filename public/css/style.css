@@ -12,7 +12,7 @@
     --box-shadow: 0 0 15px rgb(0 0 0 / .1);
 
     /*=====| Sizes |===== */
-    --base-size: 1.6rem;
+    --base-size: clamp(1.4rem, 2vw, 1.6rem);
     --btn-border-radius: .5rem;
     --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
     --burger-height: 2.4rem;
@@ -53,7 +53,7 @@ button, input[type="submit"] {
 
 input[type=password]:not(:placeholder-shown) {
     font: small-caption;
-    font-size: 2rem;
+    font-size: calc(var(--base-size) * 1.25);
     letter-spacing: .35rem;
     color: var(--dark);
 }
@@ -68,6 +68,10 @@ a {
 
 b {
     font-weight: 600;
+}
+
+p {
+    line-height: calc(var(--base-size) * 2.125);
 }
 
 /*=================================================| GUIDELINE |=================================================*/
@@ -110,7 +114,7 @@ header {
         }
         
         > span {
-            font-size: 2rem;
+            font-size: calc(var(--base-size) * 1.25);
             font-weight: 600;
             color: var(--light);
         }
@@ -267,8 +271,11 @@ footer > div {
 
 h1 {
     font-size: calc(var(--base-size) * 2.1875);
+    font-weight: 500;
+    line-height: calc(var(--base-size) * 2.75);
     margin-bottom: 3rem;
     padding-bottom: .75rem;
+    color: var(--primary-color);
     border-bottom: .1rem solid var(--primary-color);
 }
 
@@ -346,8 +353,9 @@ h1 {
     }
 
     & > form input {
-        padding: 1rem;
-        font-size: 1.6rem;
+        padding: calc(var(--base-size) * .625);
+        height: calc(var(--base-size) * 3);
+        font-size: var(--base-size);
         border-radius: var(--btn-border-radius);
     }
 
@@ -371,20 +379,17 @@ h1 {
 
 #data-users-form,
 #data-profil-form {
-    & > div[data-msg-infos="success"],
-    & > div[data-msg-infos="error"] {
-        padding: 1rem;
-        line-height: 1;
+    & > p[data-msg-infos="success"],
+    & > p[data-msg-infos="error"] {
+        font-weight: 400;
     }
 
-    & > div[data-msg-infos="success"] {
-        border: .1rem solid rgb(0, 128, 0);
-        background: rgb(0 128 0 / .2);
+    & > p[data-msg-infos="success"] {
+        color: rgb(0, 128, 0);
     }
 
-    & > div[data-msg-infos="error"] {
-        border: .1rem solid rgb(128, 0, 0);
-        background: rgb(128 0 0 / .2);
+    & > p[data-msg-infos="error"] {
+        color: rgb(128, 0, 0);
     }
 }
 
@@ -447,7 +452,7 @@ h1 {
 #eye-password {
         display: flex;
         position: absolute;
-        bottom: 15%;
+        bottom: clamp(15%, 1.5vw, 20%);
         right: 3%;
 
     & > span {
@@ -475,12 +480,12 @@ footer {
         display: flex;
         gap: 2rem;
     }
-
+    
     & > div li::marker {
         color: var(--primary-color);
-        font-size: 1rem;
+        font-size: calc(var(--base-size) * .625);
     }
-
+    
     & > div li > a {
         color: var(--light);
         text-decoration: none;
@@ -491,8 +496,34 @@ footer {
     }
 }
 
+/*=================================================| BREAKPOINTS |=================================================*/
+
+@media screen and (max-width: 950px) {
+    #data-profil-form > form {
+        & > div {
+            flex-direction: column;
+        }
+
+        & .user-infos,
+        & input[type="submit"] {
+            max-width: 40rem;
+        }
+
+        & .user-infos {
+            margin: auto;
+            grid-template-columns: 1fr;
+        }
+
+        & input[type="submit"] {
+            width: 100%;            
+            align-self: center;
+        }
+    }
+}
+
 @media screen and (max-width: 750px) {
-    #data-users > ul {
+    #data-users > ul,
+    #data-users-form > form {
         grid-template-columns: 1fr;
     }
 }

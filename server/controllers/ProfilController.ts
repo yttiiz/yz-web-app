@@ -67,8 +67,8 @@ export class ProfilController extends DefaultController {
       ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
 
       isUserUpdate
-      ? this.response(ctx, { message: "Votre profil a bien été mis à jour" }, 200)
-      : this.response(ctx, { message: "Vos informations n'ont pas été mis à jour" }, 200);
+      ? this.response(ctx, { message: "Votre profil a bien été mis à jour." }, 200)
+      : this.response(ctx, { message: "Vos informations n'ont pas été mis à jour." }, 200);
     });
   }
 

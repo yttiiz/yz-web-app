@@ -3,7 +3,7 @@ export class FormHelper {
 
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
-    FormHelper.#divToShowInfo({
+    FormHelper.#paragraphToShowInfo({
       msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
       dataSet: "success",
     }, "users");
@@ -11,7 +11,7 @@ export class FormHelper {
 
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
-    FormHelper.#divToShowInfo({
+    FormHelper.#paragraphToShowInfo({
       msg: `Veuillez réessayer de nouveau, ${message}.`,
       dataSet: "error",
     }, "users");
@@ -19,7 +19,7 @@ export class FormHelper {
 
   static showProfilDetails = async (response) => {
     const { message } = await response.json();
-    FormHelper.#divToShowInfo({
+    FormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: "success"
     }, "profil");
@@ -28,7 +28,7 @@ export class FormHelper {
   static showErrorMsg = async (response) => {
     const status = response.status;
     const { errorMsg } = await response.json();
-    FormHelper.#divToShowInfo({
+    FormHelper.#paragraphToShowInfo({
       msg: errorMsg + status,
       dataSet: "error",
     }, "users");
@@ -38,14 +38,14 @@ export class FormHelper {
    * @param {{ msg: string; dataSet: "error" | "success" }} param 
    * @param {string} id
    */
-  static #divToShowInfo = ({ msg, dataSet }, id) => {
+  static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
     let box;
     const container = document.querySelector(FormHelper.id(id));
 
-    if (container.querySelector("div[data-msg-infos]")) {
-      box = container.querySelector("div[data-msg-infos]");
+    if (container.querySelector("p[data-msg-infos]")) {
+      box = container.querySelector("p[data-msg-infos]");
     } else {
-      box = document.createElement("div");
+      box = document.createElement("p");
       container.appendChild(box);
     }
 
