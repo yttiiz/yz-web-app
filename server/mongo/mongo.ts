@@ -22,7 +22,7 @@ export class Mongo {
   }
 
   public static async updateToDB<T extends Document>(
-    email: string,
+    id: ObjectId,
     data: T,
     collection: string,
   ) {
@@ -31,7 +31,7 @@ export class Mongo {
       matchedCount,
       modifiedCount
     } = await users.updateOne(
-      { email } as unknown as Filter<T>,
+      { _id: id },
       { $set: { ...data } } as unknown as UpdateFilter<T>,
     );
 

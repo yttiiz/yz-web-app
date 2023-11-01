@@ -1,4 +1,4 @@
-import { oak } from "@deps";
+import { ObjectId, oak } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   RouterAppType,
@@ -45,6 +45,7 @@ export class ProfilController extends DefaultController {
       let photo = "";
       const data = await ctx.request.body().value as oak.FormDataReader;
       const { fields, files } = await data.read({ maxSize: 10_000_000 });
+      const userId = await ctx.state.session.get("userId") as ObjectId;
       
       files
       ? photo = await this.fileHandler(
@@ -57,18 +58,23 @@ export class ProfilController extends DefaultController {
       const updatedData = await this.removeEmptyFields(fields);
       photo ? updatedData.photo = photo : null;
 
-      const isUserUpdate = await this.updateToDB(fields.email, updatedData, "users");
+      const isUserUpdate = await this.updateToDB(userId, updatedData, "users");
 
       if (fields.firstname) {
-        ctx.state.session.set("firstname", fields.firstname);
+        ctx.state.session.set("userFirstname", fields.firstname);
       }
       
-      ctx.state.session.set("email", fields.email);
+      ctx.state.session.set("userEmail", fields.email);
       ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
 
-      isUserUpdate
-      ? this.response(ctx, { message: "Votre profil a bien été mis à jour." }, 200)
-      : this.response(ctx, { message: "Vos informations n'ont pas été mis à jour." }, 200);
+      
+      this.response(
+        ctx,
+        {
+          message: `Votre profil ${isUserUpdate ? "a bien" : "n'a pas"} été mis à jour.`,
+        },
+        isUserUpdate ? 201 : 200
+      );
     });
   }
 

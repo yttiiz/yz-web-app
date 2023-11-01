@@ -90,8 +90,9 @@ export class AuthController extends DefaultController {
 
         // Handle session and redirection.
         if (isPasswordOk) {
-          ctx.state.session.set("email", email);
-          ctx.state.session.set("firstname", user.firstname);
+          ctx.state.session.set("userEmail", email);
+          ctx.state.session.set("userFirstname", user.firstname);
+          ctx.state.session.set("userId", user._id);
           ctx.state.session.set("failed-login-attempts", null);
           ctx.state.session.flash(
             "message",

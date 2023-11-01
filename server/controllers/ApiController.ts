@@ -68,7 +68,7 @@ export class ApiController {
       async (ctx: RouterContextAppType<"/user-profil">,
     ) => {
         try {
-          const email = await ctx.state.session.get("email");
+          const email = await ctx.state.session.get("userEmail");
           const {
             firstname,
             lastname,

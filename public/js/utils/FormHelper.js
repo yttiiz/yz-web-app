@@ -18,10 +18,11 @@ export class FormHelper {
   };
 
   static showProfilDetails = async (response) => {
+    const status = response.status;
     const { message } = await response.json();
     FormHelper.#paragraphToShowInfo({
       msg: message,
-      dataSet: "success"
+      dataSet: status === 201 ? "success" : "error",
     }, "profil");
   }
 

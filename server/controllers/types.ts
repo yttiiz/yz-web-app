@@ -34,7 +34,7 @@ export type SelectFromDBType<T> = (
 ) => Promise<T>;
 
 export type UpdateToDBType<T> = (
-  email: string,
+  id: ObjectId,
   data: T,
   collection: string,
 ) => Promise<boolean>;

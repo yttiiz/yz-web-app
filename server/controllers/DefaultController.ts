@@ -153,8 +153,8 @@ export class DefaultController {
     header: string,
     ctx: RouterContextAppType<T>,
   ): Promise<string> {
-    if (ctx.state.session.has("firstname")) {
-      const firstname = await ctx.state.session.get("firstname");
+    if (ctx.state.session.has("userFirstname")) {
+      const firstname = await ctx.state.session.get("userFirstname");
 
       header = header.replace(
         "{{ application-session }}",

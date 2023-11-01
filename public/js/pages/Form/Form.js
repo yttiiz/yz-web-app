@@ -14,7 +14,6 @@ export class FormPage extends PageBuilder {
   };
 
   /**
-   * 
    * @param {string} id 
    * @param {{ firstname: string; lastname: string; photo: string }} data 
    */
@@ -80,7 +79,7 @@ export class FormPage extends PageBuilder {
       FormHelper.removeInputsValues(e.target.children);
     }
 
-    if (res.ok && res.status === 200) {
+    if (res.ok && (res.status === 200 || res.status === 201)) {
       if (res.redirected) {
         window.location.href = res.url;
       } else {
