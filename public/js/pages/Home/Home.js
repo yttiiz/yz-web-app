@@ -1,4 +1,5 @@
 import { PageBuilder } from "../Builder.js";
+import { Users } from "../../types/types.js";
 
 export class HomePage extends PageBuilder {
   #root;
@@ -7,11 +8,17 @@ export class HomePage extends PageBuilder {
     this.#root = document.querySelector("#data-users");
   }
 
+  /**
+   * @param {Users} users 
+   */
   renderUsers = (users) => {
     const [title, list] = this.createHTMLElements("h1", "ul");
 
     for (const key in users) {
+      /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [li, div, figure] = this.createHTMLElements("li", "div", "figure");
+      
+      /** @type {[HTMLImageElement, HTMLSpanElement, HTMLSpanElement, HTMLSpanElement]} */
       const [img, spec, job, age] = this.createHTMLElements(
         "img",
         "span",
@@ -35,6 +42,10 @@ export class HomePage extends PageBuilder {
     this.insertChildren(this.#root, title, list);
   };
 
+  /**
+   * @param {number} status 
+   * @param {{ errorMsg: string }}  
+   */
   renderError = (status, { errorMsg }) => {
     const [title, text] = this.createHTMLElements("h1", "p");
     const displayError = (msg = "Aucune api trouvée à cette adresse.") => {

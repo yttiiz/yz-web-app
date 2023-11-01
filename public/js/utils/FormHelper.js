@@ -1,6 +1,9 @@
 export class FormHelper {
   static id = (id) => `#data-${id}-form`;
 
+  /**
+   * @param {Response} response 
+   */
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
     FormHelper.#paragraphToShowInfo({
@@ -9,6 +12,9 @@ export class FormHelper {
     }, "users");
   };
 
+  /**
+   * @param {Response} response 
+   */
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
     FormHelper.#paragraphToShowInfo({
@@ -17,6 +23,9 @@ export class FormHelper {
     }, "users");
   };
 
+  /**
+   * @param {Response} response 
+   */
   static showProfilDetails = async (response) => {
     const status = response.status;
     const { message } = await response.json();
@@ -26,13 +35,18 @@ export class FormHelper {
     }, "profil");
   }
 
-  static showErrorMsg = async (response) => {
+  /**
+   * @param {Response} response 
+   * @param {"/profil" | "/login" | "/register"} pathname 
+   */
+  static showErrorMsg = async (response, pathname) => {
     const status = response.status;
+    const id = pathname === "/profil" ? "profil" : "users";
     const { errorMsg } = await response.json();
     FormHelper.#paragraphToShowInfo({
       msg: errorMsg + status,
       dataSet: "error",
-    }, "users");
+    }, id);
   };
   
   /** 
@@ -40,7 +54,10 @@ export class FormHelper {
    * @param {string} id
    */
   static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
+    /** @type {HTMLParagraphElement} */
     let box;
+
+    /** @type {HTMLDivElement} */
     const container = document.querySelector(FormHelper.id(id));
 
     if (container.querySelector("p[data-msg-infos]")) {
@@ -54,12 +71,18 @@ export class FormHelper {
     box.textContent = msg;
   };
 
+  /**
+   * @param {NodeListOf<HTMLInputElement>} inputs 
+   */
   static removeInputsValues = (inputs) => {
     for (let i = 0; i < inputs.length - 1; i++) {
       inputs[i].value = "";
     }
   };
 
+  /**
+   * @param {HTMLFormElement} form 
+   */
   static setFormData = (form) => {
     const formData = new FormData(form);
 

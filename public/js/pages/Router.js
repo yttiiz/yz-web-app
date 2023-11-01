@@ -51,6 +51,9 @@ export class Router {
     }
   }
 
+  /**
+   * @param {string} route 
+   */
   async #fetchData(route) {
     return fetch(`${this.host}${route}`);
   }

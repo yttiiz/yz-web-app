@@ -5,6 +5,7 @@ export class FormPage extends PageBuilder {
   renderForm = (
     id = "users",
   ) => {
+    /** @type {HTMLFormElement} */
     const form = document.querySelector(`#data-${id}-form form`)
 
     form.addEventListener(
@@ -21,8 +22,11 @@ export class FormPage extends PageBuilder {
     id,
     data,
   ) => {
+    /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
+    
+    /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
 
     // Set user photo
@@ -46,6 +50,7 @@ export class FormPage extends PageBuilder {
     // Set input file to change photo
     userPhotoContainer.querySelector("button")
     .addEventListener("click", (e) => {
+      /** @type {HTMLInputElement} */
       let input;
       
       if (userPhotoContainer.querySelector("input")) {
@@ -84,10 +89,6 @@ export class FormPage extends PageBuilder {
         window.location.href = res.url;
       } else {
         switch (e.target.action) {
-          case location.origin + "/login":
-            FormHelper.showLoginDetails(res);
-            break;
-
           case location.origin + "/register":
             FormHelper.showRegisterDetails(res);
             break;
@@ -98,7 +99,7 @@ export class FormPage extends PageBuilder {
         }
       }
     } else {
-      FormHelper.showErrorMsg(res);
+      FormHelper.showErrorMsg(res, location.pathname);
     }
   };
 }

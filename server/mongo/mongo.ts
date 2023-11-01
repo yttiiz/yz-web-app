@@ -11,7 +11,6 @@ import type {
 
 /**
  * The app MongoDB Manager.
- * @property
  */
 export class Mongo {
   private static client = new MongoClient();
