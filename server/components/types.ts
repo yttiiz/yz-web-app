@@ -58,3 +58,10 @@ export type FormType = {
   content: InputType[];
   changePhoto?: string; 
 };
+
+export type NotFoundType = {
+  title: string;
+  paragraph: string;
+  btnText: string;
+  btnLink: string;
+}

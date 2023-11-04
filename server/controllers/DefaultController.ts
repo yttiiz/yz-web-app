@@ -17,9 +17,11 @@ export class DefaultController {
   protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
 
   constructor(
-    router: RouterAppType,
+    router?: RouterAppType,
     ) {
-    this.router = router;
+    router
+      ? this.router = router
+      : null;
     this.helper = Helper;
   }
 
@@ -67,7 +69,7 @@ export class DefaultController {
 
     html = this.setTitle(html, title);
     header = await this.setHeaderHtml(header, ctx);
-    main = await this.setMainHtml(main, path, id);
+    main = await this.setMainHtml(main, id, path);
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
     html = html.replace("{{ application-content }}", content);
@@ -106,6 +108,16 @@ export class DefaultController {
     }
 
     return components;
+  }
+
+  private createNotFoundContent(data: layers.NotFoundType): string {
+    return `<h1>${data.title}</h1>
+    <div>
+      <p>${data.paragraph}</p>
+      <span>
+      <a href="${data.btnLink}">${data.btnText}</a>
+      </span>
+    <div>`;
   }
 
   private createAuthForm(data: layers.FormType): string {
@@ -178,14 +190,20 @@ export class DefaultController {
 
   private async setMainHtml(
     main: string,
-    path: string | undefined,
     id: string,
+    path: string | undefined,
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
+    // Not found render check
+    if (id === "data-not-found") {
+      const data = await this.helper.convertJsonToObject("/server/data/404/not.found.json");
+      return main.replace("{{ content-insertion }}", this.createNotFoundContent(data));
+    }
+
     // Profil form render check
     if (id === "data-profil-form") {
-      const data = await this.helper.convertJsonToObject(`/server/data/profil/profil.json`);
+      const data = await this.helper.convertJsonToObject("/server/data/profil/profil.json");
       return main.replace("{{ content-insertion }}", this.createProfilForm(data));
     }
 

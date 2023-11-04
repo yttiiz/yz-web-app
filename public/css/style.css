@@ -449,6 +449,21 @@ h1 {
     }
 }
 
+#data-not-found {
+    & > div {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * 2);
+    }
+
+    & > div a {
+        padding: var(--btn-padding);
+        border-radius: var(--btn-border-radius);
+        color: var(--light);
+        background: var(--primary-color);
+    }
+}
+
 #eye-password {
         display: flex;
         position: absolute;

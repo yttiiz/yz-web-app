@@ -51,7 +51,7 @@ export class AuthController extends DefaultController {
   }
 
   private getRoute(path: PathAppType, title: string) {
-    this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
+    this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile(
         ctx,
         "data-users-form",
@@ -66,7 +66,7 @@ export class AuthController extends DefaultController {
     path: PathAppType,
     handler: (ctx: RouterContextAppType<typeof path>) => Promise<void>,
   ) {
-    this.router.post(path, handler);
+    this.router?.post(path, handler);
   }
 
   private loginRouteHandler = async <T extends PathAppType>(

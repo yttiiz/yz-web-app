@@ -22,7 +22,7 @@ export class ProfilController extends DefaultController {
   }
 
   private getProfil() {
-    this.router.get("/profil", async (ctx: RouterContextAppType<"/profil">) => {
+    this.router?.get("/profil", async (ctx: RouterContextAppType<"/profil">) => {
       try {
         const body = await this.createHtmlFile(
           ctx,
@@ -40,7 +40,7 @@ export class ProfilController extends DefaultController {
   }
 
   private putProfil() {
-    this.router.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
+    this.router?.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
     
       let photo = "";
       const data = await ctx.request.body().value as oak.FormDataReader;
