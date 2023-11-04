@@ -1,13 +1,5 @@
-import {
-  MongoClient,
-  MongoStore,
-  ObjectId
-} from "@deps";
-import type {
-  Document,
-  Filter,
-  UpdateFilter
-} from "@deps";
+import { MongoClient, MongoStore, ObjectId } from "@deps";
+import type { Document, Filter, UpdateFilter } from "@deps";
 
 /**
  * The app MongoDB Manager.
@@ -28,7 +20,7 @@ export class Mongo {
     const users = await Mongo.clientConnectTo<T>(collection);
     const {
       matchedCount,
-      modifiedCount
+      modifiedCount,
     } = await users.updateOne(
       { _id: id },
       { $set: { ...data } } as unknown as UpdateFilter<T>,
@@ -51,7 +43,9 @@ export class Mongo {
     collection: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
-    const selectedDocument = await selectedCollection.findOne({ email } as unknown as Filter<T>);
+    const selectedDocument = await selectedCollection.findOne(
+      { email } as unknown as Filter<T>,
+    );
 
     if (selectedDocument) return selectedDocument;
 

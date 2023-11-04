@@ -6,7 +6,7 @@ export class FormPage extends PageBuilder {
     id = "users",
   ) => {
     /** @type {HTMLFormElement} */
-    const form = document.querySelector(`#data-${id}-form form`)
+    const form = document.querySelector(`#data-${id}-form form`);
 
     form.addEventListener(
       "submit",
@@ -15,8 +15,8 @@ export class FormPage extends PageBuilder {
   };
 
   /**
-   * @param {string} id 
-   * @param {{ firstname: string; lastname: string; photo: string }} data 
+   * @param {string} id
+   * @param {{ firstname: string; lastname: string; photo: string }} data
    */
   renderProfilForm = (
     id,
@@ -25,7 +25,7 @@ export class FormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
-    
+
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
 
@@ -39,8 +39,8 @@ export class FormPage extends PageBuilder {
     for (const input of userInfosInputs) {
       if (input.type !== "password") {
         input.type === "date"
-        ? input.value = data[input.name].split("T").at(0)
-        : input.value = data[input.name];
+          ? input.value = data[input.name].split("T").at(0)
+          : input.value = data[input.name];
       }
     }
 
@@ -49,30 +49,27 @@ export class FormPage extends PageBuilder {
 
     // Set input file to change photo
     userPhotoContainer.querySelector("button")
-    .addEventListener("click", (e) => {
-      /** @type {HTMLInputElement} */
-      let input;
-      
-      if (userPhotoContainer.querySelector("input")) {
-        input = userPhotoContainer.querySelector("input");
+      .addEventListener("click", (e) => {
+        /** @type {HTMLInputElement} */
+        let input;
 
-      } else {
-        input = document.createElement("input");
-        input.type = "file";
-        input.name = "photo";
-        userPhotoContainer.insertBefore(input, e.currentTarget);
-      }
+        if (userPhotoContainer.querySelector("input")) {
+          input = userPhotoContainer.querySelector("input");
+        } else {
+          input = document.createElement("input");
+          input.type = "file";
+          input.name = "photo";
+          userPhotoContainer.insertBefore(input, e.currentTarget);
+        }
 
-      input.click();
-    })
+        input.click();
+      });
   };
 
   submitHandler = async (e) => {
     e.preventDefault();
 
-    const method = location.pathname === "/profil"  
-    ? "PUT"
-    : null;
+    const method = location.pathname === "/profil" ? "PUT" : null;
 
     const formData = FormHelper.setFormData(e.target);
     const res = await fetch(e.target.action, {

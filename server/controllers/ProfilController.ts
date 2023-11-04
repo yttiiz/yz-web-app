@@ -1,4 +1,4 @@
-import { ObjectId, oak } from "@deps";
+import { oak, ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   RouterAppType,
@@ -22,74 +22,94 @@ export class ProfilController extends DefaultController {
   }
 
   private getProfil() {
-    this.router?.get("/profil", async (ctx: RouterContextAppType<"/profil">) => {
-      try {
-        const body = await this.createHtmlFile(
-          ctx,
-          "data-profil-form",
-          "modifier votre profil"
-        );
-
-        this.response(ctx, body, 200);
-      
-      } catch(error) {
-        this.helper.writeLog(error);
-        this.response(ctx, { errorMsg: this.errorMsg }, 500);
-      }
-    });
+    this.router?.get(
+      "/profil",
+      async (ctx: RouterContextAppType<"/profil">) => {
+        try {
+          if (ctx.state.session.has("userFirstname")) {
+            const body = await this.createHtmlFile(
+              ctx,
+              "data-profil-form",
+              "modifier votre profil",
+            );
+            this.response(ctx, body, 200);
+            
+          } else {
+            this.response(
+              ctx,
+              JSON.stringify({
+                message: "pas d'utilisateur connecté"
+              }),
+              302,
+              "/",
+            );
+          }
+        } catch (error) {
+          this.helper.writeLog(error);
+          this.response(ctx, { errorMsg: this.errorMsg }, 500);
+        }
+      },
+    );
   }
 
   private putProfil() {
-    this.router?.put("/profil", async (ctx: RouterContextAppType<"/profil">) => {
-    
-      let photo = "";
-      const data = await ctx.request.body().value as oak.FormDataReader;
-      const { fields, files } = await data.read({ maxSize: 10_000_000 });
-      const userId = await ctx.state.session.get("userId") as ObjectId;
-      
-      files
-      ? photo = await this.fileHandler(
-        files,
-        fields.firstname,
-        fields.lastname
-      )
-      : null; 
+    this.router?.put(
+      "/profil",
+      async (ctx: RouterContextAppType<"/profil">) => {
+        let photo = "";
+        const data = await ctx.request.body().value as oak.FormDataReader;
+        const { fields, files } = await data.read({ maxSize: 10_000_000 });
+        const userId = await ctx.state.session.get("userId") as ObjectId;
 
-      const updatedData = await this.removeEmptyFields(fields);
-      photo ? updatedData.photo = photo : null;
+        files
+          ? photo = await this.fileHandler(
+            files,
+            fields.firstname,
+            fields.lastname,
+          )
+          : null;
 
-      const isUserUpdate = await this.updateToDB(userId, updatedData, "users");
+        const updatedData = await this.removeEmptyFields(fields);
+        photo ? updatedData.photo = photo : null;
 
-      if (fields.firstname) {
-        ctx.state.session.set("userFirstname", fields.firstname);
-      }
-      
-      ctx.state.session.set("userEmail", fields.email);
-      ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
+        const isUserUpdate = await this.updateToDB(
+          userId,
+          updatedData,
+          "users",
+        );
 
-      
-      this.response(
-        ctx,
-        {
-          message: `Votre profil ${isUserUpdate ? "a bien" : "n'a pas"} été mis à jour.`,
-        },
-        isUserUpdate ? 201 : 200
-      );
-    });
+        if (fields.firstname) {
+          ctx.state.session.set("userFirstname", fields.firstname);
+        }
+
+        ctx.state.session.set("userEmail", fields.email);
+        ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
+
+        this.response(
+          ctx,
+          {
+            message: `Votre profil ${
+              isUserUpdate ? "a bien" : "n'a pas"
+            } été mis à jour.`,
+          },
+          isUserUpdate ? 201 : 200,
+        );
+      },
+    );
   }
 
   private async removeEmptyFields(
     fields: Record<string, string>,
   ) {
     const trustData = Object.keys(fields)
-    .filter(key => fields[key] !== "")
-    .reduce((acc, key) => {
-      key === "birth"
-      ? acc["birth"] = new Date(fields[key])
-      : acc[key as keyof Omit<typeof acc, "birth">] = fields[key];
-      
-      return acc;
-    }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
+      .filter((key) => fields[key] !== "")
+      .reduce((acc, key) => {
+        key === "birth"
+          ? acc["birth"] = new Date(fields[key])
+          : acc[key as keyof Omit<typeof acc, "birth">] = fields[key];
+
+        return acc;
+      }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
 
     if (trustData["password"]) {
       trustData["hash"] = await Auth.hashPassword(trustData["password"]);

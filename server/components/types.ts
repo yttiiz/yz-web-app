@@ -56,7 +56,7 @@ export type FormType = {
   action: string;
   method: string;
   content: InputType[];
-  changePhoto?: string; 
+  changePhoto?: string;
 };
 
 export type NotFoundType = {
@@ -64,4 +64,4 @@ export type NotFoundType = {
   paragraph: string;
   btnText: string;
   btnLink: string;
-}
+};

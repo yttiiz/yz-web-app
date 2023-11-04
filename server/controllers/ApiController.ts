@@ -21,7 +21,7 @@ export class ApiController {
   constructor(
     router: RouterAppType,
     collection: GetCollectionType,
-    selectFromDB: SelectUserFromDBType
+    selectFromDB: SelectUserFromDBType,
   ) {
     this.router = router;
     this.collection = collection;
@@ -48,7 +48,6 @@ export class ApiController {
         }
 
         this.setReponse(ctx, JSON.stringify(users), 200);
-
       } catch (error) {
         this.helper.writeLog(error);
         this.setReponse(
@@ -65,8 +64,7 @@ export class ApiController {
   private userProfil() {
     this.router.get(
       "/user-profil",
-      async (ctx: RouterContextAppType<"/user-profil">,
-    ) => {
+      async (ctx: RouterContextAppType<"/user-profil">) => {
         try {
           const email = await ctx.state.session.get("userEmail");
           const {
@@ -85,10 +83,10 @@ export class ApiController {
               birth,
               job,
               photo,
-              email
+              email,
             }),
-            200);
-        
+            200,
+          );
         } catch (error) {
           this.helper.writeLog(error);
           this.setReponse(
@@ -99,14 +97,15 @@ export class ApiController {
             500,
           );
         }
-    });
+      },
+    );
   }
 
   private setReponse<T extends string>(
     ctx: RouterContextAppType<T>,
     data: string,
     status: number,
-    ) {
+  ) {
     new Http(ctx)
       .setHeaders(this.contentType)
       .setResponse(data, status);

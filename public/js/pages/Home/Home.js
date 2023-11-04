@@ -3,14 +3,14 @@ import * as Types from "../../types/types.js";
 
 export class HomePage extends PageBuilder {
   #root;
-  
+
   constructor() {
     super();
     this.#root = document.querySelector("#data-users");
   }
 
   /**
-   * @param {Types.Users} users 
+   * @param {Types.Users} users
    */
   renderUsers = (users) => {
     const [title, list] = this.createHTMLElements("h1", "ul");
@@ -18,7 +18,7 @@ export class HomePage extends PageBuilder {
     for (const key in users) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [li, div, figure] = this.createHTMLElements("li", "div", "figure");
-      
+
       /** @type {[HTMLImageElement, HTMLSpanElement, HTMLSpanElement, HTMLSpanElement]} */
       const [img, spec, job, age] = this.createHTMLElements(
         "img",
@@ -44,8 +44,8 @@ export class HomePage extends PageBuilder {
   };
 
   /**
-   * @param {number} status 
-   * @param {{ errorMsg: string }}  
+   * @param {number} status
+   * @param {{ errorMsg: string }}
    */
   renderError = (status, { errorMsg }) => {
     const [title, text] = this.createHTMLElements("h1", "p");

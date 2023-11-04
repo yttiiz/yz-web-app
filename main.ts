@@ -8,6 +8,7 @@ type MiddlewareAppType = oak.Middleware<
   AppState,
   oak.Context<AppState, AppState>
 >;
+
 const { Application } = oak;
 
 const app = new Application<AppState>();
@@ -33,7 +34,7 @@ app.listen({ port: +PORT, hostname });
 app.addEventListener("listen", ({
   hostname,
   port,
-  secure
+  secure,
 }) => {
   console.log(`
     ++++++++++++++++++++++++++++++++++++++++

@@ -2,7 +2,7 @@ export class FormHelper {
   static id = (id) => `#data-${id}-form`;
 
   /**
-   * @param {Response} response 
+   * @param {Response} response
    */
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
@@ -13,7 +13,7 @@ export class FormHelper {
   };
 
   /**
-   * @param {Response} response 
+   * @param {Response} response
    */
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
@@ -24,7 +24,7 @@ export class FormHelper {
   };
 
   /**
-   * @param {Response} response 
+   * @param {Response} response
    */
   static showProfilDetails = async (response) => {
     const status = response.status;
@@ -33,11 +33,11 @@ export class FormHelper {
       msg: message,
       dataSet: status === 201 ? "success" : "error",
     }, "profil");
-  }
+  };
 
   /**
-   * @param {Response} response 
-   * @param {"/profil" | "/login" | "/register"} pathname 
+   * @param {Response} response
+   * @param {"/profil" | "/login" | "/register"} pathname
    */
   static showErrorMsg = async (response, pathname) => {
     const status = response.status;
@@ -48,9 +48,9 @@ export class FormHelper {
       dataSet: "error",
     }, id);
   };
-  
-  /** 
-   * @param {{ msg: string; dataSet: "error" | "success" }} param 
+
+  /**
+   * @param {{ msg: string; dataSet: "error" | "success" }} param
    * @param {string} id
    */
   static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
@@ -72,7 +72,7 @@ export class FormHelper {
   };
 
   /**
-   * @param {NodeListOf<HTMLInputElement>} inputs 
+   * @param {NodeListOf<HTMLInputElement>} inputs
    */
   static removeInputsValues = (inputs) => {
     for (let i = 0; i < inputs.length - 1; i++) {
@@ -81,7 +81,7 @@ export class FormHelper {
   };
 
   /**
-   * @param {HTMLFormElement} form 
+   * @param {HTMLFormElement} form
    */
   static setFormData = (form) => {
     const formData = new FormData(form);

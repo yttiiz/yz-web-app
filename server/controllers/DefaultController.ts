@@ -16,9 +16,7 @@ export class DefaultController {
   protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
   protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
 
-  constructor(
-    router?: RouterAppType,
-    ) {
+  constructor(router?: RouterAppType) {
     router
       ? this.router = router
       : null;

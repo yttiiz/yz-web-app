@@ -2,7 +2,7 @@ import { oak } from "@deps";
 import {
   NotFoundController,
   PathAppType,
-  RouterContextAppType
+  RouterContextAppType,
 } from "@controllers";
 
 export const notFoundMiddleware = async (
@@ -15,10 +15,10 @@ export const notFoundMiddleware = async (
     const path = ctx.request.url.pathname;
 
     new NotFoundController()
-    .handle404Response(
-      path as PathAppType,
-      ctx as RouterContextAppType<PathAppType>,
-      error.status,
-    );
+      .handle404Response(
+        path as PathAppType,
+        ctx as RouterContextAppType<PathAppType>,
+        error.status,
+      );
   }
-}
+};

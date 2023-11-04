@@ -10,7 +10,7 @@ import {
   Filter,
   MongoClient,
   ObjectId,
-  UpdateFilter
+  UpdateFilter,
 } from "mongoose";
 import { FindCursor } from "mongo-find";
 import { decode, encode } from "encode";
@@ -32,8 +32,4 @@ export {
   Session,
 };
 
-export type {
-  Document,
-  Filter,
-  UpdateFilter,
-}
+export type { Document, Filter, UpdateFilter };

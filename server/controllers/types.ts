@@ -1,4 +1,4 @@
-import { Document, ObjectId, oak } from "@deps";
+import { Document, oak, ObjectId } from "@deps";
 import type {
   UserSchemaType,
   UserSchemaWithIDType,
@@ -43,11 +43,13 @@ export type UpdateToDBType<T> = (
 export type UserNotFoundMessageType = { message: string };
 export type UserDataType = Record<
   number,
-  UserSchemaWithOptionalFieldsType &
-  { _id?: ObjectId }
+  & UserSchemaWithOptionalFieldsType
+  & { _id?: ObjectId }
 >;
 export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
 export type SelectUserFromDBType = SelectFromDBType<
-   UserSchemaWithIDType | UserNotFoundMessageType
+  UserSchemaWithIDType | UserNotFoundMessageType
 >;
-export type UpdateUserToDBType = UpdateToDBType<UserSchemaWithOptionalFieldsType>;
+export type UpdateUserToDBType = UpdateToDBType<
+  UserSchemaWithOptionalFieldsType
+>;

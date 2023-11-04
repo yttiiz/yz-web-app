@@ -1,7 +1,7 @@
 // deno-lint-ignore-file
 export class PageBuilder {
   /**
-   * @param {keyof HTMLElementTagNameMap} tagNames 
+   * @param {keyof HTMLElementTagNameMap} tagNames
    */
   createHTMLElements(...tagNames) {
     const htmlElements = [];
@@ -10,10 +10,10 @@ export class PageBuilder {
     }
     return htmlElements;
   }
-  
+
   /**
-   * @param {string} tagName 
-   * @param {number} howMuch 
+   * @param {string} tagName
+   * @param {number} howMuch
    */
   createSameHTMLElements(tagName, howMuch) {
     const htmlElements = [];
@@ -24,13 +24,15 @@ export class PageBuilder {
   }
 
   /**
-   * @param {string} attr 
-   * @param {string | number | boolean} value 
-   * @param {HTMLElement[]} elements 
+   * @param {string} attr
+   * @param {string | number | boolean} value
+   * @param {HTMLElement[]} elements
    */
   setSameHTMLElementAttributes(attr, value, ...elements) {
     if (elements.length === 1) {
-      value === true ? elements[0].setAttribute(attr, "") : elements[0][attr] = value;
+      value === true
+        ? elements[0].setAttribute(attr, "")
+        : elements[0][attr] = value;
       return;
     }
 
@@ -41,7 +43,7 @@ export class PageBuilder {
 
   /**
    * @param {Node} root parent node
-   * @param {HTMLElement[]} children 
+   * @param {HTMLElement[]} children
    */
   insertChildren(root, ...children) {
     for (const child of children) {
