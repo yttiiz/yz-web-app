@@ -6,12 +6,13 @@ import type {
 } from "@mongo";
 import { AppState } from "@utils";
 
-export type PathType =
+export type PathAppType =
   | "/"
   | "/register"
   | "/login"
   | "/logout"
-  | "/profil";
+  | "/profil"
+  | "/(.*)";
 
 // Router
 export type RouterAppType = oak.Router<AppState>;

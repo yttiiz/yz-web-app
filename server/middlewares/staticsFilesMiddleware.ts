@@ -2,7 +2,7 @@ import { oak } from "@deps";
 
 export const staticsFilesMiddleware = async (
   ctx: oak.Context,
-  next: () => unknown,
+  next: () => Promise<unknown>,
 ) => {
   const opts: oak.SendOptions = { root: "" };
 

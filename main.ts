@@ -4,6 +4,10 @@ import { Mongo } from "@mongo";
 import { router } from "@router";
 import type { AppState } from "@utils";
 
+type MiddlewareAppType = oak.Middleware<
+  AppState,
+  oak.Context<AppState, AppState>
+>;
 const { Application } = oak;
 
 const app = new Application<AppState>();
@@ -19,7 +23,7 @@ const { PORT, HOST: hostname } = Deno.env.toObject();
 const store = await Mongo.setStore();
 
 // Set Middlewares.
-app.use(Session.initMiddleware(store));
+app.use(Session.initMiddleware(store) as unknown as MiddlewareAppType);
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(staticsFilesMiddleware);

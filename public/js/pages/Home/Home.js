@@ -1,15 +1,16 @@
 import { PageBuilder } from "../Builder.js";
-import { Users } from "../../types/types.js";
+import * as Types from "../../types/types.js";
 
 export class HomePage extends PageBuilder {
   #root;
+  
   constructor() {
     super();
     this.#root = document.querySelector("#data-users");
   }
 
   /**
-   * @param {Users} users 
+   * @param {Types.Users} users 
    */
   renderUsers = (users) => {
     const [title, list] = this.createHTMLElements("h1", "ul");

@@ -3,7 +3,7 @@ import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   InsertUserIntoDBType,
-  PathType,
+  PathAppType,
   RouterAppType,
   RouterContextAppType,
   SelectUserFromDBType,
@@ -50,7 +50,7 @@ export class AuthController extends DefaultController {
     this.postRoute("/register", this.registerRouteHandler);
   }
 
-  private getRoute(path: PathType, title: string) {
+  private getRoute(path: PathAppType, title: string) {
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const body = await this.createHtmlFile(
         ctx,
@@ -63,13 +63,13 @@ export class AuthController extends DefaultController {
   }
 
   private postRoute(
-    path: PathType,
+    path: PathAppType,
     handler: (ctx: RouterContextAppType<typeof path>) => Promise<void>,
   ) {
     this.router.post(path, handler);
   }
 
-  private loginRouteHandler = async <T extends PathType>(
+  private loginRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
@@ -122,7 +122,7 @@ export class AuthController extends DefaultController {
     }
   };
 
-  private logoutRouteHandler = async <T extends PathType>(
+  private logoutRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
     await ctx.state.session.deleteSession();
@@ -132,7 +132,7 @@ export class AuthController extends DefaultController {
     this.response(ctx, msg, 302, "/");
   };
 
-  private registerRouteHandler = async <T extends PathType>(
+  private registerRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
     let photo: string;

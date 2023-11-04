@@ -4,7 +4,7 @@ import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 import type {
   FilesDataType,
-  PathType,
+  PathAppType,
   PageDataIdType,
   RouterAppType,
   RouterContextAppType,
@@ -23,7 +23,7 @@ export class DefaultController {
     this.helper = Helper;
   }
 
-  protected response<T extends PathType>(
+  protected response<T extends PathAppType>(
     ctx: RouterContextAppType<T>,
     data: string | UserSchemaWithIDType | Record<string, string>,
     status: number,
@@ -33,7 +33,9 @@ export class DefaultController {
 
     http.setHeaders({
       name: "Content-Type",
-      value: status === 200 ? "text/html; charset=UTF-8" : "application/json",
+      value: status === 200 || status === 404
+        ? "text/html; charset=UTF-8"
+        : "application/json",
     });
 
     data = typeof data === "string" ? data : JSON.stringify(data);
