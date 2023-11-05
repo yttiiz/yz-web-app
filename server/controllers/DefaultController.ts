@@ -1,4 +1,5 @@
 // deno-fmt-ignore-file
+import { oak } from "@deps";
 import * as layers from "@components";
 import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
@@ -24,7 +25,7 @@ export class DefaultController {
   }
 
   protected response<T extends PathAppType>(
-    ctx: RouterContextAppType<T>,
+    ctx: RouterContextAppType<T> | oak.Context,
     data: string | UserSchemaWithIDType | Record<string, string>,
     status: number,
     redirect?: string,
@@ -53,7 +54,7 @@ export class DefaultController {
   }
 
   protected async createHtmlFile<T extends string>(
-    ctx: RouterContextAppType<T>,
+    ctx: RouterContextAppType<T> | oak.Context,
     id: PageDataIdType,
     title?: string,
     path?: string,
@@ -174,9 +175,15 @@ export class DefaultController {
 
   private async setHeaderHtml<T extends string>(
     header: string,
-    ctx: RouterContextAppType<T>,
+    ctx: RouterContextAppType<T> | oak.Context,
   ): Promise<string> {
-    if (ctx.state.session.has("userFirstname")) {
+    if (!ctx.state.session) {
+      header = header.replace(
+        "{{ application-session }}",
+        "",
+      );
+
+    } else if (ctx.state.session.has("userFirstname")) {
       const firstname = await ctx.state.session.get("userFirstname");
 
       header = header.replace(
@@ -187,13 +194,13 @@ export class DefaultController {
             "Bonjour <a href=\"/profil\">" + firstname + "</a>",
           ),
       );
+      
     } else {
       header = header.replace(
         "{{ application-session }}",
         layers.Login.content,
       );
     }
-
     return header;
   }
 

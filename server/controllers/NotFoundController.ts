@@ -1,5 +1,5 @@
+import { oak } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
-import type { PathAppType, RouterContextAppType } from "./mod.ts";
 
 export class NotFoundController extends DefaultController {
   constructor() {
@@ -7,8 +7,7 @@ export class NotFoundController extends DefaultController {
   }
 
   public async handle404Response(
-    path: PathAppType,
-    ctx: RouterContextAppType<typeof path>,
+    ctx: oak.Context,
     status: number,
   ) {
     const body = await this.createHtmlFile(

@@ -52,13 +52,18 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      const body = await this.createHtmlFile(
-        ctx,
-        "data-users-form",
-        title,
-        path,
-      );
-      this.response(ctx, body, 200);
+      if (ctx.state.session) {
+        const body = await this.createHtmlFile(
+          ctx,
+          "data-users-form",
+          title,
+          path,
+        );
+        this.response(ctx, body, 200);
+
+      } else {
+        this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+      }
     });
   }
 
@@ -114,7 +119,7 @@ export class AuthController extends DefaultController {
         }
       } else {
         if (user.message === "connexion failed") {
-          this.response(ctx, { errorMsg: this.errorMsg }, 502);
+          this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
 
         } else {
           await failedLogin(user.message);

@@ -25,28 +25,26 @@ export class ProfilController extends DefaultController {
     this.router?.get(
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
-        try {
-          if (ctx.state.session.has("userFirstname")) {
-            const body = await this.createHtmlFile(
-              ctx,
-              "data-profil-form",
-              "modifier votre profil",
-            );
-            this.response(ctx, body, 200);
-            
-          } else {
-            this.response(
-              ctx,
-              JSON.stringify({
-                message: "pas d'utilisateur connecté"
-              }),
-              302,
-              "/",
-            );
-          }
-        } catch (error) {
-          this.helper.writeLog(error);
-          this.response(ctx, { errorMsg: this.errorMsg }, 500);
+        if (!ctx.state.session) {
+          this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+
+        } else if (ctx.state.session.has("userFirstname")) {
+          const body = await this.createHtmlFile(
+            ctx,
+            "data-profil-form",
+            "modifier votre profil",
+          );
+          this.response(ctx, body, 200);
+          
+        } else {
+          this.response(
+            ctx,
+            JSON.stringify({
+              message: "pas d'utilisateur connecté"
+            }),
+            302,
+            "/",
+          );
         }
       },
     );

@@ -1,10 +1,11 @@
+import { oak } from "@deps";
 import type { ContentHeadersType } from "./mod.ts";
 import type { RouterContextAppType } from "@controllers";
 
 export class Http<T extends string> {
-  private ctx: RouterContextAppType<T>;
+  private ctx: RouterContextAppType<T> | oak.Context;
 
-  constructor(ctx: RouterContextAppType<T>) {
+  constructor(ctx: RouterContextAppType<T> | oak.Context) {
     this.ctx = ctx;
   }
 
@@ -19,14 +20,8 @@ export class Http<T extends string> {
     data: string,
     status: number,
   ) {
-    if (this.ctx.response.writable) {
-      this.ctx.response.body = data;
-      this.ctx.response.status = status;
-      
-    } else {
-      //TODO handle error when response it's not writable.
-    }
-
+    this.ctx.response.body = data;
+    this.ctx.response.status = status;
     return this;
   }
 
