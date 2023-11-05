@@ -28,7 +28,7 @@ export class Helper {
     const errorMsg = `(${Helper.dateNow()}) ${error.message},\n`;
     const content = encoder.encode(errorMsg);
 
-    await Deno.writeFile("log/log.txt", content, Helper.WriteOpts);
+    await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
   }
 
   private static dateNow() {

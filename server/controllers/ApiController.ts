@@ -13,6 +13,7 @@ export class ApiController {
   private collection;
   private selectFromDB;
   private helper;
+  private errorMsg = "Impossible de se connecter à la base de données.";
   private contentType = {
     name: "Content-Type",
     value: "application/json",
@@ -34,29 +35,34 @@ export class ApiController {
   private users() {
     this.router.get("/users", async (ctx: RouterContextAppType<"/users">) => {
       const users: UserDataType = {};
+      const cursor = await this.collection("users");
 
       try {
-        const cursor = await this.collection("users") as FindCursorUserType;
-        await cursor.map((document, key) => users[key + 1] = document);
-
-        // Remove "_id" and "hash" properties from `users` object.
-        for (const key in users) {
-          for (const prop in users[key]) {
-            if (prop === "_id") delete users[key][prop];
-            if (prop === "hash") delete users[key][prop];
+        if (cursor) {
+          await (cursor as FindCursorUserType)
+          .map((document, key) => users[key + 1] = document);
+  
+          // Remove "_id" and "hash" properties from `users` object.
+          for (const key in users) {
+            for (const prop in users[key]) {
+              if (prop === "_id") delete users[key][prop];
+              if (prop === "hash") delete users[key][prop];
+            }
           }
+  
+          this.reponse(ctx, JSON.stringify(users), 200);
+        } else {
+          this.reponse(
+            ctx,
+            JSON.stringify({
+              errorMsg: this.errorMsg,
+            }),
+            502,
+          );
         }
 
-        this.setReponse(ctx, JSON.stringify(users), 200);
       } catch (error) {
-        this.helper.writeLog(error);
-        this.setReponse(
-          ctx,
-          JSON.stringify({
-            errorMsg: "Impossible de se connecter à la base de données.",
-          }),
-          500,
-        );
+        this.writeErrorLogAndSetResponse(ctx, error);
       }
     });
   }
@@ -75,7 +81,7 @@ export class ApiController {
             photo,
           } = await this.selectFromDB(email, "users") as UserSchemaWithIDType;
 
-          this.setReponse(
+          this.reponse(
             ctx,
             JSON.stringify({
               firstname,
@@ -87,21 +93,29 @@ export class ApiController {
             }),
             200,
           );
+
         } catch (error) {
-          this.helper.writeLog(error);
-          this.setReponse(
-            ctx,
-            JSON.stringify({
-              errorMsg: "Impossible de se connecter à la base de données.",
-            }),
-            500,
-          );
+          this.writeErrorLogAndSetResponse(ctx, error);
         }
       },
     );
   }
 
-  private setReponse<T extends string>(
+  private writeErrorLogAndSetResponse<T extends string>(
+    ctx: RouterContextAppType<T>,
+    error: { message: string },
+  ) {
+    this.helper.writeLog(error);
+    this.reponse(
+      ctx,
+      JSON.stringify({
+        errorMsg: this.errorMsg,
+      }),
+      500,
+    );
+  }
+
+  private reponse<T extends string>(
     ctx: RouterContextAppType<T>,
     data: string,
     status: number,

@@ -113,8 +113,13 @@ export class AuthController extends DefaultController {
           );
         }
       } else {
-        await failedLogin(user.message);
-        this.response(ctx, user, 200);
+        if (user.message === "connexion failed") {
+          this.response(ctx, { errorMsg: this.errorMsg }, 502);
+
+        } else {
+          await failedLogin(user.message);
+          this.response(ctx, user, 200);
+        }
       }
     } catch (error) {
       this.helper.writeLog(error);
@@ -171,13 +176,15 @@ export class AuthController extends DefaultController {
       photo,
     }, "users");
 
-    this.response(
-      ctx,
-      {
-        id: userId,
-        name: `${firstname} ${lastname}`,
-      },
-      200,
-    );
+    userId === "connexion failed"
+      ? this.response(ctx, { errorMsg: this.errorMsg }, 502)
+      : this.response(
+          ctx,
+          {
+            id: userId,
+            name: `${firstname} ${lastname}`,
+          },
+          200,
+        );
   };
 }

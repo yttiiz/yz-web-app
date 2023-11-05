@@ -6,6 +6,7 @@ export class FormHelper {
    */
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
+    
     FormHelper.#paragraphToShowInfo({
       msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
       dataSet: "success",
@@ -17,6 +18,7 @@ export class FormHelper {
    */
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
+
     FormHelper.#paragraphToShowInfo({
       msg: `Veuillez réessayer de nouveau, ${message}.`,
       dataSet: "error",
@@ -29,6 +31,7 @@ export class FormHelper {
   static showProfilDetails = async (response) => {
     const status = response.status;
     const { message } = await response.json();
+    
     FormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: status === 201 ? "success" : "error",
@@ -43,6 +46,7 @@ export class FormHelper {
     const status = response.status;
     const id = pathname === "/profil" ? "profil" : "users";
     const { errorMsg } = await response.json();
+    
     FormHelper.#paragraphToShowInfo({
       msg: errorMsg + status,
       dataSet: "error",

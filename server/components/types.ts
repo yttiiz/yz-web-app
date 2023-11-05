@@ -22,6 +22,12 @@ type ItemType = {
   className?: string;
 };
 
+type InformativeContentAndButtonType = {
+  paragraph: string;
+  btnText: string;
+  btnLink?: string;
+};
+
 export type InputType = {
   type: string;
   label?: string;
@@ -59,9 +65,14 @@ export type FormType = {
   changePhoto?: string;
 };
 
-export type NotFoundType = {
+export type FormProfilType = FormType & {
+  deleteAccount: InformativeContentAndButtonType & {
+    title: string;
+    action: string;
+    method: string;
+  }
+};
+
+export type NotFoundType = InformativeContentAndButtonType & {
   title: string;
-  paragraph: string;
-  btnText: string;
-  btnLink: string;
 };

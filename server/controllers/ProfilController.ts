@@ -56,6 +56,10 @@ export class ProfilController extends DefaultController {
     this.router?.put(
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
+        const msgUpdate = (bool: boolean) => (
+          `Votre profil ${bool ? "a bien" : "n'a pas"} été mis à jour.`
+        );
+        
         let photo = "";
         const data = await ctx.request.body().value as oak.FormDataReader;
         const { fields, files } = await data.read({ maxSize: 10_000_000 });
@@ -78,22 +82,19 @@ export class ProfilController extends DefaultController {
           "users",
         );
 
-        if (fields.firstname) {
-          ctx.state.session.set("userFirstname", fields.firstname);
+        if (isUserUpdate) {
+          if (fields.firstname) {
+            ctx.state.session.set("userFirstname", fields.firstname);
+          }
+  
+          ctx.state.session.set("userEmail", fields.email);
+          ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
+  
+          this.response(ctx, { message: msgUpdate(isUserUpdate) }, 201 );
+
+        } else {
+          this.response(ctx, { message: msgUpdate(isUserUpdate) }, 200 );
         }
-
-        ctx.state.session.set("userEmail", fields.email);
-        ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
-
-        this.response(
-          ctx,
-          {
-            message: `Votre profil ${
-              isUserUpdate ? "a bien" : "n'a pas"
-            } été mis à jour.`,
-          },
-          isUserUpdate ? 201 : 200,
-        );
       },
     );
   }

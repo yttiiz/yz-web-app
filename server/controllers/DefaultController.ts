@@ -129,7 +129,7 @@ export class DefaultController {
     </form>`;
   }
 
-  private createProfilForm(data: layers.FormType): string {
+  private createProfilForm(data: layers.FormProfilType): string {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
@@ -148,6 +148,17 @@ export class DefaultController {
         </div>
       </div>
       <input type="${data.content.at(-1)!.type}" value="${data.content.at(-1)!.value}"/>
+    </form>
+
+    <form
+      id="delete-account"
+      action="${data.deleteAccount.action}"
+      method="${data.deleteAccount.method}"
+      type="multipart/form-data"
+    >
+      <h3>${data.deleteAccount.title}</h3>
+      <p>${data.deleteAccount.paragraph}</p>
+      <input type="submit" value="${data.deleteAccount.btnText}" />
     </form>
     `;
   }

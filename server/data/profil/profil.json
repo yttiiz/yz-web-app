@@ -55,5 +55,12 @@
       "type": "submit",
       "value": "Mettre à jour"
     }
-  ]
+  ],
+  "deleteAccount": {
+    "title": "Voulez-vous supprimer votre compte ?",
+    "action": "/profil",
+    "method": "DELETE",
+    "paragraph": "Si vous décidez de supprimer votre compte, toutes vos données seront definitivement supprimés.",
+    "btnText": "Supprimer le compte"
+  }
 }

@@ -19,8 +19,14 @@ export class Http<T extends string> {
     data: string,
     status: number,
   ) {
-    this.ctx.response.body = data;
-    this.ctx.response.status = status;
+    if (this.ctx.response.writable) {
+      this.ctx.response.body = data;
+      this.ctx.response.status = status;
+      
+    } else {
+      //TODO handle error when response it's not writable.
+    }
+
     return this;
   }
 
