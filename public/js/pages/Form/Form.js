@@ -2,16 +2,25 @@ import { PageBuilder } from "../Builder.js";
 import { FormHelper } from "../../utils/FormHelper.js";
 
 export class FormPage extends PageBuilder {
-  renderForm = (
+  initForm = (
     id = "users",
   ) => {
     /** @type {HTMLFormElement} */
-    const form = document.querySelector(`#data-${id}-form form`);
+    const [form, deleteForm] = document.querySelectorAll(
+      `#data-${id}-form form`,
+    );
 
     form.addEventListener(
       "submit",
       (e) => this.submitHandler(e),
     );
+
+    if (deleteForm) {
+      deleteForm.addEventListener(
+        "submit",
+        (e) => this.submitHandler(e),
+      );
+    }
   };
 
   /**
@@ -25,10 +34,10 @@ export class FormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
-    
+
     /** @type {HTMLDivElement} */
     const modal = document.querySelector(".delete-account-modale");
-    const modalBtns = modal.querySelectorAll("button[data-type=\"canceller\"]");
+    const modalBtns = modal.querySelectorAll('button[data-type="canceller"]');
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -48,8 +57,8 @@ export class FormPage extends PageBuilder {
       }
     }
 
-    // Set form
-    this.renderForm(id);
+    // Set form submission
+    this.initForm(id);
 
     // Set input file to change photo
     userPhotoContainer.querySelector("button")
@@ -69,26 +78,31 @@ export class FormPage extends PageBuilder {
         input.click();
       });
 
-      // Set button to display form "delete user" modal.
-      document.querySelector(".delete-account button")
+    // Set button to display form "delete user" modal.
+    document.querySelector(".delete-account button")
       .addEventListener("click", () => {
         modal.classList.remove("none");
       });
 
-      // Set button to abort deleting
-      for (const btn of modalBtns) {
-        btn.addEventListener("click", () => {
-          modal.classList.add("none");
-        })
-      }
+    // Set button to abort deleting
+    for (const btn of modalBtns) {
+      btn.addEventListener("click", () => {
+        modal.classList.add("none");
+      });
+    }
   };
 
   submitHandler = async (e) => {
     e.preventDefault();
 
-    const method = location.pathname === "/profil" ? "PUT" : null;
+    const isDeleteForm = e.target.dataset.type === "delete-account";
 
-    const formData = FormHelper.setFormData(e.target);
+    const method = location.pathname === "/profil"
+      ? (isDeleteForm ? "DELETE" : "PUT")
+      : null;
+
+    const formData = isDeleteForm ? null : FormHelper.setFormData(e.target);
+
     const res = await fetch(e.target.action, {
       method: method ?? "POST",
       body: formData,
@@ -111,9 +125,12 @@ export class FormPage extends PageBuilder {
             FormHelper.showRegisterDetails(res);
             break;
 
-          case location.origin + "/profil":
-            FormHelper.showProfilDetails(res);
+          case location.origin + "/profil": {
+            isDeleteForm
+              ? FormHelper.showProfilDeleteDetails(res)
+              : FormHelper.showProfilUpdateDetails(res);
             break;
+          }
         }
       }
     } else {

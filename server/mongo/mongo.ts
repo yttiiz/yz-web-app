@@ -29,9 +29,8 @@ export class Mongo {
         { _id: id },
         { $set: { ...data } } as unknown as UpdateFilter<T>,
       );
-  
-      return matchedCount + modifiedCount === 2;
 
+      return matchedCount + modifiedCount === 2;
     } else return false;
   }
 
@@ -44,7 +43,6 @@ export class Mongo {
     if (selectedCollection) {
       const id: ObjectId = await selectedCollection.insertOne(data);
       return id.toHexString();
-
     } else return Mongo.errorMsg;
   }
 
@@ -53,19 +51,31 @@ export class Mongo {
     collection: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
-    
+
     if (selectedCollection) {
       const selectedDocument = await selectedCollection.findOne(
         { email } as unknown as Filter<T>,
       );
-  
+
       if (selectedDocument) {
         return selectedDocument;
       }
 
       return { message: "aucun utilisateur n'est lié à cet email : " + email };
-
     } else return { message: Mongo.errorMsg };
+  }
+
+  public static async deleteFromDB<T extends Document>(
+    id: ObjectId,
+    collection: string,
+  ) {
+    const users = await Mongo.clientConnectTo<T>(collection);
+
+    if (users) {
+      return await users.deleteOne({ _id: id });
+    }
+
+    return 0;
   }
 
   public static async setStore() {
@@ -74,7 +84,6 @@ export class Mongo {
         Deno.env.get("DATABASE_URL") as string,
       );
       return new MongoStore(db, "session");
-
     } catch (error) {
       Helper.writeLog(error);
     }
@@ -86,7 +95,6 @@ export class Mongo {
         Deno.env.get("DATABASE_URL") as string,
       );
       return db.collection<T>(collection);
-      
     } catch (error) {
       Helper.writeLog(error);
     }

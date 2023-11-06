@@ -60,7 +60,6 @@ export class AuthController extends DefaultController {
           path,
         );
         this.response(ctx, body, 200);
-
       } else {
         this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
       }
@@ -120,7 +119,6 @@ export class AuthController extends DefaultController {
       } else {
         if (user.message === "connexion failed") {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
-
         } else {
           await failedLogin(user.message);
           this.response(ctx, user, 200);
@@ -184,12 +182,12 @@ export class AuthController extends DefaultController {
     userId === "connexion failed"
       ? this.response(ctx, { errorMsg: this.errorMsg }, 502)
       : this.response(
-          ctx,
-          {
-            id: userId,
-            name: `${firstname} ${lastname}`,
-          },
-          200,
-        );
+        ctx,
+        {
+          id: userId,
+          name: `${firstname} ${lastname}`,
+        },
+        200,
+      );
   };
 }

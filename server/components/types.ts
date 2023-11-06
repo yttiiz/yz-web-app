@@ -70,12 +70,12 @@ export type FormType = {
 export type DeleteAccountType = {
   deleteAccount: InformativeContentAndButtonType & {
     title: string;
-  },
+  };
   deleteModal: InformativeContentAndButtonType & {
     title: string;
     action: string;
     method: string;
-  }
+  };
 };
 
 export type NotFoundType = InformativeContentAndButtonType & {

@@ -4,35 +4,27 @@ import { Mongo } from "@mongo";
 import { router } from "@router";
 import type { AppState } from "@utils";
 
-let app: oak.Application | oak.Application<AppState>;
+type MiddlewareAppType = oak.Middleware<
+  AppState,
+  oak.Context<AppState, AppState>
+>;
 
-//Init main classes.
 const { Application } = oak;
-const store = await Mongo.setStore();
+
+const app = new Application<AppState>();
+const env = await load();
 
 // Set environnement variables from '.env' file.
-const env = await load();
 Object.keys(env)
   .map((key) => Deno.env.set(key, env[key]));
-  
-// Set session store (if defined).
-if (store) {
-  type MiddlewareAppType = oak.Middleware<
-    AppState,
-    oak.Context<AppState, AppState>
-  >;
-
-  app = new Application<AppState>();
-  (app as oak.Application<AppState>)
-  .use(Session.initMiddleware(store) as unknown as MiddlewareAppType);
-
-} else {
-  app = new Application();
-}
 
 const { PORT, HOST: hostname } = Deno.env.toObject();
 
+// Set session store.
+const store = await Mongo.setStore();
+
 // Set Middlewares.
+app.use(Session.initMiddleware(store) as unknown as MiddlewareAppType);
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(notFoundMiddleware);

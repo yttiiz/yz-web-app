@@ -22,7 +22,9 @@ export type FilesDataType = oak.FormDataFile[];
 export type PageDataIdType = `data-${string}`;
 
 // DB Generics
-export type GetCollectionType = (collection: string) => Promise<Document | undefined>;
+export type GetCollectionType = (
+  collection: string,
+) => Promise<Document | undefined>;
 export type InsertIntoDBType<T> = (
   data: T,
   collection: string,
@@ -38,6 +40,11 @@ export type UpdateToDBType<T> = (
   data: T,
   collection: string,
 ) => Promise<boolean>;
+
+export type DeleteFromDBType = (
+  id: ObjectId,
+  collection: string,
+) => Promise<number>;
 
 // Users in DB
 export type UserNotFoundMessageType = { message: string };
