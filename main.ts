@@ -1,5 +1,5 @@
 import { load, oak, Session } from "@deps";
-import { staticsFilesMiddleware, notFoundMiddleware } from "@middlewares";
+import { notFoundMiddleware, staticsFilesMiddleware } from "@middlewares";
 import { Mongo } from "@mongo";
 import { router } from "@router";
 import type { AppState } from "@utils";
@@ -34,7 +34,7 @@ app.listen({ port: +PORT, hostname });
 app.addEventListener("listen", ({
   hostname,
   port,
-  secure
+  secure,
 }) => {
   console.log(`
     ++++++++++++++++++++++++++++++++++++++++

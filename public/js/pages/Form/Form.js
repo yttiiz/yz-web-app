@@ -6,7 +6,9 @@ export class FormPage extends PageBuilder {
     id = "users",
   ) => {
     /** @type {HTMLFormElement} */
-    const [form, deleteForm] = document.querySelectorAll(`#data-${id}-form form`);
+    const [form, deleteForm] = document.querySelectorAll(
+      `#data-${id}-form form`,
+    );
 
     form.addEventListener(
       "submit",
@@ -32,10 +34,10 @@ export class FormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
-    
+
     /** @type {HTMLDivElement} */
     const modal = document.querySelector(".delete-account-modale");
-    const modalBtns = modal.querySelectorAll("button[data-type=\"canceller\"]");
+    const modalBtns = modal.querySelectorAll('button[data-type="canceller"]');
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -76,34 +78,30 @@ export class FormPage extends PageBuilder {
         input.click();
       });
 
-      // Set button to display form "delete user" modal.
-      document.querySelector(".delete-account button")
+    // Set button to display form "delete user" modal.
+    document.querySelector(".delete-account button")
       .addEventListener("click", () => {
         modal.classList.remove("none");
       });
 
-      // Set button to abort deleting
-      for (const btn of modalBtns) {
-        btn.addEventListener("click", () => {
-          modal.classList.add("none");
-        })
-      }
+    // Set button to abort deleting
+    for (const btn of modalBtns) {
+      btn.addEventListener("click", () => {
+        modal.classList.add("none");
+      });
+    }
   };
 
   submitHandler = async (e) => {
     e.preventDefault();
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
-    
+
     const method = location.pathname === "/profil"
-      ? (isDeleteForm
-        ? "DELETE"
-        : "PUT")
+      ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
-    
-    const formData = isDeleteForm
-      ? null
-      : FormHelper.setFormData(e.target);
+
+    const formData = isDeleteForm ? null : FormHelper.setFormData(e.target);
 
     const res = await fetch(e.target.action, {
       method: method ?? "POST",
@@ -117,7 +115,6 @@ export class FormPage extends PageBuilder {
     if (res.ok && (res.status === 200 || res.status === 201)) {
       if (res.redirected) {
         window.location.href = res.url;
-     
       } else {
         switch (e.target.action) {
           case location.origin + "/login":

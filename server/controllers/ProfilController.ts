@@ -16,7 +16,7 @@ export class ProfilController extends DefaultController {
   constructor(
     router: RouterAppType,
     updateToDB: UpdateUserToDBType,
-    deleteFromDB: DeleteFromDBType
+    deleteFromDB: DeleteFromDBType,
   ) {
     super(router);
     this.updateToDB = updateToDB;
@@ -32,7 +32,6 @@ export class ProfilController extends DefaultController {
       async (ctx: RouterContextAppType<"/profil">) => {
         if (!ctx.state.session) {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
-
         } else if (ctx.state.session.has("userFirstname")) {
           const body = await this.createHtmlFile(
             ctx,
@@ -40,12 +39,11 @@ export class ProfilController extends DefaultController {
             "modifier votre profil",
           );
           this.response(ctx, body, 200);
-          
         } else {
           this.response(
             ctx,
             JSON.stringify({
-              message: "pas d'utilisateur connecté"
+              message: "pas d'utilisateur connecté",
             }),
             302,
             "/",
@@ -85,16 +83,18 @@ export class ProfilController extends DefaultController {
           if (fields.firstname) {
             ctx.state.session.set("userFirstname", fields.firstname);
           }
-  
+
           ctx.state.session.set("userEmail", fields.email);
-          ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
-  
+          ctx.state.session.flash(
+            "message",
+            this.sessionFlashMsg(fields.email),
+          );
+
           this.response(
             ctx,
             { message: this.messageToUser(isUserUpdate) },
-             201,
+            201,
           );
-
         } else {
           this.response(
             ctx,
@@ -113,20 +113,22 @@ export class ProfilController extends DefaultController {
         const userId = await ctx.state.session.get("userId") as ObjectId;
         const result = await this.deleteFromDB(userId, "users");
         const isUserDelete = result === 1;
-        
+
         if (isUserDelete) await ctx.state.session.deleteSession();
-        
+
         this.response(
-            ctx,
-            { message: this.messageToUser(
+          ctx,
+          {
+            message: this.messageToUser(
               isUserDelete ? true : false,
               "compte",
-              "supprimé"
-              ) },
-            200,
-          );
+              "supprimé",
+            ),
+          },
+          200,
+        );
       },
-    )
+    );
   }
 
   private async removeEmptyFields(
@@ -153,8 +155,10 @@ export class ProfilController extends DefaultController {
   private messageToUser = (
     bool: boolean,
     profilOrAccountStr = "profil",
-    updateOrDeleteStr = "mis à jour"
+    updateOrDeleteStr = "mis à jour",
   ) => (
-    `Votre ${profilOrAccountStr} ${bool ? "a bien" : "n'a pas"} été ${updateOrDeleteStr}.`
+    `Votre ${profilOrAccountStr} ${
+      bool ? "a bien" : "n'a pas"
+    } été ${updateOrDeleteStr}.`
   );
 }

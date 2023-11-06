@@ -40,8 +40,8 @@ export class ApiController {
       try {
         if (cursor) {
           await (cursor as FindCursorUserType)
-          .map((document, key) => users[key + 1] = document);
-  
+            .map((document, key) => users[key + 1] = document);
+
           // Remove "_id" and "hash" properties from `users` object.
           for (const key in users) {
             for (const prop in users[key]) {
@@ -49,7 +49,7 @@ export class ApiController {
               if (prop === "hash") delete users[key][prop];
             }
           }
-  
+
           this.reponse(ctx, JSON.stringify(users), 200);
         } else {
           this.reponse(
@@ -60,7 +60,6 @@ export class ApiController {
             502,
           );
         }
-
       } catch (error) {
         this.writeErrorLogAndSetResponse(ctx, error);
       }
@@ -93,7 +92,6 @@ export class ApiController {
             }),
             200,
           );
-
         } catch (error) {
           this.writeErrorLogAndSetResponse(ctx, error);
         }

@@ -6,7 +6,7 @@ export class FormHelper {
    */
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
-    
+
     FormHelper.#paragraphToShowInfo({
       msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
       dataSet: "success",
@@ -31,7 +31,7 @@ export class FormHelper {
   static showProfilUpdateDetails = async (response) => {
     const status = response.status;
     const { message } = await response.json();
-    
+
     FormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: status === 201 ? "success" : "error",
@@ -45,7 +45,7 @@ export class FormHelper {
     const { message } = await response.json();
 
     FormHelper.#redesignModalToShowInfo(message);
-  }
+  };
 
   /**
    * @param {Response} response
@@ -55,7 +55,7 @@ export class FormHelper {
     const status = response.status;
     const id = pathname === "/profil" ? "profil" : "users";
     const { errorMsg } = await response.json();
-    
+
     FormHelper.#paragraphToShowInfo({
       msg: errorMsg + status,
       dataSet: "error",
@@ -85,7 +85,7 @@ export class FormHelper {
   };
 
   /**
-   * @param {string} msg 
+   * @param {string} msg
    */
   static #redesignModalToShowInfo = (msg) => {
     const modal = document.querySelector(".delete-account-modale > div");
@@ -94,11 +94,11 @@ export class FormHelper {
     modal.removeChild(form);
     modal.querySelector("p").textContent = msg;
     modal.querySelector(".show-message-to-user")
-    .classList.remove("none");
-    
+      .classList.remove("none");
+
     modal.querySelector("button")
-    .addEventListener("click", () => window.location.href = "/");
-  }
+      .addEventListener("click", () => window.location.href = "/");
+  };
 
   /**
    * @param {NodeListOf<HTMLInputElement>} inputs

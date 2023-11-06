@@ -8,7 +8,6 @@ export const notFoundMiddleware = async (
   try {
     await next();
   } catch (error) {
-
     new NotFoundController()
       .handle404Response(
         ctx,
