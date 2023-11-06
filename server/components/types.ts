@@ -5,6 +5,8 @@ export type ComponentNameType =
   | "Footer"
   | "LogoutForm"
   | "Login"
+  | "DeleteAccount"
+  | "DeleteAccountForm"
   | "UserSvg"
   | "Logo"
   | "EyeOpenSvg"
@@ -65,8 +67,11 @@ export type FormType = {
   changePhoto?: string;
 };
 
-export type FormProfilType = FormType & {
+export type DeleteAccountType = {
   deleteAccount: InformativeContentAndButtonType & {
+    title: string;
+  },
+  deleteModal: InformativeContentAndButtonType & {
     title: string;
     action: string;
     method: string;

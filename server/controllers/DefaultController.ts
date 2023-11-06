@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 import { oak } from "@deps";
-import * as layers from "@components";
+import * as layout from "@components";
 import { Helper, Http } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 import type {
@@ -91,15 +91,15 @@ export class DefaultController {
     return photo;
   }
 
-  private file(kind: layers.ComponentNameType): string {
+  private file(kind: layout.ComponentNameType): string {
     if (kind === "Body") {
-      return layers.Body.content;
+      return layout.Body.content;
     }
 
-    return layers[kind].content;
+    return layout[kind].content;
   }
 
-  private createComponents(...args: layers.ComponentNameType[]) {
+  private createComponents(...args: layout.ComponentNameType[]) {
     const components = [];
 
     for (const arg of args) {
@@ -109,7 +109,7 @@ export class DefaultController {
     return components;
   }
 
-  private createNotFoundContent(data: layers.NotFoundType): string {
+  private createNotFoundContent(data: layout.NotFoundType): string {
     return `<h1>${data.title}</h1>
     <div>
       <p>${data.paragraph}</p>
@@ -119,7 +119,7 @@ export class DefaultController {
     <div>`;
   }
 
-  private createAuthForm(data: layers.FormType): string {
+  private createAuthForm(data: layout.FormType): string {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
@@ -130,7 +130,7 @@ export class DefaultController {
     </form>`;
   }
 
-  private createProfilForm(data: layers.FormProfilType): string {
+  private createProfilForm(data: layout.FormType): string {
     return `<h1>${data.title}</h1>
     <form
       action="${data.action}"
@@ -150,17 +150,8 @@ export class DefaultController {
       </div>
       <input type="${data.content.at(-1)!.type}" value="${data.content.at(-1)!.value}"/>
     </form>
-
-    <form
-      id="delete-account"
-      action="${data.deleteAccount.action}"
-      method="${data.deleteAccount.method}"
-      type="multipart/form-data"
-    >
-      <h3>${data.deleteAccount.title}</h3>
-      <p>${data.deleteAccount.paragraph}</p>
-      <input type="submit" value="${data.deleteAccount.btnText}" />
-    </form>
+    ${layout.DeleteAccount.content}
+    ${layout.DeleteAccountForm.content}
     `;
   }
 
@@ -188,7 +179,7 @@ export class DefaultController {
 
       header = header.replace(
         "{{ application-session }}",
-        layers.LogoutForm.content
+        layout.LogoutForm.content
           .replace(
             "{{ user-infos }}",
             "Bonjour <a href=\"/profil\">" + firstname + "</a>",
@@ -198,7 +189,7 @@ export class DefaultController {
     } else {
       header = header.replace(
         "{{ application-session }}",
-        layers.Login.content,
+        layout.Login.content,
       );
     }
     return header;
@@ -233,7 +224,7 @@ export class DefaultController {
   }
 
   private setInputsForm(
-    content: layers.InputType[],
+    content: layout.InputType[],
     isProfilInputs = true
   ) {
     return content
@@ -262,8 +253,8 @@ export class DefaultController {
         ${type === "password"
           ? (
             `<div id="eye-password">
-                <span>${layers.EyeShutSvg.content}</span>
-                <span class="none">${layers.EyeOpenSvg.content}</span>
+                <span>${layout.EyeShutSvg.content}</span>
+                <span class="none">${layout.EyeOpenSvg.content}</span>
               </div>`
             )
           : ""}

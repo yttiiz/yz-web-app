@@ -51,6 +51,20 @@ button, input[type="submit"] {
     cursor: pointer;
 }
 
+button[data-type="call-to-action"],
+input {
+    border-radius: var(--btn-border-radius);
+    font-size: var(--base-size);
+}
+
+button[data-type="call-to-action"],
+input[type="submit"] {
+    padding: var(--btn-padding);
+    height: max-content;
+    color: var(--light);
+    font-weight: 500;
+}
+
 input[type=password]:not(:placeholder-shown) {
     font: small-caption;
     font-size: calc(var(--base-size) * 1.25);
@@ -279,6 +293,11 @@ h1 {
     border-bottom: .1rem solid var(--primary-color);
 }
 
+h3 {
+    font-size: calc(var(--base-size) * 1.5);
+    font-weight: 400;
+}
+
 #data-users > ul,
 #data-users-form > form {
     display: grid;
@@ -355,8 +374,6 @@ h1 {
     & > form input {
         padding: calc(var(--base-size) * .625);
         height: calc(var(--base-size) * 3);
-        font-size: var(--base-size);
-        border-radius: var(--btn-border-radius);
     }
 
     & > form input:not(input[type="submit"]) {
@@ -364,12 +381,8 @@ h1 {
     }
 
     & > form > input[type="submit"] {
-        padding: var(--btn-padding);
-        height: max-content;
         align-self: end;
         background: var(--primary-color);
-        color: var(--light);
-        font-weight: 500;
     }
 
     & > form input[type="password"] {
@@ -446,6 +459,92 @@ h1 {
             row-gap: 1.2rem;
             column-gap: 2rem;
         }
+    }
+
+    & .delete-account {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * .85);
+        padding: var(--base-size);
+        border: .1rem solid var(--danger);
+        border-radius: calc(var(--base-size) * .8);
+
+        & button {
+            background: var(--danger);
+            align-self: start;
+        }
+    }
+
+    & .delete-account-modale {
+        left: 0;
+        top: 0;
+        position: fixed;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background: rgb(0 0 0 / .75);
+
+        & > form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--base-size);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(30rem, 80%, 50rem);
+            padding: calc(var(--base-size) * 1.125);
+            height: max-content;
+            background: var(--light);
+        }
+
+        & > form > button {
+            position: inherit;
+            right: 0;
+            top: 0;
+            transform: translate(50%, -50%);
+            background: var(--primary-color);
+            box-shadow: var(--box-shadow);
+            border-radius: 50%;
+            width: calc(var(--base-size) * 1.825);
+            aspect-ratio: 1 / 1;
+        }
+
+        & > form > button span {
+            position: inherit;
+            left: 50%;
+            top: 50%;
+            background: var(--light);
+            height: .2rem;
+            width: 60%;
+        }
+
+        & > form > button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        & > form > button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        & > form > span {
+            display: inherit;
+            gap: inherit;
+        }
+
+        & > form > span input[type="submit"] {
+            background: var(--danger);
+            align-self: start;
+        }
+
+        & > form > span button {
+            font-size: var(--base-size);
+            font-weight: 400;
+        }
+    }
+
+    .delete-account-modale.none {
+        display: none;
     }
 }
 

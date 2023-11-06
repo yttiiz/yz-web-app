@@ -13,7 +13,7 @@ export const Header: ComponentType = {
     <div class="container">
       <div>
         <div id="burger">
-          <button>
+          <button type="button">
             <span></span>
             <span></span>
             <span></span>

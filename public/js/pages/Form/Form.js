@@ -25,6 +25,10 @@ export class FormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
+    
+    /** @type {HTMLDivElement} */
+    const modal = document.querySelector(".delete-account-modale");
+    const modalBtns = modal.querySelectorAll("button[data-type=\"canceller\"]");
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -64,6 +68,19 @@ export class FormPage extends PageBuilder {
 
         input.click();
       });
+
+      // Set button to display form "delete user" modal.
+      document.querySelector(".delete-account button")
+      .addEventListener("click", () => {
+        modal.classList.remove("none");
+      });
+
+      // Set button to abort deleting
+      for (const btn of modalBtns) {
+        btn.addEventListener("click", () => {
+          modal.classList.add("none");
+        })
+      }
   };
 
   submitHandler = async (e) => {
