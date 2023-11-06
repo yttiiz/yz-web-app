@@ -93,9 +93,8 @@ export class FormPage extends PageBuilder {
   submitHandler = async (e) => {
     e.preventDefault();
 
-    const isDeleteForm = e.currentTarget.dataset.type === "delete-account";
+    const isDeleteForm = e.target.dataset.type === "delete-account";
     
-    //Set method according to the given event target.
     const method = location.pathname === "/profil"
       ? (isDeleteForm
         ? "DELETE"
@@ -115,14 +114,10 @@ export class FormPage extends PageBuilder {
       FormHelper.removeInputsValues(e.target.children);
     }
 
-    if (isDeleteForm) {
-      e.target.closest(".delete-account-modale")
-      .classList.add("none");
-    }
-
     if (res.ok && (res.status === 200 || res.status === 201)) {
       if (res.redirected) {
         window.location.href = res.url;
+     
       } else {
         switch (e.target.action) {
           case location.origin + "/login":
@@ -133,9 +128,12 @@ export class FormPage extends PageBuilder {
             FormHelper.showRegisterDetails(res);
             break;
 
-          case location.origin + "/profil":
-            FormHelper.showProfilDetails(res);
+          case location.origin + "/profil": {
+            isDeleteForm
+              ? FormHelper.showProfilDeleteDetails(res)
+              : FormHelper.showProfilUpdateDetails(res);
             break;
+          }
         }
       }
     } else {

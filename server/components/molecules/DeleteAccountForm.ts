@@ -33,6 +33,9 @@ export const DeleteAccountForm: ComponentType = {
           value="${deleteModal.btnText}"
         />
       </form>
+      <span class="show-message-to-user none">
+        <a href="/">Retour à l'accueil</a>
+      </span>
     </div>
   </div>`,
 };

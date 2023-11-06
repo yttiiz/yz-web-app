@@ -28,7 +28,7 @@ export class FormHelper {
   /**
    * @param {Response} response
    */
-  static showProfilDetails = async (response) => {
+  static showProfilUpdateDetails = async (response) => {
     const status = response.status;
     const { message } = await response.json();
     
@@ -37,6 +37,15 @@ export class FormHelper {
       dataSet: status === 201 ? "success" : "error",
     }, "profil");
   };
+
+  /**
+   * @param {Response} response
+   */
+  static showProfilDeleteDetails = async (response) => {
+    const { message } = await response.json();
+
+    FormHelper.#redesignModalToShowInfo(message);
+  }
 
   /**
    * @param {Response} response
@@ -74,6 +83,22 @@ export class FormHelper {
     box.dataset.msgInfos = dataSet;
     box.textContent = msg;
   };
+
+  /**
+   * @param {string} msg 
+   */
+  static #redesignModalToShowInfo = (msg) => {
+    const modal = document.querySelector(".delete-account-modale > div");
+    const form = modal.querySelector("form");
+
+    modal.removeChild(form);
+    modal.querySelector("p").textContent = msg;
+    modal.querySelector(".show-message-to-user")
+    .classList.remove("none");
+    
+    modal.querySelector("button")
+    .addEventListener("click", () => window.location.href = "/");
+  }
 
   /**
    * @param {NodeListOf<HTMLInputElement>} inputs

@@ -551,6 +551,22 @@ h3 {
         }
     }
 
+    .show-message-to-user {
+        padding-top: var(--base-size);
+        border-top: .1rem solid rgb(var(--black-rvb) / .3);
+
+        & > a {
+            display: inline-block;
+            color: var(--light);
+            font-size: var(--base-size);
+            font-weight: 400;
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--primary-color);
+        }
+    }
+
+    .show-message-to-user.none,
     .delete-account-modale.none {
         display: none;
     }
