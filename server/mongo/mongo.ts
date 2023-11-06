@@ -68,6 +68,19 @@ export class Mongo {
     } else return { message: Mongo.errorMsg };
   }
 
+  public static async deleteFromDB<T extends Document>(
+    id: ObjectId,
+    collection: string,
+  ) {
+    const users = await Mongo.clientConnectTo<T>(collection);
+
+    if (users) {
+      return await users.deleteOne({ _id: id});
+    }
+
+    return 0;
+  }
+
   public static async setStore() {
     try {
       const db = await Mongo.client.connect(

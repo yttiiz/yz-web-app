@@ -28,12 +28,12 @@ export class Router {
       }
 
       case this.host + "register": {
-        this.#form.renderForm();
+        this.#form.initForm();
         break;
       }
 
       case this.host + "login": {
-        this.#form.renderForm();
+        this.#form.initForm();
         break;
       }
 

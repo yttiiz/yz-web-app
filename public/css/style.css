@@ -9,7 +9,13 @@
     --danger: #9E2A2B;
     --dark: #1e1d1d;
     --light: #ebebeb;
-    --box-shadow: 0 0 15px rgb(0 0 0 / .1);
+    
+    
+    /*=====| Colors & opacity |===== */
+    --black-rvb: 0 0 0;
+    --white-rvb: 255 255 255;
+    --shadow: rgb(var(--black-rvb) / .85);
+    --box-shadow: 0 0 15px rgb(var(--black-rvb) / .1);
 
     /*=====| Sizes |===== */
     --base-size: clamp(1.4rem, 2vw, 1.6rem);
@@ -482,9 +488,9 @@ h3 {
         z-index: 1;
         width: 100vw;
         height: 100vh;
-        background: rgb(0 0 0 / .75);
+        background: var(--shadow);
 
-        & > form {
+        & > div {
             display: flex;
             flex-direction: column;
             gap: var(--base-size);
@@ -498,7 +504,7 @@ h3 {
             background: var(--light);
         }
 
-        & > form > button {
+        & > div > button {
             position: inherit;
             right: 0;
             top: 0;
@@ -510,7 +516,7 @@ h3 {
             aspect-ratio: 1 / 1;
         }
 
-        & > form > button span {
+        & > div > button span {
             position: inherit;
             left: 50%;
             top: 50%;
@@ -519,25 +525,27 @@ h3 {
             width: 60%;
         }
 
-        & > form > button span:nth-child(1) {
+        & > div > button span:nth-child(1) {
             transform: translate(-50%, -50%) rotate(45deg);
         }
 
-        & > form > button span:nth-child(2) {
+        & > div > button span:nth-child(2) {
             transform: translate(-50%, -50%) rotate(-45deg);
         }
 
-        & > form > span {
+        & > div > form {
+            padding-top: var(--base-size);
             display: inherit;
             gap: inherit;
+            border-top: .1rem solid rgb(var(--black-rvb) / .3);
         }
 
-        & > form > span input[type="submit"] {
+        & > div > form input[type="submit"] {
             background: var(--danger);
             align-self: start;
         }
 
-        & > form > span button {
+        & > div > form button {
             font-size: var(--base-size);
             font-weight: 400;
         }

@@ -148,7 +148,10 @@ export class DefaultController {
           ${this.setInputsForm(data.content)}
         </div>
       </div>
-      <input type="${data.content.at(-1)!.type}" value="${data.content.at(-1)!.value}"/>
+      <input
+        type="${data.content.at(-1)!.type}"
+        value="${data.content.at(-1)!.value}"
+      />
     </form>
     ${layout.DeleteAccount.content}
     ${layout.DeleteAccountForm.content}
@@ -169,15 +172,16 @@ export class DefaultController {
     ctx: RouterContextAppType<T> | oak.Context,
   ): Promise<string> {
     if (!ctx.state.session) {
-      header = header.replace(
+      return header.replace(
         "{{ application-session }}",
         "",
       );
-
-    } else if (ctx.state.session.has("userFirstname")) {
+    }
+    
+    if (ctx.state.session.has("userFirstname")) {
       const firstname = await ctx.state.session.get("userFirstname");
 
-      header = header.replace(
+      return header.replace(
         "{{ application-session }}",
         layout.LogoutForm.content
           .replace(
@@ -185,14 +189,12 @@ export class DefaultController {
             "Bonjour <a href=\"/profil\">" + firstname + "</a>",
           ),
       );
-      
-    } else {
-      header = header.replace(
-        "{{ application-session }}",
-        layout.Login.content,
-      );
     }
-    return header;
+
+    return header.replace(
+      "{{ application-session }}",
+      layout.Login.content,
+    );
   }
 
   private async setMainHtml(

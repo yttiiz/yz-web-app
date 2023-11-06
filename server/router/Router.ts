@@ -25,6 +25,7 @@ new AuthController(
 new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
+  Mongo.deleteFromDB,
 );
 new ApiController(
   router,

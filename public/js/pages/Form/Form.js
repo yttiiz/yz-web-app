@@ -2,16 +2,23 @@ import { PageBuilder } from "../Builder.js";
 import { FormHelper } from "../../utils/FormHelper.js";
 
 export class FormPage extends PageBuilder {
-  renderForm = (
+  initForm = (
     id = "users",
   ) => {
     /** @type {HTMLFormElement} */
-    const form = document.querySelector(`#data-${id}-form form`);
+    const [form, deleteForm] = document.querySelectorAll(`#data-${id}-form form`);
 
     form.addEventListener(
       "submit",
       (e) => this.submitHandler(e),
     );
+
+    if (deleteForm) {
+      deleteForm.addEventListener(
+        "submit",
+        (e) => this.submitHandler(e),
+      );
+    }
   };
 
   /**
@@ -48,8 +55,8 @@ export class FormPage extends PageBuilder {
       }
     }
 
-    // Set form
-    this.renderForm(id);
+    // Set form submission
+    this.initForm(id);
 
     // Set input file to change photo
     userPhotoContainer.querySelector("button")
@@ -86,9 +93,19 @@ export class FormPage extends PageBuilder {
   submitHandler = async (e) => {
     e.preventDefault();
 
-    const method = location.pathname === "/profil" ? "PUT" : null;
+    const isDeleteForm = e.currentTarget.dataset.type === "delete-account";
+    
+    //Set method according to the given event target.
+    const method = location.pathname === "/profil"
+      ? (isDeleteForm
+        ? "DELETE"
+        : "PUT")
+      : null;
+    
+    const formData = isDeleteForm
+      ? null
+      : FormHelper.setFormData(e.target);
 
-    const formData = FormHelper.setFormData(e.target);
     const res = await fetch(e.target.action, {
       method: method ?? "POST",
       body: formData,
@@ -96,6 +113,11 @@ export class FormPage extends PageBuilder {
 
     if (location.pathname !== "/profil") {
       FormHelper.removeInputsValues(e.target.children);
+    }
+
+    if (isDeleteForm) {
+      e.target.closest(".delete-account-modale")
+      .classList.add("none");
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {

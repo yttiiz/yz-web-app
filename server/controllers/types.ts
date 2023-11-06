@@ -39,6 +39,11 @@ export type UpdateToDBType<T> = (
   collection: string,
 ) => Promise<boolean>;
 
+export type DeleteFromDBType = (
+  id: ObjectId,
+  collection: string,
+) => Promise<number>;
+
 // Users in DB
 export type UserNotFoundMessageType = { message: string };
 export type UserDataType = Record<

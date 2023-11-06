@@ -1,6 +1,7 @@
 import { oak, ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
+  DeleteFromDBType,
   RouterAppType,
   RouterContextAppType,
   UpdateUserToDBType,
@@ -10,15 +11,19 @@ import type { UserSchemaWithOptionalFieldsType } from "@mongo";
 
 export class ProfilController extends DefaultController {
   private updateToDB;
+  private deleteFromDB;
 
   constructor(
     router: RouterAppType,
     updateToDB: UpdateUserToDBType,
+    deleteFromDB: DeleteFromDBType
   ) {
     super(router);
     this.updateToDB = updateToDB;
+    this.deleteFromDB = deleteFromDB;
     this.getProfil();
     this.putProfil();
+    this.deleteProfil();
   }
 
   private getProfil() {
@@ -54,10 +59,6 @@ export class ProfilController extends DefaultController {
     this.router?.put(
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
-        const msgUpdate = (bool: boolean) => (
-          `Votre profil ${bool ? "a bien" : "n'a pas"} été mis à jour.`
-        );
-        
         let photo = "";
         const data = await ctx.request.body().value as oak.FormDataReader;
         const { fields, files } = await data.read({ maxSize: 10_000_000 });
@@ -88,13 +89,44 @@ export class ProfilController extends DefaultController {
           ctx.state.session.set("userEmail", fields.email);
           ctx.state.session.flash("message", this.sessionFlashMsg(fields.email));
   
-          this.response(ctx, { message: msgUpdate(isUserUpdate) }, 201 );
+          this.response(
+            ctx,
+            { message: this.messageToUser(isUserUpdate) },
+             201,
+          );
 
         } else {
-          this.response(ctx, { message: msgUpdate(isUserUpdate) }, 200 );
+          this.response(
+            ctx,
+            { message: this.messageToUser(isUserUpdate) },
+            200,
+          );
         }
       },
     );
+  }
+
+  private deleteProfil() {
+    this.router?.delete(
+      "/profil",
+      async (ctx: RouterContextAppType<"/profil">) => {
+        const userId = await ctx.state.session.get("userId") as ObjectId;
+        const result = await this.deleteFromDB(userId, "users");
+        const isUserDelete = result === 1;
+        
+        if (isUserDelete) await ctx.state.session.deleteSession();
+        
+        this.response(
+            ctx,
+            { message: this.messageToUser(
+              isUserDelete ? true : false,
+              "compte",
+              "supprimé"
+              ) },
+            200,
+          );
+      },
+    )
   }
 
   private async removeEmptyFields(
@@ -117,4 +149,12 @@ export class ProfilController extends DefaultController {
 
     return trustData;
   }
+
+  private messageToUser = (
+    bool: boolean,
+    profilOrAccountStr = "profil",
+    updateOrDeleteStr = "mis à jour"
+  ) => (
+    `Votre ${profilOrAccountStr} ${bool ? "a bien" : "n'a pas"} été ${updateOrDeleteStr}.`
+  );
 }
