@@ -7,6 +7,7 @@ export * from "./atoms/UserSvg.ts";
 export * from "./atoms/EyeOpenSvg.ts";
 export * from "./atoms/EyeShutSvg.ts";
 export * from "./atoms/OnOffSvg.ts";
+export * from "./atoms/CircleSvg.ts";
 export * from "./molecules/LogoutForm.ts";
 export * from "./molecules/Login.ts";
 export * from "./molecules/DeleteAccount.ts";

@@ -94,6 +94,13 @@ p {
     line-height: calc(var(--base-size) * 1.5);
 }
 
+noscript {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /*=================================================| GUIDELINE |=================================================*/
 
 .container {
@@ -289,11 +296,19 @@ footer > div {
     padding: 2rem 0;
 }
 
+section {
+    display: flex;
+    flex-direction: column;
+}
+
+section:not(:last-of-type) {
+    margin-bottom: calc(var(--base-size) * 2);
+}
+
 h1 {
     font-size: calc(var(--base-size) * 2.1875);
     font-weight: 500;
     line-height: calc(var(--base-size) * 2.75);
-    margin-bottom: 3rem;
     padding-bottom: .75rem;
     color: var(--primary-color);
     border-bottom: .1rem solid var(--primary-color);
@@ -304,19 +319,19 @@ h3 {
     font-weight: 400;
 }
 
-#data-users > ul,
-#data-users-form > form {
+#data-users section > ul,
+#data-users-form section > form {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
 #data-users {
-    & > ul > li,
-    & > ul > li > div {
+    & section > ul > li,
+    & section > ul > li > div {
         display: flex;
     }
 
-    & > ul > li {
+    & section > ul > li {
         align-items: center;
 
         & > div {
@@ -358,62 +373,59 @@ h3 {
     }
 }
 
-#data-users > ul,
-#data-users > ul > li,
-#data-users-form > form {
+section,
+#data-users section > ul,
+#data-users section > ul > li,
+#data-users-form section > form {
     gap: calc(var(--base-size) * 1.8);
 }
 
 #data-users-form,
 #data-profil-form {
-    & > form {
-        margin-bottom: var(--base-size);
-    }
-
-    & > form label {
+    & section > form label {
         position: relative;
         display: grid;
         flex-direction: column;
         gap: .5rem;
     }
 
-    & > form input {
+    & section > form input {
         padding: calc(var(--base-size) * .625);
         height: calc(var(--base-size) * 3);
     }
 
-    & > form input:not(input[type="submit"]) {
+    & section > form input:not(input[type="submit"]) {
         border: .1rem solid var(--dark);
     }
 
-    & > form > input[type="submit"] {
+    & section > form > input[type="submit"] {
         align-self: end;
         background: var(--primary-color);
     }
 
-    & > form input[type="password"] {
+    & section > form input[type="password"] {
         padding-right: 4rem;
     }
 }
 
 #data-users-form,
 #data-profil-form {
-    & > p[data-msg-infos="success"],
-    & > p[data-msg-infos="error"] {
+    & section > p[data-msg-infos="success"],
+    & section > p[data-msg-infos="error"] {
         font-weight: 400;
     }
 
-    & > p[data-msg-infos="success"] {
+    & section > p[data-msg-infos="success"] {
         color: rgb(0, 128, 0);
     }
 
-    & > p[data-msg-infos="error"] {
+    & section > p[data-msg-infos="error"] {
         color: rgb(128, 0, 0);
     }
 }
 
 #data-profil-form {
-    & > form {
+    & section > form {
         display: flex;
         flex-direction: column;
         gap: calc(var(--base-size) * 2);
@@ -573,13 +585,13 @@ h3 {
 }
 
 #data-not-found {
-    & > div {
+    & section > div {
         display: flex;
         flex-direction: column;
         gap: calc(var(--base-size) * 2);
     }
 
-    & > div a {
+    & section > div a {
         padding: var(--btn-padding);
         border-radius: var(--btn-border-radius);
         color: var(--light);
@@ -637,7 +649,7 @@ footer {
 /*=================================================| BREAKPOINTS |=================================================*/
 
 @media screen and (max-width: 950px) {
-    #data-profil-form > form {
+    #data-profil-form section > form {
         & > div {
             flex-direction: column;
         }
@@ -660,8 +672,8 @@ footer {
 }
 
 @media screen and (max-width: 750px) {
-    #data-users > ul,
-    #data-users-form > form {
+    #data-users section > ul,
+    #data-users-form section > form {
         grid-template-columns: 1fr;
     }
 }

@@ -71,7 +71,7 @@ export class FormHelper {
     let box;
 
     /** @type {HTMLDivElement} */
-    const container = document.querySelector(FormHelper.id(id));
+    const container = document.querySelector(FormHelper.id(id) + " section");
 
     if (container.querySelector("p[data-msg-infos]")) {
       box = container.querySelector("p[data-msg-infos]");

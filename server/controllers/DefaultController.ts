@@ -110,50 +110,61 @@ export class DefaultController {
   }
 
   private createNotFoundContent(data: layout.NotFoundType): string {
-    return `<h1>${data.title}</h1>
-    <div>
-      <p>${data.paragraph}</p>
-      <span>
-      <a href="${data.btnLink}">${data.btnText}</a>
-      </span>
-    <div>`;
+    return `
+    <section>
+      <h1>${data.title}</h1>
+      <div>
+        <p>${data.paragraph}</p>
+        <span>
+        <a href="${data.btnLink}">${data.btnText}</a>
+        </span>
+      <div>
+    </section>`;
   }
 
   private createAuthForm(data: layout.FormType): string {
-    return `<h1>${data.title}</h1>
-    <form
-      action="${data.action}"
-      method="${data.method}"
-      type="multipart/form-data"
-    >
-      ${this.setInputsForm(data.content, false)}
-    </form>`;
+    return `
+    <section>
+      <h1>${data.title}</h1>
+      <form
+        action="${data.action}"
+        method="${data.method}"
+        type="multipart/form-data"
+      >
+        ${this.setInputsForm(data.content, false)}
+      </form>
+    </section>`;
   }
 
   private createProfilForm(data: layout.FormType): string {
-    return `<h1>${data.title}</h1>
-    <form
-      action="${data.action}"
-      method="${data.method}"
-      type="multipart/form-data"
-    >
-      <div>
-        <div class="user-photo">
-          <figure>
-            <img src="/img/users/default.png" alt="default user image" />
-          </figure>
-          <button type="button">${data.changePhoto ?? "change"}</button>
+    return `
+    <section>
+      <h1>${data.title}</h1>
+      <form
+        action="${data.action}"
+        method="${data.method}"
+        type="multipart/form-data"
+      >
+        <div>
+          <div class="user-photo">
+            <figure>
+              <img src="/img/users/default.png" alt="default user image" />
+            </figure>
+            <button type="button">${data.changePhoto ?? "change"}</button>
+          </div>
+          <div class="user-infos">
+            ${this.setInputsForm(data.content)}
+          </div>
         </div>
-        <div class="user-infos">
-          ${this.setInputsForm(data.content)}
-        </div>
-      </div>
-      <input
-        type="${data.content.at(-1)!.type}"
-        value="${data.content.at(-1)!.value}"
-      />
-    </form>
-    ${layout.DeleteAccount.content}
+        <input
+          type="${data.content.at(-1)!.type}"
+          value="${data.content.at(-1)!.value}"
+        />
+      </form>
+    </section>
+    <section>
+      ${layout.DeleteAccount.content}
+    </section>
     ${layout.DeleteAccountForm.content}
     `;
   }

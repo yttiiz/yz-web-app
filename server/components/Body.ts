@@ -19,8 +19,16 @@ export const Body: ComponentType = {
       <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     </head>
     <body>
+      <noscript>
+        <h1>
+          JavaScript est désactivé sur votre navigateur
+        </h1>
+        <h4>
+          Veuillez activer JavaScript de manière à pouvoir utiliser toutes les fonctionnalités de l'application.
+        </h4>
+      </noscript>
       {{ application-content }}
-    <script type="module" src="./js/index.js"></script>
+      <script type="module" src="./js/index.js"></script>
     </body>
     </html>`,
 };

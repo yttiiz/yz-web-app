@@ -11,6 +11,7 @@ export type ComponentNameType =
   | "Logo"
   | "EyeOpenSvg"
   | "EyeShutSvg"
+  | "CircleSvg"
   | "OnOffSvg";
 
 export type ComponentType = {
