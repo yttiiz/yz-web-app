@@ -12,13 +12,13 @@ export class FormPage extends PageBuilder {
 
     form.addEventListener(
       "submit",
-      (e) => this.submitHandler(e),
+      (e) => this.#submitHandler(e),
     );
 
     if (deleteForm) {
       deleteForm.addEventListener(
         "submit",
-        (e) => this.submitHandler(e),
+        (e) => this.#submitHandler(e),
       );
     }
   };
@@ -86,13 +86,14 @@ export class FormPage extends PageBuilder {
 
     // Set button to abort deleting
     for (const btn of modalBtns) {
-      btn.addEventListener("click", () => {
-        modal.classList.add("none");
-      });
+      btn.addEventListener("click", this.#hideModalHandler);
     }
   };
 
-  submitHandler = async (e) => {
+  /**
+   * @param {Event} e 
+   */
+  #submitHandler = async (e) => {
     e.preventDefault();
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
@@ -127,7 +128,10 @@ export class FormPage extends PageBuilder {
 
           case location.origin + "/profil": {
             isDeleteForm
-              ? FormHelper.showProfilDeleteDetails(res)
+              ? FormHelper.showProfilDeleteDetails(
+                  res,
+                  this.#hideModalHandler,
+                )
               : FormHelper.showProfilUpdateDetails(res);
             break;
           }
@@ -136,5 +140,13 @@ export class FormPage extends PageBuilder {
     } else {
       FormHelper.showErrorMsg(res, location.pathname);
     }
+  };
+
+  /**
+   * @param {Event} e 
+   */
+  #hideModalHandler = (e) => {
+    e.currentTarget.closest(".delete-account-modale")
+    .classList.add("none");
   };
 }

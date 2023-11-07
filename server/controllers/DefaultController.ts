@@ -255,8 +255,12 @@ export class DefaultController {
         ${type === "password"
           ? (
             `<div id="eye-password">
-                <span>${layout.EyeShutSvg.content}</span>
-                <span class="none">${layout.EyeOpenSvg.content}</span>
+                <span>
+                  ${layout.EyeShutSvg.content}
+                </span>
+                <span class="none">
+                  ${layout.EyeOpenSvg.content}
+                </span>
               </div>`
             )
           : ""}

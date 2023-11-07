@@ -86,8 +86,12 @@ export class FormHelper {
 
   /**
    * @param {string} msg
+   * @param {() => void} hideModalhandler
    */
-  static #redesignModalToShowInfo = (msg) => {
+  static #redesignModalToShowInfo = (
+    msg,
+    hideModalhandler
+  ) => {
     const modal = document.querySelector(".delete-account-modale > div");
     const form = modal.querySelector("form");
 
@@ -96,6 +100,8 @@ export class FormHelper {
     modal.querySelector(".show-message-to-user")
       .classList.remove("none");
 
+    modal.querySelector("button")
+      .removeEventListener("click", hideModalhandler);
     modal.querySelector("button")
       .addEventListener("click", () => window.location.href = "/");
   };
