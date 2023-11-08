@@ -1,16 +1,20 @@
 import { Helper } from "@utils";
-import type { ComponentType, NotFoundType } from "../mod.ts";
+import type {
+  ComponentType,
+  MoleculeNameType,
+  NotFoundDataType
+} from "../mod.ts";
 
 const {
   title,
   paragraph,
   btnLink,
   btnText
-}: NotFoundType = await Helper.convertJsonToObject(
+}: NotFoundDataType = await Helper.convertJsonToObject(
   "/server/data/404/not.found.json",
 );
 
-export const NotFound: ComponentType = {
+export const NotFound: ComponentType<MoleculeNameType> = {
   name: "NotFound",
   html: `
   <h1>${title}</h1>

@@ -1,6 +1,6 @@
-import type { ComponentType } from "../mod.ts";
+import type { ComponentType, OrganismNameType } from "../mod.ts";
 
-export const Main: ComponentType = {
+export const Main: ComponentType<OrganismNameType> = {
   name: "Main",
   html: `<main>
     <div id={{ id }} class="container">

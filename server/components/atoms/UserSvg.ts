@@ -1,6 +1,6 @@
-import { ComponentType } from "../mod.ts";
+import { ComponentType, AtomNameType } from "../mod.ts";
 
-export const UserSvg: ComponentType = {
+export const UserSvg: ComponentType<AtomNameType> = {
   name: "UserSvg",
   html: `
   <svg

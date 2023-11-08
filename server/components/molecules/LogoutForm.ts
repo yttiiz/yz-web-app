@@ -1,6 +1,7 @@
-import { ComponentType, OnOffSvg, UserSvg } from "../mod.ts";
+import { OnOffSvg, UserSvg } from "../mod.ts";
+import type { ComponentType, MoleculeNameType } from "../mod.ts";
 
-export const LogoutForm: ComponentType = {
+export const LogoutForm: ComponentType<MoleculeNameType> = {
   name: "LogoutForm",
   html: `
   <div>

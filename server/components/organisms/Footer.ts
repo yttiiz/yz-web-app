@@ -1,30 +1,41 @@
+// deno-fmt-ignore-file
 import { Helper } from "@utils";
-import type { ComponentType, FooterType } from "../mod.ts";
+import type {
+  ComponentType,
+  FooterDataType,
+  OrganismNameType
+} from "../mod.ts";
 
 const {
   basicItems,
   relatedItems,
-}: FooterType = await Helper.convertJsonToObject(
+}: FooterDataType = await Helper.convertJsonToObject(
   "/server/data/basics/footer.json",
 );
 
-export const Footer: ComponentType = {
+export const Footer: ComponentType<OrganismNameType> = {
   name: "Footer",
   html: `<footer>
     <div class="container">
         <ul>
-            ${
-    basicItems
-      .map((item) => `<li><a href="${item.link}">${item.text}</a></li>`)
-      .join("")
-  }
+        ${
+          basicItems
+            .map((item) => (
+              `<li>
+                <a href="${item.link}">${item.text}</a>
+              </li>`)
+            ).join("")
+        }
         </ul>
         <ul>
-            ${
-    relatedItems
-      .map((item) => `<li><a href="${item.link}">${item.text}</a></li>`)
-      .join("")
-  }
+        ${
+          relatedItems
+            .map((item) => (
+              `<li>
+                <a href="${item.link}">${item.text}</a>
+              </li>`)
+            ).join("")
+        }
         </ul>
     </div>
 </footer>`,

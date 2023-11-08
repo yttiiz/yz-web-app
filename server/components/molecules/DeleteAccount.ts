@@ -1,13 +1,17 @@
 import { Helper } from "@utils";
-import type { ComponentType, DeleteAccountType } from "../mod.ts";
+import type {
+  ComponentType,
+  DeleteAccountDataType,
+  MoleculeNameType,
+} from "../mod.ts";
 
 const {
   deleteAccount,
-}: DeleteAccountType = await Helper.convertJsonToObject(
+}: DeleteAccountDataType = await Helper.convertJsonToObject(
   "/server/data/profil/delete.profil.json",
 );
 
-export const DeleteAccount: ComponentType = {
+export const DeleteAccount: ComponentType<MoleculeNameType> = {
   name: "DeleteAccount",
   html: `
   <div class="delete-account">

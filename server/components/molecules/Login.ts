@@ -1,13 +1,17 @@
 import { Helper } from "@utils";
-import type { ComponentType, HeaderType } from "../mod.ts";
+import type {
+  ComponentType,
+  HeaderDataType,
+  MoleculeNameType
+} from "../mod.ts";
 
 const {
   login,
-}: HeaderType = await Helper.convertJsonToObject(
+}: HeaderDataType = await Helper.convertJsonToObject(
   "/server/data/basics/header.json",
 );
 
-export const Login: ComponentType = {
+export const Login: ComponentType<MoleculeNameType> = {
   name: "Login",
   html: `
   <div class="login">

@@ -1,26 +1,32 @@
-export type ComponentNameType =
-  | "Body"
+export type OrganismNameType = 
   | "Header"
   | "Main"
-  | "Footer"
-  | "LogoutForm"
-  | "Login"
+  | "Footer";
+  
+export type MoleculeNameType =
   | "DeleteAccount"
-  | "NotFound"
   | "DeleteAccountForm"
+  | "Login"
+  | "LogoutForm"
+  | "NotFound";
+
+export type AtomNameType =
   | "UserSvg"
   | "Logo"
   | "EyeOpenSvg"
   | "EyeShutSvg"
   | "CircleSvg"
-  | "OnOffSvg";
+  | "OnOffSvg"; 
 
-export type ComponentType = {
-  name: ComponentNameType;
-  html: string;
+export type ComponentType<
+  T extends (OrganismNameType | MoleculeNameType | AtomNameType | "Body") = "Body" ,
+  U extends (string | ((...args: unknown[]) => string)) = string
+> = {
+  name: T;
+  html: U;
 };
 
-type ItemType = {
+type ItemDataType = {
   link: string;
   text: string;
   className?: string;
@@ -32,7 +38,7 @@ type InformativeContentAndButtonType = {
   btnLink?: string;
 };
 
-export type InputType = {
+export type InputDataType = {
   type: string;
   label?: string;
   placeholder?: string;
@@ -45,31 +51,31 @@ export type InputType = {
   autocomplete?: string;
 };
 
-export type PageType = {
+export type PageDataType = {
   title: string;
   description: string;
 };
 
-export type HeaderType = {
-  logo: ItemType;
-  items: ItemType[];
-  login: ItemType[];
+export type HeaderDataType = {
+  logo: ItemDataType;
+  items: ItemDataType[];
+  login: ItemDataType[];
 };
 
-export type FooterType = {
-  basicItems: ItemType[];
-  relatedItems: ItemType[];
+export type FooterDataType = {
+  basicItems: ItemDataType[];
+  relatedItems: ItemDataType[];
 };
 
-export type FormType = {
+export type FormDataType = {
   title: string;
   action: string;
   method: string;
-  content: InputType[];
+  content: InputDataType[];
   changePhoto?: string;
 };
 
-export type DeleteAccountType = {
+export type DeleteAccountDataType = {
   deleteAccount: InformativeContentAndButtonType & {
     title: string;
   };
@@ -80,6 +86,6 @@ export type DeleteAccountType = {
   };
 };
 
-export type NotFoundType = InformativeContentAndButtonType & {
+export type NotFoundDataType = InformativeContentAndButtonType & {
   title: string;
 };

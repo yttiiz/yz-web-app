@@ -91,7 +91,9 @@ export class DefaultController {
     return photo;
   }
 
-  private file(kind: layout.ComponentNameType): string {
+  private file(
+    kind: layout.OrganismNameType | "Body",
+  ): string {
     if (kind === "Body") {
       return layout.Body.html;
     }
@@ -99,7 +101,9 @@ export class DefaultController {
     return layout[kind].html;
   }
 
-  private createComponents(...args: layout.ComponentNameType[]) {
+  private createComponents(
+    ...args: (layout.OrganismNameType | "Body")[]
+  ) {
     const components = [];
 
     for (const arg of args) {
@@ -109,7 +113,7 @@ export class DefaultController {
     return components;
   }
 
-  private createAuthForm(data: layout.FormType): string {
+  private createAuthForm(data: layout.FormDataType): string {
     return `
     <section>
       <h1>${data.title}</h1>
@@ -123,7 +127,7 @@ export class DefaultController {
     </section>`;
   }
 
-  private createProfilForm(data: layout.FormType): string {
+  private createProfilForm(data: layout.FormDataType): string {
     return `
     <section>
       <h1>${data.title}</h1>
@@ -226,7 +230,7 @@ export class DefaultController {
   }
 
   private setInputsForm(
-    content: layout.InputType[],
+    content: layout.InputDataType[],
     isProfilInputs = true
   ) {
     return content
