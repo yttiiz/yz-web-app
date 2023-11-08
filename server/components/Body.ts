@@ -4,7 +4,9 @@ import type { ComponentType, PageDataType } from "./mod.ts";
 const {
   title,
   description,
-}: PageDataType = await Helper.convertJsonToObject("/server/data/basics/app.json");
+}: PageDataType = await Helper.convertJsonToObject(
+  "/server/data/basics/app.json",
+);
 
 export const Body: ComponentType = {
   name: "Body",

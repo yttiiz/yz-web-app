@@ -1,4 +1,4 @@
-import { ComponentType, AtomNameType } from "../mod.ts";
+import { AtomNameType, ComponentType } from "../mod.ts";
 
 export const OnOffSvg: ComponentType<AtomNameType> = {
   name: "OnOffSvg",

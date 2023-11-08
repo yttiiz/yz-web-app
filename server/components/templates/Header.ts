@@ -1,13 +1,18 @@
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { ComponentType, HeaderDataType, Logo } from "../mod.ts";
+import { Logo } from "../mod.ts"
+import { 
+  ComponentType,
+  HeaderDataType,
+  TemplateNameType,
+} from "../mod.ts";
 
 const {
   logo: { link, text },
   items,
 }: HeaderDataType = await Helper.convertJsonToObject("/server/data/basics/header.json");
 
-export const Header: ComponentType = {
+export const Header: ComponentType<TemplateNameType> = {
   name: "Header",
   html: `<header>
     <div class="container">

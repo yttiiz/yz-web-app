@@ -91,7 +91,7 @@ export class FormPage extends PageBuilder {
   };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   #submitHandler = async (e) => {
     e.preventDefault();
@@ -129,9 +129,9 @@ export class FormPage extends PageBuilder {
           case location.origin + "/profil": {
             isDeleteForm
               ? FormHelper.showProfilDeleteDetails(
-                  res,
-                  this.#hideModalHandler,
-                )
+                res,
+                this.#hideModalHandler,
+              )
               : FormHelper.showProfilUpdateDetails(res);
             break;
           }
@@ -143,10 +143,10 @@ export class FormPage extends PageBuilder {
   };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   #hideModalHandler = (e) => {
     e.currentTarget.closest(".delete-account-modale")
-    .classList.add("none");
+      .classList.add("none");
   };
 }

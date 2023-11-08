@@ -92,7 +92,7 @@ export class DefaultController {
   }
 
   private file(
-    kind: layout.OrganismNameType | "Body",
+    kind: layout.TemplateNameType | "Body",
   ): string {
     if (kind === "Body") {
       return layout.Body.html;
@@ -102,7 +102,7 @@ export class DefaultController {
   }
 
   private createComponents(
-    ...args: (layout.OrganismNameType | "Body")[]
+    ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
@@ -111,53 +111,6 @@ export class DefaultController {
     }
 
     return components;
-  }
-
-  private createAuthForm(data: layout.FormDataType): string {
-    return `
-    <section>
-      <h1>${data.title}</h1>
-      <form
-        action="${data.action}"
-        method="${data.method}"
-        type="multipart/form-data"
-      >
-        ${this.setInputsForm(data.content, false)}
-      </form>
-    </section>`;
-  }
-
-  private createProfilForm(data: layout.FormDataType): string {
-    return `
-    <section>
-      <h1>${data.title}</h1>
-      <form
-        action="${data.action}"
-        method="${data.method}"
-        type="multipart/form-data"
-      >
-        <div>
-          <div class="user-photo">
-            <figure>
-              <img src="/img/users/default.png" alt="default user image" />
-            </figure>
-            <button type="button">${data.changePhoto ?? "change picture"}</button>
-          </div>
-          <div class="user-infos">
-            ${this.setInputsForm(data.content)}
-          </div>
-        </div>
-        <input
-          type="${data.content.at(-1)!.type}"
-          value="${data.content.at(-1)!.value}"
-        />
-      </form>
-    </section>
-    <section>
-      ${layout.DeleteAccount.html}
-    </section>
-    ${layout.DeleteAccountForm.html}
-    `;
   }
 
   private setTitle(
@@ -216,67 +169,20 @@ export class DefaultController {
 
     // Profil form render check
     if (id === "data-profil-form") {
-      const data = await this.helper.convertJsonToObject("/server/data/profil/profil.json");
-      return main.replace("{{ content-insertion }}", this.createProfilForm(data));
+      return main.replace(
+        "{{ content-insertion }}",
+        layout.SectionsProfilForm.html()
+      );
     }
 
     // Auth form render check
     if (path) {
-      const data = await this.helper.convertJsonToObject(`/server/data/authentication${path}.json`);
-      return main.replace("{{ content-insertion }}", this.createAuthForm(data));
+      return main.replace(
+        "{{ content-insertion }}",
+        await layout.SectionAuthForm.html(path),
+      );
     }
     
     return main.replace("{{ content-insertion }}", "");
-  }
-
-  private setInputsForm(
-    content: layout.InputDataType[],
-    isProfilInputs = true
-  ) {
-    return content
-    .map(({ type,
-      label,
-      name,
-      placeholder,
-      required,
-      minLength,
-      maxLength,
-      value,
-      autocomplete,
-    }) => type !== "submit"
-    ? (
-      `<label>
-        <span>${label}</span>
-        <input type="${type}"
-          ${name ? ` name="${name}"` : ""}
-          ${placeholder ? ` placeholder="${placeholder}"` : ""}
-          ${required ? ` required` : ""}
-          ${minLength ? ` minLength="${minLength}"` : ""}
-          ${maxLength ? ` maxLength="${maxLength}"` : ""}
-          ${value ? ` value="${value}"` : ""}
-          ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
-        >
-        ${type === "password"
-          ? (
-            `<div id="eye-password">
-                <span>
-                  ${layout.EyeShutSvg.html}
-                </span>
-                <span class="none">
-                  ${layout.EyeOpenSvg.html}
-                </span>
-              </div>`
-            )
-          : ""}
-      </label>`
-      )
-    : isProfilInputs
-    ? ""
-    : (
-      `<input type="${type}"
-        ${value ? ` value="${value}"` : ""}
-      >`
-    ))
-    .join("")
   }
 }

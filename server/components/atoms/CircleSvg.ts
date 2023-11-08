@@ -107,5 +107,5 @@ export const CircleSvg: ComponentType<AtomNameType> = {
       </g>
     </g>
     <g id="time_group"/>
-  </svg>`
+  </svg>`,
 };

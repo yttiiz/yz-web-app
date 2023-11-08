@@ -3,7 +3,7 @@ import { Helper } from "@utils";
 import type {
   ComponentType,
   FooterDataType,
-  OrganismNameType
+  TemplateNameType
 } from "../mod.ts";
 
 const {
@@ -13,7 +13,7 @@ const {
   "/server/data/basics/footer.json",
 );
 
-export const Footer: ComponentType<OrganismNameType> = {
+export const Footer: ComponentType<TemplateNameType> = {
   name: "Footer",
   html: `<footer>
     <div class="container">

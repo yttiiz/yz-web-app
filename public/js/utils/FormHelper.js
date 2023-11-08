@@ -90,7 +90,7 @@ export class FormHelper {
    */
   static #redesignModalToShowInfo = (
     msg,
-    hideModalhandler
+    hideModalhandler,
   ) => {
     const modal = document.querySelector(".delete-account-modale > div");
     const form = modal.querySelector("form");

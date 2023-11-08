@@ -1,11 +1,16 @@
-export type OrganismNameType = 
+export type TemplateNameType =
   | "Header"
   | "Main"
   | "Footer";
-  
+
+export type OrganismNameType =
+  | "SectionAuthForm"
+  | "SectionsProfilForm";
+
 export type MoleculeNameType =
   | "DeleteAccount"
   | "DeleteAccountForm"
+  | "InputsForm"
   | "Login"
   | "LogoutForm"
   | "NotFound";
@@ -16,11 +21,20 @@ export type AtomNameType =
   | "EyeOpenSvg"
   | "EyeShutSvg"
   | "CircleSvg"
-  | "OnOffSvg"; 
+  | "OnOffSvg";
 
 export type ComponentType<
-  T extends (OrganismNameType | MoleculeNameType | AtomNameType | "Body") = "Body" ,
-  U extends (string | ((...args: unknown[]) => string)) = string
+  T extends (
+    | TemplateNameType
+    | OrganismNameType
+    | MoleculeNameType
+    | AtomNameType
+    | "Body"
+  ) = "Body",
+  U extends (
+    | string
+    | (<A>(...args: A[]) => string | Promise<string>)
+  ) = string,
 > = {
   name: T;
   html: U;

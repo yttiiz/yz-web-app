@@ -2,7 +2,7 @@ import { Helper } from "@utils";
 import type {
   ComponentType,
   HeaderDataType,
-  MoleculeNameType
+  MoleculeNameType,
 } from "../mod.ts";
 
 const {

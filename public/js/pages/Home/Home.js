@@ -16,7 +16,7 @@ export class HomePage extends PageBuilder {
     this.insertChildren(
       this.#root,
       this.#renderUserSection(users),
-      );
+    );
   };
 
   /**
@@ -42,7 +42,7 @@ export class HomePage extends PageBuilder {
     this.insertChildren(this.#root, title, text);
   };
 
-   /**
+  /**
    * @param {Types.Users} users
    */
   #renderUserSection = (users) => {
@@ -50,12 +50,16 @@ export class HomePage extends PageBuilder {
       section,
       paragraph,
       title,
-      usersList
+      usersList,
     ] = this.createHTMLElements("section", "p", "h1", "ul");
 
     for (const key in users) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
-      const [user, userInfo, figure] = this.createHTMLElements("li", "div", "figure");
+      const [user, userInfo, figure] = this.createHTMLElements(
+        "li",
+        "div",
+        "figure",
+      );
 
       /** @type {[HTMLImageElement, HTMLSpanElement, HTMLSpanElement, HTMLSpanElement]} */
       const [img, spec, job, age] = this.createHTMLElements(
@@ -78,11 +82,12 @@ export class HomePage extends PageBuilder {
     }
 
     title.textContent = "Liste des utilisateurs actifs";
-    paragraph.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    paragraph.textContent =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
     this.insertChildren(section, title, paragraph, usersList);
 
     return section;
-  }
+  };
 
   #getUserAge = (date) => {
     return new Date(Date.now() - new Date(date).getTime())

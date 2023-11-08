@@ -2,14 +2,14 @@ import { Helper } from "@utils";
 import type {
   ComponentType,
   MoleculeNameType,
-  NotFoundDataType
+  NotFoundDataType,
 } from "../mod.ts";
 
 const {
   title,
   paragraph,
   btnLink,
-  btnText
+  btnText,
 }: NotFoundDataType = await Helper.convertJsonToObject(
   "/server/data/404/not.found.json",
 );
