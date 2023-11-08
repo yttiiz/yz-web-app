@@ -2,14 +2,14 @@ import { ComponentType, OnOffSvg, UserSvg } from "../mod.ts";
 
 export const LogoutForm: ComponentType = {
   name: "LogoutForm",
-  content: `
+  html: `
   <div>
     <form action="/logout" method="post">
       <button type="submit" title="déconnexion">
-        ${OnOffSvg.content}
+        ${OnOffSvg.html}
       </button>
     </form>
     <span>{{ user-infos }}</span>
-    ${UserSvg.content}
+    ${UserSvg.html}
   </div>`,
 };

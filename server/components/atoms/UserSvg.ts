@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const UserSvg: ComponentType = {
   name: "UserSvg",
-  content: `
+  html: `
   <svg
     width="30"
     height="30"

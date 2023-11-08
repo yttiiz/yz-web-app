@@ -8,7 +8,7 @@ const {
 
 export const Body: ComponentType = {
   name: "Body",
-  content: `<!DOCTYPE html>
+  html: `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">

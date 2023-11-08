@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const EyeOpenSvg: ComponentType = {
   name: "EyeOpenSvg",
-  content: `
+  html: `
   <svg
     width="24"
     height="24"

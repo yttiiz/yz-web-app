@@ -9,7 +9,7 @@ const {
 
 export const Header: ComponentType = {
   name: "Header",
-  content: `<header>
+  html: `<header>
     <div class="container">
       <div>
         <div id="burger">
@@ -32,7 +32,7 @@ export const Header: ComponentType = {
       </div>
         <div id="logo">
           <a href="${link}">
-            ${Logo.content}
+            ${Logo.html}
             <span>${text}</span>
           </a>
         </div>

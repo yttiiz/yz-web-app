@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const EyeShutSvg: ComponentType = {
   name: "EyeShutSvg",
-  content: `
+  html: `
   <svg
     width="24"
     height="24"

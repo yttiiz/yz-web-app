@@ -6,6 +6,7 @@ export type ComponentNameType =
   | "LogoutForm"
   | "Login"
   | "DeleteAccount"
+  | "NotFound"
   | "DeleteAccountForm"
   | "UserSvg"
   | "Logo"
@@ -16,7 +17,7 @@ export type ComponentNameType =
 
 export type ComponentType = {
   name: ComponentNameType;
-  content: string;
+  html: string;
 };
 
 type ItemType = {

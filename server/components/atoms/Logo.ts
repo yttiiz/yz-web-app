@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const Logo: ComponentType = {
   name: "Logo",
-  content: `
+  html: `
   <svg
     width="1"
     height="1"

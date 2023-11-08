@@ -9,7 +9,7 @@ const {
 
 export const Login: ComponentType = {
   name: "Login",
-  content: `
+  html: `
   <div class="login">
     ${
     login.map((item) => (

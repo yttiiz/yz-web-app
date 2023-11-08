@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const CircleSvg: ComponentType = {
   name: "CircleSvg",
-  content: `
+  html: `
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"

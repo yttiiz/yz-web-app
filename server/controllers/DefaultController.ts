@@ -93,10 +93,10 @@ export class DefaultController {
 
   private file(kind: layout.ComponentNameType): string {
     if (kind === "Body") {
-      return layout.Body.content;
+      return layout.Body.html;
     }
 
-    return layout[kind].content;
+    return layout[kind].html;
   }
 
   private createComponents(...args: layout.ComponentNameType[]) {
@@ -107,19 +107,6 @@ export class DefaultController {
     }
 
     return components;
-  }
-
-  private createNotFoundContent(data: layout.NotFoundType): string {
-    return `
-    <section>
-      <h1>${data.title}</h1>
-      <div>
-        <p>${data.paragraph}</p>
-        <span>
-        <a href="${data.btnLink}">${data.btnText}</a>
-        </span>
-      <div>
-    </section>`;
   }
 
   private createAuthForm(data: layout.FormType): string {
@@ -150,7 +137,7 @@ export class DefaultController {
             <figure>
               <img src="/img/users/default.png" alt="default user image" />
             </figure>
-            <button type="button">${data.changePhoto ?? "change"}</button>
+            <button type="button">${data.changePhoto ?? "change picture"}</button>
           </div>
           <div class="user-infos">
             ${this.setInputsForm(data.content)}
@@ -163,9 +150,9 @@ export class DefaultController {
       </form>
     </section>
     <section>
-      ${layout.DeleteAccount.content}
+      ${layout.DeleteAccount.html}
     </section>
-    ${layout.DeleteAccountForm.content}
+    ${layout.DeleteAccountForm.html}
     `;
   }
 
@@ -194,7 +181,7 @@ export class DefaultController {
 
       return header.replace(
         "{{ application-session }}",
-        layout.LogoutForm.content
+        layout.LogoutForm.html
           .replace(
             "{{ user-infos }}",
             "Bonjour <a href=\"/profil\">" + firstname + "</a>",
@@ -204,7 +191,7 @@ export class DefaultController {
 
     return header.replace(
       "{{ application-session }}",
-      layout.Login.content,
+      layout.Login.html,
     );
   }
 
@@ -217,8 +204,10 @@ export class DefaultController {
 
     // Not found render check
     if (id === "data-not-found") {
-      const data = await this.helper.convertJsonToObject("/server/data/404/not.found.json");
-      return main.replace("{{ content-insertion }}", this.createNotFoundContent(data));
+      return main.replace(
+        "{{ content-insertion }}",
+        `<section>${layout.NotFound.html}</section>`,
+        );
     }
 
     // Profil form render check
@@ -267,10 +256,10 @@ export class DefaultController {
           ? (
             `<div id="eye-password">
                 <span>
-                  ${layout.EyeShutSvg.content}
+                  ${layout.EyeShutSvg.html}
                 </span>
                 <span class="none">
-                  ${layout.EyeOpenSvg.content}
+                  ${layout.EyeOpenSvg.html}
                 </span>
               </div>`
             )

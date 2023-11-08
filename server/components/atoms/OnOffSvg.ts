@@ -2,7 +2,7 @@ import { ComponentType } from "../mod.ts";
 
 export const OnOffSvg: ComponentType = {
   name: "OnOffSvg",
-  content: `
+  html: `
   <svg
     width="96"
     height="96"

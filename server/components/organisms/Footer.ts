@@ -10,7 +10,7 @@ const {
 
 export const Footer: ComponentType = {
   name: "Footer",
-  content: `<footer>
+  html: `<footer>
     <div class="container">
         <ul>
             ${

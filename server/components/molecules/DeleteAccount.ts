@@ -9,7 +9,7 @@ const {
 
 export const DeleteAccount: ComponentType = {
   name: "DeleteAccount",
-  content: `
+  html: `
   <div class="delete-account">
     <h3>${deleteAccount.title}</h3>
     <p>${deleteAccount.paragraph}</p>

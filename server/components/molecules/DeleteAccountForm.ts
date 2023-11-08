@@ -9,7 +9,7 @@ const {
 
 export const DeleteAccountForm: ComponentType = {
   name: "DeleteAccountForm",
-  content: `
+  html: `
   <div class="delete-account-modale none">
     <div>
       <button type="button" data-type="canceller">
