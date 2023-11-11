@@ -1,4 +1,4 @@
-export class FormHelper {
+export class UserFormHelper {
   static id = (id) => `#data-${id}-form`;
 
   /**
@@ -7,7 +7,7 @@ export class FormHelper {
   static showRegisterDetails = async (response) => {
     const { id, name } = await response.json();
 
-    FormHelper.#paragraphToShowInfo({
+    UserFormHelper.#paragraphToShowInfo({
       msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
       dataSet: "success",
     }, "users");
@@ -19,7 +19,7 @@ export class FormHelper {
   static showLoginDetails = async (response) => {
     const { message } = await response.json();
 
-    FormHelper.#paragraphToShowInfo({
+    UserFormHelper.#paragraphToShowInfo({
       msg: `Veuillez réessayer de nouveau, ${message}.`,
       dataSet: "error",
     }, "users");
@@ -32,7 +32,7 @@ export class FormHelper {
     const status = response.status;
     const { message } = await response.json();
 
-    FormHelper.#paragraphToShowInfo({
+    UserFormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: status === 201 ? "success" : "error",
     }, "profil");
@@ -44,7 +44,7 @@ export class FormHelper {
   static showProfilDeleteDetails = async (response) => {
     const { message } = await response.json();
 
-    FormHelper.#redesignModalToShowInfo(message);
+    UserFormHelper.#redesignModalToShowInfo(message);
   };
 
   /**
@@ -56,7 +56,7 @@ export class FormHelper {
     const id = pathname === "/profil" ? "profil" : "users";
     const { errorMsg } = await response.json();
 
-    FormHelper.#paragraphToShowInfo({
+    UserFormHelper.#paragraphToShowInfo({
       msg: errorMsg + status,
       dataSet: "error",
     }, id);
@@ -71,7 +71,7 @@ export class FormHelper {
     let box;
 
     /** @type {HTMLDivElement} */
-    const container = document.querySelector(FormHelper.id(id) + " section");
+    const container = document.querySelector(UserFormHelper.id(id) + " section");
 
     if (container.querySelector("p[data-msg-infos]")) {
       box = container.querySelector("p[data-msg-infos]");
