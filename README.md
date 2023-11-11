@@ -40,4 +40,4 @@ It run the server with the flags `--allow-write` `--allow-read` `--allow-net`, w
 
 
 ## Is the app has tests ?
-**There's no test here**. Trust in you ! 😊
+**There's no test here**. You can trust in you ! 😊
