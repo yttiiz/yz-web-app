@@ -5,7 +5,8 @@ export type TemplateNameType =
 
 export type OrganismNameType =
   | "SectionAuthForm"
-  | "SectionsProfilForm";
+  | "SectionsProfilForm"
+  | "ProductsHome";
 
 export type MoleculeNameType =
   | "DeleteAccount"
@@ -47,10 +48,16 @@ type ItemDataType = {
 };
 
 type InformativeContentAndButtonType = {
+  title: string;
   paragraph: string;
   btnText: string;
   btnLink?: string;
 };
+
+export type HomePageDataType = Pick<
+  InformativeContentAndButtonType,
+  "title" | "paragraph"
+>;
 
 export type InputDataType = {
   type: string;
@@ -65,7 +72,7 @@ export type InputDataType = {
   autocomplete?: string;
 };
 
-export type PageDataType = {
+export type HeadPageDataType = {
   title: string;
   description: string;
 };
@@ -90,16 +97,11 @@ export type FormDataType = {
 };
 
 export type DeleteAccountDataType = {
-  deleteAccount: InformativeContentAndButtonType & {
-    title: string;
-  };
+  deleteAccount: InformativeContentAndButtonType;
   deleteModal: InformativeContentAndButtonType & {
-    title: string;
     action: string;
     method: string;
   };
 };
 
-export type NotFoundDataType = InformativeContentAndButtonType & {
-  title: string;
-};
+export type NotFoundDataType = InformativeContentAndButtonType;

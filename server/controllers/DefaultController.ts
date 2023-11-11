@@ -6,7 +6,7 @@ import { UserSchemaWithIDType } from "@mongo";
 import type {
   FilesDataType,
   PathAppType,
-  PageDataIdType,
+  ConfigPageType,
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
@@ -54,10 +54,12 @@ export class DefaultController {
   }
 
   protected async createHtmlFile<T extends string>(
-    ctx: RouterContextAppType<T> | oak.Context,
-    id: PageDataIdType,
-    title?: string,
-    path?: string,
+    ctx: RouterContextAppType<T> | oak.Context, {
+      id,
+      data,
+      title,
+      path,
+    }: ConfigPageType,
   ) {
     let [html, header, main, footer] = this.createComponents(
       "Body",
@@ -68,7 +70,7 @@ export class DefaultController {
 
     html = this.setTitle(html, title);
     header = await this.setHeaderHtml(header, ctx);
-    main = await this.setMainHtml(main, id, path);
+    main = await this.setMainHtml(main, id, data, path);
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
     html = html.replace("{{ application-content }}", content);
@@ -155,9 +157,17 @@ export class DefaultController {
   private async setMainHtml(
     main: string,
     id: string,
+    data: unknown,
     path: string | undefined,
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
+
+    if (data) {
+      return main.replace(
+        "{{ content-insertion }}",
+        await layout.ProductsHome.html(data),
+      );
+    }
 
     // Not found render check
     if (id === "data-not-found") {
@@ -182,7 +192,7 @@ export class DefaultController {
         await layout.SectionAuthForm.html(path),
       );
     }
-    
-    return main.replace("{{ content-insertion }}", "");
+
+    return main.replace("{{ content-insertion }}", "")
   }
 }

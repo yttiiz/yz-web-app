@@ -55,9 +55,11 @@ export class AuthController extends DefaultController {
       if (ctx.state.session) {
         const body = await this.createHtmlFile(
           ctx,
-          "data-users-form",
-          title,
-          path,
+          {
+            id: "data-users-form",
+            title,
+            path
+          },
         );
         this.response(ctx, body, 200);
       } else {

@@ -14,7 +14,7 @@ const {
 
 export const Header: ComponentType<TemplateNameType> = {
   name: "Header",
-  html: `<header>
+  html: `<header data-header="site">
     <div class="container">
       <div>
         <div id="burger">

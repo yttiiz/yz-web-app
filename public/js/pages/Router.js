@@ -19,14 +19,15 @@ export class Router {
         const res = await this.#fetchData("users");
 
         if (res.ok && res.status === 200) {
-          this.#home.renderUsers(await res.json());
+          this.#home.renderContent(await res.json());
           break;
         }
 
         this.#home.renderError(res.status, await res.json());
         break;
       }
-
+      
+      //============[ USERS ]============//
       case this.host + "register": {
         this.#userForm.initForm();
         break;

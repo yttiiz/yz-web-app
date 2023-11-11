@@ -6,17 +6,23 @@ export class HomePage extends PageBuilder {
 
   constructor() {
     super();
-    this.#root = document.querySelector("#data-users");
+    this.#root = document.querySelector("#data-home");
   }
 
   /**
    * @param {Types.Users} users
    */
-  renderUsers = (users) => {
-    this.insertChildren(
-      this.#root,
-      this.#renderUserSection(users),
-    );
+  renderContent = (users) => {
+    const sections = [
+      this.#renderSection(users, this.#renderUsers),
+    ];
+
+    for (const section of sections) {
+      this.insertChildren(
+        this.#root,
+        section,
+      );
+    }
   };
 
   /**
@@ -43,16 +49,33 @@ export class HomePage extends PageBuilder {
   };
 
   /**
-   * @param {Types.Users} users
+   * @param {Types.Users | unknown} items
+   * @param {() => HTMLElement} renderer
+   * @param {HTMLUListElement} listItems
    */
-  #renderUserSection = (users) => {
+  #renderSection = (
+    items,
+    renderer,
+    listItems = document.createElement("ul"),
+  ) => {
     const [
       section,
-      paragraph,
       title,
-      usersList,
-    ] = this.createHTMLElements("section", "p", "h1", "ul");
+    ] = this.createHTMLElements("section", "h1");
 
+    listItems = renderer(items, listItems);
+
+    title.textContent = "Liste des utilisateurs actifs";
+    this.insertChildren(section, title, listItems);
+
+    return section;
+  };
+
+  /**
+   * @param {Types.Users} users
+   * @param {HTMLUListElement} usersList
+   */
+  #renderUsers = (users, usersList) => {
     for (const key in users) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [user, userInfo, figure] = this.createHTMLElements(
@@ -75,19 +98,16 @@ export class HomePage extends PageBuilder {
       age.textContent = `${this.#getUserAge(users[key].birth)} ans`;
       job.textContent = users[key].job;
 
+      usersList.className = "users";
+
       this.insertChildren(figure, img);
       this.insertChildren(userInfo, spec, job, age);
       this.insertChildren(user, figure, userInfo);
       this.insertChildren(usersList, user);
     }
 
-    title.textContent = "Liste des utilisateurs actifs";
-    paragraph.textContent =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-    this.insertChildren(section, title, paragraph, usersList);
-
-    return section;
-  };
+    return usersList;
+  }
 
   #getUserAge = (date) => {
     return new Date(Date.now() - new Date(date).getTime())

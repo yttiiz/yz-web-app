@@ -34,9 +34,10 @@ export class ProfilController extends DefaultController {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
         } else if (ctx.state.session.has("userFirstname")) {
           const body = await this.createHtmlFile(
-            ctx,
-            "data-profil-form",
-            "modifier votre profil",
+            ctx, {
+              id: "data-profil-form",
+              title: "modifier votre profil",   
+            },
           );
           this.response(ctx, body, 200);
         } else {

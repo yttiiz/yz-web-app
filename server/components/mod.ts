@@ -13,6 +13,7 @@ export * from "./molecules/Login.ts";
 export * from "./molecules/InputsForm.ts";
 export * from "./organisms/SectionsProfilForm.ts";
 export * from "./organisms/SectionAuthForm.ts";
+export * from "./organisms/ProductsHome.ts";
 export * from "./molecules/DeleteAccount.ts";
 export * from "./molecules/DeleteAccountForm.ts";
 export * from "./molecules/NotFound.ts";

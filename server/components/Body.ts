@@ -1,10 +1,10 @@
 import { Helper } from "@utils";
-import type { ComponentType, PageDataType } from "./mod.ts";
+import type { ComponentType, HeadPageDataType } from "./mod.ts";
 
 const {
   title,
   description,
-}: PageDataType = await Helper.convertJsonToObject(
+}: HeadPageDataType = await Helper.convertJsonToObject(
   "/server/data/basics/app.json",
 );
 
