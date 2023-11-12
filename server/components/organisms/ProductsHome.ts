@@ -1,6 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
-import type { ComponentType, HomePageDataType, OrganismNameType } from "../mod.ts";
+import { LikeSvg, ShareSvg } from "../mod.ts";
+import type {
+  ComponentType, HomePageDataType, OrganismNameType } from "../mod.ts";
 import { ProductSchemaType } from "@mongo";
 
 export const ProductsHome: ComponentType<
@@ -41,7 +43,9 @@ export const ProductsHome: ComponentType<
                   </div>
                   <div>
                     <span>
-                      <strong>${Helper.formatPrice(products[key].price)}</strong>/jour
+                      <strong>
+                        ${Helper.formatPrice(products[key].price)}
+                      </strong>/jour
                     </span>
                   </div>
                 </header>
@@ -53,11 +57,23 @@ export const ProductsHome: ComponentType<
                 <div>
                   <p>${products[key].description}</p>
                   <div>
-                    <div>
-                      <button>like</button>
-                      <button>share</button>
+                    <div class="social-btns">
+                      <button
+                        type="button"
+                        data-button="like"
+                        title="j'aime"
+                      >
+                        ${LikeSvg.html}
+                      </button>
+                      <button
+                        type="button"
+                        data-button="share"
+                        title="je partage"
+                      >
+                        ${ShareSvg.html}
+                      </button>
                     </div>
-                    <button>Voir plus</button>
+                    <a href="/product">Voir plus</a>
                   </div>
                 </div>
               </div>

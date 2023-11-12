@@ -94,6 +94,11 @@ p {
     line-height: calc(var(--base-size) * 1.5);
 }
 
+svg,
+img {
+    display: block;
+}
+
 noscript {
     position: absolute;
     left: 50%;
@@ -164,7 +169,6 @@ header[data-header="site"] {
 
         & > form button,
         & > form svg {
-            display: block;
             aspect-ratio: 1 / 1;
         }
     
@@ -340,10 +344,13 @@ h3 {
     }
 
     & section > ul.products > li {
-        background: var(--dark);
+        overflow: hidden;
+        border-radius: var(--base-size);
+        border: .1rem solid rgb(var(--black-rvb) / .15);
+        box-shadow: var(--box-shadow);
 
         & * {
-            color: var(--light);
+            color: var(--dark);
         }
 
         & > div {
@@ -356,8 +363,14 @@ h3 {
         }
 
         & header,
-        & header > div {
+        & header > div,
+        & > div > div:last-of-type,
+        & > div > div:last-of-type > div {
             display: inherit;
+        }
+
+        & header,
+        & header > div {
             gap: calc(var(--base-size) * 1.125);
         }
 
@@ -369,8 +382,11 @@ h3 {
             align-items: center;
         }
 
+        & header h3 {
+            line-height: 1.1;
+        }
+
         & header > div figure img {
-            display: block;
             border-radius: 50%;
             object-fit: cover;
             width: 5rem;
@@ -379,6 +395,7 @@ h3 {
         }
 
         & header > div strong {
+            color: var(--primary-color);
             font-size: calc(var(--base-size) * 1.125);
             font-weight: 600;
         }
@@ -397,9 +414,32 @@ h3 {
         }
 
         & > div > div:last-of-type {
-            display: inherit;
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        & > div > div:last-of-type > div {
+            justify-content: space-between;
+        }
+
+        & .social-btns {
+            display: flex;
+            gap: calc(var(--base-size) * .825);
+        }
+
+        & .social-btns button {
+            width: calc(var(--base-size) * 1.5);
+        }
+        
+        & .social-btns button[data-button] svg {
+            width: 100%;
+            height: auto;
+            fill: var(--secondary-color);
+            transition: transform var(--smooth);
+        }
+
+        & .social-btns button[data-button] svg:hover {
+            transform: scale(1.2);
         }
     }
 
@@ -434,7 +474,6 @@ h3 {
         }
 
         & img {
-            display: block;
             width: 10rem;
             aspect-ratio: 1 / 1;
             filter: sepia(1) contrast(1.2);
@@ -519,7 +558,6 @@ section,
         }
 
         & .user-photo img {
-            display: block;
             border-radius: 50%;
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -686,7 +724,6 @@ section,
         fill: var(--primary-color);
         width: 2rem;
         height: auto;
-        display: block;
     }
 }
 

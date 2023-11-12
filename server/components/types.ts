@@ -17,6 +17,8 @@ export type MoleculeNameType =
   | "NotFound";
 
 export type AtomNameType =
+  | "LikeSvg"
+  | "ShareSvg"
   | "UserSvg"
   | "Logo"
   | "EyeOpenSvg"
