@@ -342,6 +342,10 @@ h3 {
     & section > ul.products > li {
         background: var(--dark);
 
+        & * {
+            color: var(--light);
+        }
+
         & > div {
             width: 100%;
         }
@@ -354,14 +358,7 @@ h3 {
         & header,
         & header > div {
             display: inherit;
-            gap: 2rem;
-        }
-
-        & header h3,
-        & header h4,
-        & img,
-        & p {
-            color: var(--light);
+            gap: calc(var(--base-size) * 1.125);
         }
 
         & header {
@@ -379,6 +376,11 @@ h3 {
             width: 5rem;
             aspect-ratio: 1 / 1;
             background: rgb(var(--white-rvb) / .1);
+        }
+
+        & header > div strong {
+            font-size: calc(var(--base-size) * 1.125);
+            font-weight: 600;
         }
 
         & > div > div:first-of-type,

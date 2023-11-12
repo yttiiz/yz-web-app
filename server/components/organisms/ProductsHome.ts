@@ -16,6 +16,8 @@ export const ProductsHome: ComponentType<
       `/server/data/home/home.json`,
     );
 
+    console.log(products)
+
     return `
     <section>
       <h1>${title}</h1>
@@ -33,11 +35,15 @@ export const ProductsHome: ComponentType<
                       <img src="${products[key].thumbnail}" alt="image1">
                     </figure>
                     <div>
-                      <h3>${products[key].name}</h3>
+                      <h3>Aka ${products[key].name}</h3>
                       <h4>${products[key].type}</h4>
                     </div>
                   </div>
-                  <button>click</button>
+                  <div>
+                    <span>
+                      <strong>${Helper.formatPrice(products[key].price)}</strong>/jour
+                    </span>
+                  </div>
                 </header>
                 <div>
                   <figure>

@@ -21,10 +21,10 @@ export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 // Files
 export type FilesDataType = oak.FormDataFile[];
-export type PageDataIdType = `data-${string}`;
 
+// Page
 export type ConfigPageType = {
-  id: PageDataIdType,
+  id: `data-${string}`,
   data?: unknown,
   title?: string,
   path?: string,

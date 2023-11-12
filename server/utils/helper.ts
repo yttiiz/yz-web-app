@@ -1,3 +1,5 @@
+import { Decimal128 } from "mongoose";
+
 export class Helper {
   private static DateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -29,6 +31,20 @@ export class Helper {
     const content = encoder.encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
+  }
+
+  public static formatPrice(price: number | Decimal128) {
+    if (price instanceof Decimal128) {
+      price = +(price.toString());
+    }
+
+    return Intl
+      .NumberFormat("fr-FR", {
+        maximumFractionDigits: 2,
+        style: "currency",
+        currency: "EUR"
+      })
+      .format(price);
   }
 
   private static dateNow() {

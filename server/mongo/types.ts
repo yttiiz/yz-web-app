@@ -1,4 +1,5 @@
 import { Collection, FindCursor, ObjectId } from "@deps";
+import { Decimal128 } from "mongoose";
 
 // Users types
 export type UserType = {
@@ -43,11 +44,13 @@ export type ProductSchemaType = {
   name: string;
   type: string;
   description: string;
+  price: Decimal128;
   thumbnail: string;
   pictures: string[];
   rate: RateType,
   review: ReviewType[];
-}
+};
+
 export type ProductSchemaWithIDType = ProductSchemaType & {
   _id: ObjectId;
 };
