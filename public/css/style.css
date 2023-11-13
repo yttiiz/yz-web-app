@@ -307,6 +307,8 @@ section {
 }
 
 section:not(:last-of-type) {
+    padding-bottom: calc(var(--base-size) * 2);
+    border-bottom: .1rem solid rgb(var(--black-rvb) / .1);
     margin-bottom: calc(var(--base-size) * 2);
 }
 
@@ -407,6 +409,65 @@ h3 {
             color: var(--primary-color);
             font-size: calc(var(--base-size) * 1.125);
             font-weight: 600;
+        }
+
+        & > div > div:first-of-type {
+            overflow: hidden;
+            position: relative;
+        }
+
+        & .slider-product,
+        & .slider-product-navigation {
+            display: flex;
+        }
+
+        & .slider-product {
+            width: 200%;
+        } 
+
+        & .slider-product-navigation {
+            width: 100%;
+            position: absolute;
+            justify-content: space-between;
+            padding: 0 calc(var(--base-size) * 1.5);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        & .slider-product-navigation button {
+            position: relative;
+            width: calc(var(--base-size) * 1.5);
+            height: calc(var(--base-size) * 1.5);
+            border-radius: 50%;
+            background: var(--light);
+            opacity: .75;
+            transition: background var(--smooth), opacity var(--smooth);
+        }
+
+        & .slider-product-navigation button:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        & .slider-product-navigation button span {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 35%;
+            height: 35%;
+        }
+
+        & .slider-product-navigation button:first-of-type span {
+            left: 55%;
+            border-bottom: .1rem solid;
+            border-left: .1rem solid;
+        }
+        
+        & .slider-product-navigation button:last-of-type span {
+            left: 45%;
+            border-top: .1rem solid;
+            border-right: .1rem solid;
         }
 
         & > div > div:first-of-type,
