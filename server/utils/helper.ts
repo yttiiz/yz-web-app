@@ -31,6 +31,16 @@ export class Helper {
     await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
   }
 
+  public static formatPrice(price: number) {
+    return Intl
+      .NumberFormat("fr-FR", {
+        maximumFractionDigits: 2,
+        style: "currency",
+        currency: "EUR",
+      })
+      .format(price);
+  }
+
   private static dateNow() {
     return Intl
       .DateTimeFormat("fr-FR", Helper.DateOpts)

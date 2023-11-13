@@ -1,5 +1,7 @@
 import { Document, oak, ObjectId } from "@deps";
 import type {
+  ProductSchemaType,
+  ProductSchemaWithIDType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -19,7 +21,14 @@ export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 // Files
 export type FilesDataType = oak.FormDataFile[];
-export type PageDataIdType = `data-${string}`;
+
+// Page
+export type ConfigPageType = {
+  id: `data-${string}`;
+  data?: unknown;
+  title?: string;
+  path?: string;
+};
 
 // DB Generics
 export type GetCollectionType = (
@@ -60,3 +69,10 @@ export type SelectUserFromDBType = SelectFromDBType<
 export type UpdateUserToDBType = UpdateToDBType<
   UserSchemaWithOptionalFieldsType
 >;
+
+// Products in DB
+export type ProductsDataType = Record<
+  number,
+  ProductSchemaWithIDType
+>;
+export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;

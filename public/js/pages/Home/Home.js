@@ -6,53 +6,79 @@ export class HomePage extends PageBuilder {
 
   constructor() {
     super();
-    this.#root = document.querySelector("#data-users");
+    this.#root = document.querySelector("#data-home");
   }
 
   /**
    * @param {Types.Users} users
    */
-  renderUsers = (users) => {
-    this.insertChildren(
-      this.#root,
-      this.#renderUserSection(users),
-    );
+  renderContent = (users) => {
+    const sections = [
+      this.#renderSection(users, this.#renderUsers),
+    ];
+
+    for (const section of sections) {
+      this.insertChildren(
+        this.#root,
+        section,
+      );
+    }
   };
 
   /**
    * @param {number} status
-   * @param {{ errorMsg: string }}
+   * @param {string} url
    */
-  renderError = (status, { errorMsg }) => {
-    const [title, text] = this.createHTMLElements("h1", "p");
-    const displayError = (msg = "Aucune api trouvée à cette adresse.") => {
+  renderError = (status, url) => {
+    const [
+      section,
+      title,
+      text,
+    ] = this.createHTMLElements("section", "h1", "p");
+
+    const displayError = (
+      msg = status === 404
+        ? "Aucune api trouvée à cette adresse : " + url
+        : "Erreur interne du serveur.",
+    ) => {
       title.textContent = "Erreur code : " + status;
       text.textContent = msg;
     };
 
-    switch (status) {
-      case 404:
-        displayError();
-        break;
+    displayError();
 
-      default:
-        displayError(errorMsg);
-    }
+    this.insertChildren(section, title, text);
+    this.insertChildren(this.#root, section);
+  };
 
-    this.insertChildren(this.#root, title, text);
+  /**
+   * @param {Types.Users | unknown} items
+   * @param {() => HTMLElement} renderer
+   * @param {HTMLUListElement} listItems
+   */
+  #renderSection = (
+    items,
+    renderer,
+    listItems = document.createElement("ul"),
+  ) => {
+    const [
+      section,
+      title,
+    ] = this.createHTMLElements("section", "h1");
+
+    listItems = renderer(items, listItems);
+
+    title.textContent = "Liste des utilisateurs actifs";
+    this.insertChildren(section, title, listItems);
+
+    return section;
   };
 
   /**
    * @param {Types.Users} users
+   * @param {HTMLUListElement} usersList
    */
-  #renderUserSection = (users) => {
-    const [
-      section,
-      paragraph,
-      title,
-      usersList,
-    ] = this.createHTMLElements("section", "p", "h1", "ul");
-
+  #renderUsers = (users, usersList) => {
     for (const key in users) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [user, userInfo, figure] = this.createHTMLElements(
@@ -75,18 +101,15 @@ export class HomePage extends PageBuilder {
       age.textContent = `${this.#getUserAge(users[key].birth)} ans`;
       job.textContent = users[key].job;
 
+      usersList.className = "users";
+
       this.insertChildren(figure, img);
       this.insertChildren(userInfo, spec, job, age);
       this.insertChildren(user, figure, userInfo);
       this.insertChildren(usersList, user);
     }
 
-    title.textContent = "Liste des utilisateurs actifs";
-    paragraph.textContent =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-    this.insertChildren(section, title, paragraph, usersList);
-
-    return section;
+    return usersList;
   };
 
   #getUserAge = (date) => {

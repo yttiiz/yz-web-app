@@ -50,9 +50,9 @@ export class ApiController {
             }
           }
 
-          this.reponse(ctx, JSON.stringify(users), 200);
+          this.response(ctx, JSON.stringify(users), 200);
         } else {
-          this.reponse(
+          this.response(
             ctx,
             JSON.stringify({
               errorMsg: this.errorMsg,
@@ -80,7 +80,7 @@ export class ApiController {
             photo,
           } = await this.selectFromDB(email, "users") as UserSchemaWithIDType;
 
-          this.reponse(
+          this.response(
             ctx,
             JSON.stringify({
               firstname,
@@ -104,7 +104,7 @@ export class ApiController {
     error: { message: string },
   ) {
     this.helper.writeLog(error);
-    this.reponse(
+    this.response(
       ctx,
       JSON.stringify({
         errorMsg: this.errorMsg,
@@ -113,7 +113,7 @@ export class ApiController {
     );
   }
 
-  private reponse<T extends string>(
+  private response<T extends string>(
     ctx: RouterContextAppType<T>,
     data: string,
     status: number,

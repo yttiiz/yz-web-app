@@ -1,15 +1,15 @@
 // deno-lint-ignore-file
-import { FormPage, HomePage } from "./mod.js";
+import { HomePage, UserFormPage } from "./mod.js";
 
 export class Router {
   #home;
-  #form;
+  #userForm;
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
     this.#home = new HomePage();
-    this.#form = new FormPage();
+    this.#userForm = new UserFormPage();
     this.#router();
   }
 
@@ -19,21 +19,22 @@ export class Router {
         const res = await this.#fetchData("users");
 
         if (res.ok && res.status === 200) {
-          this.#home.renderUsers(await res.json());
+          this.#home.renderContent(await res.json());
           break;
         }
 
-        this.#home.renderError(res.status, await res.json());
+        this.#home.renderError(res.status, res.url);
         break;
       }
 
+      //============[ USERS ]============//
       case this.host + "register": {
-        this.#form.initForm();
+        this.#userForm.initForm();
         break;
       }
 
       case this.host + "login": {
-        this.#form.initForm();
+        this.#userForm.initForm();
         break;
       }
 
@@ -41,7 +42,7 @@ export class Router {
         const res = await this.#fetchData("user-profil");
 
         if (res.ok && res.status === 200) {
-          this.#form.renderProfilForm(
+          this.#userForm.renderProfilForm(
             "profil",
             await res.json(),
           );

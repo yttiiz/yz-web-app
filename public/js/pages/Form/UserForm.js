@@ -1,7 +1,7 @@
 import { PageBuilder } from "../Builder.js";
-import { FormHelper } from "../../utils/FormHelper.js";
+import { UserFormHelper } from "../../utils/UserFormHelper.js";
 
-export class FormPage extends PageBuilder {
+export class UserFormPage extends PageBuilder {
   initForm = (
     id = "users",
   ) => {
@@ -102,7 +102,7 @@ export class FormPage extends PageBuilder {
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
 
-    const formData = isDeleteForm ? null : FormHelper.setFormData(e.target);
+    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
 
     const res = await fetch(e.target.action, {
       method: method ?? "POST",
@@ -110,7 +110,7 @@ export class FormPage extends PageBuilder {
     });
 
     if (location.pathname !== "/profil") {
-      FormHelper.removeInputsValues(e.target.children);
+      UserFormHelper.removeInputsValues(e.target.children);
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
@@ -119,26 +119,26 @@ export class FormPage extends PageBuilder {
       } else {
         switch (e.target.action) {
           case location.origin + "/login":
-            FormHelper.showLoginDetails(res);
+            UserFormHelper.showLoginDetails(res);
             break;
 
           case location.origin + "/register":
-            FormHelper.showRegisterDetails(res);
+            UserFormHelper.showRegisterDetails(res);
             break;
 
           case location.origin + "/profil": {
             isDeleteForm
-              ? FormHelper.showProfilDeleteDetails(
+              ? UserFormHelper.showProfilDeleteDetails(
                 res,
                 this.#hideModalHandler,
               )
-              : FormHelper.showProfilUpdateDetails(res);
+              : UserFormHelper.showProfilUpdateDetails(res);
             break;
           }
         }
       }
     } else {
-      FormHelper.showErrorMsg(res, location.pathname);
+      UserFormHelper.showErrorMsg(res, location.pathname);
     }
   };
 
