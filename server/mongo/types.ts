@@ -26,13 +26,13 @@ export type CollectionUserType = Collection<UserSchemaWithIDType>;
 export type FindCursorUserType = FindCursor<UserSchemaWithIDType>;
 
 // Products types
-type ReviewType = {
+export type ReviewType = {
   id: string;
   senderId: string;
   review: string;
 }
 
-type RateType = {
+export type RateType = {
   excellent: number;
   good: number;
   quiteGood: number;

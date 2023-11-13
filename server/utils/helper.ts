@@ -1,4 +1,4 @@
-import { Decimal128 } from "mongoose";
+import { Decimal128 } from "@deps";
 
 export class Helper {
   private static DateOpts: Intl.DateTimeFormatOptions = {

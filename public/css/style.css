@@ -344,6 +344,7 @@ h3 {
     }
 
     & section > ul.products > li {
+        height: max-content;
         overflow: hidden;
         border-radius: var(--base-size);
         border: .1rem solid rgb(var(--black-rvb) / .15);
@@ -359,7 +360,7 @@ h3 {
 
         & header,
         & > div > div:last-of-type {
-            padding: var(--base-size);
+            padding: calc(var(--base-size) * 1.5);
         }
 
         & header,
@@ -374,7 +375,8 @@ h3 {
             gap: calc(var(--base-size) * 1.125);
         }
 
-        & header {
+        & header > div:last-of-type {
+            width: 100%;
             justify-content: space-between;
         }
 
@@ -383,6 +385,13 @@ h3 {
         }
 
         & header h3 {
+            max-width: calc(var(--base-size) * 13);
+            overflow: hidden;
+            text-wrap: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        & header h4 {
             line-height: 1.1;
         }
 
@@ -424,22 +433,39 @@ h3 {
 
         & .social-btns {
             display: flex;
+            align-items: flex-start;
             gap: calc(var(--base-size) * .825);
         }
 
         & .social-btns button {
             width: calc(var(--base-size) * 1.5);
         }
+
+        & .social-btns button::after,
+        & .show-product {
+            font-weight: 600;
+        }
+
+        & .social-btns button::after {
+            content: attr(data-button);
+            display: block;
+        }
         
-        & .social-btns button[data-button] svg {
+        & .social-btns button > svg {
             width: 100%;
             height: auto;
             fill: var(--secondary-color);
             transition: transform var(--smooth);
         }
 
-        & .social-btns button[data-button] svg:hover {
+        & .social-btns button > svg:hover {
             transform: scale(1.2);
+        }
+
+        & .show-product {
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--secondary-color);
         }
     }
 
@@ -753,8 +779,16 @@ footer {
 }
 
 /*=================================================| BREAKPOINTS |=================================================*/
+@media screen and (max-width: 1080px) {
+    #data-home .products header > div:last-of-type {
+        flex-direction: column;
+        gap: unset;
+        align-items: unset;
+    }
+}
 
 @media screen and (max-width: 950px) {
+
     #data-profil-form section > form {
         & > div {
             flex-direction: column;

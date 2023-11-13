@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Helper } from "@utils";
+import { Helper, Rate } from "@utils";
 import { LikeSvg, ShareSvg } from "../mod.ts";
 import type {
   ComponentType, HomePageDataType, OrganismNameType } from "../mod.ts";
@@ -18,8 +18,6 @@ export const ProductsHome: ComponentType<
       `/server/data/home/home.json`,
     );
 
-    console.log(products)
-
     return `
     <section>
       <h1>${title}</h1>
@@ -36,12 +34,12 @@ export const ProductsHome: ComponentType<
                     <figure>
                       <img src="${products[key].thumbnail}" alt="image1">
                     </figure>
+                  </div>
+                  <div>
                     <div>
                       <h3>Aka ${products[key].name}</h3>
                       <h4>${products[key].type}</h4>
                     </div>
-                  </div>
-                  <div>
                     <span>
                       <strong>
                         ${Helper.formatPrice(products[key].price)}
@@ -60,20 +58,19 @@ export const ProductsHome: ComponentType<
                     <div class="social-btns">
                       <button
                         type="button"
-                        data-button="like"
+                        data-button="${Rate.average(products[key].rate)}"
                         title="j'aime"
                       >
                         ${LikeSvg.html}
                       </button>
                       <button
                         type="button"
-                        data-button="share"
                         title="je partage"
                       >
                         ${ShareSvg.html}
                       </button>
                     </div>
-                    <a href="/product">Voir plus</a>
+                    <a class="show-product" href="/product">Voir plus</a>
                   </div>
                 </div>
               </div>

@@ -23,7 +23,7 @@ export class Router {
           break;
         }
 
-        this.#home.renderError(res.status, await res.json());
+        this.#home.renderError(res.status, res.url);
         break;
       }
       
