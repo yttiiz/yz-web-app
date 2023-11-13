@@ -71,7 +71,9 @@ export class UserFormHelper {
     let box;
 
     /** @type {HTMLDivElement} */
-    const container = document.querySelector(UserFormHelper.id(id) + " section");
+    const container = document.querySelector(
+      UserFormHelper.id(id) + " section",
+    );
 
     if (container.querySelector("p[data-msg-infos]")) {
       box = container.querySelector("p[data-msg-infos]");

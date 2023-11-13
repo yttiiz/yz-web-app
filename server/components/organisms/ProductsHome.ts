@@ -2,7 +2,10 @@
 import { Helper, Rate } from "@utils";
 import { LikeSvg, ShareSvg } from "../mod.ts";
 import type {
-  ComponentType, HomePageDataType, OrganismNameType } from "../mod.ts";
+  ComponentType,
+  HomePageDataType,
+  OrganismNameType,
+} from "../mod.ts";
 import { ProductSchemaType } from "@mongo";
 
 export const ProductsHome: ComponentType<
@@ -20,19 +23,24 @@ export const ProductsHome: ComponentType<
 
     return `
     <section>
-      <h1>${title}</h1>
-      <p>${paragraph}</p>
+      <div>
+        <h1>${title}</h1>
+        <p>${paragraph}</p>
+      </div>
       <ul class="products">
         ${
-          Object.keys(products)
-          .map(key => (
-            `
+      Object.keys(products)
+        .map((key) => (
+          `
             <li>
               <div>
                 <header>
                   <div>
                     <figure>
-                      <img src="${products[key].thumbnail}" alt="image1">
+                      <img
+                        src="${products[key].thumbnail.src}"
+                        alt="${products[key].thumbnail.alt}"
+                      />
                     </figure>
                   </div>
                   <div>
@@ -42,15 +50,24 @@ export const ProductsHome: ComponentType<
                     </div>
                     <span>
                       <strong>
-                        ${Helper.formatPrice(products[key].price)}
+                        ${Helper.formatPrice(products[key].details.price)}
                       </strong>/jour
                     </span>
                   </div>
                 </header>
                 <div>
-                  <figure>
-                    <img src="${products[key].pictures.at(0)}" alt="image3">
-                  </figure>
+                ${
+            products[key].pictures
+              .map((picture) => (
+                `<figure>
+                      <img
+                        src="${picture.src}"
+                        alt="${picture.alt}"
+                      />
+                    </figure>`
+              ))
+              .join("")
+          }
                 </div>
                 <div>
                   <p>${products[key].description}</p>
@@ -59,13 +76,13 @@ export const ProductsHome: ComponentType<
                       <button
                         type="button"
                         data-button="${Rate.average(products[key].rate)}"
-                        title="j'aime"
+                        title="notez-le !"
                       >
                         ${LikeSvg.html}
                       </button>
                       <button
                         type="button"
-                        title="je partage"
+                        title="partagez-le !"
                       >
                         ${ShareSvg.html}
                       </button>
@@ -76,9 +93,9 @@ export const ProductsHome: ComponentType<
               </div>
             </li>
             `
-          ))
-          .join("")
-        }
+        ))
+        .join("")
+    }
       </ul>
     </section>`;
   },

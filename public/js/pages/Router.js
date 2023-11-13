@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { UserFormPage, HomePage } from "./mod.js";
+import { HomePage, UserFormPage } from "./mod.js";
 
 export class Router {
   #home;
@@ -26,7 +26,7 @@ export class Router {
         this.#home.renderError(res.status, res.url);
         break;
       }
-      
+
       //============[ USERS ]============//
       case this.host + "register": {
         this.#userForm.initForm();

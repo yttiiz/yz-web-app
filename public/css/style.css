@@ -8,6 +8,7 @@
     --vanilla: #FFF3B0;
     --danger: #9E2A2B;
     --dark: #1e1d1d;
+    --grey-dark: #525151;
     --light: #ebebeb;
     
     
@@ -313,9 +314,8 @@ h1 {
     font-size: calc(var(--base-size) * 2.1875);
     font-weight: 500;
     line-height: calc(var(--base-size) * 2.75);
-    padding-bottom: .75rem;
     color: var(--primary-color);
-    border-bottom: .1rem solid var(--primary-color);
+    margin-bottom: calc(var(--base-size) * .5);
 }
 
 h3 {
@@ -459,13 +459,19 @@ h3 {
         }
 
         & .social-btns button > svg:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
 
         & .show-product {
             padding: var(--btn-padding);
             border-radius: var(--btn-border-radius);
             background: var(--secondary-color);
+            transition: filter var(--smooth), color var(--smooth);
+        }
+
+        & .show-product:hover {
+            filter: contrast(1.5);
+            color: var(--grey-dark);
         }
     }
 

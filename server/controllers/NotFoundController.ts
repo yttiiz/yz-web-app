@@ -11,9 +11,10 @@ export class NotFoundController extends DefaultController {
     status: number,
   ) {
     const body = await this.createHtmlFile(
-      ctx, {
+      ctx,
+      {
         id: "data-not-found",
-        title: "page inexistante",  
+        title: "page inexistante",
       },
     );
     this.response(ctx, body, status);

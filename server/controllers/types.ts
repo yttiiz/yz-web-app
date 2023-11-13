@@ -24,10 +24,10 @@ export type FilesDataType = oak.FormDataFile[];
 
 // Page
 export type ConfigPageType = {
-  id: `data-${string}`,
-  data?: unknown,
-  title?: string,
-  path?: string,
+  id: `data-${string}`;
+  data?: unknown;
+  title?: string;
+  path?: string;
 };
 
 // DB Generics
@@ -73,6 +73,6 @@ export type UpdateUserToDBType = UpdateToDBType<
 // Products in DB
 export type ProductsDataType = Record<
   number,
-  & ProductSchemaWithIDType
+  ProductSchemaWithIDType
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;

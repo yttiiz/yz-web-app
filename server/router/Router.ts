@@ -19,7 +19,6 @@ export const router = new oak.Router<AppState>();
 new HomeController(
   router,
   Mongo.connectionTo,
-  Mongo.insertIntoDB,
 );
 new AuthController(
   router,

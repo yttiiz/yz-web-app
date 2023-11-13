@@ -1,5 +1,3 @@
-import { Decimal128 } from "@deps";
-
 export class Helper {
   private static DateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -33,16 +31,12 @@ export class Helper {
     await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
   }
 
-  public static formatPrice(price: number | Decimal128) {
-    if (price instanceof Decimal128) {
-      price = +(price.toString());
-    }
-
+  public static formatPrice(price: number) {
     return Intl
       .NumberFormat("fr-FR", {
         maximumFractionDigits: 2,
         style: "currency",
-        currency: "EUR"
+        currency: "EUR",
       })
       .format(price);
   }

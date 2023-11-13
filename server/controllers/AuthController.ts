@@ -58,7 +58,7 @@ export class AuthController extends DefaultController {
           {
             id: "data-users-form",
             title,
-            path
+            path,
           },
         );
         this.response(ctx, body, 200);

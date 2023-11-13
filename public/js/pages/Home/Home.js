@@ -33,13 +33,13 @@ export class HomePage extends PageBuilder {
     const [
       section,
       title,
-      text
+      text,
     ] = this.createHTMLElements("section", "h1", "p");
-    
+
     const displayError = (
       msg = status === 404
-      ? "Aucune api trouvée à cette adresse : " + url
-      : "Erreur interne du serveur."
+        ? "Aucune api trouvée à cette adresse : " + url
+        : "Erreur interne du serveur.",
     ) => {
       title.textContent = "Erreur code : " + status;
       text.textContent = msg;
@@ -110,7 +110,7 @@ export class HomePage extends PageBuilder {
     }
 
     return usersList;
-  }
+  };
 
   #getUserAge = (date) => {
     return new Date(Date.now() - new Date(date).getTime())
