@@ -15,6 +15,7 @@
     /*=====| Colors & opacity |===== */
     --black-rvb: 0 0 0;
     --white-rvb: 255 255 255;
+    --border-black-25-percent: .1rem solid rgb(var(--black-rvb) / .25);
     --shadow: rgb(var(--black-rvb) / .85);
     --box-shadow: 0 0 15px rgb(var(--black-rvb) / .1);
 
@@ -307,6 +308,8 @@ section {
 }
 
 section:not(:last-of-type) {
+    padding-bottom: calc(var(--base-size) * 2);
+    border-bottom: var(--border-black-25-percent);
     margin-bottom: calc(var(--base-size) * 2);
 }
 
@@ -315,7 +318,12 @@ h1 {
     font-weight: 500;
     line-height: calc(var(--base-size) * 2.75);
     color: var(--primary-color);
-    margin-bottom: calc(var(--base-size) * .5);
+}
+
+h1 + p {
+    font-size: calc(var(--base-size) * 1.125);
+    font-weight: 400;
+    margin-top: calc(var(--base-size) * .825);
 }
 
 h3 {
@@ -344,11 +352,14 @@ h3 {
     }
 
     & section > ul.products > li {
-        height: max-content;
         overflow: hidden;
         border-radius: var(--base-size);
-        border: .1rem solid rgb(var(--black-rvb) / .15);
-        box-shadow: var(--box-shadow);
+        border: var(--border-black-25-percent);
+        transition: box-shadow var(--smooth);
+
+        &:hover {
+            box-shadow: var(--box-shadow);
+        }
 
         & * {
             color: var(--dark);
@@ -356,6 +367,7 @@ h3 {
 
         & > div {
             width: 100%;
+            height: 100%;
         }
 
         & header,
@@ -386,9 +398,10 @@ h3 {
 
         & header h3 {
             max-width: calc(var(--base-size) * 13);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;  
             overflow: hidden;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
         }
 
         & header h4 {
@@ -409,6 +422,94 @@ h3 {
             font-weight: 600;
         }
 
+        & > div > div:first-of-type {
+            overflow: hidden;
+            position: relative;
+        }
+
+        & .slider-product,
+        & .slider-product-nav-buttons,
+        & .slider-product-nav-landmarks {
+            display: flex;
+        }
+
+        & .slider-product {
+            width: 200%;
+            transition: transform var(--smooth);
+        }
+
+        & .slider-product-nav-buttons,
+        & .slider-product-nav-landmarks {
+            position: absolute;
+            left: 50%;
+            justify-content: space-between;
+        }
+
+        & .slider-product-nav-buttons {
+            width: 100%;
+            padding: 0 calc(var(--base-size) * 1.5);
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        & .slider-product-nav-buttons button {
+            position: relative;
+            width: calc(var(--base-size) * 1.5);
+            height: calc(var(--base-size) * 1.5);
+            border-radius: 50%;
+            background: var(--light);
+            opacity: .75;
+            transition: background var(--smooth), opacity var(--smooth);
+        }
+
+        & .slider-product-nav-buttons button.hidden {
+            visibility: hidden;
+        }
+
+        & .slider-product-nav-buttons button:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        & .slider-product-nav-buttons button span {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 35%;
+            height: 35%;
+        }
+
+        & .slider-product-nav-buttons button:first-of-type span {
+            left: 55%;
+            border-bottom: .1rem solid;
+            border-left: .1rem solid;
+        }
+        
+        & .slider-product-nav-buttons button:last-of-type span {
+            left: 45%;
+            border-top: .1rem solid;
+            border-right: .1rem solid;
+        }
+
+        & .slider-product-nav-landmarks {
+            bottom: 5%;
+        }
+
+        & .slider-product-nav-landmarks span {
+            background: rgb(var(--white-rvb) / .5);
+            width: .7rem;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+        }
+
+        & .slider-product-nav-landmarks span.active {
+            background: var(--light);
+        }
+
+        & .slider-product-nav-landmarks span:not(:first-child) {
+            margin-left: .7rem;
+        }
+
         & > div > div:first-of-type,
         & > div > div:first-of-type figure {
             width: 100%;
@@ -425,6 +526,13 @@ h3 {
         & > div > div:last-of-type {
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        & > div > div:last-of-type > p {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
         }
 
         & > div > div:last-of-type > div {
@@ -535,7 +643,7 @@ section,
     }
 
     & section > form input:not(input[type="submit"]) {
-        border: .1rem solid var(--dark);
+        border: var(--border-black-25-percent);
     }
 
     & section > form > input[type="submit"] {
@@ -688,7 +796,7 @@ section,
             padding-top: var(--base-size);
             display: inherit;
             gap: inherit;
-            border-top: .1rem solid rgb(var(--black-rvb) / .3);
+            border-top: var(--border-black-25-percent);
         }
 
         & > div > form input[type="submit"] {
@@ -704,7 +812,7 @@ section,
 
     .show-message-to-user {
         padding-top: var(--base-size);
-        border-top: .1rem solid rgb(var(--black-rvb) / .3);
+        border-top: var(--border-black-25-percent);
 
         & > a {
             display: inline-block;

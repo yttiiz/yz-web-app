@@ -28,8 +28,7 @@ export const ProductsHome: ComponentType<
         <p>${paragraph}</p>
       </div>
       <ul class="products">
-        ${
-      Object.keys(products)
+      ${Object.keys(products)
         .map((key) => (
           `
             <li>
@@ -49,25 +48,33 @@ export const ProductsHome: ComponentType<
                       <h4>${products[key].type}</h4>
                     </div>
                     <span>
-                      <strong>
-                        ${Helper.formatPrice(products[key].details.price)}
-                      </strong>/jour
+                      <strong>${Helper.formatPrice(products[key].details.price)}</strong>/jour
                     </span>
                   </div>
                 </header>
-                <div>
-                ${
-            products[key].pictures
-              .map((picture) => (
-                `<figure>
-                      <img
-                        src="${picture.src}"
-                        alt="${picture.alt}"
-                      />
-                    </figure>`
-              ))
-              .join("")
-          }
+                <div data-slider-length="${products[key].pictures.length}">
+                  <div class="slider-product">
+                  ${products[key].pictures
+                    .map((picture) => (
+                      `<figure>
+                        <img
+                          src="${picture.src}"
+                          alt="${picture.alt}"
+                        />
+                      </figure>`
+                    ))
+                    .join("")
+                  }
+                  </div>
+                  <div class="slider-product-nav-buttons">
+                    <button type="button" class="hidden">
+                      <span></span>
+                    </button>
+                    <button type="button">
+                      <span></span>
+                    </button>
+                  </div>
+                  <ul class="slider-product-nav-landmarks"></ul>
                 </div>
                 <div>
                   <p>${products[key].description}</p>
@@ -95,7 +102,7 @@ export const ProductsHome: ComponentType<
             `
         ))
         .join("")
-    }
+      }
       </ul>
     </section>`;
   },
