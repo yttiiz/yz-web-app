@@ -39,46 +39,91 @@ export class AnimationHelper {
     ) => {
       switch (index) {
         case 0:
-            prevBtn.classList.add(className)
-            if (nextBtn.classList.contains(className)) nextBtn.classList.remove(className)
-            break
+          prevBtn.classList.add(className);
+          
+          if (nextBtn.classList.contains(className)) {
+            nextBtn.classList.remove(className);
+          }
+          break;
 
         case sliderLength - 1:
-            nextBtn.classList.add(className)
-            if (prevBtn.classList.contains(className)) prevBtn.classList.remove(className)
-            break
+          nextBtn.classList.add(className);
+
+          if (prevBtn.classList.contains(className)) {
+            prevBtn.classList.remove(className);
+          }
+          break;
             
         default:
-            if (prevBtn.classList.contains(className)) prevBtn.classList.remove(className)
-            if (nextBtn.classList.contains(className)) nextBtn.classList.remove(className)
+          if (prevBtn.classList.contains(className)) {
+            prevBtn.classList.remove(className);
+          }
+
+          if (nextBtn.classList.contains(className)) {
+            nextBtn.classList.remove(className);
+          } 
       }
     };
+
+    /**
+     * @param {HTMLUListElement} landmarks 
+     * @param {number} index 
+     * @param {number} key 
+     */
+    const switchActiveLandmark = (
+      landmarks,
+      index,
+      key = 0
+    ) => {
+      for (const landmark of landmarks.children) {
+        if (index === key) {
+          landmark.classList.add("active");
+        }
+        
+        if (index !== key && landmark.classList.contains("active")) {
+          landmark.classList.remove("active");
+        }
+        key++;
+      }
+    }
     
     for (const slider of sliders) {
       const sliderLength = slider.children.length;
       const [prevBtn, nextBtn] = slider.nextElementSibling
       .querySelectorAll("button");
+      const landmarks = slider.nextElementSibling.nextElementSibling;
 
-      // Check slider length to display or not buttons.
+      // Check slider length to display or not buttons and landmarks.
       if (sliderLength === 1) {
         nextBtn.classList.add("hidden");
+
+      } else {
+        for (let i = 0; i < sliderLength; i++) {
+          landmarks.appendChild(document.createElement("span"));
+  
+          i === 0
+          ? landmarks.children[i].classList.add("active")
+          : null;
+        }
+  
+        prevBtn.addEventListener("click", () => {
+          if (index <= 0) return;
+  
+          index--;
+          moveSlider(slider, sliderLength);
+          changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
+          switchActiveLandmark(landmarks, index);
+        });
+        
+        nextBtn.addEventListener("click", () => {
+          if (index >= (sliderLength - 1)) return;
+          
+          index++;
+          moveSlider(slider, sliderLength);
+          changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
+          switchActiveLandmark(landmarks, index);
+        });
       }
-
-      prevBtn.addEventListener("click", () => {
-        if (index <= 0) return;
-
-        index--;
-        moveSlider(slider, sliderLength);
-        changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
-      });
-
-      nextBtn.addEventListener("click", () => {
-        if (index >= (sliderLength - 1)) return;
-
-        index++;
-        moveSlider(slider, sliderLength);
-        changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
-      });
     }
     
     return this;

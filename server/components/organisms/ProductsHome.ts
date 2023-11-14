@@ -66,7 +66,7 @@ export const ProductsHome: ComponentType<
                     .join("")
                   }
                   </div>
-                  <div class="slider-product-navigation">
+                  <div class="slider-product-nav-buttons">
                     <button type="button" class="hidden">
                       <span></span>
                     </button>
@@ -74,6 +74,7 @@ export const ProductsHome: ComponentType<
                       <span></span>
                     </button>
                   </div>
+                  <ul class="slider-product-nav-landmarks"></ul>
                 </div>
                 <div>
                   <p>${products[key].description}</p>
