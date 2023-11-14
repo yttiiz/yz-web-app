@@ -423,7 +423,8 @@ h3 {
 
         & .slider-product {
             width: 200%;
-        } 
+            transition: transform var(--smooth);
+        }
 
         & .slider-product-navigation {
             width: 100%;
@@ -443,6 +444,10 @@ h3 {
             background: var(--light);
             opacity: .75;
             transition: background var(--smooth), opacity var(--smooth);
+        }
+
+        & .slider-product-navigation button.hidden {
+            visibility: hidden;
         }
 
         & .slider-product-navigation button:hover {

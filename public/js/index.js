@@ -1,8 +1,8 @@
-import { Router } from "./pages/mod.js";
-import { handleBurger, handleShowPassword } from "./animation/mod.js";
+import { Router, AnimationHelper } from "./pages/mod.js";
 
+// Router
 new Router();
 
 // Animation
-handleBurger();
-handleShowPassword();
+new AnimationHelper()
+  .handleSlider(".slider-product");

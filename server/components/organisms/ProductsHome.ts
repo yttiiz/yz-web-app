@@ -52,7 +52,7 @@ export const ProductsHome: ComponentType<
                     </span>
                   </div>
                 </header>
-                <div>
+                <div data-slider-length="${products[key].pictures.length}">
                   <div class="slider-product">
                   ${products[key].pictures
                     .map((picture) => (
@@ -67,7 +67,7 @@ export const ProductsHome: ComponentType<
                   }
                   </div>
                   <div class="slider-product-navigation">
-                    <button type="button">
+                    <button type="button" class="hidden">
                       <span></span>
                     </button>
                     <button type="button">
