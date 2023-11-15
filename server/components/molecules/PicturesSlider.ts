@@ -13,7 +13,8 @@ export const PicturesSlider: ComponentType<
   html: (pictures: ImagesProductType[]) => (
     `
     <div data-slider-length="${pictures.length}">
-      <div
+      <a
+        href="/product"
         class="slider-product"
         style="width: ${100 * pictures.length}%;"
       >
@@ -28,15 +29,13 @@ export const PicturesSlider: ComponentType<
         ))
         .join("")
       }
-      </div>
-      <div class="slider-product-nav-buttons">
-        <button type="button" class="hidden">
-          <span></span>
-        </button>
-        <button type="button">
-          <span></span>
-        </button>
-      </div>
+      </a>
+      <button type="button" class="hidden">
+        <span></span>
+      </button>
+      <button type="button">
+        <span></span>
+      </button>
       <ul class="slider-product-nav-landmarks"></ul>
     </div>
     `

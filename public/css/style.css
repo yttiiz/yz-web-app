@@ -428,7 +428,6 @@ h3 {
         }
 
         & .slider-product,
-        & .slider-product-nav-buttons,
         & .slider-product-nav-landmarks {
             display: flex;
         }
@@ -437,7 +436,6 @@ h3 {
             transition: transform var(--smooth);
         }
 
-        & .slider-product-nav-buttons,
         & .slider-product-nav-landmarks {
             position: absolute;
             left: 50%;
@@ -445,15 +443,11 @@ h3 {
             justify-content: space-between;
         }
 
-        & .slider-product-nav-buttons {
-            width: 100%;
-            padding: 0 calc(var(--base-size) * 1.5);
+        & > div > div:first-of-type > button {
             top: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        & .slider-product-nav-buttons button {
-            position: relative;
+            transform: translateY(-50%);
+            transform-origin: center;
+            position: absolute;
             width: calc(var(--base-size) * 1.5);
             height: calc(var(--base-size) * 1.5);
             border-radius: 50%;
@@ -462,16 +456,25 @@ h3 {
             transition: background var(--smooth), opacity var(--smooth);
         }
 
-        & .slider-product-nav-buttons button.hidden {
+        & > div > div:first-of-type > button:first-of-type {
+            left: calc(var(--base-size) * 1.5);
+        }
+
+        & > div > div:first-of-type > button:last-of-type {
+            right: calc(var(--base-size) * 1.5);
+        }
+
+
+        & > div > div:first-of-type > button.hidden {
             visibility: hidden;
         }
 
-        & .slider-product-nav-buttons button:hover {
-            transform: scale(1.1);
+        & > div > div:first-of-type > button:hover {
+            transform: translateY(-50%) scale(1.1);
             opacity: 1;
         }
 
-        & .slider-product-nav-buttons button span {
+        & > div > div:first-of-type > button span {
             position: absolute;
             top: 50%;
             transform: translate(-50%, -50%) rotate(45deg);
@@ -479,13 +482,13 @@ h3 {
             height: 35%;
         }
 
-        & .slider-product-nav-buttons button:first-of-type span {
+        & > div > div:first-of-type > button:first-of-type span {
             left: 55%;
             border-bottom: .1rem solid;
             border-left: .1rem solid;
         }
         
-        & .slider-product-nav-buttons button:last-of-type span {
+        & > div > div:first-of-type > button:last-of-type span {
             left: 45%;
             border-top: .1rem solid;
             border-right: .1rem solid;

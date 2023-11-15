@@ -87,9 +87,9 @@ export class AnimationHelper {
     
     for (const slider of sliders) {
       const sliderLength = slider.children.length;
-      const [prevBtn, nextBtn] = slider.nextElementSibling
+      const [prevBtn, nextBtn] = slider.closest("div")
       .querySelectorAll("button");
-      const landmarks = slider.nextElementSibling.nextElementSibling;
+      const landmarks = slider.closest("div").querySelector("ul");
       
       let index = 0;
       
