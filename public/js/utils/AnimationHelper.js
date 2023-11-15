@@ -7,20 +7,16 @@ export class AnimationHelper {
   /**
    * Animates slider motion.
    * @param {string} sliderClassName 
-   * @param {string} buttonsClassName 
-   * @param {number} index 
    */
-  handleSlider(
-    sliderClassName,
-    index = 0,
-  ) {
+  handleSlider(sliderClassName) {
     const sliders = document.querySelectorAll(sliderClassName);
     
     /**
      * @param {HTMLDivElement} slider 
      * @param {number} sliderLength 
+     * @param {number} index 
      */
-    const moveSlider = (slider, sliderLength) => {
+    const moveSlider = (slider, sliderLength, index) => {
       const slideWidth = slider.clientWidth / sliderLength;
       slider.style.transform = `translateX(-${slideWidth * index}px)`
     };
@@ -29,12 +25,14 @@ export class AnimationHelper {
      * @param {HTMLButtonElement} prevBtn 
      * @param {HTMLButtonElement} nextBtn 
      * @param {number} sliderLength 
+     * @param {number} index 
      * @param {string} className 
      */
     const changeBtnsVisibility = (
       prevBtn,
       nextBtn,
       sliderLength,
+      index,
       className = "hidden"
     ) => {
       switch (index) {
@@ -92,7 +90,9 @@ export class AnimationHelper {
       const [prevBtn, nextBtn] = slider.nextElementSibling
       .querySelectorAll("button");
       const landmarks = slider.nextElementSibling.nextElementSibling;
-
+      
+      let index = 0;
+      
       // Check slider length to display or not buttons and landmarks.
       if (sliderLength === 1) {
         nextBtn.classList.add("hidden");
@@ -110,8 +110,8 @@ export class AnimationHelper {
           if (index <= 0) return;
   
           index--;
-          moveSlider(slider, sliderLength);
-          changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
+          moveSlider(slider, sliderLength, index);
+          changeBtnsVisibility(prevBtn, nextBtn, sliderLength, index);
           switchActiveLandmark(landmarks, index);
         });
         
@@ -119,8 +119,8 @@ export class AnimationHelper {
           if (index >= (sliderLength - 1)) return;
           
           index++;
-          moveSlider(slider, sliderLength);
-          changeBtnsVisibility(prevBtn, nextBtn, sliderLength);
+          moveSlider(slider, sliderLength, index);
+          changeBtnsVisibility(prevBtn, nextBtn, sliderLength, index);
           switchActiveLandmark(landmarks, index);
         });
       }

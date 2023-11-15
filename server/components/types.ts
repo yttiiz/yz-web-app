@@ -14,7 +14,8 @@ export type MoleculeNameType =
   | "InputsForm"
   | "Login"
   | "LogoutForm"
-  | "NotFound";
+  | "NotFound"
+  | "PicturesSlider";
 
 export type AtomNameType =
   | "LikeSvg"

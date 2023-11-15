@@ -19,4 +19,5 @@ export * from "./organisms/ProductsHome.ts";
 export * from "./molecules/DeleteAccount.ts";
 export * from "./molecules/DeleteAccountForm.ts";
 export * from "./molecules/NotFound.ts";
+export * from "./molecules/PicturesSlider.ts";
 export * from "./types.ts";

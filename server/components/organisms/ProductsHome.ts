@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Helper, Rate } from "@utils";
-import { LikeSvg, ShareSvg } from "../mod.ts";
+import { LikeSvg, ShareSvg, PicturesSlider } from "../mod.ts";
 import type {
   ComponentType,
   HomePageDataType,
@@ -52,30 +52,7 @@ export const ProductsHome: ComponentType<
                     </span>
                   </div>
                 </header>
-                <div data-slider-length="${products[key].pictures.length}">
-                  <div class="slider-product">
-                  ${products[key].pictures
-                    .map((picture) => (
-                      `<figure>
-                        <img
-                          src="${picture.src}"
-                          alt="${picture.alt}"
-                        />
-                      </figure>`
-                    ))
-                    .join("")
-                  }
-                  </div>
-                  <div class="slider-product-nav-buttons">
-                    <button type="button" class="hidden">
-                      <span></span>
-                    </button>
-                    <button type="button">
-                      <span></span>
-                    </button>
-                  </div>
-                  <ul class="slider-product-nav-landmarks"></ul>
-                </div>
+                ${PicturesSlider.html(products[key].pictures)}
                 <div>
                   <p>${products[key].description}</p>
                   <div>

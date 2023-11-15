@@ -17,11 +17,11 @@ const {
 export const NotFound: ComponentType<MoleculeNameType> = {
   name: "NotFound",
   html: `
-  <h1>${title}</h1>
   <div>
+    <h1>${title}</h1>
     <p>${paragraph}</p>
-    <span>
+  </div>
+  <div>
     <a href="${btnLink}">${btnText}</a>
-    </span>
-  <div>`,
+  </div>`,
 };

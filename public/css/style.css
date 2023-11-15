@@ -434,7 +434,6 @@ h3 {
         }
 
         & .slider-product {
-            width: 200%;
             transition: transform var(--smooth);
         }
 
@@ -442,6 +441,7 @@ h3 {
         & .slider-product-nav-landmarks {
             position: absolute;
             left: 50%;
+            transform: translateX(-50%);
             justify-content: space-between;
         }
 
@@ -497,7 +497,7 @@ h3 {
 
         & .slider-product-nav-landmarks span {
             background: rgb(var(--white-rvb) / .5);
-            width: .7rem;
+            width: calc(var(--base-size) * .45);
             aspect-ratio: 1 / 1;
             border-radius: 50%;
         }
@@ -507,7 +507,7 @@ h3 {
         }
 
         & .slider-product-nav-landmarks span:not(:first-child) {
-            margin-left: .7rem;
+            margin-left: calc(var(--base-size) * .45);
         }
 
         & > div > div:first-of-type,
@@ -832,13 +832,13 @@ section,
 }
 
 #data-not-found {
-    & section > div {
-        display: flex;
-        flex-direction: column;
-        gap: calc(var(--base-size) * 2);
+    & section > div:last-of-type {
+        display: inherit;
+        justify-content: center;
     }
 
     & section > div a {
+        width: max-content;
         padding: var(--btn-padding);
         border-radius: var(--btn-border-radius);
         color: var(--light);
