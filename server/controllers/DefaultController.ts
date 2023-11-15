@@ -173,7 +173,7 @@ export class DefaultController {
     if (id === "data-not-found") {
       return main.replace(
         "{{ content-insertion }}",
-        `<section>${layout.NotFound.html}</section>`,
+        layout.NotFound.html,
         );
     }
 
