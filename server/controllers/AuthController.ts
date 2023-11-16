@@ -8,6 +8,7 @@ import type {
   RouterContextAppType,
   SelectUserFromDBType,
 } from "./mod.ts";
+import { Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private defaultImg;
@@ -79,56 +80,70 @@ export class AuthController extends DefaultController {
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
-    const { fields: { email, password } } = await data.read();
+    const dataStructure = await this.helper.convertJsonToObject(
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
+    );
+    const dataParsed = Validator.dataParser(await data.read(), dataStructure);
+    
+    if (!dataParsed.isDataOk) {
+      this.response(
+        ctx,
+        { message: dataParsed.message },
+        200,
+      );
 
-    const failedLogin = async (message: string) => {
-      const failedLoginAttempts =
-        (await ctx.state.session.get("failed-login-attempts") || 0) as number;
-      ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
-      ctx.state.session.flash("error", message);
-    };
+    } else {
+      const { fields: { email, password } } = dataParsed.data;
 
-    try {
-      const user = await this.selectFromDB(email, "users");
+      const failedLogin = async (message: string) => {
+        const failedLoginAttempts =
+          (await ctx.state.session.get("failed-login-attempts") || 0) as number;
+        ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
+        ctx.state.session.flash("error", message);
+      };
 
-      if ("_id" in user) {
-        const isPasswordOk = await Auth.comparePassword(password, user.hash);
+      try {
+        const user = await this.selectFromDB(email, "users");
 
-        // Handle session and redirection.
-        if (isPasswordOk) {
-          ctx.state.session.set("userEmail", email);
-          ctx.state.session.set("userFirstname", user.firstname);
-          ctx.state.session.set("userId", user._id);
-          ctx.state.session.set("failed-login-attempts", null);
-          ctx.state.session.flash(
-            "message",
-            this.sessionFlashMsg(email),
-          );
+        if ("_id" in user) {
+          const isPasswordOk = await Auth.comparePassword(password, user.hash);
 
-          ctx.state.session.has("error")
-            ? ctx.state.session.set("error", null)
-            : null;
+          // Handle session and redirection.
+          if (isPasswordOk) {
+            ctx.state.session.set("userEmail", email);
+            ctx.state.session.set("userFirstname", user.firstname);
+            ctx.state.session.set("userId", user._id);
+            ctx.state.session.set("failed-login-attempts", null);
+            ctx.state.session.flash(
+              "message",
+              this.sessionFlashMsg(email),
+            );
 
-          this.response(ctx, user, 302, "/");
+            ctx.state.session.has("error")
+              ? ctx.state.session.set("error", null)
+              : null;
+
+            this.response(ctx, user, 302, "/");
+          } else {
+            await failedLogin("mot de passe incorrect");
+            this.response(
+              ctx,
+              { message: "votre mot de passe est incorrect" },
+              200,
+            );
+          }
         } else {
-          await failedLogin("mot de passe incorrect");
-          this.response(
-            ctx,
-            { message: "votre mot de passe est incorrect" },
-            200,
-          );
+          if (user.message === "connexion failed") {
+            this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+          } else {
+            await failedLogin(user.message);
+            this.response(ctx, user, 200);
+          }
         }
-      } else {
-        if (user.message === "connexion failed") {
-          this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
-        } else {
-          await failedLogin(user.message);
-          this.response(ctx, user, 200);
-        }
+      } catch (error) {
+        this.helper.writeLog(error);
+        this.response(ctx, { errorMsg: this.errorMsg }, 500);
       }
-    } catch (error) {
-      this.helper.writeLog(error);
-      this.response(ctx, { errorMsg: this.errorMsg }, 500);
     }
   };
 
@@ -145,51 +160,68 @@ export class AuthController extends DefaultController {
   private registerRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    let photo: string;
+    const dataStructure = await this.helper.convertJsonToObject(
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
+    );
     const data = await ctx.request.body().value as oak.FormDataReader;
-
-    const {
-      fields: {
-        lastname,
-        firstname,
-        email,
-        birth,
-        password,
-        job,
-      },
-      files,
-    } = await data.read({ maxSize: 10_000_000 });
-
-    files
-      ? photo = await this.helper.writeUserPicFile(
-        files,
-        firstname,
-        lastname,
-      )
-      : photo = this.defaultImg;
-
-    const hash = await Auth.hashPassword(password);
-
-    const userId = await this.insertIntoDB({
-      firstname,
-      lastname,
-      email,
-      birth: new Date(birth),
-      role: "user",
-      job,
-      hash,
-      photo,
-    }, "users");
-
-    userId === "connexion failed"
-      ? this.response(ctx, { errorMsg: this.errorMsg }, 502)
-      : this.response(
+    const dataParsed = Validator.dataParser(
+      await data.read({ maxSize: 10_000_000 }),
+      dataStructure,
+    );
+    
+    if (!dataParsed.isDataOk) {
+      this.response(
         ctx,
-        {
-          id: userId,
-          name: `${firstname} ${lastname}`,
-        },
+        { message: dataParsed.message },
         200,
       );
-  };
+
+    } else {
+      let photo: string;
+
+      const {
+        fields: {
+          lastname,
+          firstname,
+          email,
+          birth,
+          password,
+          job,
+        },
+        files,
+      } = dataParsed.data;
+
+      files
+        ? photo = await this.helper.writeUserPicFile(
+          files,
+          firstname,
+          lastname,
+        )
+        : photo = this.defaultImg;
+
+      const hash = await Auth.hashPassword(password);
+
+      const userId = await this.insertIntoDB({
+        firstname,
+        lastname,
+        email,
+        birth: new Date(birth),
+        role: "user",
+        job,
+        hash,
+        photo,
+      }, "users");
+
+      userId === "connexion failed"
+        ? this.response(ctx, { errorMsg: this.errorMsg }, 502)
+        : this.response(
+          ctx,
+          {
+            id: userId,
+            name: `${firstname} ${lastname}`,
+          },
+          200,
+        );
+    };
+  }
 }
