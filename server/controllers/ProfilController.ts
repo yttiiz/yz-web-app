@@ -65,7 +65,7 @@ export class ProfilController extends DefaultController {
         const userId = await ctx.state.session.get("userId") as ObjectId;
 
         files
-          ? photo = await this.fileHandler(
+          ? photo = await this.helper.writeUserPicFile(
             files,
             fields.firstname,
             fields.lastname,

@@ -19,9 +19,6 @@ export type PathAppType =
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
-// Files
-export type FilesDataType = oak.FormDataFile[];
-
 // Page
 export type ConfigPageType = {
   id: `data-${string}`;

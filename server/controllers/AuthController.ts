@@ -161,7 +161,7 @@ export class AuthController extends DefaultController {
     } = await data.read({ maxSize: 10_000_000 });
 
     files
-      ? photo = await this.fileHandler(
+      ? photo = await this.helper.writeUserPicFile(
         files,
         firstname,
         lastname,
