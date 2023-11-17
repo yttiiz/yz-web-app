@@ -5,11 +5,11 @@ export class UserFormHelper {
    * @param {Response} response
    */
   static showRegisterDetails = async (response) => {
-    const { id, name } = await response.json();
-
+    const { message } = await response.json();
+    console.log(message)
     UserFormHelper.#paragraphToShowInfo({
-      msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
-      dataSet: "success",
+      msg: message,
+      dataSet: message.includes("suspects") ? "error" : "success",
     }, "users");
   };
 
@@ -20,7 +20,7 @@ export class UserFormHelper {
     const { message } = await response.json();
 
     UserFormHelper.#paragraphToShowInfo({
-      msg: `Veuillez réessayer de nouveau, ${message}.`,
+      msg: message,
       dataSet: "error",
     }, "users");
   };

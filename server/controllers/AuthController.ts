@@ -80,12 +80,12 @@ export class AuthController extends DefaultController {
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
-    const dataStructure = await this.helper.convertJsonToObject(
+    const dataModel = await this.helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
-    const dataParsed = Validator.dataParser(await data.read(), dataStructure);
+    const dataParsed = Validator.dataParser(await data.read(), dataModel);
     
-    if (!dataParsed.isDataOk) {
+    if (!dataParsed.isOk) {
       return this.response(
         ctx,
         { message: dataParsed.message },
@@ -128,7 +128,7 @@ export class AuthController extends DefaultController {
           await failedLogin("mot de passe incorrect");
           this.response(
             ctx,
-            { message: "votre mot de passe est incorrect" },
+            { message: "Veuillez réessayer, votre mot de passe est incorrect." },
             200,
           );
         }
@@ -159,16 +159,16 @@ export class AuthController extends DefaultController {
   private registerRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const dataStructure = await this.helper.convertJsonToObject(
+    const dataModel = await this.helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const data = await ctx.request.body().value as oak.FormDataReader;
     const dataParsed = Validator.dataParser(
       await data.read({ maxSize: 10_000_000 }),
-      dataStructure,
+      dataModel,
     );
-    
-    if (!dataParsed.isDataOk) {
+
+    if (!dataParsed.isOk) {
       return this.response(
         ctx,
         { message: dataParsed.message },
@@ -216,8 +216,7 @@ export class AuthController extends DefaultController {
       : this.response(
         ctx,
         {
-          id: userId,
-          name: `${firstname} ${lastname}`,
+          message: `${firstname} ${lastname}, votre profil a été créé avec succès.`,
         },
         200,
       );
