@@ -2,7 +2,7 @@ import { oak } from "@deps";
 import { FormDataType } from "@components";
 
 export class Validator {
-  private static message = "Des caractères suspects ont été détectés.";
+  private static message = "Il semble que votre saisie contient des caractères soit, non autorisés, ou soit, en nombre trop importants.";
   
   public static normalizeString(str: string) {
     return str.normalize("NFD")

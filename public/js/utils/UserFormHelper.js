@@ -63,11 +63,11 @@ export class UserFormHelper {
   };
 
   /**
-   * @param {NodeListOf<HTMLInputElement>} inputs
+   * @param {NodeListOf<HTMLLabelElement>} labels
    */
-  static removeInputsValues = (inputs) => {
-    for (let i = 0; i < inputs.length - 1; i++) {
-      inputs[i].value = "";
+  static removeInputsValues = (labels) => {
+    for (let i = 0; i < labels.length - 1; i++) {
+      labels[i].querySelector('input').value = "";
     }
   };
 

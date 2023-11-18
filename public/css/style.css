@@ -52,7 +52,32 @@ body, body * {
     color: var(--dark);
 }
 
-button, input[type="submit"] {
+input::-ms-input-placeholder {
+    color: #999;
+}
+
+input::-webkit-input-placeholder {
+    color: #999;
+}
+
+input::-moz-placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+input[type="date"]:invalid::-webkit-datetime-edit {
+    color: #999;
+}
+
+input[type="password"]:not(:placeholder-shown) {
+    font: small-caption;
+    font-size: calc(var(--base-size) * 1.25);
+    letter-spacing: .35rem;
+    color: var(--dark);
+}
+
+button,
+input[type="submit"] {
     border: none;
     outline: none;
     background: none;
@@ -71,13 +96,6 @@ input[type="submit"] {
     height: max-content;
     color: var(--light);
     font-weight: 500;
-}
-
-input[type=password]:not(:placeholder-shown) {
-    font: small-caption;
-    font-size: calc(var(--base-size) * 1.25);
-    letter-spacing: .35rem;
-    color: var(--dark);
 }
 
 li {
