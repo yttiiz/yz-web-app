@@ -84,7 +84,7 @@ export class AuthController extends DefaultController {
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const dataParsed = Validator.dataParser(await data.read(), dataModel);
-    
+
     if (!dataParsed.isOk) {
       return this.response(
         ctx,
@@ -128,7 +128,9 @@ export class AuthController extends DefaultController {
           await failedLogin("mot de passe incorrect");
           this.response(
             ctx,
-            { message: "Veuillez réessayer, votre mot de passe est incorrect." },
+            {
+              message: "Veuillez réessayer, votre mot de passe est incorrect.",
+            },
             200,
           );
         }
@@ -175,7 +177,7 @@ export class AuthController extends DefaultController {
         200,
       );
     }
-    
+
     let photo: string;
 
     const {

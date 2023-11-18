@@ -61,8 +61,8 @@ export class Mongo {
         return selectedDocument;
       }
       const message = collection === "users"
-      ? "Aucun utilisateur n'est lié à cet email : " + email
-      : "Produit non trouvé.";
+        ? "Aucun utilisateur n'est lié à cet email : " + email
+        : "Produit non trouvé.";
 
       return { message };
     } else return { message: Mongo.errorMsg };

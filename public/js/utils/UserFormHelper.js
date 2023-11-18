@@ -6,7 +6,7 @@ export class UserFormHelper {
    */
   static showRegisterDetails = async (response) => {
     const { message } = await response.json();
-    console.log(message)
+
     UserFormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: message.includes("suspects") ? "error" : "success",
@@ -67,7 +67,7 @@ export class UserFormHelper {
    */
   static removeInputsValues = (labels) => {
     for (let i = 0; i < labels.length - 1; i++) {
-      labels[i].querySelector('input').value = "";
+      labels[i].querySelector("input").value = "";
     }
   };
 
