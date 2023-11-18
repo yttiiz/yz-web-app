@@ -47,8 +47,8 @@ export class Mongo {
   }
 
   public static async selectFromDB<T extends Document>(
-    email: string,
     collection: string,
+    email?: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
@@ -60,8 +60,11 @@ export class Mongo {
       if (selectedDocument) {
         return selectedDocument;
       }
+      const message = collection === "users"
+        ? "Aucun utilisateur n'est lié à cet email : " + email
+        : "Produit non trouvé.";
 
-      return { message: "aucun utilisateur n'est lié à cet email : " + email };
+      return { message };
     } else return { message: Mongo.errorMsg };
   }
 

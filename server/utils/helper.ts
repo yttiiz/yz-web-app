@@ -1,3 +1,5 @@
+import { FilesDataType, Validator } from "./mod.ts";
+
 export class Helper {
   private static DateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -29,6 +31,23 @@ export class Helper {
     const content = encoder.encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
+  }
+
+  public static async writeUserPicFile(
+    files: FilesDataType,
+    firstname: string,
+    lastname: string,
+  ) {
+    firstname = Validator.normalizeString(firstname);
+    lastname = Validator.normalizeString(lastname);
+    const [file] = files;
+    const ext = file.contentType.split("/").at(1) as string;
+    const photo =
+      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+
+    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
+
+    return photo;
   }
 
   public static formatPrice(price: number) {

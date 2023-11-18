@@ -8,6 +8,7 @@ import type {
   RouterContextAppType,
   SelectUserFromDBType,
 } from "./mod.ts";
+import { Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private defaultImg;
@@ -79,7 +80,20 @@ export class AuthController extends DefaultController {
     ctx: RouterContextAppType<T>,
   ) => {
     const data = await ctx.request.body().value as oak.FormDataReader;
-    const { fields: { email, password } } = await data.read();
+    const dataModel = await this.helper.convertJsonToObject(
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
+    );
+    const dataParsed = Validator.dataParser(await data.read(), dataModel);
+
+    if (!dataParsed.isOk) {
+      return this.response(
+        ctx,
+        { message: dataParsed.message },
+        200,
+      );
+    }
+
+    const { fields: { email, password } } = dataParsed.data;
 
     const failedLogin = async (message: string) => {
       const failedLoginAttempts =
@@ -89,7 +103,7 @@ export class AuthController extends DefaultController {
     };
 
     try {
-      const user = await this.selectFromDB(email, "users");
+      const user = await this.selectFromDB("users", email);
 
       if ("_id" in user) {
         const isPasswordOk = await Auth.comparePassword(password, user.hash);
@@ -114,7 +128,9 @@ export class AuthController extends DefaultController {
           await failedLogin("mot de passe incorrect");
           this.response(
             ctx,
-            { message: "votre mot de passe est incorrect" },
+            {
+              message: "Veuillez réessayer, votre mot de passe est incorrect.",
+            },
             200,
           );
         }
@@ -145,8 +161,24 @@ export class AuthController extends DefaultController {
   private registerRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    let photo: string;
+    const dataModel = await this.helper.convertJsonToObject(
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
+    );
     const data = await ctx.request.body().value as oak.FormDataReader;
+    const dataParsed = Validator.dataParser(
+      await data.read({ maxSize: 10_000_000 }),
+      dataModel,
+    );
+
+    if (!dataParsed.isOk) {
+      return this.response(
+        ctx,
+        { message: dataParsed.message },
+        200,
+      );
+    }
+
+    let photo: string;
 
     const {
       fields: {
@@ -158,10 +190,10 @@ export class AuthController extends DefaultController {
         job,
       },
       files,
-    } = await data.read({ maxSize: 10_000_000 });
+    } = dataParsed.data;
 
     files
-      ? photo = await this.fileHandler(
+      ? photo = await this.helper.writeUserPicFile(
         files,
         firstname,
         lastname,
@@ -186,8 +218,7 @@ export class AuthController extends DefaultController {
       : this.response(
         ctx,
         {
-          id: userId,
-          name: `${firstname} ${lastname}`,
+          message: `${firstname} ${lastname}, votre profil a été créé avec succès.`,
         },
         200,
       );

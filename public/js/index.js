@@ -1,4 +1,4 @@
-import { Router, AnimationHelper } from "./pages/mod.js";
+import { AnimationHelper, Router } from "./pages/mod.js";
 
 // Router
 new Router();

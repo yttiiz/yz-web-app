@@ -5,11 +5,11 @@ export class UserFormHelper {
    * @param {Response} response
    */
   static showRegisterDetails = async (response) => {
-    const { id, name } = await response.json();
+    const { message } = await response.json();
 
     UserFormHelper.#paragraphToShowInfo({
-      msg: `${name} a été enregistré avec succès sous l'id : ${id}`,
-      dataSet: "success",
+      msg: message,
+      dataSet: message.includes("suspects") ? "error" : "success",
     }, "users");
   };
 
@@ -20,7 +20,7 @@ export class UserFormHelper {
     const { message } = await response.json();
 
     UserFormHelper.#paragraphToShowInfo({
-      msg: `Veuillez réessayer de nouveau, ${message}.`,
+      msg: message,
       dataSet: "error",
     }, "users");
   };
@@ -60,6 +60,31 @@ export class UserFormHelper {
       msg: errorMsg + status,
       dataSet: "error",
     }, id);
+  };
+
+  /**
+   * @param {NodeListOf<HTMLLabelElement>} labels
+   */
+  static removeInputsValues = (labels) => {
+    for (let i = 0; i < labels.length - 1; i++) {
+      labels[i].querySelector("input").value = "";
+    }
+  };
+
+  /**
+   * @param {HTMLFormElement} form
+   */
+  static setFormData = (form) => {
+    const formData = new FormData(form);
+
+    for (const [key, value] of formData) {
+      // Check for file (image) field.
+      if (typeof value === "object" && value.size === 0) {
+        formData.delete(key);
+      }
+    }
+
+    return formData;
   };
 
   /**
@@ -106,30 +131,5 @@ export class UserFormHelper {
       .removeEventListener("click", hideModalhandler);
     modal.querySelector("button")
       .addEventListener("click", () => window.location.href = "/");
-  };
-
-  /**
-   * @param {NodeListOf<HTMLInputElement>} inputs
-   */
-  static removeInputsValues = (inputs) => {
-    for (let i = 0; i < inputs.length - 1; i++) {
-      inputs[i].value = "";
-    }
-  };
-
-  /**
-   * @param {HTMLFormElement} form
-   */
-  static setFormData = (form) => {
-    const formData = new FormData(form);
-
-    for (const [key, value] of formData) {
-      // Check for file (image) field.
-      if (typeof value === "object" && value.size === 0) {
-        formData.delete(key);
-      }
-    }
-
-    return formData;
   };
 }

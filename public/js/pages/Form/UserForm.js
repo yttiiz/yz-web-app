@@ -98,11 +98,10 @@ export class UserFormPage extends PageBuilder {
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
 
+    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
     const method = location.pathname === "/profil"
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
-
-    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
 
     const res = await fetch(e.target.action, {
       method: method ?? "POST",

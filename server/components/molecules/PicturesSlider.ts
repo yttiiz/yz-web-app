@@ -1,3 +1,4 @@
+// deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
