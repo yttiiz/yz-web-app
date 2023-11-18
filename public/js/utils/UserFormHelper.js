@@ -63,6 +63,31 @@ export class UserFormHelper {
   };
 
   /**
+   * @param {NodeListOf<HTMLInputElement>} inputs
+   */
+  static removeInputsValues = (inputs) => {
+    for (let i = 0; i < inputs.length - 1; i++) {
+      inputs[i].value = "";
+    }
+  };
+
+  /**
+   * @param {HTMLFormElement} form
+   */
+  static setFormData = (form) => {
+    const formData = new FormData(form);
+
+    for (const [key, value] of formData) {
+      // Check for file (image) field.
+      if (typeof value === "object" && value.size === 0) {
+        formData.delete(key);
+      }
+    }
+
+    return formData;
+  };
+
+  /**
    * @param {{ msg: string; dataSet: "error" | "success" }} param
    * @param {string} id
    */
@@ -106,30 +131,5 @@ export class UserFormHelper {
       .removeEventListener("click", hideModalhandler);
     modal.querySelector("button")
       .addEventListener("click", () => window.location.href = "/");
-  };
-
-  /**
-   * @param {NodeListOf<HTMLInputElement>} inputs
-   */
-  static removeInputsValues = (inputs) => {
-    for (let i = 0; i < inputs.length - 1; i++) {
-      inputs[i].value = "";
-    }
-  };
-
-  /**
-   * @param {HTMLFormElement} form
-   */
-  static setFormData = (form) => {
-    const formData = new FormData(form);
-
-    for (const [key, value] of formData) {
-      // Check for file (image) field.
-      if (typeof value === "object" && value.size === 0) {
-        formData.delete(key);
-      }
-    }
-
-    return formData;
   };
 }

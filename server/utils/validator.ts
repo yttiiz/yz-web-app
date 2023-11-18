@@ -9,6 +9,21 @@ export class Validator {
       .replace(/\p{Diacritic}/gu, "");
   }
 
+  public static limitDates(
+    now = new Date(),
+    MAJORITY = 18,
+    CENTURY = 100,
+  ) {
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+
+    return {
+      min: `${year - CENTURY}-${month}-${day}`,
+      max: `${year - MAJORITY}-${month}-${day}`
+    }
+  };
+
   public static dataParser(
     data: oak.FormDataBody,
     dataModel: FormDataType
@@ -21,6 +36,7 @@ export class Validator {
 
     // CHECK FIELDS
     for (const prop in data.fields) {
+      
       // Check unauthorized character.
       if (data.fields[prop].search(UNAUTHORIZED_CHARACTER) !== -1) {
         isOk = false;

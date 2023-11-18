@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { EyeOpenSvg, EyeShutSvg } from "../mod.ts";
+import { Validator } from "@utils";
 import type {
   ComponentType,
   InputDataType,
@@ -39,6 +40,12 @@ export const InputsForm: ComponentType<
           ${maxLength ? ` maxLength="${maxLength}"` : ""}
           ${value ? ` value="${value}"` : ""}
           ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
+          ${type === "date"
+            ? (
+               `min="${Validator.limitDates().min}"
+                max="${Validator.limitDates().max}"`
+              )
+            : ""}
         >
         ${type === "password"
           ? (

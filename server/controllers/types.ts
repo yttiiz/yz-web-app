@@ -37,8 +37,8 @@ export type InsertIntoDBType<T> = (
 ) => Promise<string>;
 
 export type SelectFromDBType<T> = (
-  email: string,
   collection: string,
+  email?: string,
 ) => Promise<T>;
 
 export type UpdateToDBType<T> = (
