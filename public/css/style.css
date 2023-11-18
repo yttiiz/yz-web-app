@@ -588,7 +588,7 @@ h3 {
         }
 
         & .social-btns button > svg:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
 
         & .show-product {

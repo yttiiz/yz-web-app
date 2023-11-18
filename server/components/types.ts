@@ -20,6 +20,7 @@ export type MoleculeNameType =
 export type AtomNameType =
   | "LikeSvg"
   | "ShareSvg"
+  | "StarSvg"
   | "UserSvg"
   | "Logo"
   | "EyeOpenSvg"

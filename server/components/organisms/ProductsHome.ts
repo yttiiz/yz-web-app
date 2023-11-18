@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Helper, Rate } from "@utils";
-import { LikeSvg, PicturesSlider, ShareSvg } from "../mod.ts";
+import { StarSvg, PicturesSlider, ShareSvg } from "../mod.ts";
 import type {
   ComponentType,
   HomePageDataType,
@@ -49,9 +49,9 @@ export const ProductsHome: ComponentType<
                       <h4>${products[key].type}</h4>
                     </div>
                     <span>
-                      <strong>${
-            Helper.formatPrice(products[key].details.price)
-          }</strong>/jour
+                      <strong>
+                        ${Helper.formatPrice(products[key].details.price)}
+                      </strong>/jour
                     </span>
                   </div>
                 </header>
@@ -65,7 +65,7 @@ export const ProductsHome: ComponentType<
                         data-button="${Rate.average(products[key].rate)}"
                         title="notez-le !"
                       >
-                        ${LikeSvg.html}
+                        ${StarSvg.html}
                       </button>
                       <button
                         type="button"
