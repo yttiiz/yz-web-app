@@ -1,4 +1,4 @@
-import { oak, ObjectId } from "@deps";
+import { ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
@@ -25,16 +25,30 @@ export class ProductController extends DefaultController {
     this.router?.get(
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
-        const { id } = oak.helpers.getQuery(ctx, { mergeParams: true });
-        const _id = new ObjectId(id);
+        const _id = new ObjectId(ctx.params.id);
+        const data = await this.selectFromDB("products", _id);
+        
+        if ("_id" in data) {
+          const body = await this.createHtmlFile(ctx,
+            {
+              id: "data-product",
+              data,
+              title: "Aka " + data.name,
+            },
+          );
+          this.response(ctx, body, 200);
 
-        const product = await this.selectFromDB("products", _id);
-        const body = await this.createHtmlFile(ctx,
-          {
-            id: "data-product",
-          }
-        );
-        this.response(ctx, body, 200);
+        } else {
+          const body = await this.createHtmlFile(
+            ctx,
+            {
+              id: "data-not-found",
+              title: data.message,
+            },
+          );
+
+          this.response(ctx, body, 404);
+        }
       },
     )
   }

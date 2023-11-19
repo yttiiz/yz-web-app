@@ -6,6 +6,7 @@ export type TemplateNameType =
 export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
+  | "SectionProduct"
   | "ProductsHome";
 
 export type MoleculeNameType =

@@ -146,14 +146,23 @@ export class DefaultController {
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    if (data) {
+    // Home rendering.
+    if (id === "data-home") {
       return main.replace(
         "{{ content-insertion }}",
         await layout.ProductsHome.html(data),
       );
     }
 
-    // Not found render check
+    // Product rendering.
+    if (id === "data-product") {
+      return main.replace(
+        "{{ content-insertion }}",
+        await layout.SectionProduct.html(data),
+      );
+    }
+
+    // Not found rendering.
     if (id === "data-not-found") {
       return main.replace(
         "{{ content-insertion }}",
@@ -161,7 +170,7 @@ export class DefaultController {
         );
     }
 
-    // Profil form render check
+    // Profil form rendering.
     if (id === "data-profil-form") {
       return main.replace(
         "{{ content-insertion }}",
@@ -169,7 +178,7 @@ export class DefaultController {
       );
     }
 
-    // Auth form render check
+    // Auth form rendering.
     if (path) {
       return main.replace(
         "{{ content-insertion }}",
