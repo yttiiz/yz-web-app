@@ -35,6 +35,7 @@ export class HomeController extends DefaultController {
             ctx,
             {
               id: "data-home",
+              css: "home",
               data,
             },
           );

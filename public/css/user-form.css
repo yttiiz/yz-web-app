@@ -1,0 +1,249 @@
+#data-user-form,
+#data-profil-form {
+    & section > form label {
+        position: relative;
+        display: grid;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    & section > form input {
+        padding: calc(var(--base-size) * .625);
+        height: calc(var(--base-size) * 3);
+    }
+
+    & section > form input:not(input[type="submit"]) {
+        border: var(--border-black-25-percent);
+    }
+
+    & section > form > input[type="submit"] {
+        align-self: end;
+        background: var(--primary-color);
+    }
+
+    & section > form input[type="password"] {
+        padding-right: 4rem;
+    }
+}
+
+#data-user-form,
+#data-profil-form {
+    & section > p[data-msg-infos="success"],
+    & section > p[data-msg-infos="error"] {
+        font-weight: 400;
+    }
+
+    & section > p[data-msg-infos="success"] {
+        color: rgb(0, 128, 0);
+    }
+
+    & section > p[data-msg-infos="error"] {
+        color: rgb(128, 0, 0);
+    }
+}
+
+#data-profil-form {
+    & section > form {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * 2);
+
+        & > div,
+        & .user-photo {
+            display: inherit;
+        }
+
+        & > div {
+            gap: inherit;
+        }
+        
+        & .user-photo {
+            flex-direction: column;
+            align-items: center;
+            gap: var(--base-size);
+        }
+
+        & .user-photo figure {
+            width: calc(var(--base-size) * 12.5);
+        }
+
+        & .user-photo img {
+            border-radius: 50%;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        & .user-photo input {
+            display: none;
+        }
+
+        & .user-photo button {
+            width: max-content;
+            height: max-content;
+            padding: var(--btn-padding);
+            font-size: var(--base-size);
+            color: var(--light);
+            background: var(--secondary-color);
+            border-radius: var(--btn-border-radius);
+        }
+
+        & .user-infos {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 1.2rem;
+            column-gap: 2rem;
+        }
+    }
+
+    & .delete-account {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * .85);
+        padding: var(--base-size);
+        border: .1rem solid var(--danger);
+        border-radius: calc(var(--base-size) * .8);
+
+        & button {
+            background: var(--danger);
+            align-self: start;
+        }
+    }
+
+    & .delete-account-modale {
+        left: 0;
+        top: 0;
+        position: fixed;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background: var(--shadow);
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            gap: var(--base-size);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(30rem, 80%, 50rem);
+            padding: calc(var(--base-size) * 1.125);
+            height: max-content;
+            background: var(--light);
+        }
+
+        & > div > button {
+            position: inherit;
+            right: 0;
+            top: 0;
+            transform: translate(50%, -50%);
+            background: var(--primary-color);
+            box-shadow: var(--box-shadow);
+            border-radius: 50%;
+            width: calc(var(--base-size) * 1.825);
+            aspect-ratio: 1 / 1;
+        }
+
+        & > div > button span {
+            position: inherit;
+            left: 50%;
+            top: 50%;
+            background: var(--light);
+            height: .2rem;
+            width: 60%;
+        }
+
+        & > div > button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        & > div > button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        & > div > form {
+            padding-top: var(--base-size);
+            display: inherit;
+            gap: inherit;
+            border-top: var(--border-black-25-percent);
+        }
+
+        & > div > form input[type="submit"] {
+            background: var(--danger);
+            align-self: start;
+        }
+
+        & > div > form button {
+            font-size: var(--base-size);
+            font-weight: 400;
+        }
+    }
+
+    .show-message-to-user {
+        padding-top: var(--base-size);
+        border-top: var(--border-black-25-percent);
+
+        & > a {
+            display: inline-block;
+            color: var(--light);
+            font-size: var(--base-size);
+            font-weight: 400;
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--primary-color);
+        }
+    }
+
+    .show-message-to-user.none,
+    .delete-account-modale.none {
+        display: none;
+    }
+}
+
+#eye-password {
+        display: flex;
+        position: absolute;
+        bottom: clamp(15%, 1.5vw, 20%);
+        right: 3%;
+
+    & > span {
+        cursor: pointer;
+    }
+
+    & > span.none {
+        display: none;
+    }
+
+    & > span svg {
+        fill: var(--primary-color);
+        width: 2rem;
+        height: auto;
+    }
+}
+
+/*=================================================| BREAKPOINTS |=================================================*/
+
+@media screen and (max-width: 950px) {
+
+    #data-profil-form section > form {
+        & > div {
+            flex-direction: column;
+        }
+
+        & .user-infos,
+        & input[type="submit"] {
+            max-width: 40rem;
+        }
+
+        & .user-infos {
+            margin: auto;
+            grid-template-columns: 1fr;
+        }
+
+        & input[type="submit"] {
+            width: 100%;            
+            align-self: center;
+        }
+    }
+}

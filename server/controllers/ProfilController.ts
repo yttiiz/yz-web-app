@@ -37,6 +37,7 @@ export class ProfilController extends DefaultController {
             ctx,
             {
               id: "data-profil-form",
+              css: "user-form",
               title: "modifier votre profil",
             },
           );

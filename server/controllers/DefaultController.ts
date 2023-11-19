@@ -55,6 +55,7 @@ export class DefaultController {
   protected async createHtmlFile<T extends string>(
     ctx: RouterContextAppType<T> | oak.Context, {
       id,
+      css,
       data,
       title,
       path,
@@ -68,6 +69,7 @@ export class DefaultController {
     );
 
     html = this.setTitle(html, title);
+    html = this.setCss(html, css);
     header = await this.setHeaderHtml(header, ctx);
     main = await this.setMainHtml(main, id, data, path);
 
@@ -77,23 +79,13 @@ export class DefaultController {
     return html;
   }
 
-  private file(
-    kind: layout.TemplateNameType | "Body",
-  ): string {
-    if (kind === "Body") {
-      return layout.Body.html;
-    }
-
-    return layout[kind].html;
-  }
-
   private createComponents(
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
     for (const arg of args) {
-      components.push(this.file(arg));
+      components.push(layout[arg].html);
     }
 
     return components;
@@ -106,6 +98,13 @@ export class DefaultController {
     return title
       ? html.replace("</title>", ` - ${title}</title>`)
       : html;
+  }
+
+  private setCss(
+    html: string,
+    css: string
+  ): string {
+    return html.replace("{{ css }}", css);
   }
 
   private async setHeaderHtml<T extends string>(

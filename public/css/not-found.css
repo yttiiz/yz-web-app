@@ -1,0 +1,14 @@
+#data-not-found {
+  & section > div:last-of-type {
+      display: inherit;
+      justify-content: center;
+  }
+
+  & section > div a {
+      width: max-content;
+      padding: var(--btn-padding);
+      border-radius: var(--btn-border-radius);
+      color: var(--light);
+      background: var(--primary-color);
+  }
+}

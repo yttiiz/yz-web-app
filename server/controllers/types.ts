@@ -22,6 +22,7 @@ export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 // Page
 export type ConfigPageType = {
   id: `data-${string}`;
+  css: string;
   data?: unknown;
   title?: string;
   path?: string;

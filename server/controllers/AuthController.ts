@@ -57,7 +57,8 @@ export class AuthController extends DefaultController {
         const body = await this.createHtmlFile(
           ctx,
           {
-            id: "data-users-form",
+            id: "data-user-form",
+            css: "user-form",
             title,
             path,
           },
