@@ -11,11 +11,11 @@ export const PicturesSlider: ComponentType<
   (...args: any[]) => string
 > = {
   name: "PicturesSlider",
-  html: (pictures: ImagesProductType[]) => (
+  html: (id: string, pictures: ImagesProductType[]) => (
     `
     <div data-slider-length="${pictures.length}">
       <a
-        href="/product"
+        href="/product/${id}"
         class="slider-product"
         style="width: ${100 * pictures.length}%;"
       >

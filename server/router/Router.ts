@@ -10,6 +10,7 @@ import {
   ApiController,
   AuthController,
   HomeController,
+  ProductController,
   ProfilController,
 } from "@controllers";
 
@@ -29,6 +30,9 @@ new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
   Mongo.deleteFromDB,
+);
+new ProductController(
+  router,
 );
 new ApiController(
   router,

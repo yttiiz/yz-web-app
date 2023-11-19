@@ -1,3 +1,4 @@
+// deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import { Helper, Rate } from "@utils";
 import { StarSvg, PicturesSlider, ShareSvg } from "../mod.ts";
@@ -6,14 +7,14 @@ import type {
   HomePageDataType,
   OrganismNameType,
 } from "../mod.ts";
-import { ProductSchemaType } from "@mongo";
+import { ProductSchemaWithIDType } from "@mongo";
 
 export const ProductsHome: ComponentType<
   OrganismNameType,
   (...args: any[]) => Promise<string>
 > = {
   name: "ProductsHome",
-  html: async (products: Record<string, ProductSchemaType>) => {
+  html: async (products: Record<string, ProductSchemaWithIDType>) => {
     const {
       title,
       paragraph,
@@ -55,7 +56,12 @@ export const ProductsHome: ComponentType<
                     </span>
                   </div>
                 </header>
-                ${PicturesSlider.html(products[key].pictures)}
+                ${
+                  PicturesSlider.html(
+                    products[key]._id.toString(),
+                    products[key].pictures,
+                  )
+                }
                 <div>
                   <p>${products[key].description}</p>
                   <div>
@@ -74,7 +80,12 @@ export const ProductsHome: ComponentType<
                         ${ShareSvg.html}
                       </button>
                     </div>
-                    <a class="show-product" href="/product">Voir plus</a>
+                    <a
+                      class="show-product"
+                      href="/product/${products[key]._id.toString()}"
+                    >
+                      Voir plus
+                    </a>
                   </div>
                 </div>
               </div>
