@@ -48,20 +48,22 @@ export class Mongo {
 
   public static async selectFromDB<T extends Document>(
     collection: string,
-    email?: string,
+    identifier?: string | ObjectId,
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const filter = typeof identifier === "string"
+      ? { identifier } as unknown as Filter<T>
+      : { _id: identifier };
 
     if (selectedCollection) {
-      const selectedDocument = await selectedCollection.findOne(
-        { email } as unknown as Filter<T>,
-      );
+      const selectedDocument = await selectedCollection.findOne(filter);
 
       if (selectedDocument) {
         return selectedDocument;
       }
+
       const message = collection === "users"
-        ? "Aucun utilisateur n'est lié à cet email : " + email
+        ? "Aucun utilisateur n'est lié à cet email : " + identifier
         : "Produit non trouvé.";
 
       return { message };

@@ -38,7 +38,7 @@ export type InsertIntoDBType<T> = (
 
 export type SelectFromDBType<T> = (
   collection: string,
-  email?: string,
+  identifier?: string | ObjectId,
 ) => Promise<T>;
 
 export type UpdateToDBType<T> = (
@@ -52,8 +52,9 @@ export type DeleteFromDBType = (
   collection: string,
 ) => Promise<number>;
 
+export type NotFoundMessageType = { message: string };
+
 // Users in DB
-export type UserNotFoundMessageType = { message: string };
 export type UserDataType = Record<
   number,
   & UserSchemaWithOptionalFieldsType
@@ -61,7 +62,7 @@ export type UserDataType = Record<
 >;
 export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
 export type SelectUserFromDBType = SelectFromDBType<
-  UserSchemaWithIDType | UserNotFoundMessageType
+  UserSchemaWithIDType | NotFoundMessageType
 >;
 export type UpdateUserToDBType = UpdateToDBType<
   UserSchemaWithOptionalFieldsType
@@ -73,3 +74,6 @@ export type ProductsDataType = Record<
   ProductSchemaWithIDType
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
+export type SelectProductFromDBType = SelectFromDBType<
+  ProductSchemaWithIDType | NotFoundMessageType
+>;

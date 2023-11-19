@@ -18,7 +18,7 @@ export const Body: ComponentType = {
       <title>${title}</title>
       <meta name="description" content="${description}">
       <link rel="stylesheet" href="./css/style.css">
-      <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+      <link rel="icon" href="./img/favicon.svg" type="image/svg+xml">
     </head>
     <body>
       <noscript>
