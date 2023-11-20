@@ -9,7 +9,11 @@ import type {
 } from "../mod.ts";
 import { ProductSchemaWithIDType } from "@mongo";
 
-const data: ProductDataType = await Helper.convertJsonToObject(
+const {
+  mainImageLegend,
+  descriptionTitle,
+  descriptionInfo,
+}: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
 export const SectionProduct: ComponentType<
@@ -32,28 +36,37 @@ export const SectionProduct: ComponentType<
             alt="${product.pictures.at(0)?.alt}"
           />
           <figcaption>
-            ${data.mainImageLegend}
+            ${mainImageLegend}
           </figcaption>
           <div>
           </div>
         </figure>
         <div>
-          <h3>${data.descriptionTitle}</h3>
+          <h3>${descriptionTitle}</h3>
           <div>
             <div class="description">
-              <dl>
-                <dt>Type :</dt>
-                <dd>${product.type}</dd>
-                <dt>Superficie :</dt>
-                <dd>${product.details.area}m<sup>2</sup></dd>
-                <dt>Nombre de pièces :</dt>
-                <dd>${product.details.rooms}</dd>
-              </dl>
+              <ul>
+              ${Object.keys(descriptionInfo)
+                .map(key => (
+                  `<li>
+                    <b>${descriptionInfo[key as keyof typeof descriptionInfo]} :</b> 
+                    ${key === "area"
+                      ? `${product.details[key as keyof typeof product.details]}m<sup>2</sup>`
+                      : product.details[key as keyof typeof product.details]
+                    }
+                  </li>`
+                ))
+                .join("")
+              }
+              </ul>
             </div>
-            <div class="form-booking">
-              <div> 
-                ${Helper.formatPrice(product.details.price)}
-              </div> 
+            <div class="booking">
+              <span> 
+                <strong>
+                  ${Helper.formatPrice(product.details.price)}
+                </strong>
+                la nuit
+              </span> 
             </div>
           </div>
         </div>

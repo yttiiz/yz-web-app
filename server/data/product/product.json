@@ -1,4 +1,9 @@
 {
   "mainImageLegend": "Cliquez sur l'image pour en découvrir d'autres.",
-  "descriptionTitle": "Description de l'appartement"
+  "descriptionTitle": "Description de l'appartement",
+  "descriptionInfo": {
+    "type": "Type",
+    "area": "Superficie",
+    "rooms": "Nombre de pièces"
+  }
 }

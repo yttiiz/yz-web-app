@@ -43,6 +43,7 @@ export type DetailsProductType = {
   rooms: number;
   area: number;
   price: number;
+  type: string;
 };
 
 export type ImagesProductType = {
@@ -52,7 +53,6 @@ export type ImagesProductType = {
 
 export type ProductSchemaType = {
   name: string;
-  type: string;
   description: string;
   details: DetailsProductType;
   thumbnail: ImagesProductType;

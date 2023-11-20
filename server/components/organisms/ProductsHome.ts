@@ -47,7 +47,7 @@ export const ProductsHome: ComponentType<
                   <div>
                     <div>
                       <h3>Aka ${products[key].name}</h3>
-                      <h4>${products[key].type}</h4>
+                      <h4>${products[key].details.type}</h4>
                     </div>
                     <span>
                       <strong>

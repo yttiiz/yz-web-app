@@ -59,6 +59,12 @@ type InformativeContentAndButtonType = {
   btnLink?: string;
 };
 
+type ProductDescInfoType = {
+  type: string;
+  area: string;
+  rooms: string;
+};
+
 export type HomePageDataType = Pick<
   InformativeContentAndButtonType,
   "title" | "paragraph"
@@ -112,6 +118,7 @@ export type DeleteAccountDataType = {
 export type ProductDataType = {
   mainImageLegend: string;
   descriptionTitle: string;
+  descriptionInfo: ProductDescInfoType;
 }
 
 export type NotFoundDataType = InformativeContentAndButtonType;
