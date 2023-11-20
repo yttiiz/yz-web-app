@@ -1,0 +1,71 @@
+#data-product {
+    .product {
+        display:  flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * 1.8);
+
+        /*=====| picture |=====*/
+
+        & figure {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            overflow: hidden;
+            border-radius: var(--base-size);
+            cursor: pointer;
+        }
+    
+        & figure > div,
+        & figure figcaption {
+            position: absolute;
+            bottom: 0;
+        }
+    
+        & figure > div {
+            display: block;
+            height: 35%;
+            z-index: 1;
+            background: linear-gradient(transparent, rgb(var(--black-rvb) / .8));
+        }
+
+        & figure > div,
+        & figure img,
+        & figure figcaption {
+            width: inherit;
+        }
+    
+        & figure img {
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+    
+        & figure figcaption {
+            color: var(--light);
+            user-select: none;
+            padding: var(--base-size) calc(var(--base-size) * 1.25);
+            z-index: 2;
+        }
+
+        /*=====| description |=====*/
+
+        & > div:first-of-type h3 {
+            padding-bottom: var(--base-size);
+            margin-bottom: var(--base-size);
+            border-bottom: var(--border-black-25-percent);
+        }
+
+        & > div:first-of-type > div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        & .description dt {
+            font-weight: 600;
+        }
+
+        & .description dd:not(:last-of-type) {
+            margin-bottom: calc(var(--base-size) * .5);
+        }
+    }
+}

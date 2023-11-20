@@ -12,7 +12,7 @@ import type {
   FormDataType,
  } from "../mod.ts";
 
-const obj: FormDataType = await Helper.convertJsonToObject(
+const data: FormDataType = await Helper.convertJsonToObject(
   "/server/data/profil/profil.json",
 );
 
@@ -27,7 +27,7 @@ export const SectionsProfilForm: ComponentType<
     method,
     changePhoto,
     content,
-  }: FormDataType = obj,
+  }: FormDataType = data,
   ) => {
     return `
     <section>

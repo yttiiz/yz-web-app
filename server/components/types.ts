@@ -109,4 +109,9 @@ export type DeleteAccountDataType = {
   };
 };
 
+export type ProductDataType = {
+  mainImageLegend: string;
+  descriptionTitle: string;
+}
+
 export type NotFoundDataType = InformativeContentAndButtonType;

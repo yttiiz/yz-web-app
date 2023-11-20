@@ -1,296 +1,296 @@
 #data-home {
-  & section > ul > li,
-  & section > ul > li > div {
-      display: flex;
-  }
+    & section > ul > li,
+    & section > ul > li > div {
+        display: flex;
+    }
 
-  & section > ul > li {
-      align-items: center;
+    & section > ul > li {
+        align-items: center;
 
-      & > div {
-          flex-direction: column;
-      }
-  }
+        & > div {
+            flex-direction: column;
+        }
+    }
 
-  & section > ul.products > li {
-      overflow: hidden;
-      border-radius: var(--base-size);
-      border: var(--border-black-25-percent);
-      transition: box-shadow var(--smooth);
+    & section > ul.products > li {
+        overflow: hidden;
+        border-radius: var(--base-size);
+        border: var(--border-black-25-percent);
+        transition: box-shadow var(--smooth);
 
-      &:hover {
-          box-shadow: var(--box-shadow);
-      }
+        &:hover {
+            box-shadow: var(--box-shadow);
+        }
 
-      & * {
-          color: var(--dark);
-      }
+        & * {
+            color: var(--dark);
+        }
 
-      & > div {
-          width: 100%;
-          height: 100%;
-      }
+        & > div {
+            width: 100%;
+            height: 100%;
+        }
 
-      & header,
-      & > div > div:last-of-type {
-          padding: calc(var(--base-size) * 1.5);
-      }
+        & header,
+        & > div > div:last-of-type {
+            padding: calc(var(--base-size) * 1.5);
+        }
 
-      & header,
-      & header > div,
-      & > div > div:last-of-type,
-      & > div > div:last-of-type > div {
-          display: inherit;
-      }
+        & header,
+        & header > div,
+        & > div > div:last-of-type,
+        & > div > div:last-of-type > div {
+            display: inherit;
+        }
 
-      & header,
-      & header > div {
-          gap: calc(var(--base-size) * 1.125);
-      }
+        & header,
+        & header > div {
+            gap: calc(var(--base-size) * 1.125);
+        }
 
-      & header > div:last-of-type {
-          width: 100%;
-          justify-content: space-between;
-      }
+        & header > div:last-of-type {
+            width: 100%;
+            justify-content: space-between;
+        }
 
-      & header > div {
-          align-items: center;
-      }
+        & header > div {
+            align-items: center;
+        }
 
-      & header h3 {
-          max-width: calc(var(--base-size) * 13);
-          display: -webkit-box;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;  
-          overflow: hidden;
-      }
+        & header h3 {
+            max-width: calc(var(--base-size) * 13);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-      & header h4 {
-          line-height: 1.1;
-      }
+        & header h4 {
+            line-height: 1.1;
+        }
 
-      & header > div figure img {
-          border-radius: 50%;
-          object-fit: cover;
-          width: 5rem;
-          aspect-ratio: 1 / 1;
-          background: rgb(var(--white-rvb) / .1);
-      }
+        & header > div figure img {
+            border-radius: 50%;
+            object-fit: cover;
+            width: 5rem;
+            aspect-ratio: 1 / 1;
+            background: rgb(var(--white-rvb) / .1);
+        }
 
-      & header > div strong {
-          color: var(--primary-color);
-          font-size: calc(var(--base-size) * 1.125);
-          font-weight: 600;
-      }
+        & header > div strong {
+            color: var(--primary-color);
+            font-size: calc(var(--base-size) * 1.125);
+            font-weight: 600;
+        }
 
-      & > div > div:first-of-type {
-          overflow: hidden;
-          position: relative;
-      }
+        & > div > div:first-of-type {
+            overflow: hidden;
+            position: relative;
+        }
 
-      & .slider-product,
-      & .slider-product-nav-landmarks {
-          display: flex;
-      }
+        & .slider-product,
+        & .slider-product-nav-landmarks {
+            display: flex;
+        }
 
-      & .slider-product {
-          transition: transform var(--smooth);
-      }
+        & .slider-product {
+            transition: transform var(--smooth);
+        }
 
-      & .slider-product-nav-landmarks {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          justify-content: space-between;
-      }
+        & .slider-product-nav-landmarks {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            justify-content: space-between;
+        }
 
-      & > div > div:first-of-type > button {
-          top: 50%;
-          transform: translateY(-50%);
-          transform-origin: center;
-          position: absolute;
-          width: calc(var(--base-size) * 1.5);
-          height: calc(var(--base-size) * 1.5);
-          border-radius: 50%;
-          background: var(--light);
-          opacity: .75;
-          transition: background var(--smooth), opacity var(--smooth);
-      }
+        & > div > div:first-of-type > button {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: center;
+            position: absolute;
+            width: calc(var(--base-size) * 1.5);
+            height: calc(var(--base-size) * 1.5);
+            border-radius: 50%;
+            background: var(--light);
+            opacity: .75;
+            transition: background var(--smooth), opacity var(--smooth);
+        }
 
-      & > div > div:first-of-type > button:first-of-type {
-          left: calc(var(--base-size) * 1.5);
-      }
+        & > div > div:first-of-type > button:first-of-type {
+            left: calc(var(--base-size) * 1.5);
+        }
 
-      & > div > div:first-of-type > button:last-of-type {
-          right: calc(var(--base-size) * 1.5);
-      }
+        & > div > div:first-of-type > button:last-of-type {
+            right: calc(var(--base-size) * 1.5);
+        }
 
 
-      & > div > div:first-of-type > button.hidden {
-          visibility: hidden;
-      }
+        & > div > div:first-of-type > button.hidden {
+            visibility: hidden;
+        }
 
-      & > div > div:first-of-type > button:hover {
-          transform: translateY(-50%) scale(1.2);
-          opacity: 1;
-      }
+        & > div > div:first-of-type > button:hover {
+            transform: translateY(-50%) scale(1.2);
+            opacity: 1;
+        }
 
-      & > div > div:first-of-type > button span {
-          position: absolute;
-          top: 50%;
-          transform: translate(-50%, -50%) rotate(45deg);
-          width: 35%;
-          height: 35%;
-      }
+        & > div > div:first-of-type > button span {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 35%;
+            height: 35%;
+        }
 
-      & > div > div:first-of-type > button:first-of-type span {
-          left: 55%;
-          border-bottom: .1rem solid;
-          border-left: .1rem solid;
-      }
-      
-      & > div > div:first-of-type > button:last-of-type span {
-          left: 45%;
-          border-top: .1rem solid;
-          border-right: .1rem solid;
-      }
+        & > div > div:first-of-type > button:first-of-type span {
+            left: 55%;
+            border-bottom: .1rem solid;
+            border-left: .1rem solid;
+        }
 
-      & .slider-product-nav-landmarks {
-          bottom: 5%;
-      }
+        & > div > div:first-of-type > button:last-of-type span {
+            left: 45%;
+            border-top: .1rem solid;
+            border-right: .1rem solid;
+        }
 
-      & .slider-product-nav-landmarks span {
-          background: rgb(var(--white-rvb) / .5);
-          width: calc(var(--base-size) * .45);
-          aspect-ratio: 1 / 1;
-          border-radius: 50%;
-      }
+        & .slider-product-nav-landmarks {
+            bottom: 5%;
+        }
 
-      & .slider-product-nav-landmarks span.active {
-          background: var(--light);
-      }
+        & .slider-product-nav-landmarks span {
+            background: rgb(var(--white-rvb) / .5);
+            width: calc(var(--base-size) * .45);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+        }
 
-      & .slider-product-nav-landmarks span:not(:first-child) {
-          margin-left: calc(var(--base-size) * .45);
-      }
+        & .slider-product-nav-landmarks span.active {
+            background: var(--light);
+        }
 
-      & > div > div:first-of-type,
-      & > div > div:first-of-type figure {
-          width: 100%;
-          height: 20rem;
-      }
+        & .slider-product-nav-landmarks span:not(:first-child) {
+            margin-left: calc(var(--base-size) * .45);
+        }
 
-      & > div > div:first-of-type img {
-          object-position: center;
-          width: 100%;
-          object-fit: cover;
-          height: 100%;
-      }
+        & > div > div:first-of-type,
+        & > div > div:first-of-type figure {
+            width: 100%;
+            height: 20rem;
+        }
 
-      & > div > div:last-of-type {
-          flex-direction: column;
-          gap: var(--base-size);
-      }
+        & > div > div:first-of-type img {
+            object-position: center;
+            width: 100%;
+            object-fit: cover;
+            height: 100%;
+        }
 
-      & > div > div:last-of-type > p {
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;  
-          overflow: hidden;
-      }
+        & > div > div:last-of-type {
+            flex-direction: column;
+            gap: var(--base-size);
+        }
 
-      & > div > div:last-of-type > div {
-          justify-content: space-between;
-      }
+        & > div > div:last-of-type > p {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-      & .social-btns {
-          display: flex;
-          align-items: flex-start;
-          gap: calc(var(--base-size) * .825);
-      }
+        & > div > div:last-of-type > div {
+            justify-content: space-between;
+        }
 
-      & .social-btns button {
-          width: calc(var(--base-size) * 1.5);
-      }
+        & .social-btns {
+            display: flex;
+            align-items: flex-start;
+            gap: calc(var(--base-size) * .825);
+        }
 
-      & .social-btns button::after,
-      & .show-product {
-          font-weight: 600;
-      }
+        & .social-btns button {
+            width: calc(var(--base-size) * 1.5);
+        }
 
-      & .social-btns button::after {
-          content: attr(data-button);
-          display: block;
-      }
-      
-      & .social-btns button > svg {
-          width: 100%;
-          height: auto;
-          fill: var(--secondary-color);
-          transition: transform var(--smooth);
-      }
+        & .social-btns button::after,
+        & .show-product {
+            font-weight: 600;
+        }
 
-      & .social-btns button > svg:hover {
-          transform: scale(1.2);
-      }
+        & .social-btns button::after {
+            content: attr(data-button);
+            display: block;
+        }
 
-      & .show-product {
-          padding: var(--btn-padding);
-          border-radius: var(--btn-border-radius);
-          background: var(--secondary-color);
-          transition: filter var(--smooth), color var(--smooth);
-      }
+        & .social-btns button > svg {
+            width: 100%;
+            height: auto;
+            fill: var(--secondary-color);
+            transition: transform var(--smooth);
+        }
 
-      & .show-product:hover {
-          filter: contrast(1.5);
-          color: var(--grey-dark);
-      }
-  }
+        & .social-btns button > svg:hover {
+            transform: scale(1.2);
+        }
 
-  & section > ul.users > li {
-      & > div {
-          gap: .5rem;
-      }
+        & .show-product {
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--secondary-color);
+            transition: filter var(--smooth), color var(--smooth);
+        }
 
-      & > div span {
-          line-height: 1;
-      }
+        & .show-product:hover {
+            filter: contrast(1.5);
+            color: var(--grey-dark);
+        }
+    }
 
-      & > figure {
-          position: relative;
-      }
+    & section > ul.users > li {
+        & > div {
+            gap: .5rem;
+        }
 
-      & > figure::before {
-          --size: 110%;
-          content: '';
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: var(--size);
-          height: var(--size);
-          border: .2rem solid var(--primary-color);
-      }
+        & > div span {
+            line-height: 1;
+        }
 
-      & > figure::before,
-      & img {
-          border-radius: 50%;
-      }
+        & > figure {
+            position: relative;
+        }
 
-      & img {
-          width: 10rem;
-          aspect-ratio: 1 / 1;
-          filter: sepia(1) contrast(1.2);
-      }
-  }
+        & > figure::before {
+            --size: 110%;
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--size);
+            height: var(--size);
+            border: .2rem solid var(--primary-color);
+        }
+
+        & > figure::before,
+        & img {
+            border-radius: 50%;
+        }
+
+        & img {
+            width: 10rem;
+            aspect-ratio: 1 / 1;
+            filter: sepia(1) contrast(1.2);
+        }
+    }
 }
 
 /*=================================================| BREAKPOINTS |=================================================*/
 
 @media screen and (max-width: 1080px) {
-  #data-home .products header > div:last-of-type {
-      flex-direction: column;
-      gap: unset;
-      align-items: unset;
-  }
+    #data-home .products header > div:last-of-type {
+        flex-direction: column;
+        gap: unset;
+        align-items: unset;
+    }
 }

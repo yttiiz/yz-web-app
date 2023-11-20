@@ -32,6 +32,7 @@ export class ProductController extends DefaultController {
           const body = await this.createHtmlFile(ctx,
             {
               id: "data-product",
+              css: "product",
               data,
               title: "Aka " + data.name,
             },
@@ -43,6 +44,7 @@ export class ProductController extends DefaultController {
             ctx,
             {
               id: "data-not-found",
+              css: "not-found",
               title: data.message,
             },
           );
