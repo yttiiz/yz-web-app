@@ -50,9 +50,7 @@ export const ProductsHome: ComponentType<
                       <h4>${products[key].details.type}</h4>
                     </div>
                     <span>
-                      <strong>
-                        ${Helper.formatPrice(products[key].details.price)}
-                      </strong>/jour
+                      <strong>${Helper.formatPrice(products[key].details.price)}</strong>/jour
                     </span>
                   </div>
                 </header>

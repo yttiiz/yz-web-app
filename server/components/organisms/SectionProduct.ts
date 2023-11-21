@@ -42,32 +42,45 @@ export const SectionProduct: ComponentType<
           </div>
         </figure>
         <div>
-          <h3>${descriptionTitle}</h3>
-          <div>
-            <div class="description">
-              <ul>
-              ${Object.keys(descriptionInfo)
-                .map(key => (
-                  `<li>
-                    <b>${descriptionInfo[key as keyof typeof descriptionInfo]} :</b> 
-                    ${key === "area"
-                      ? `${product.details[key as keyof typeof product.details]}m<sup>2</sup>`
-                      : product.details[key as keyof typeof product.details]
-                    }
-                  </li>`
-                ))
-                .join("")
-              }
-              </ul>
-            </div>
-            <div class="booking">
+          <div class="booking">
+            <div>
               <span> 
                 <strong>
                   ${Helper.formatPrice(product.details.price)}
                 </strong>
                 la nuit
-              </span> 
+              </span>
+              <span
+                data-available="${product.details.available}"
+              >
+                <span>
+                </span>
+                <strong>
+                ${
+                  product.details.available
+                  ? "disponible"
+                  : "non disponible"
+                }
+                </strong>
+              </span>
             </div>
+          </div>
+          <h3>${descriptionTitle}</h3>
+          <div class="description">
+            <ul>
+            ${Object.keys(descriptionInfo)
+              .map(key => (
+                `<li>
+                  <b>${descriptionInfo[key as keyof typeof descriptionInfo]} :</b> 
+                  ${key === "area"
+                    ? `${product.details[key as keyof typeof product.details]}m<sup>2</sup>`
+                    : product.details[key as keyof typeof product.details]
+                  }
+                </li>`
+              ))
+              .join("")
+            }
+            </ul>
           </div>
         </div>
       </div>

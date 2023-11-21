@@ -43,6 +43,7 @@ export type DetailsProductType = {
   rooms: number;
   area: number;
   price: number;
+  available: boolean;
   type: string;
 };
 
