@@ -9,6 +9,7 @@
     --dark: #1e1d1d;
     --grey-dark: #525151;
     --light: #ebebeb;
+    --white: #ffffff;
     
     
     /*=====| Colors & opacity |===== */
@@ -357,6 +358,16 @@ section,
 #data-home section > ul > li,
 #data-user-form section > form {
     gap: calc(var(--base-size) * 1.8);
+}
+
+form[data-style] label {
+    display: grid;
+    gap: .5rem;
+}
+
+form[data-style] input:not(input[type="submit"]) {
+    padding: calc(var(--base-size) * .625);
+    border: var(--border-black-25-percent);
 }
 
 /*=================================================| FOOTER |=================================================*/

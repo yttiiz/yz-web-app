@@ -10,6 +10,8 @@ export type OrganismNameType =
   | "ProductsHome";
 
 export type MoleculeNameType =
+  | "BookingForm"
+  | "BookingDetails"
   | "DeleteAccount"
   | "DeleteAccountForm"
   | "InputsForm"
@@ -119,6 +121,7 @@ export type ProductDataType = {
   mainImageLegend: string;
   descriptionTitle: string;
   descriptionInfo: ProductDescriptionType;
+  bookingForm: FormDataType;
 }
 
 export type NotFoundDataType = InformativeContentAndButtonType;

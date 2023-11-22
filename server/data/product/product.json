@@ -5,5 +5,26 @@
     "type": "Type",
     "area": "Superficie",
     "rooms": "Nombre de pièces"
+  },
+  "bookingForm": {
+    "action": "/booking",
+    "title": "Choisissez une date",
+    "method": "POST",
+    "content": [
+      {
+        "type": "date",
+        "label": "Date de début",
+        "name": "starting-date"
+      },
+      {
+        "type": "date",
+        "label": "Date de fin",
+        "name": "ending-date"
+      },
+      {
+        "type": "submit",
+        "value": "Valider vos dates"
+      }
+    ]
   }
 }

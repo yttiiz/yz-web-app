@@ -2,18 +2,10 @@
 #data-profil-form {
     & section > form label {
         position: relative;
-        display: grid;
-        flex-direction: column;
-        gap: .5rem;
     }
 
     & section > form input {
-        padding: calc(var(--base-size) * .625);
         height: calc(var(--base-size) * 3);
-    }
-
-    & section > form input:not(input[type="submit"]) {
-        border: var(--border-black-25-percent);
     }
 
     & section > form > input[type="submit"] {

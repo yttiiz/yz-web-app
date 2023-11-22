@@ -11,10 +11,10 @@ export class Validator {
   }
 
   public static limitDates(
-    now = new Date(),
     MAJORITY = 18,
     CENTURY = 100,
-  ) {
+    ) {
+    const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     const day = now.getDate();
@@ -64,17 +64,16 @@ export class Validator {
       for (const file of data.files) {
         const extFile = file.contentType.split("/").at(1) as string;
 
-        for (const extModel of photoModel.accept!.split(",")) {
-          if (extModel.includes(extFile.replace(".", ""))) {
-            isOk = true;
-          } else {
-            isOk = false;
-            break;
-          }
+        if (photoModel.accept && photoModel.accept.includes(extFile)) {
+          isOk = true;
+        } else {
+          isOk = false;
+          break;
         }
-
-        index++;
       }
+
+      index++;
+      
     }
 
     return isOk ? { isOk, data } : { isOk, message: Validator.message };

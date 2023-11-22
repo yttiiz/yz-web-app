@@ -8,11 +8,13 @@ import type {
   ProductDataType,
 } from "../mod.ts";
 import { ProductSchemaWithIDType } from "@mongo";
+import { BookingDetails, BookingForm } from "@components";
 
 const {
   mainImageLegend,
   descriptionTitle,
   descriptionInfo,
+  bookingForm,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -22,6 +24,8 @@ export const SectionProduct: ComponentType<
 > = {
   name: "SectionProduct",
   html: (product: ProductSchemaWithIDType) => {
+
+    console.log(bookingForm)
 
     return `
     <section>
@@ -43,27 +47,8 @@ export const SectionProduct: ComponentType<
         </figure>
         <div>
           <div class="booking">
-            <div>
-              <span> 
-                <strong>
-                  ${Helper.formatPrice(product.details.price)}
-                </strong>
-                la nuit
-              </span>
-              <span
-                data-available="${product.details.available}"
-              >
-                <span>
-                </span>
-                <strong>
-                ${
-                  product.details.available
-                  ? "disponible"
-                  : "non disponible"
-                }
-                </strong>
-              </span>
-            </div>
+            ${BookingDetails.html(product.details)}
+            ${BookingForm.html(product.details, bookingForm)}
           </div>
           <h3>${descriptionTitle}</h3>
           <div class="description">
