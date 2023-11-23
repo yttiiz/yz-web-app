@@ -13,12 +13,12 @@
     "content": [
       {
         "type": "date",
-        "label": "Date de début",
+        "label": "début de séjour",
         "name": "starting-date"
       },
       {
         "type": "date",
-        "label": "Date de fin",
+        "label": "fin de séjour",
         "name": "ending-date"
       },
       {

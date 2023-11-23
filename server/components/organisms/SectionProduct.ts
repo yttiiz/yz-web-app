@@ -24,9 +24,6 @@ export const SectionProduct: ComponentType<
 > = {
   name: "SectionProduct",
   html: (product: ProductSchemaWithIDType) => {
-
-    console.log(bookingForm)
-
     return `
     <section>
       <div>
