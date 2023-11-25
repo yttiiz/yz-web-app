@@ -54,7 +54,8 @@ export class Validator {
     const UNAUTHORIZED_CHARACTER = /[^\w\s\-@.\u00C0-\u00FF]/g;
     let key = 0, isOk = true;
     let message = "Il semble que votre saisie contient :";
-    const isMsgSet = (message: string) => message !== "Il semble que votre saisie contient :";
+    const messageLength = message.length;
+    const isMsgSet = (message: string) => message.length !== messageLength;
 
     // CHECK FIELDS
     for (const prop in data.fields) {
@@ -92,11 +93,12 @@ export class Validator {
 
         if (photoModel.accept && photoModel.accept.includes(extFile)) {
           isOk = true;
+        
         } else {
           message += ` ${isMsgSet(message)
-            ? "U"
-            : "u"
-          }n fichier de type ${extFile} qui n'est pas pris en charge.`;
+            ? "Et "
+            : ""
+          } un fichier de type ${extFile} qui n'est pas pris en charge.`;
           isOk = false;
           break;
         }

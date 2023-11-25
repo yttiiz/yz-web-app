@@ -8,7 +8,11 @@ import type {
   ProductDataType,
 } from "../mod.ts";
 import { ProductSchemaWithIDType } from "@mongo";
-import { BookingDetails, BookingForm } from "@components";
+import {
+  BookingDetails,
+  BookingForm,
+  ProductDetails,
+} from "@components";
 
 const {
   mainImageLegend,
@@ -47,22 +51,11 @@ export const SectionProduct: ComponentType<
             ${BookingDetails.html(product.details)}
             ${BookingForm.html(product.details, bookingForm)}
           </div>
-          <h3>${descriptionTitle}</h3>
           <div class="description">
-            <ul>
-            ${Object.keys(descriptionInfo)
-              .map(key => (
-                `<li>
-                  <b>${descriptionInfo[key as keyof typeof descriptionInfo]} :</b> 
-                  ${key === "area"
-                    ? `${product.details[key as keyof typeof product.details]}m<sup>2</sup>`
-                    : product.details[key as keyof typeof product.details]
-                  }
-                </li>`
-              ))
-              .join("")
-            }
-            </ul>
+            ${ProductDetails.html(product, descriptionInfo, descriptionTitle)}
+          </div>
+          <div>
+            <h3>Qu'en pensent ceux qui y ont séjourné ?</h3>
           </div>
         </div>
       </div>

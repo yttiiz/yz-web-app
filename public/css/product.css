@@ -49,11 +49,14 @@
 
         /*=====| description |=====*/
 
-        & > div:first-of-type {
+        & > div {
             position: relative;
+            display: inherit;
+            flex-direction: inherit;
+            gap: inherit;
         }
 
-        & > div:first-of-type > h3 {
+        & > div  h3 {
             padding-bottom: var(--base-size);
             margin-bottom: var(--base-size);
             border-bottom: var(--border-black-25-percent);
@@ -169,7 +172,6 @@
                 border-radius: unset;
                 min-width: unset;
                 box-shadow: unset;
-                margin-bottom: calc(var(--base-size) * 3);
             }
         }
     }

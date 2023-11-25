@@ -52,7 +52,7 @@ export class Mongo {
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
     const filter = typeof identifier === "string"
-      ? { identifier } as unknown as Filter<T>
+      ? { email: identifier } as unknown as Filter<T>
       : { _id: identifier };
 
     if (selectedCollection) {

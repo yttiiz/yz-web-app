@@ -17,6 +17,7 @@ export type MoleculeNameType =
   | "InputsForm"
   | "Login"
   | "LogoutForm"
+  | "ProductDetails"
   | "NotFound"
   | "PicturesSlider";
 
@@ -48,20 +49,20 @@ export type ComponentType<
   html: U;
 };
 
-type ItemDataType = {
+export type ItemDataType = {
   link: string;
   text: string;
   className?: string;
 };
 
-type InformativeContentAndButtonType = {
+export type InformativeContentAndButtonType = {
   title: string;
   paragraph: string;
   btnText: string;
   btnLink?: string;
 };
 
-type ProductDescriptionType = {
+export type ProductDescriptionType = {
   type: string;
   area: string;
   rooms: string;

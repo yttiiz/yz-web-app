@@ -36,6 +36,7 @@ export const SectionsProfilForm: ComponentType<
         action="${action}"
         method="${method}"
         type="multipart/form-data"
+        data-style="user-profil"
       >
         <div>
           <div class="user-photo">
