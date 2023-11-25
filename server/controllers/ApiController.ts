@@ -78,7 +78,7 @@ export class ApiController {
             birth,
             job,
             photo,
-          } = await this.selectFromDB("users", email) as UserSchemaWithIDType;
+          } = await this.selectFromDB("users", email, "email") as UserSchemaWithIDType;
 
           this.response(
             ctx,

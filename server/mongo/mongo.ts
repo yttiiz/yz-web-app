@@ -49,14 +49,11 @@ export class Mongo {
   public static async selectFromDB<T extends Document>(
     collection: string,
     identifier?: string | ObjectId,
+    key?: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
     const filter = typeof identifier === "string"
-      ? (
-          identifier.includes("@")
-            ? { email: identifier } as unknown as Filter<T>
-            : { productId: identifier } as unknown as Filter<T>
-        )
+      ? { [key as string]: identifier } as unknown as Filter<T>
       : { _id: identifier };
 
     if (selectedCollection) {

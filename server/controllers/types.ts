@@ -47,6 +47,7 @@ export type InsertIntoDBType<T> = (
 export type SelectFromDBType<T> = (
   collection: string,
   identifier?: string | ObjectId,
+  key?: string,
 ) => Promise<T>;
 
 export type UpdateToDBType<T> = (

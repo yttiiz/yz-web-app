@@ -104,7 +104,7 @@ export class AuthController extends DefaultController {
     };
 
     try {
-      const user = await this.selectFromDB("users", email);
+      const user = await this.selectFromDB("users", email, "email");
 
       if ("_id" in user) {
         const isPasswordOk = await Auth.comparePassword(password, user.hash);

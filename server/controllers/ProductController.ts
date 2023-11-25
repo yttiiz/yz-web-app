@@ -7,7 +7,6 @@ NotFoundMessageType,
   RouterContextAppType,
   SelectProductFromDBType,
 } from "./mod.ts";
-import { Mongo } from "@/server/mongo/mongo.ts";
 
 export class ProductController extends DefaultController {
   private selectFromDB;
@@ -27,34 +26,14 @@ export class ProductController extends DefaultController {
     this.router?.get(
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
+        console.log(ctx.params.id)
         const _id = new ObjectId(ctx.params.id);
         const product = await this.selectFromDB("products", _id);
-        const reviews = await this.selectFromDB("reviews", ctx.params.id);
-
-        console.log(reviews);
-
-        // const review = {
-        //   productName: "Marika",
-        //   productId: "65527c13aeee4876c4946dcc",
-        //   reviews: [
-        //     {
-        //       userId: "",
-        //       userName: "Jean-Claude Martin",
-        //       rate: 4,
-        //       comment: "Accueil magnifique. Franchement, rien à dire !",
-        //       timestamp: 1577880000000,
-        //     },
-        //     {
-        //       userId: "",
-        //       userName: "Sylvain Pochot",
-        //       rate: 4,
-        //       comment: "En plus du paysage, nos hôtes sont des gens vraiment charmants. On ne regrette pas !",
-        //       timestamp: 1577880000000,
-        //     },
-        //   ],
-        // };
-
-        // Mongo.insertIntoDB(review, "reviews");
+        const reviews = await this.selectFromDB(
+          "reviews",
+          ctx.params.id,
+          "productId",
+        );
         
         if ("_id" in product && "_id" in reviews) {
           const body = await this.createHtmlFile(ctx,
