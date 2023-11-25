@@ -1,13 +1,12 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
-import { Helper, Rate } from "@utils";
-import { StarSvg, PicturesSlider, ShareSvg } from "../mod.ts";
+import { Helper } from "@utils";
 import type {
   ComponentType,
   OrganismNameType,
   ProductDataType,
 } from "../mod.ts";
-import { ProductSchemaWithIDType } from "@mongo";
+import { ProductAndReviewsType } from "@mongo";
 import {
   BookingDetails,
   BookingForm,
@@ -19,15 +18,17 @@ const {
   descriptionTitle,
   descriptionInfo,
   bookingForm,
+  reviewsTitle,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
+
 export const SectionProduct: ComponentType<
   OrganismNameType,
   (...args: any[]) => string
 > = {
   name: "SectionProduct",
-  html: (product: ProductSchemaWithIDType) => {
+  html: ({product, reviews}: ProductAndReviewsType) => {
     return `
     <section>
       <div>
@@ -55,7 +56,7 @@ export const SectionProduct: ComponentType<
             ${ProductDetails.html(product, descriptionInfo, descriptionTitle)}
           </div>
           <div>
-            <h3>Qu'en pensent ceux qui y ont séjourné ?</h3>
+            <h3>${reviewsTitle}</h3>
           </div>
         </div>
       </div>

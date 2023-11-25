@@ -10,3 +10,7 @@ export type ContentHeadersType = {
 };
 
 export type FilesDataType = oak.FormDataFile[];
+
+export type DataParserReturnType =
+  | { isOk: false; message: string }
+  | { isOk: true; data: oak.FormDataBody };

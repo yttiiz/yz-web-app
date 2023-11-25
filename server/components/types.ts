@@ -123,6 +123,7 @@ export type ProductDataType = {
   descriptionTitle: string;
   descriptionInfo: ProductDescriptionType;
   bookingForm: FormDataType;
+  reviewsTitle: string;
 }
 
 export type NotFoundDataType = InformativeContentAndButtonType;

@@ -15,13 +15,20 @@ export type PathAppType =
   | "/logout"
   | "/profil";
 
+export type IdsType =
+  | "data-home"
+  | "data-product"
+  | "data-user-form"
+  | "data-profil-form"
+  | "data-not-found";
+
 // Router
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 // Page
 export type ConfigPageType = {
-  id: `data-${string}`;
+  id: IdsType;
   css: string;
   data?: unknown;
   title?: string;

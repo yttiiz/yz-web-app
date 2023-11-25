@@ -1,5 +1,6 @@
 import { oak } from "@deps";
 import { FormDataType } from "@components";
+import { DataParserReturnType } from "./mod.ts";
 
 export class Validator {
 
@@ -48,13 +49,14 @@ export class Validator {
   public static dataParser(
     data: oak.FormDataBody,
     dataModel: FormDataType,
-  ):
-    | { isOk: false; message: string }
-    | { isOk: true; data: oak.FormDataBody } {
+  ): DataParserReturnType {
+    
     const UNAUTHORIZED_CHARACTER = /[^\w\s\-@.\u00C0-\u00FF]/g;
+    
     let key = 0, isOk = true;
     let message = "Il semble que votre saisie contient :";
     const messageLength = message.length;
+
     const isMsgSet = (message: string) => message.length !== messageLength;
 
     // CHECK FIELDS
@@ -63,6 +65,7 @@ export class Validator {
       if (data.fields[prop].search(UNAUTHORIZED_CHARACTER) !== -1) {
         message += " des caractères non autorisés.";
         isOk = false;
+        
         break;
       }
 
@@ -75,6 +78,7 @@ export class Validator {
         ? (message.replace(".", "") + " et en nombre trop importants.")
         : " des caractères en nombre trop importants.";
         isOk = false;
+        
         break;
       }
       
@@ -100,6 +104,7 @@ export class Validator {
             : ""
           } un fichier de type ${extFile} qui n'est pas pris en charge.`;
           isOk = false;
+          
           break;
         }
       }

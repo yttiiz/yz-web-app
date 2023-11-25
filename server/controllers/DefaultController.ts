@@ -8,6 +8,7 @@ import type {
   ConfigPageType,
   RouterAppType,
   RouterContextAppType,
+  IdsType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -139,52 +140,56 @@ export class DefaultController {
 
   private async setMainHtml(
     main: string,
-    id: string,
+    id: IdsType,
     data: unknown,
     path: string | undefined,
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    // Home rendering.
-    if (id === "data-home") {
-      return main.replace(
-        "{{ content-insertion }}",
-        await layout.ProductsHome.html(data),
-      );
-    }
-
-    // Product rendering.
-    if (id === "data-product") {
-      return main.replace(
-        "{{ content-insertion }}",
-        await layout.SectionProduct.html(data),
-      );
-    }
-
-    // Not found rendering.
-    if (id === "data-not-found") {
-      return main.replace(
-        "{{ content-insertion }}",
-        layout.NotFound.html,
+    switch(id) {
+      // Home rendering.
+      case "data-home": {
+        return main.replace(
+          "{{ content-insertion }}",
+          await layout.ProductsHome.html(data),
         );
-    }
+      }
 
-    // Profil form rendering.
-    if (id === "data-profil-form") {
-      return main.replace(
-        "{{ content-insertion }}",
-        layout.SectionsProfilForm.html()
-      );
-    }
+      // Product rendering.
+      case "data-product": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionProduct.html(data),
+        );
+      }
 
-    // Auth form rendering.
-    if (path) {
-      return main.replace(
-        "{{ content-insertion }}",
-        await layout.SectionAuthForm.html(path),
-      );
-    }
+      // Profil form rendering.
+      case "data-profil-form": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionsProfilForm.html()
+        );
+      }
 
-    return main.replace("{{ content-insertion }}", "")
+      // Not found rendering.
+      case "data-not-found": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.NotFound.html,
+          );
+      }
+
+      default: {
+        // Auth form rendering.
+        if (path) {
+          return main.replace(
+            "{{ content-insertion }}",
+            await layout.SectionAuthForm.html(path),
+          );
+        }
+    
+        return main.replace("{{ content-insertion }}", "")
+      }
+    }
   }
 }
