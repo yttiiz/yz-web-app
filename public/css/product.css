@@ -78,6 +78,54 @@
             line-height: 1;
         }
 
+        & .reviews dt {
+            font-weight: 600;
+            margin-bottom: calc(var(--base-size) * .5);
+        }
+
+        & .reviews dd {
+            padding-left: calc(var(--base-size) * .5);
+        }
+        & .reviews dd:not(:last-of-type) {
+            margin-bottom: calc(var(--base-size) * 2);
+        }
+
+        & .reviews dd p:first-of-type {
+            font-weight: 400;
+        }
+
+        & .reviews dd p:last-of-type {
+            margin-bottom: calc(var(--base-size) * .25);
+        }
+
+        & .reviews dd div,
+        & .reviews ul {
+            gap: calc(var(--base-size) * .5);
+        }
+
+        & .reviews dd div {
+            display: flex;
+        }
+
+        & .reviews ul {
+            list-style: none;
+            display: flex;
+        }
+
+        & .reviews li {
+            width: calc(var(--base-size) * 1.5);
+        }
+
+        & .reviews li svg {
+            fill:rgb(var(--black-rvb) / .15);
+            width: 100%;
+            height: auto;
+        }
+
+        & .reviews li.ranking svg {
+            fill: var(--secondary-color);
+        }
+
         & .booking {
             position: absolute;
             min-width: calc(var(--base-size) * 20);

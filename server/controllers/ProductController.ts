@@ -26,7 +26,7 @@ export class ProductController extends DefaultController {
     this.router?.get(
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
-        console.log(ctx.params.id)
+
         const _id = new ObjectId(ctx.params.id);
         const product = await this.selectFromDB("products", _id);
         const reviews = await this.selectFromDB(

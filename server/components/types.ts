@@ -7,7 +7,8 @@ export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
   | "SectionProduct"
-  | "ProductsHome";
+  | "ProductsHome"
+  | "ProductCard";
 
 export type MoleculeNameType =
   | "BookingForm"
@@ -18,6 +19,7 @@ export type MoleculeNameType =
   | "Login"
   | "LogoutForm"
   | "ProductDetails"
+  | "ReviewsDetails"
   | "NotFound"
   | "PicturesSlider";
 
@@ -118,12 +120,17 @@ export type DeleteAccountDataType = {
   };
 };
 
+export type ReviewsEmpty = {
+  text: string;
+}
+
 export type ProductDataType = {
   mainImageLegend: string;
   descriptionTitle: string;
   descriptionInfo: ProductDescriptionType;
   bookingForm: FormDataType;
   reviewsTitle: string;
+  reviewsEmpty: ReviewsEmpty;
 }
 
 export type NotFoundDataType = InformativeContentAndButtonType;

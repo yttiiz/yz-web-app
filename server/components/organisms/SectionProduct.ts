@@ -11,7 +11,8 @@ import {
   BookingDetails,
   BookingForm,
   ProductDetails,
-} from "@components";
+  ReviewsDetails,
+} from "../mod.ts";
 
 const {
   mainImageLegend,
@@ -19,6 +20,7 @@ const {
   descriptionInfo,
   bookingForm,
   reviewsTitle,
+  reviewsEmpty,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -55,8 +57,8 @@ export const SectionProduct: ComponentType<
           <div class="description">
             ${ProductDetails.html(product, descriptionInfo, descriptionTitle)}
           </div>
-          <div>
-            <h3>${reviewsTitle}</h3>
+          <div class="reviews">
+            ${ReviewsDetails.html(reviews, reviewsTitle, reviewsEmpty)}
           </div>
         </div>
       </div>

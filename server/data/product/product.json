@@ -27,5 +27,8 @@
       }
     ]
   },
-  "reviewsTitle": "Qu'en pensent ceux qui y ont séjourné ?"
+  "reviewsTitle": "Qu'en pensent ceux qui y ont séjourné ?",
+  "reviewsEmpty": {
+    "text": "Il n'y a pas encore d'avis pour le moment. N'hésitez pas à donner le votre."
+  }
 }

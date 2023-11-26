@@ -7,7 +7,6 @@ export class Helper {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-    second: "numeric",
   };
 
   private static WriteOpts: Deno.WriteFileOptions = {
@@ -27,7 +26,7 @@ export class Helper {
     error: { message: string },
     encoder = new TextEncoder(),
   ) {
-    const errorMsg = `(${Helper.dateNow()}) ${error.message},\n`;
+    const errorMsg = `(${Helper.displayDate()}) ${error.message},\n`;
     const content = encoder.encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
@@ -60,9 +59,11 @@ export class Helper {
       .format(price);
   }
 
-  private static dateNow() {
+  public static displayDate(date?: number | Date) {
+    date = date ? date : new Date();
     return Intl
       .DateTimeFormat("fr-FR", Helper.DateOpts)
-      .format(new Date());
+      .format(date)
+      .replace(",", " à");
   }
 }

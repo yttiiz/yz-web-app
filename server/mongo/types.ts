@@ -41,6 +41,14 @@ export type RateProductType = {
   execrable: number;
 };
 
+export enum RateProductEnum {
+  excellent = 5,
+  good = 4,
+  quiteGood = 3,
+  bad = 2,
+  execrable = 1,
+};
+
 export type DetailsProductType = {
   rooms: number;
   area: number;
