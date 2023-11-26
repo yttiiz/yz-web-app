@@ -10,7 +10,7 @@ export class UserFormHelper {
     UserFormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: message.includes("suspects") ? "error" : "success",
-    }, "users");
+    }, "user");
   };
 
   /**
@@ -22,7 +22,7 @@ export class UserFormHelper {
     UserFormHelper.#paragraphToShowInfo({
       msg: message,
       dataSet: "error",
-    }, "users");
+    }, "user");
   };
 
   /**

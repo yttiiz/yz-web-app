@@ -8,6 +8,7 @@ import type {
   ConfigPageType,
   RouterAppType,
   RouterContextAppType,
+  IdsType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -55,6 +56,7 @@ export class DefaultController {
   protected async createHtmlFile<T extends string>(
     ctx: RouterContextAppType<T> | oak.Context, {
       id,
+      css,
       data,
       title,
       path,
@@ -68,6 +70,7 @@ export class DefaultController {
     );
 
     html = this.setTitle(html, title);
+    html = this.setCss(html, css);
     header = await this.setHeaderHtml(header, ctx);
     main = await this.setMainHtml(main, id, data, path);
 
@@ -77,23 +80,13 @@ export class DefaultController {
     return html;
   }
 
-  private file(
-    kind: layout.TemplateNameType | "Body",
-  ): string {
-    if (kind === "Body") {
-      return layout.Body.html;
-    }
-
-    return layout[kind].html;
-  }
-
   private createComponents(
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
     for (const arg of args) {
-      components.push(this.file(arg));
+      components.push(layout[arg].html);
     }
 
     return components;
@@ -106,6 +99,13 @@ export class DefaultController {
     return title
       ? html.replace("</title>", ` - ${title}</title>`)
       : html;
+  }
+
+  private setCss(
+    html: string,
+    css: string
+  ): string {
+    return html.replace("{{ css }}", css);
   }
 
   private async setHeaderHtml<T extends string>(
@@ -140,43 +140,56 @@ export class DefaultController {
 
   private async setMainHtml(
     main: string,
-    id: string,
+    id: IdsType,
     data: unknown,
     path: string | undefined,
   ): Promise<string> {
     main = main.replace("{{ id }}", id);
 
-    if (data) {
-      return main.replace(
-        "{{ content-insertion }}",
-        await layout.ProductsHome.html(data),
-      );
-    }
-
-    // Not found render check
-    if (id === "data-not-found") {
-      return main.replace(
-        "{{ content-insertion }}",
-        layout.NotFound.html,
+    switch(id) {
+      // Home rendering.
+      case "data-home": {
+        return main.replace(
+          "{{ content-insertion }}",
+          await layout.ProductsHome.html(data),
         );
-    }
+      }
 
-    // Profil form render check
-    if (id === "data-profil-form") {
-      return main.replace(
-        "{{ content-insertion }}",
-        layout.SectionsProfilForm.html()
-      );
-    }
+      // Product rendering.
+      case "data-product": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionProduct.html(data),
+        );
+      }
 
-    // Auth form render check
-    if (path) {
-      return main.replace(
-        "{{ content-insertion }}",
-        await layout.SectionAuthForm.html(path),
-      );
-    }
+      // Profil form rendering.
+      case "data-profil-form": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionsProfilForm.html()
+        );
+      }
 
-    return main.replace("{{ content-insertion }}", "")
+      // Not found rendering.
+      case "data-not-found": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.NotFound.html,
+          );
+      }
+
+      default: {
+        // Auth form rendering.
+        if (path) {
+          return main.replace(
+            "{{ content-insertion }}",
+            await layout.SectionAuthForm.html(path),
+          );
+        }
+    
+        return main.replace("{{ content-insertion }}", "")
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { oak } from "@deps";
 import {
   Mongo,
+  ProductSchemaWithIDType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -10,6 +11,7 @@ import {
   ApiController,
   AuthController,
   HomeController,
+  ProductController,
   ProfilController,
 } from "@controllers";
 
@@ -29,6 +31,10 @@ new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
   Mongo.deleteFromDB,
+);
+new ProductController(
+  router,
+  Mongo.selectFromDB<ProductSchemaWithIDType>,
 );
 new ApiController(
   router,

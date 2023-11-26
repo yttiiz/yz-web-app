@@ -26,6 +26,7 @@ export const DeleteAccountForm: ComponentType<MoleculeNameType> = {
         action="${deleteModal.action}"
         method="${deleteModal.method}"
         data-type="delete-account"
+        data-style="delete-user"
         type="multipart/form-data"
       >
         <button type="button" data-type="canceller">

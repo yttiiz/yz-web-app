@@ -1,5 +1,9 @@
 import { Collection, FindCursor, ObjectId } from "@deps";
 
+type SchemaWithID<T> = T & {
+  _id: ObjectId;
+};
+
 // Users types
 export type UserType = {
   firstname: string;
@@ -15,9 +19,7 @@ export type UserSchemaType = UserType & {
   hash: string;
 };
 
-export type UserSchemaWithIDType = UserSchemaType & {
-  _id: ObjectId;
-};
+export type UserSchemaWithIDType = SchemaWithID<UserSchemaType>;
 
 export type UserSchemaWithOptionalFieldsType = Partial<UserSchemaType>;
 
@@ -39,10 +41,20 @@ export type RateProductType = {
   execrable: number;
 };
 
+export enum RateProductEnum {
+  excellent = 5,
+  good = 4,
+  quiteGood = 3,
+  bad = 2,
+  execrable = 1,
+}
+
 export type DetailsProductType = {
   rooms: number;
   area: number;
   price: number;
+  available: boolean;
+  type: string;
 };
 
 export type ImagesProductType = {
@@ -52,7 +64,6 @@ export type ImagesProductType = {
 
 export type ProductSchemaType = {
   name: string;
-  type: string;
   description: string;
   details: DetailsProductType;
   thumbnail: ImagesProductType;
@@ -61,9 +72,30 @@ export type ProductSchemaType = {
   review: ReviewProductType[];
 };
 
-export type ProductSchemaWithIDType = ProductSchemaType & {
-  _id: ObjectId;
-};
+export type ProductSchemaWithIDType = SchemaWithID<ProductSchemaType>;
 
 export type ProductSchemaWithOptionalFieldsType = Partial<ProductSchemaType>;
 export type FindCursorProductType = FindCursor<ProductSchemaWithIDType>;
+
+// Reviews types
+export type ReviewsType = {
+  userId: string;
+  userName: string;
+  rate: number;
+  comment: string;
+  timestamp: number;
+};
+
+export type ReviewsProductType = {
+  productName: string;
+  productId: string;
+  reviews: ReviewsType[];
+};
+
+export type ReviewsProductWithIDType = SchemaWithID<ReviewsProductType>;
+
+// Product & Reviews type
+export type ProductAndReviewsType = {
+  product: ProductSchemaWithIDType;
+  reviews: ReviewsProductWithIDType;
+};

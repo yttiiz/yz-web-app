@@ -17,8 +17,9 @@ export const Body: ComponentType = {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${title}</title>
       <meta name="description" content="${description}">
-      <link rel="stylesheet" href="./css/style.css">
-      <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+      <link rel="stylesheet" href="./css/main.css">
+      <link rel="stylesheet" href="./css/{{ css }}.css">
+      <link rel="icon" href="./img/favicon.svg" type="image/svg+xml">
     </head>
     <body>
       <noscript>

@@ -22,10 +22,12 @@ export class AnimationHelper {
     };
 
     /**
-     * @param {HTMLButtonElement} prevBtn
-     * @param {HTMLButtonElement} nextBtn
-     * @param {number} sliderLength
-     * @param {number} index
+     * @param {{
+     *  prevBtn: HTMLButtonElement;
+     *  nextBtn: HTMLButtonElement;
+     *  sliderLength: number;
+     *  index: number;
+     * }} param0
      * @param {string} className
      */
     const changeBtnsVisibility = ({
@@ -33,7 +35,9 @@ export class AnimationHelper {
       nextBtn,
       sliderLength,
       index,
-    }, className = "hidden") => {
+    }) => {
+      const className = "hidden";
+
       switch (index) {
         case 0:
           prevBtn.classList.add(className);

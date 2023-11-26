@@ -1,0 +1,34 @@
+{
+  "mainImageLegend": "Cliquez sur l'image pour en découvrir d'autres.",
+  "descriptionTitle": "Description de l'appartement",
+  "descriptionInfo": {
+    "type": "Type",
+    "area": "Superficie",
+    "rooms": "Nombre de pièces"
+  },
+  "bookingForm": {
+    "action": "/booking",
+    "title": "Choisissez une date",
+    "method": "POST",
+    "content": [
+      {
+        "type": "date",
+        "label": "début de séjour",
+        "name": "starting-date"
+      },
+      {
+        "type": "date",
+        "label": "fin de séjour",
+        "name": "ending-date"
+      },
+      {
+        "type": "submit",
+        "value": "Valider vos dates"
+      }
+    ]
+  },
+  "reviewsTitle": "Qu'en pensent ceux qui y ont séjourné ?",
+  "reviewsEmpty": {
+    "text": "Il n'y a pas encore d'avis pour le moment. N'hésitez pas à donner le votre."
+  }
+}

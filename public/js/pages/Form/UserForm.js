@@ -3,7 +3,7 @@ import { UserFormHelper } from "../../utils/UserFormHelper.js";
 
 export class UserFormPage extends PageBuilder {
   initForm = (
-    id = "users",
+    id = "user",
   ) => {
     /** @type {HTMLFormElement} */
     const [form, deleteForm] = document.querySelectorAll(

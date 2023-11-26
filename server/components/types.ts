@@ -6,20 +6,27 @@ export type TemplateNameType =
 export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
-  | "ProductsHome";
+  | "SectionProduct"
+  | "ProductsHome"
+  | "ProductCard";
 
 export type MoleculeNameType =
+  | "BookingForm"
+  | "BookingDetails"
   | "DeleteAccount"
   | "DeleteAccountForm"
   | "InputsForm"
   | "Login"
   | "LogoutForm"
+  | "ProductDetails"
+  | "ReviewsDetails"
   | "NotFound"
   | "PicturesSlider";
 
 export type AtomNameType =
   | "LikeSvg"
   | "ShareSvg"
+  | "StarSvg"
   | "UserSvg"
   | "Logo"
   | "EyeOpenSvg"
@@ -44,17 +51,23 @@ export type ComponentType<
   html: U;
 };
 
-type ItemDataType = {
+export type ItemDataType = {
   link: string;
   text: string;
   className?: string;
 };
 
-type InformativeContentAndButtonType = {
+export type InformativeContentAndButtonType = {
   title: string;
   paragraph: string;
   btnText: string;
   btnLink?: string;
+};
+
+export type ProductDescriptionType = {
+  type: string;
+  area: string;
+  rooms: string;
 };
 
 export type HomePageDataType = Pick<
@@ -105,6 +118,19 @@ export type DeleteAccountDataType = {
     action: string;
     method: string;
   };
+};
+
+export type ReviewsEmpty = {
+  text: string;
+};
+
+export type ProductDataType = {
+  mainImageLegend: string;
+  descriptionTitle: string;
+  descriptionInfo: ProductDescriptionType;
+  bookingForm: FormDataType;
+  reviewsTitle: string;
+  reviewsEmpty: ReviewsEmpty;
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

@@ -25,6 +25,7 @@ export const SectionAuthForm: ComponentType<
         action="${action}"
         method="${method}"
         type="multipart/form-data"
+        data-style="user-${action.replace("/", "")}"
       >
         ${InputsForm.html(content, false)}
       </form>

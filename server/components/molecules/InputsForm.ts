@@ -41,10 +41,7 @@ export const InputsForm: ComponentType<
           ${value ? ` value="${value}"` : ""}
           ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
           ${type === "date"
-            ? (
-               `min="${Validator.limitDates().min}"
-                max="${Validator.limitDates().max}"`
-              )
+            ? Validator.minAndMaxDateParser(label as string)
             : ""}
         >
         ${type === "password"

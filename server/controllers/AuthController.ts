@@ -57,7 +57,8 @@ export class AuthController extends DefaultController {
         const body = await this.createHtmlFile(
           ctx,
           {
-            id: "data-users-form",
+            id: "data-user-form",
+            css: "user-form",
             title,
             path,
           },
@@ -103,7 +104,7 @@ export class AuthController extends DefaultController {
     };
 
     try {
-      const user = await this.selectFromDB("users", email);
+      const user = await this.selectFromDB("users", email, "email");
 
       if ("_id" in user) {
         const isPasswordOk = await Auth.comparePassword(password, user.hash);
@@ -218,7 +219,8 @@ export class AuthController extends DefaultController {
       : this.response(
         ctx,
         {
-          message: `${firstname} ${lastname}, votre profil a été créé avec succès.`,
+          message:
+            `${firstname} ${lastname}, votre profil a été créé avec succès.`,
         },
         200,
       );

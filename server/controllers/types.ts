@@ -15,13 +15,21 @@ export type PathAppType =
   | "/logout"
   | "/profil";
 
+export type IdsType =
+  | "data-home"
+  | "data-product"
+  | "data-user-form"
+  | "data-profil-form"
+  | "data-not-found";
+
 // Router
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 // Page
 export type ConfigPageType = {
-  id: `data-${string}`;
+  id: IdsType;
+  css: string;
   data?: unknown;
   title?: string;
   path?: string;
@@ -38,7 +46,8 @@ export type InsertIntoDBType<T> = (
 
 export type SelectFromDBType<T> = (
   collection: string,
-  email?: string,
+  identifier?: string | ObjectId,
+  key?: string,
 ) => Promise<T>;
 
 export type UpdateToDBType<T> = (
@@ -52,8 +61,9 @@ export type DeleteFromDBType = (
   collection: string,
 ) => Promise<number>;
 
+export type NotFoundMessageType = { message: string };
+
 // Users in DB
-export type UserNotFoundMessageType = { message: string };
 export type UserDataType = Record<
   number,
   & UserSchemaWithOptionalFieldsType
@@ -61,7 +71,7 @@ export type UserDataType = Record<
 >;
 export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
 export type SelectUserFromDBType = SelectFromDBType<
-  UserSchemaWithIDType | UserNotFoundMessageType
+  UserSchemaWithIDType | NotFoundMessageType
 >;
 export type UpdateUserToDBType = UpdateToDBType<
   UserSchemaWithOptionalFieldsType
@@ -73,3 +83,6 @@ export type ProductsDataType = Record<
   ProductSchemaWithIDType
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
+export type SelectProductFromDBType = SelectFromDBType<
+  ProductSchemaWithIDType | NotFoundMessageType
+>;

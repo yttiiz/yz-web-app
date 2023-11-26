@@ -14,6 +14,7 @@ export class NotFoundController extends DefaultController {
       ctx,
       {
         id: "data-not-found",
+        css: "not-found",
         title: "page inexistante",
       },
     );
