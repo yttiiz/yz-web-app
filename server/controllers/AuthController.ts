@@ -219,7 +219,8 @@ export class AuthController extends DefaultController {
       : this.response(
         ctx,
         {
-          message: `${firstname} ${lastname}, votre profil a été créé avec succès.`,
+          message:
+            `${firstname} ${lastname}, votre profil a été créé avec succès.`,
         },
         200,
       );

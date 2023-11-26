@@ -2,7 +2,7 @@ import { ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
-NotFoundMessageType,
+  NotFoundMessageType,
   RouterAppType,
   RouterContextAppType,
   SelectProductFromDBType,
@@ -26,7 +26,6 @@ export class ProductController extends DefaultController {
     this.router?.get(
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
-
         const _id = new ObjectId(ctx.params.id);
         const product = await this.selectFromDB("products", _id);
         const reviews = await this.selectFromDB(
@@ -34,21 +33,18 @@ export class ProductController extends DefaultController {
           ctx.params.id,
           "productId",
         );
-        
-        if ("_id" in product && "_id" in reviews) {
-          const body = await this.createHtmlFile(ctx,
-            {
-              id: "data-product",
-              css: "product",
-              data: {
-                product,
-                reviews,
-              },
-              title: "Aka " + product.name,
-            },
-          );
-          this.response(ctx, body, 200);
 
+        if ("_id" in product && "_id" in reviews) {
+          const body = await this.createHtmlFile(ctx, {
+            id: "data-product",
+            css: "product",
+            data: {
+              product,
+              reviews,
+            },
+            title: "Aka " + product.name,
+          });
+          this.response(ctx, body, 200);
         } else {
           const body = await this.createHtmlFile(
             ctx,
@@ -62,6 +58,6 @@ export class ProductController extends DefaultController {
           this.response(ctx, body, 404);
         }
       },
-    )
+    );
   }
-} 
+}

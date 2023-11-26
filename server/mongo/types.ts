@@ -47,7 +47,7 @@ export enum RateProductEnum {
   quiteGood = 3,
   bad = 2,
   execrable = 1,
-};
+}
 
 export type DetailsProductType = {
   rooms: number;
@@ -81,10 +81,10 @@ export type FindCursorProductType = FindCursor<ProductSchemaWithIDType>;
 export type ReviewsType = {
   userId: string;
   userName: string;
-  rate: number,
+  rate: number;
   comment: string;
   timestamp: number;
-}
+};
 
 export type ReviewsProductType = {
   productName: string;
@@ -97,5 +97,5 @@ export type ReviewsProductWithIDType = SchemaWithID<ReviewsProductType>;
 // Product & Reviews type
 export type ProductAndReviewsType = {
   product: ProductSchemaWithIDType;
-  reviews: ReviewsProductWithIDType
+  reviews: ReviewsProductWithIDType;
 };

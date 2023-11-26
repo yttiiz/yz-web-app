@@ -122,7 +122,7 @@ export type DeleteAccountDataType = {
 
 export type ReviewsEmpty = {
   text: string;
-}
+};
 
 export type ProductDataType = {
   mainImageLegend: string;
@@ -131,6 +131,6 @@ export type ProductDataType = {
   bookingForm: FormDataType;
   reviewsTitle: string;
   reviewsEmpty: ReviewsEmpty;
-}
+};
 
 export type NotFoundDataType = InformativeContentAndButtonType;

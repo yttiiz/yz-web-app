@@ -37,7 +37,7 @@ export class AnimationHelper {
       index,
     }) => {
       const className = "hidden";
-      
+
       switch (index) {
         case 0:
           prevBtn.classList.add(className);
