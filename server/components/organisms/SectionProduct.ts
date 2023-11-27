@@ -15,12 +15,11 @@ import {
 } from "../mod.ts";
 
 const {
-  mainImageLegend,
-  descriptionTitle,
-  descriptionInfo,
-  bookingForm,
-  reviewsTitle,
-  reviewsEmpty,
+  images,
+  description,
+  booking,
+  reviewsAndRate,
+  conditions,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -44,7 +43,7 @@ export const SectionProduct: ComponentType<
             alt="${product.pictures.at(0)?.alt}"
           />
           <figcaption>
-            ${mainImageLegend}
+            ${images.legend}
           </figcaption>
           <div>
           </div>
@@ -52,15 +51,27 @@ export const SectionProduct: ComponentType<
         <div>
           <div class="booking">
             ${BookingDetails.html(product.details)}
-            ${BookingForm.html(product.details, bookingForm)}
+            ${BookingForm.html(product.details, booking)}
           </div>
           <div class="description">
-            ${ProductDetails.html(product, descriptionInfo, descriptionTitle)}
+            ${ProductDetails.html(
+              product,
+              description.infos,
+              description.title,
+            )}
           </div>
           <div class="reviews">
-            ${ReviewsDetails.html(reviews, reviewsTitle, reviewsEmpty)}
+            ${ReviewsDetails.html(
+              reviews,
+              reviewsAndRate.title,
+              reviewsAndRate.empty,
+            )}
           </div>
         </div>
+      </div>
+      <div class="conditions">
+        <h1>${conditions.title}</h1>
+        <p>${conditions.content}</p>
       </div>
     </section>`;
   },

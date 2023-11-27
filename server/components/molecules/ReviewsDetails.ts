@@ -5,7 +5,6 @@ import {
   StarSvg,
   type ComponentType,
   type MoleculeNameType,
-  type ReviewsEmpty,
 } from "../mod.ts";
 import { RateProductEnum, ReviewsProductWithIDType } from "@mongo";
 
@@ -30,7 +29,7 @@ export const ReviewsDetails: ComponentType<
   html: (
     reviews: ReviewsProductWithIDType,
     reviewsTitle: string,
-    reviewsEmpty: ReviewsEmpty,
+    reviewsEmpty: string,
   ) => (
     `
     <h3>${reviewsTitle}</h3>
@@ -68,7 +67,7 @@ export const ReviewsDetails: ComponentType<
       )
       :
       (
-        `<p>${reviewsEmpty.text}</p>`
+        `<p>${reviewsEmpty}</p>`
       )
     }
     `

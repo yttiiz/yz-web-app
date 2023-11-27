@@ -47,6 +47,12 @@
             z-index: 2;
         }
 
+        & ul,
+        & dl,
+        & .reviews > p {
+            width: 50%;
+        }
+
         /*=====| description |=====*/
 
         & > div {
@@ -77,6 +83,8 @@
         & .description li sup {
             line-height: 1;
         }
+
+        /*=====| reviews |=====*/
 
         & .reviews dt {
             font-weight: 600;
@@ -125,6 +133,8 @@
         & .reviews li.ranking svg {
             fill: var(--secondary-color);
         }
+
+        /*=====| booking |=====*/
 
         & .booking {
             position: absolute;
@@ -211,15 +221,21 @@
 
         /*=====| BREAKPOINT |=====*/
         
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 950px) {
+            & ul,
+            & dl,
+            & .reviews > p {
+                width: 100%;
+            }
+
             & .booking {
+                width: 100%;
                 position: unset;
-                right: unset;
                 background: unset;
-                border: unset;
                 border-radius: unset;
                 min-width: unset;
                 box-shadow: unset;
+                border-radius: var(--base-size);
             }
         }
     }

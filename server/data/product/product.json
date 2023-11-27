@@ -1,12 +1,16 @@
 {
-  "mainImageLegend": "Cliquez sur l'image pour en découvrir d'autres.",
-  "descriptionTitle": "Description de l'appartement",
-  "descriptionInfo": {
-    "type": "Type",
-    "area": "Superficie",
-    "rooms": "Nombre de pièces"
+  "images": {
+    "legend": "Cliquez sur l'image pour en découvrir d'autres."
   },
-  "bookingForm": {
+  "description": {
+    "title": "Description de l'appartement",
+    "infos": {
+      "type": "Type",
+      "area": "Superficie",
+      "rooms": "Nombre de pièces"
+    }
+  },
+  "booking": {
     "action": "/booking",
     "title": "Choisissez une date",
     "method": "POST",
@@ -27,8 +31,12 @@
       }
     ]
   },
-  "reviewsTitle": "Qu'en pensent ceux qui y ont séjourné ?",
-  "reviewsEmpty": {
-    "text": "Il n'y a pas encore d'avis pour le moment. N'hésitez pas à donner le votre."
-  }
+  "reviewsAndRate": {
+    "title": "Qu'en pensent ceux qui y ont séjourné ?",
+    "empty": "Il n'y a pas encore d'avis pour le moment. N'hésitez pas à donner le votre."
+  },
+  "conditions": {
+    "title": "Conditions à respecter", 
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  } 
 }

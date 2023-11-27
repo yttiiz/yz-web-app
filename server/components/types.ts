@@ -120,17 +120,23 @@ export type DeleteAccountDataType = {
   };
 };
 
-export type ReviewsEmpty = {
-  text: string;
-};
-
 export type ProductDataType = {
-  mainImageLegend: string;
-  descriptionTitle: string;
-  descriptionInfo: ProductDescriptionType;
-  bookingForm: FormDataType;
-  reviewsTitle: string;
-  reviewsEmpty: ReviewsEmpty;
+  images: {
+    legend: string;
+  };
+  description: {
+    title: string;
+    infos: ProductDescriptionType;
+  };
+  booking: FormDataType;
+  reviewsAndRate: {
+    title:  string;
+    empty: string;
+  };
+  conditions: {
+    title: string;
+    content: string;
+  }
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;
