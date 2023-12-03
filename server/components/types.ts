@@ -16,10 +16,13 @@ export type MoleculeNameType =
   | "DeleteAccount"
   | "DeleteAccountForm"
   | "InputsForm"
+  | "TextAreaForm"
   | "Login"
   | "LogoutForm"
   | "ProductDetails"
   | "ReviewsDetails"
+  | "FormReview"
+  | "Text"
   | "NotFound"
   | "PicturesSlider";
 
@@ -29,6 +32,7 @@ export type AtomNameType =
   | "StarSvg"
   | "UserSvg"
   | "Logo"
+  | "LoginRegister"
   | "EyeOpenSvg"
   | "EyeShutSvg"
   | "CircleSvg"
@@ -136,7 +140,8 @@ export type ProductDataType = {
   conditions: {
     title: string;
     content: string;
-  }
+  };
+  reviewForm: FormDataType;
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

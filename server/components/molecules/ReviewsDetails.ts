@@ -18,6 +18,7 @@ const displayStars = (rate: number) => {
       </li>`;
   }
 
+
   return stars;
 };
 
@@ -33,10 +34,11 @@ export const ReviewsDetails: ComponentType<
   ) => (
     `
     <h3>${reviewsTitle}</h3>
-    ${reviews.reviews.length > 1
+    ${reviews.reviews.length > 0
       ?
       (
-        `<dl>
+        `
+        <dl>
         ${reviews.reviews
           .map(({
             userName,

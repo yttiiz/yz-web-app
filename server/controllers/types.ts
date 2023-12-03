@@ -35,6 +35,13 @@ export type ConfigPageType = {
   path?: string;
 };
 
+export type ConfigMainHtmlType = Omit<
+  ConfigPageType, "css" | "title"
+> & {
+  main: string;
+  isUserConnected: boolean;
+};
+
 // DB Generics
 export type GetCollectionType = (
   collection: string,

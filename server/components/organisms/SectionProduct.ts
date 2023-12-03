@@ -1,17 +1,18 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
-import { Helper } from "@utils";
+import { Helper, Rate } from "@utils";
 import type {
   ComponentType,
   OrganismNameType,
   ProductDataType,
 } from "../mod.ts";
-import { ProductAndReviewsType } from "@mongo";
+import { ProductAndReviewsType, RateProductEnum } from "@mongo";
 import {
   BookingDetails,
   BookingForm,
   ProductDetails,
   ReviewsDetails,
+  FormReview,
 } from "../mod.ts";
 
 const {
@@ -20,6 +21,7 @@ const {
   booking,
   reviewsAndRate,
   conditions,
+  reviewForm,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -29,7 +31,13 @@ export const SectionProduct: ComponentType<
   (...args: any[]) => string
 > = {
   name: "SectionProduct",
-  html: ({product, reviews}: ProductAndReviewsType) => {
+  html: (
+    {
+      product,
+      reviews
+    }: ProductAndReviewsType,
+    isUserConnected: boolean,
+  ) => {
     return `
     <section>
       <div>
@@ -43,7 +51,8 @@ export const SectionProduct: ComponentType<
             alt="${product.pictures.at(0)?.alt}"
           />
           <figcaption>
-            ${images.legend}
+            <span>${images.legend}</span>
+            <span><strong>${Rate.average(product.rate)}</strong></span>
           </figcaption>
           <div>
           </div>
@@ -66,6 +75,9 @@ export const SectionProduct: ComponentType<
               reviewsAndRate.title,
               reviewsAndRate.empty,
             )}
+          </div>
+          <div class="form-review">
+            ${FormReview.html(reviewForm, isUserConnected)}
           </div>
         </div>
       </div>

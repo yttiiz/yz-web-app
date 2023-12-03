@@ -85,6 +85,7 @@ input[type="submit"] {
 }
 
 button[data-type="call-to-action"],
+textarea,
 input {
     border-radius: var(--btn-border-radius);
     font-size: var(--base-size);
@@ -368,6 +369,29 @@ form[data-style] label {
 form[data-style] input:not(input[type="submit"]) {
     padding: calc(var(--base-size) * .625);
     border: var(--border-black-25-percent);
+}
+
+p + .login-register {
+    margin-top: var(--base-size);
+}
+
+.login-register {
+    display: flex;
+    gap: var(--base-size);
+    align-items: center;
+    width: max-content;
+
+    & a:first-of-type {
+        display: inline-block;
+        padding: var(--btn-padding);
+        color: var(--light);
+        background: var(--primary-color);
+        border-radius: var(--btn-border-radius);
+    }
+
+    & a:not(:first-of-type) {
+        text-decoration: underline;
+    }
 }
 
 /*=================================================| FOOTER |=================================================*/

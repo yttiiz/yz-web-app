@@ -41,10 +41,20 @@
         }
     
         & figure figcaption {
-            color: var(--light);
+            display: flex;
+            justify-content: space-between;
             user-select: none;
             padding: var(--base-size) calc(var(--base-size) * 1.25);
             z-index: 2;
+        }
+
+        & figure figcaption span {
+            color: var(--light);
+        }
+        
+        & figure figcaption strong {
+            color: var(--secondary-color);
+            font-weight: 500;
         }
 
         & ul,
@@ -132,6 +142,32 @@
 
         & .reviews li.ranking svg {
             fill: var(--secondary-color);
+        }
+
+        /*=====| form-review |=====*/
+
+        & .form-review form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--base-size);
+        }
+
+        & .form-review label:first-of-type {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--base-size) * .5);
+        }
+
+        & .form-review label textarea {
+            width: 50%;
+            height: calc(var(--base-size) * 10);
+            padding: var(--base-size);
+            border: var(--border-black-25-percent);
+        }
+
+        & .form-review input[type="submit"] {
+            background: var(--primary-color);
+            width: max-content;
         }
 
         /*=====| booking |=====*/
