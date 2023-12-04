@@ -54,7 +54,7 @@ export const ReviewsDetails: ComponentType<
               <p>écrit le ${Helper.displayDate(timestamp)}</p>
               <div>
                 <span>
-                  à noté : <strong>${rate}/${RateProductEnum.excellent}</strong>
+                  a noté : <strong>${rate}/${RateProductEnum.excellent}</strong>
                 </span>
                 <ul title="${rate}/${RateProductEnum.excellent}">
                   ${displayStars(rate)}

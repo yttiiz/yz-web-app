@@ -1,7 +1,7 @@
 {
   "deleteAccount": {
     "title": "Voulez-vous supprimer votre compte ?",
-    "paragraph": "Si vous décidez de supprimer votre compte, toutes les données enregistrées sur ce site seront definitivement perdues.",
+    "paragraph": "Si vous décidez de supprimer votre compte, toutes les données enregistrées sur ce site seront définitivement perdues.",
     "btnText": "Supprimer le compte"
   },
   "deleteModal": {

@@ -32,9 +32,10 @@ export class HomePage extends PageBuilder {
   renderError = (status, url) => {
     const [
       section,
+      container,
       title,
       text,
-    ] = this.createHTMLElements("section", "h1", "p");
+    ] = this.createHTMLElements("section", "div", "h1", "p");
 
     const displayError = (
       msg = status === 404
@@ -47,7 +48,10 @@ export class HomePage extends PageBuilder {
 
     displayError();
 
-    this.insertChildren(section, title, text);
+    container.classList.add("container");
+
+    this.insertChildren(container, title, text);
+    this.insertChildren(section, container);
     this.insertChildren(this.#root, section);
   };
 
@@ -63,13 +67,17 @@ export class HomePage extends PageBuilder {
   ) => {
     const [
       section,
+      container,
       title,
-    ] = this.createHTMLElements("section", "h1");
+    ] = this.createHTMLElements("section", "div", "h1");
 
     listItems = renderer(items, listItems);
+    
+    container.classList.add("container");
 
     title.textContent = "Liste des utilisateurs actifs";
-    this.insertChildren(section, title, listItems);
+    this.insertChildren(container, title, listItems);
+    this.insertChildren(section, container);
 
     return section;
   };

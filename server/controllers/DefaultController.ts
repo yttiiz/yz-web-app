@@ -161,7 +161,7 @@ export class DefaultController {
       case "data-product": {
         return main.replace(
           "{{ content-insertion }}",
-          layout.SectionProduct.html(
+          layout.SectionsProduct.html(
             data,
             isUserConnected,
           ),

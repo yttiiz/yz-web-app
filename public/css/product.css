@@ -50,8 +50,21 @@
 
         & figure figcaption span {
             color: var(--light);
+            height: max-content;
+            align-self: flex-end;
         }
         
+        & figure figcaption span:last-of-type {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        & figure figcaption svg {
+            width: calc(var(--base-size) * 1.5);
+            height: auto;
+            fill: var(--secondary-color)
+        }
         & figure figcaption strong {
             color: var(--secondary-color);
             font-weight: 500;
@@ -126,6 +139,7 @@
         }
 
         & .reviews ul {
+            width: max-content;
             list-style: none;
             display: flex;
         }
@@ -156,6 +170,10 @@
             display: flex;
             flex-direction: column;
             gap: calc(var(--base-size) * .5);
+        }
+
+        & .form-review label:not(:first-of-type) {
+            cursor: pointer;
         }
 
         & .form-review label textarea {
@@ -272,6 +290,10 @@
                 min-width: unset;
                 box-shadow: unset;
                 border-radius: var(--base-size);
+            }
+
+            & .form-review label textarea {
+                width: 100%;
             }
         }
     }
