@@ -16,6 +16,7 @@ export type MoleculeNameType =
   | "DeleteAccount"
   | "DeleteAccountForm"
   | "InputsForm"
+  | "InputsGroupForm"
   | "TextAreaForm"
   | "Login"
   | "LogoutForm"

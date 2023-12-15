@@ -160,20 +160,47 @@
 
         /*=====| form-review |=====*/
 
-        & .form-review form {
-            display: flex;
-            flex-direction: column;
-            gap: var(--base-size);
-        }
-
-        & .form-review label:first-of-type {
+        & .form-review form > label:first-of-type {
             display: flex;
             flex-direction: column;
             gap: calc(var(--base-size) * .5);
+            margin-bottom: var(--base-size);
         }
 
-        & .form-review label:not(:first-of-type) {
+        & .form-review form > div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--base-size);
+        }
+
+        & .form-review form > div label {
+            display: inherit;
+            gap: calc(var(--base-size) * .5);
             cursor: pointer;
+            align-items: center;
+        }
+
+        & .form-review form > div span:first-of-type {
+            display: inherit;
+            justify-content: center;
+            align-items: inherit;
+            width: calc(var(--base-size) * 2);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            border: .1rem solid rgb(var(--black-rvb) / .1);
+            transition: background var(--smooth);
+        }
+
+        & .form-review form > div label:hover span:first-of-type {
+            background:rgb(var(--black-rvb) / .05);
+        }
+
+        & .form-review form > div label:hover span:first-of-type {
+            font-weight: 600;
+        }
+
+        & .form-review form > div input {
+            display: none;
         }
 
         & .form-review label textarea {
@@ -184,6 +211,8 @@
         }
 
         & .form-review input[type="submit"] {
+            display: block;
+            margin-top: var(--base-size);
             background: var(--primary-color);
             width: max-content;
         }

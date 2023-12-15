@@ -79,9 +79,11 @@ export const SectionsProduct: ComponentType<
       </div>
     </section>
     <section>
-      <div class="container conditions">
-        <h1>${conditions.title}</h1>
-        <p>${conditions.content}</p>
+      <div class="container">
+        <div class="conditions">
+          <h1>${conditions.title}</h1>
+          <p>${conditions.content}</p>
+        </div>
       </div>
     </section>`;
   },

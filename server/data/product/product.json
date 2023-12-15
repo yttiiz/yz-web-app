@@ -27,7 +27,7 @@
       },
       {
         "type": "submit",
-        "value": "Valider vos dates"
+        "value": "Validez vos dates"
       }
     ]
   },
@@ -46,7 +46,8 @@
         "minLength": 2,
         "maxLength": 200,
         "placeholder": "Votre avis...",
-        "name": "review"
+        "name": "review",
+        "required": true
       },
       {
         "type": "radio",

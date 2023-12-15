@@ -26,6 +26,7 @@ export * from "./molecules/BookingForm.ts";
 export * from "./molecules/LogoutForm.ts";
 export * from "./molecules/Login.ts";
 export * from "./molecules/InputsForm.ts";
+export * from "./molecules/InputsGroupForm.ts";
 export * from "./molecules/TextAreaForm.ts";
 export * from "./molecules/DeleteAccount.ts";
 export * from "./molecules/DeleteAccountForm.ts";

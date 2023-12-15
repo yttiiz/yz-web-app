@@ -5,6 +5,7 @@ import {
   type MoleculeNameType,
   type FormDataType,
   InputsForm,
+  InputsGroupForm,
   LoginRegister,
   TextAreaForm,
   InputDataType,
@@ -25,11 +26,14 @@ export const FormReview: ComponentType<
     isUserConnected: boolean,
   ) => {
     let textArea: InputDataType = { type: "textarea" };
+    const submitBtn: InputDataType[] = [];
     const inputs: InputDataType[] = [];
     
     for (const field of content) {
       if (field.type === "textarea") {
         textArea = field;
+      } else if (field.type === "submit") {
+        submitBtn.push(field);
       } else {
         inputs.push(field);
       }
@@ -45,7 +49,8 @@ export const FormReview: ComponentType<
             method="${method}"
           >
             ${TextAreaForm.html(textArea)}
-            ${InputsForm.html(inputs, false)}
+            ${InputsGroupForm.html(inputs, false)}
+            ${InputsForm.html(submitBtn, false)}
           </form>
         `
       )
