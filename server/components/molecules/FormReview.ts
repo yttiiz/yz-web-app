@@ -30,12 +30,17 @@ export const FormReview: ComponentType<
     const inputs: InputDataType[] = [];
     
     for (const field of content) {
-      if (field.type === "textarea") {
-        textArea = field;
-      } else if (field.type === "submit") {
-        submitBtn.push(field);
-      } else {
-        inputs.push(field);
+      switch(field.type) {
+        case "textarea": 
+          textArea = field;
+          break;
+
+        case "submit":
+          submitBtn.push(field);
+          break;
+
+        default:
+          inputs.push(field);
       }
     }
 

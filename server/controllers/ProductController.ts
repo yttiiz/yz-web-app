@@ -1,4 +1,4 @@
-import { ObjectId } from "@deps";
+import { ObjectId, oak } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
@@ -18,6 +18,7 @@ export class ProductController extends DefaultController {
     super(router);
     this.selectFromDB = selectFromDB;
     this.getProduct();
+    this.postReview();
   }
 
   getProduct() {
@@ -58,6 +59,18 @@ export class ProductController extends DefaultController {
           this.response(ctx, body, 404);
         }
       },
+    );
+  }
+
+  postReview() {
+    this.router?.post(
+      "/review-form",
+      async (ctx: RouterContextAppType<"/review-form">) => {
+        const data = await ctx.request.body().value as oak.FormDataReader;
+        const { fields } = await data.read({ maxSize: 10_000_000 });
+
+        this.response(ctx, { message: "Ok" }, 200);
+      }
     );
   }
 }

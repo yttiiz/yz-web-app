@@ -29,8 +29,7 @@ export const TextAreaForm: ComponentType<
           ${required ? ` required` : ""}
           ${minLength ? ` minLength="${minLength}"` : ""}
           ${maxLength ? ` maxLength="${maxLength}"` : ""}
-        >
-        </textarea>
+        ></textarea>
       </label>`
     )
 }

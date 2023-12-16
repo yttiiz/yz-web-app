@@ -191,15 +191,13 @@
             transition: background var(--smooth);
         }
 
-        & .form-review form > div label:hover span:first-of-type {
+        & .form-review form > div label:hover span:first-of-type,
+        & .form-review form > div label span:first-of-type.selected {
             background:rgb(var(--black-rvb) / .05);
-        }
-
-        & .form-review form > div label:hover span:first-of-type {
             font-weight: 600;
         }
 
-        & .form-review form > div input {
+        & .form-review form > div input[type="radio"] {
             display: none;
         }
 

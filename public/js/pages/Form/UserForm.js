@@ -1,11 +1,12 @@
 import { PageBuilder } from "../Builder.js";
 import { UserFormHelper } from "../../utils/UserFormHelper.js";
+import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 
 export class UserFormPage extends PageBuilder {
   initForm = (
     id = "user",
   ) => {
-    /** @type {HTMLFormElement} */
+    /** @type {HTMLFormElement[]} */
     const [form, deleteForm] = document.querySelectorAll(
       `#data-${id}-form form`,
     );
@@ -98,7 +99,7 @@ export class UserFormPage extends PageBuilder {
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
 
-    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
+    const formData = isDeleteForm ? null : DefaultFormHelper.setFormData(e.target);
     const method = location.pathname === "/profil"
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
@@ -109,7 +110,7 @@ export class UserFormPage extends PageBuilder {
     });
 
     if (location.pathname !== "/profil") {
-      UserFormHelper.removeInputsValues(e.target.children);
+      DefaultFormHelper.removeInputsValues(e.target.children);
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {

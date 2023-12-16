@@ -1,15 +1,17 @@
 // deno-lint-ignore-file
-import { HomePage, UserFormPage } from "./mod.js";
+import { HomePage, UserFormPage, ProductFormPage } from "./mod.js";
 
 export class Router {
   #home;
   #userForm;
+  #productForm;
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
     this.#home = new HomePage();
     this.#userForm = new UserFormPage();
+    this.#productForm = new ProductFormPage();
     this.#router();
   }
 
@@ -28,12 +30,8 @@ export class Router {
       }
 
       //============[ USERS ]============//
-      case this.host + "register": {
-        this.#userForm.initForm();
-        break;
-      }
-
-      case this.host + "login": {
+      case this.host + "register":
+      case this.host + "login": { 
         this.#userForm.initForm();
         break;
       }
@@ -49,6 +47,11 @@ export class Router {
           break;
         }
       }
+
+      //============[ PRODUCT ]============//
+      default:
+        this.#productForm.initForm();
+        break;
     }
   }
 

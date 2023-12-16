@@ -13,7 +13,8 @@ export type PathAppType =
   | "/register"
   | "/login"
   | "/logout"
-  | "/profil";
+  | "/profil"
+  | "/review-form";
 
 export type IdsType =
   | "data-home"
