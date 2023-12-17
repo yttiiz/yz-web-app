@@ -75,6 +75,7 @@ export class ProductController extends DefaultController {
           id,
           review,
           rate,
+          className,
         } } = await data.read({ maxSize: 10_000_000 });
 
         const userId: string = (ctx.state.session.get("userId") as ObjectId)
@@ -95,7 +96,6 @@ export class ProductController extends DefaultController {
         if ("_id" in product) {
           const { reviewId } = product;
           const _reviewId = new ObjectId(reviewId);
-          
           const isInsertionOk = await this.addNewItemIntoReview(
             _reviewId,
             newReview,
@@ -103,14 +103,28 @@ export class ProductController extends DefaultController {
           );
 
           isInsertionOk
-            ? this.response(ctx, { message: "Votre avis a bien été ajouté." }, 200)
-            : this.response(ctx, { message: "La base de données n'est pas accessible" }, 200);
+            ? this.response(
+                ctx,
+                {
+                  message: "Votre avis a bien été ajouté.",
+                  className,
+                },
+                200,
+              )
+            : this.response(
+                ctx,
+                {
+                  message: "La base de données n'est pas accessible.",
+                  className,
+                },
+                503,
+              );
 
         } else {
           this.response(
             ctx,
-            { message: "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible" },
-            200
+            { message: "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible." },
+            503,
           );
         }
 

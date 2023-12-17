@@ -330,6 +330,18 @@ section:not(:last-of-type) {
     margin-bottom: calc(var(--base-size) * 2);
 }
 
+section p[data-msg-infos="success"],
+section p[data-msg-infos="error"] {
+    font-weight: 400;
+}
+
+section p[data-msg-infos="success"] {
+    color: rgb(0, 128, 0);
+}
+
+section p[data-msg-infos="error"] {
+    color: rgb(128, 0, 0);
+}
 
 h1 {
     font-size: calc(var(--base-size) * 2.1875);

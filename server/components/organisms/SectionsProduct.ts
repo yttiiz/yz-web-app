@@ -71,7 +71,7 @@ export const SectionsProduct: ComponentType<
                 reviewsAndRate.empty,
               )}
             </div>
-            <div class="form-review">
+            <div class="review-form">
               ${FormReview.html(reviewForm, isUserConnected)}
             </div>
           </div>

@@ -20,7 +20,14 @@ export class DefaultFormHelper {
    */
   static removeInputsValues = (labels) => {
     for (let i = 0; i < labels.length - 1; i++) {
-      labels[i].querySelector("input").value = "";
+      
+      labels[i].querySelector("textarea")
+      ? labels[i].querySelector("textarea").value = ""
+      : null;
+      
+      labels[i].querySelector("input")
+       ? labels[i].querySelector("input").value = ""
+       : null;
     }
   };
 }

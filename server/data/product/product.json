@@ -42,7 +42,7 @@
     "content": [
       {
         "type": "textarea",
-        "label": "Dites-nous tout",
+        "label": "Dites-nous tout !",
         "minLength": 2,
         "maxLength": 200,
         "placeholder": "Votre avis...",

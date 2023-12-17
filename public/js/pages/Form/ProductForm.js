@@ -1,5 +1,6 @@
 import { PageBuilder } from "../Builder.js";
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
+import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 
 export class ProductFormPage extends PageBuilder {
   initForm = (
@@ -58,17 +59,20 @@ export class ProductFormPage extends PageBuilder {
 
     const formData = DefaultFormHelper.setFormData(e.target);
     const productId = location.pathname.replace("/product/", "");
-    
+    const className = e.target.action.replace(location.origin + "/", "");
+
     formData.append("id", productId);
-    
+    formData.append("className", className);
+
     const res = await fetch(e.target.action, {
       method: "POST",
       body: formData,
     });
 
     if (res.ok) {
-      console.log()
-      console.log("status :", res.status, "data :", await res.json())
+      DefaultFormHelper.removeInputsValues(e.target.children);
+      ProductFormHelper.showProductUserReviewDetails(res);
+
     }
   }
 }

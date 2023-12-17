@@ -18,22 +18,6 @@
     }
 }
 
-#data-user-form,
-#data-profil-form {
-    & section p[data-msg-infos="success"],
-    & section p[data-msg-infos="error"] {
-        font-weight: 400;
-    }
-
-    & section p[data-msg-infos="success"] {
-        color: rgb(0, 128, 0);
-    }
-
-    & section p[data-msg-infos="error"] {
-        color: rgb(128, 0, 0);
-    }
-}
-
 #data-profil-form {
     & section form {
         display: flex;
