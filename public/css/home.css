@@ -1,10 +1,10 @@
 #data-home {
-    & section > ul > li,
-    & section > ul > li > div {
+    & section ul > li,
+    & section ul > li > div {
         display: flex;
     }
 
-    & section > ul > li {
+    & section ul > li {
         align-items: center;
 
         & > div {
@@ -12,7 +12,7 @@
         }
     }
 
-    & section > ul.products > li {
+    & section ul.products > li {
         overflow: hidden;
         border-radius: var(--base-size);
         border: var(--border-black-25-percent);
@@ -247,7 +247,7 @@
         }
     }
 
-    & section > ul.users > li {
+    & section ul.users > li {
         & > div {
             gap: .5rem;
         }

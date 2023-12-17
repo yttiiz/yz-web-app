@@ -1,41 +1,25 @@
 #data-user-form,
 #data-profil-form {
-    & section > form label {
+    & section form label {
         position: relative;
     }
 
-    & section > form input {
+    & section form input {
         height: calc(var(--base-size) * 3);
     }
 
-    & section > form > input[type="submit"] {
+    & section form > input[type="submit"] {
         align-self: end;
         background: var(--primary-color);
     }
 
-    & section > form input[type="password"] {
+    & section form input[type="password"] {
         padding-right: 4rem;
     }
 }
 
-#data-user-form,
 #data-profil-form {
-    & section > p[data-msg-infos="success"],
-    & section > p[data-msg-infos="error"] {
-        font-weight: 400;
-    }
-
-    & section > p[data-msg-infos="success"] {
-        color: rgb(0, 128, 0);
-    }
-
-    & section > p[data-msg-infos="error"] {
-        color: rgb(128, 0, 0);
-    }
-}
-
-#data-profil-form {
-    & section > form {
+    & section form {
         display: flex;
         flex-direction: column;
         gap: calc(var(--base-size) * 2);
@@ -92,9 +76,6 @@
         display: flex;
         flex-direction: column;
         gap: calc(var(--base-size) * .85);
-        padding: var(--base-size);
-        border: .1rem solid var(--danger);
-        border-radius: calc(var(--base-size) * .8);
 
         & button {
             background: var(--danger);
@@ -218,7 +199,7 @@
 
 @media screen and (max-width: 950px) {
 
-    #data-profil-form section > form {
+    #data-profil-form section form {
         & > div {
             flex-direction: column;
         }

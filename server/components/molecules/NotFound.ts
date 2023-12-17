@@ -18,12 +18,14 @@ export const NotFound: ComponentType<MoleculeNameType> = {
   name: "NotFound",
   html: `
   <section>
-    <div>
-      <h1>${title}</h1>
-      <p>${paragraph}</p>
-    </div>
-    <div>
-      <a href="${btnLink}">${btnText}</a>
+    <div class="container">
+      <div>
+        <h1>${title}</h1>
+        <p>${paragraph}</p>
+      </div>
+      <div>
+        <a href="${btnLink}">${btnText}</a>
+      </div>
     </div>
   </section>`,
 };

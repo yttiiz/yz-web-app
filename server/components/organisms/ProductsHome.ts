@@ -24,15 +24,17 @@ export const ProductsHome: ComponentType<
 
     return `
     <section>
-      <div>
-        <h1>${title}</h1>
-        <p>${paragraph}</p>
+      <div class="container">
+        <div>
+          <h1>${title}</h1>
+          <p>${paragraph}</p>
+        </div>
+        <ul class="products">
+          ${Object.keys(products)
+            .map((key) => ProductCard.html(products[key]))
+            .join("")}
+        </ul>
       </div>
-      <ul class="products">
-        ${Object.keys(products)
-          .map((key) => ProductCard.html(products[key]))
-          .join("")}
-      </ul>
     </section>`;
   },
 };

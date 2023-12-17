@@ -31,7 +31,10 @@ export const InputsForm: ComponentType<
     }) => type !== "submit"
     ? (
       `<label>
-        <span>${label}</span>
+        ${type !== "radio"
+          ? `<span>${label}</span>`
+          : ""
+        }
         <input type="${type}"
           ${name ? ` name="${name}"` : ""}
           ${placeholder ? ` placeholder="${placeholder}"` : ""}
@@ -56,6 +59,8 @@ export const InputsForm: ComponentType<
               </div>`
             )
           : ""}
+        ${type === "radio"
+          ? label : ""}
       </label>`
       )
     : isProfilInputs

@@ -85,6 +85,7 @@ input[type="submit"] {
 }
 
 button[data-type="call-to-action"],
+textarea,
 input {
     border-radius: var(--btn-border-radius);
     font-size: var(--base-size);
@@ -124,6 +125,11 @@ noscript {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+.container {
+    margin: auto;
+    width: var(--width-container);
 }
 
 /*=================================================| HEADER |=================================================*/
@@ -313,7 +319,7 @@ footer > div {
     padding: 2rem 0;
 }
 
-section {
+main .container {
     display: flex;
     flex-direction: column;
 }
@@ -324,9 +330,17 @@ section:not(:last-of-type) {
     margin-bottom: calc(var(--base-size) * 2);
 }
 
-.container {
-  margin: auto;
-  width: var(--width-container);
+section p[data-msg-infos="success"],
+section p[data-msg-infos="error"] {
+    font-weight: 400;
+}
+
+section p[data-msg-infos="success"] {
+    color: rgb(0, 128, 0);
+}
+
+section p[data-msg-infos="error"] {
+    color: rgb(128, 0, 0);
 }
 
 h1 {
@@ -347,16 +361,16 @@ h3 {
     font-weight: 400;
 }
 
-#data-home section > ul,
-#data-user-form section > form {
+#data-home section .container > ul,
+#data-user-form section form {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-section,
-#data-home section > ul,
-#data-home section > ul > li,
-#data-user-form section > form {
+main .container,
+#data-home section .container > ul,
+#data-home section .container > ul > li,
+#data-user-form section form {
     gap: calc(var(--base-size) * 1.8);
 }
 
@@ -368,6 +382,29 @@ form[data-style] label {
 form[data-style] input:not(input[type="submit"]) {
     padding: calc(var(--base-size) * .625);
     border: var(--border-black-25-percent);
+}
+
+p + .login-register {
+    margin-top: var(--base-size);
+}
+
+.login-register {
+    display: flex;
+    gap: var(--base-size);
+    align-items: center;
+    width: max-content;
+
+    & a:first-of-type {
+        display: inline-block;
+        padding: var(--btn-padding);
+        color: var(--light);
+        background: var(--primary-color);
+        border-radius: var(--btn-border-radius);
+    }
+
+    & a:not(:first-of-type) {
+        text-decoration: underline;
+    }
 }
 
 /*=================================================| FOOTER |=================================================*/
@@ -398,8 +435,8 @@ footer {
 /*=================================================| BREAKPOINTS |=================================================*/
 
 @media screen and (max-width: 750px) {
-  #data-home section > ul,
-  #data-user-form section > form {
+  #data-home section .container > ul,
+  #data-user-form section form {
       grid-template-columns: 1fr;
   }
 }

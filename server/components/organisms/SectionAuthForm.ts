@@ -20,15 +20,17 @@ export const SectionAuthForm: ComponentType<
 
     return `
     <section>
-      <h1>${title}</h1>
-      <form
-        action="${action}"
-        method="${method}"
-        type="multipart/form-data"
-        data-style="user-${action.replace("/", "")}"
-      >
-        ${InputsForm.html(content, false)}
-      </form>
+      <div class="container">
+        <h1>${title}</h1>
+        <form
+          action="${action}"
+          method="${method}"
+          type="multipart/form-data"
+          data-style="user-${action.replace("/", "")}"
+        >
+          ${InputsForm.html(content, false)}
+        </form>
+      </div>
     </section>`;
   },
 };

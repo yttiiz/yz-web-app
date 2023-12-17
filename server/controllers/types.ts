@@ -2,6 +2,8 @@ import { Document, oak, ObjectId } from "@deps";
 import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
+  ReviewsProductSchemaType,
+  ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -13,7 +15,8 @@ export type PathAppType =
   | "/register"
   | "/login"
   | "/logout"
-  | "/profil";
+  | "/profil"
+  | "/review-form";
 
 export type IdsType =
   | "data-home"
@@ -33,6 +36,13 @@ export type ConfigPageType = {
   data?: unknown;
   title?: string;
   path?: string;
+};
+
+export type ConfigMainHtmlType = Omit<
+  ConfigPageType, "css" | "title"
+> & {
+  main: string;
+  isUserConnected: boolean;
 };
 
 // DB Generics
@@ -79,10 +89,18 @@ export type UpdateUserToDBType = UpdateToDBType<
 
 // Products in DB
 export type ProductsDataType = Record<
-  number,
-  ProductSchemaWithIDType
+number,
+ProductSchemaWithIDType
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
 export type SelectProductFromDBType = SelectFromDBType<
-  ProductSchemaWithIDType | NotFoundMessageType
+ProductSchemaWithIDType | NotFoundMessageType
 >;
+
+// Reviews in DB
+export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
+export type AddNewItemIntoReviewType = (
+  id: ObjectId,
+  data: ReviewsType,
+  collection: string,
+) => Promise<boolean>;

@@ -6,7 +6,7 @@ export type TemplateNameType =
 export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
-  | "SectionProduct"
+  | "SectionsProduct"
   | "ProductsHome"
   | "ProductCard";
 
@@ -16,10 +16,15 @@ export type MoleculeNameType =
   | "DeleteAccount"
   | "DeleteAccountForm"
   | "InputsForm"
+  | "InputsGroupForm"
+  | "TextAreaForm"
   | "Login"
   | "LogoutForm"
   | "ProductDetails"
+  | "ProductFigure"
   | "ReviewsDetails"
+  | "FormReview"
+  | "Text"
   | "NotFound"
   | "PicturesSlider";
 
@@ -29,6 +34,7 @@ export type AtomNameType =
   | "StarSvg"
   | "UserSvg"
   | "Logo"
+  | "LoginRegister"
   | "EyeOpenSvg"
   | "EyeShutSvg"
   | "CircleSvg"
@@ -120,17 +126,24 @@ export type DeleteAccountDataType = {
   };
 };
 
-export type ReviewsEmpty = {
-  text: string;
-};
-
 export type ProductDataType = {
-  mainImageLegend: string;
-  descriptionTitle: string;
-  descriptionInfo: ProductDescriptionType;
-  bookingForm: FormDataType;
-  reviewsTitle: string;
-  reviewsEmpty: ReviewsEmpty;
+  images: {
+    legend: string;
+  };
+  description: {
+    title: string;
+    infos: ProductDescriptionType;
+  };
+  booking: FormDataType;
+  reviewsAndRate: {
+    title:  string;
+    empty: string;
+  };
+  conditions: {
+    title: string;
+    content: string;
+  };
+  reviewForm: FormDataType;
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

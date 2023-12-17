@@ -31,29 +31,31 @@ export const SectionsProfilForm: ComponentType<
   ) => {
     return `
     <section>
-      <h1>${title}</h1>
-      <form
-        action="${action}"
-        method="${method}"
-        type="multipart/form-data"
-        data-style="user-profil"
-      >
-        <div>
-          <div class="user-photo">
-            <figure>
-              <img src="/img/users/default.png" alt="default user image" />
-            </figure>
-            <button type="button">${changePhoto ?? "change picture"}</button>
+      <div class="container">
+        <h1>${title}</h1>
+        <form
+          action="${action}"
+          method="${method}"
+          type="multipart/form-data"
+          data-style="user-profil"
+        >
+          <div>
+            <div class="user-photo">
+              <figure>
+                <img src="/img/users/default.png" alt="default user image" />
+              </figure>
+              <button type="button">${changePhoto ?? "change picture"}</button>
+            </div>
+            <div class="user-infos">
+              ${InputsForm.html(content)}
+            </div>
           </div>
-          <div class="user-infos">
-            ${InputsForm.html(content)}
-          </div>
-        </div>
-        <input
-          type="${content.at(-1)!.type}"
-          value="${content.at(-1)!.value}"
-        />
-      </form>
+          <input
+            type="${content.at(-1)!.type}"
+            value="${content.at(-1)!.value}"
+          />
+        </form>
+      </div>
     </section>
     <section>
       ${DeleteAccount.html}

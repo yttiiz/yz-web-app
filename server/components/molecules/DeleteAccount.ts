@@ -14,7 +14,7 @@ const {
 export const DeleteAccount: ComponentType<MoleculeNameType> = {
   name: "DeleteAccount",
   html: `
-  <div class="delete-account">
+  <div class="container delete-account">
     <h3>${deleteAccount.title}</h3>
     <p>${deleteAccount.paragraph}</p>
     <button type="button" data-type="call-to-action">

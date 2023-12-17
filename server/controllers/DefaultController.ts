@@ -8,7 +8,7 @@ import type {
   ConfigPageType,
   RouterAppType,
   RouterContextAppType,
-  IdsType,
+  ConfigMainHtmlType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -62,6 +62,7 @@ export class DefaultController {
       path,
     }: ConfigPageType,
   ) {
+    const isUserConnected: boolean = ctx.state.session.has("userFirstname");
     let [html, header, main, footer] = this.createComponents(
       "Body",
       "Header",
@@ -72,7 +73,7 @@ export class DefaultController {
     html = this.setTitle(html, title);
     html = this.setCss(html, css);
     header = await this.setHeaderHtml(header, ctx);
-    main = await this.setMainHtml(main, id, data, path);
+    main = await this.setMainHtml({ main, id, data, path, isUserConnected });
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
     html = html.replace("{{ application-content }}", content);
@@ -138,12 +139,13 @@ export class DefaultController {
     );
   }
 
-  private async setMainHtml(
-    main: string,
-    id: IdsType,
-    data: unknown,
-    path: string | undefined,
-  ): Promise<string> {
+  private async setMainHtml({
+    main,
+    id,
+    data,
+    path,
+    isUserConnected,
+  }: ConfigMainHtmlType): Promise<string> {
     main = main.replace("{{ id }}", id);
 
     switch(id) {
@@ -159,7 +161,10 @@ export class DefaultController {
       case "data-product": {
         return main.replace(
           "{{ content-insertion }}",
-          layout.SectionProduct.html(data),
+          layout.SectionsProduct.html(
+            data,
+            isUserConnected,
+          ),
         );
       }
 

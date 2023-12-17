@@ -41,10 +41,39 @@
         }
     
         & figure figcaption {
-            color: var(--light);
+            display: flex;
+            justify-content: space-between;
             user-select: none;
             padding: var(--base-size) calc(var(--base-size) * 1.25);
             z-index: 2;
+        }
+
+        & figure figcaption span {
+            color: var(--light);
+            height: max-content;
+            align-self: flex-end;
+        }
+        
+        & figure figcaption span:last-of-type {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        & figure figcaption svg {
+            width: calc(var(--base-size) * 1.5);
+            height: auto;
+            fill: var(--secondary-color)
+        }
+        & figure figcaption strong {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        & ul,
+        & dl,
+        & .reviews > p {
+            width: 50%;
         }
 
         /*=====| description |=====*/
@@ -78,6 +107,8 @@
             line-height: 1;
         }
 
+        /*=====| reviews |=====*/
+
         & .reviews dt {
             font-weight: 600;
             margin-bottom: calc(var(--base-size) * .5);
@@ -108,6 +139,7 @@
         }
 
         & .reviews ul {
+            width: max-content;
             list-style: none;
             display: flex;
         }
@@ -125,6 +157,70 @@
         & .reviews li.ranking svg {
             fill: var(--secondary-color);
         }
+
+        /*=====| review-form |=====*/
+
+        & .review-form form > label:first-of-type {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--base-size) * .5);
+            margin-bottom: var(--base-size);
+        }
+
+        & .review-form form > div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--base-size);
+        }
+
+        & .review-form form > div label {
+            display: inherit;
+            gap: calc(var(--base-size) * .5);
+            cursor: pointer;
+            align-items: center;
+        }
+
+        & .review-form form > div span:first-of-type {
+            display: inherit;
+            justify-content: center;
+            align-items: inherit;
+            width: calc(var(--base-size) * 2);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            border: .1rem solid rgb(var(--black-rvb) / .1);
+            transition: background var(--smooth);
+        }
+
+        & .review-form form > div label:hover span:first-of-type,
+        & .review-form form > div label span:first-of-type.selected {
+            background:rgb(var(--black-rvb) / .05);
+            font-weight: 600;
+        }
+
+        & .review-form form > div input[type="radio"] {
+            display: none;
+        }
+
+        & .review-form label textarea {
+            width: 50%;
+            height: calc(var(--base-size) * 10);
+            padding: var(--base-size);
+            border: var(--border-black-25-percent);
+        }
+
+        & .review-form input[type="submit"] {
+            display: block;
+            margin-top: var(--base-size);
+            background: var(--primary-color);
+            width: max-content;
+        }
+
+        & .review-form form + p {
+            margin-top: var(--base-size);
+        }
+
+
+        /*=====| booking |=====*/
 
         & .booking {
             position: absolute;
@@ -211,15 +307,25 @@
 
         /*=====| BREAKPOINT |=====*/
         
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 950px) {
+            & ul,
+            & dl,
+            & .reviews > p {
+                width: 100%;
+            }
+
             & .booking {
+                width: 100%;
                 position: unset;
-                right: unset;
                 background: unset;
-                border: unset;
                 border-radius: unset;
                 min-width: unset;
                 box-shadow: unset;
+                border-radius: var(--base-size);
+            }
+
+            & .review-form label textarea {
+                width: 100%;
             }
         }
     }
