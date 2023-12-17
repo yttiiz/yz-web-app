@@ -34,6 +34,7 @@ new ProfilController(
 );
 new ProductController(
   router,
+  Mongo.addNewItemIntoReview,
   Mongo.selectFromDB<ProductSchemaWithIDType>,
 );
 new ApiController(

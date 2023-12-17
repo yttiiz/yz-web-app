@@ -2,6 +2,8 @@ import { Document, oak, ObjectId } from "@deps";
 import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
+  ReviewsProductSchemaType,
+  ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -87,10 +89,18 @@ export type UpdateUserToDBType = UpdateToDBType<
 
 // Products in DB
 export type ProductsDataType = Record<
-  number,
-  ProductSchemaWithIDType
+number,
+ProductSchemaWithIDType
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
 export type SelectProductFromDBType = SelectFromDBType<
-  ProductSchemaWithIDType | NotFoundMessageType
+ProductSchemaWithIDType | NotFoundMessageType
 >;
+
+// Reviews in DB
+export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
+export type AddNewItemIntoReviewType = (
+  id: ObjectId,
+  data: ReviewsType,
+  collection: string,
+) => Promise<boolean>;

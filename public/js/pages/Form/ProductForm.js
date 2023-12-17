@@ -57,13 +57,18 @@ export class ProductFormPage extends PageBuilder {
     e.preventDefault();
 
     const formData = DefaultFormHelper.setFormData(e.target);
+    const productId = location.pathname.replace("/product/", "");
+    
+    formData.append("id", productId);
+    
     const res = await fetch(e.target.action, {
       method: "POST",
       body: formData,
     });
 
     if (res.ok) {
-      console.log(res.status, res.statusText)
+      console.log()
+      console.log("status :", res.status, "data :", await res.json())
     }
   }
 }

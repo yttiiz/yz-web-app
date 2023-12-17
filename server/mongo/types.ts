@@ -70,6 +70,7 @@ export type ProductSchemaType = {
   pictures: ImagesProductType[];
   rate: RateProductType;
   review: ReviewProductType[];
+  reviewId: string;
 };
 
 export type ProductSchemaWithIDType = SchemaWithID<ProductSchemaType>;
@@ -86,16 +87,17 @@ export type ReviewsType = {
   timestamp: number;
 };
 
-export type ReviewsProductType = {
+export type ReviewsProductSchemaType = {
   productName: string;
   productId: string;
   reviews: ReviewsType[];
 };
 
-export type ReviewsProductWithIDType = SchemaWithID<ReviewsProductType>;
+export type ReviewsProductSchemaWithIDType = SchemaWithID<ReviewsProductSchemaType>;
+export type ReviewsProductSchemaWithOptionalFieldsType = Partial<ReviewsProductSchemaType>;
 
 // Product & Reviews type
 export type ProductAndReviewsType = {
   product: ProductSchemaWithIDType;
-  reviews: ReviewsProductWithIDType;
+  reviews: ReviewsProductSchemaWithIDType;
 };
