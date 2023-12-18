@@ -18,7 +18,10 @@ export class ProductFormPage extends PageBuilder {
     }
 
     const [bookingForm, reviewForm] = forms;
-    this.#handleReviewForm(reviewForm);
+
+    if (reviewForm) {
+      this.#handleReviewForm(reviewForm);
+    }
   };
 
   /**

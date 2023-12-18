@@ -82,7 +82,7 @@ export class ProductController extends DefaultController {
 
         const userId: string = (ctx.state.session.get("userId") as ObjectId)
           .toHexString();
-        const userName: string = ctx.state.session.get("userFirstname");
+        const userName: string = ctx.state.session.get("userFullname");
 
         const newReview = {
           userId,
