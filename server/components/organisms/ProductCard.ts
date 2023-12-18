@@ -6,14 +6,21 @@ import type {
   ComponentType,
   OrganismNameType,
 } from "../mod.ts";
-import { ProductSchemaWithIDType } from "@mongo";
+import {
+  ProductSchemaWithIDType,
+  ReviewsProductSchemaWithIDType
+} from "@mongo";
 
 export const ProductCard: ComponentType<
   OrganismNameType,
   (...args: any[]) => string
 > = {
   name: "ProductCard",
-  html: (product: ProductSchemaWithIDType) => {
+  html: (product: (
+      ProductSchemaWithIDType &
+      { reviews?: ReviewsProductSchemaWithIDType }
+    )
+  ) => {
     return `
       <li>
         <div>
@@ -48,7 +55,7 @@ export const ProductCard: ComponentType<
               <div class="social-btns">
                 <button
                   type="button"
-                  data-button="${Rate.average(product.rate)}"
+                  data-button="${product.reviews ? Rate.average(product.reviews) : "0"}"
                   title="notez-le !"
                 >
                   ${StarSvg.html}

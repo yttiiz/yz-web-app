@@ -3,6 +3,7 @@ import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaType,
+  ReviewsProductSchemaWithIDType,
   ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
@@ -38,12 +39,15 @@ export type ConfigPageType = {
   path?: string;
 };
 
-export type ConfigMainHtmlType = Omit<
-  ConfigPageType, "css" | "title"
-> & {
-  main: string;
-  isUserConnected: boolean;
-};
+export type ConfigMainHtmlType =
+  & Omit<
+    ConfigPageType,
+    "css" | "title"
+  >
+  & {
+    main: string;
+    isUserConnected: boolean;
+  };
 
 // DB Generics
 export type GetCollectionType = (
@@ -89,16 +93,19 @@ export type UpdateUserToDBType = UpdateToDBType<
 
 // Products in DB
 export type ProductsDataType = Record<
-number,
-ProductSchemaWithIDType
+  number,
+  ProductSchemaWithIDType & { reviews?: ReviewsProductSchemaWithIDType }
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
 export type SelectProductFromDBType = SelectFromDBType<
-ProductSchemaWithIDType | NotFoundMessageType
+  ProductSchemaWithIDType | NotFoundMessageType
 >;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
+export type SelectReviewFromDBType = SelectFromDBType<
+  ReviewsProductSchemaWithIDType | NotFoundMessageType
+>;
 export type AddNewItemIntoReviewType = (
   id: ObjectId,
   data: ReviewsType,

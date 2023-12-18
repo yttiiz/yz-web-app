@@ -1,12 +1,12 @@
-import { ObjectId, oak } from "@deps";
+import { oak, ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
+  AddNewItemIntoReviewType,
   NotFoundMessageType,
   RouterAppType,
   RouterContextAppType,
   SelectProductFromDBType,
-  AddNewItemIntoReviewType
 } from "./mod.ts";
 
 export class ProductController extends DefaultController {
@@ -38,7 +38,7 @@ export class ProductController extends DefaultController {
           ctx.params.id,
           "productId",
         );
-        
+
         if ("_id" in product && "_id" in reviews) {
           const body = await this.createHtmlFile(ctx, {
             id: "data-product",
@@ -71,15 +71,17 @@ export class ProductController extends DefaultController {
       "/review-form",
       async (ctx: RouterContextAppType<"/review-form">) => {
         const data = await ctx.request.body().value as oak.FormDataReader;
-        const { fields: {
-          id,
-          review,
-          rate,
-          className,
-        } } = await data.read({ maxSize: 10_000_000 });
+        const {
+          fields: {
+            id,
+            review,
+            rate,
+            className,
+          },
+        } = await data.read({ maxSize: 10_000_000 });
 
         const userId: string = (ctx.state.session.get("userId") as ObjectId)
-        .toHexString();
+          .toHexString();
         const userName: string = ctx.state.session.get("userFirstname");
 
         const newReview = {
@@ -99,36 +101,37 @@ export class ProductController extends DefaultController {
           const isInsertionOk = await this.addNewItemIntoReview(
             _reviewId,
             newReview,
-            "reviews"
+            "reviews",
           );
 
           isInsertionOk
             ? this.response(
-                ctx,
-                {
-                  message: "Votre avis a bien été ajouté.",
-                  className,
-                },
-                200,
-              )
+              ctx,
+              {
+                message: "Votre avis a bien été ajouté.",
+                className,
+              },
+              200,
+            )
             : this.response(
-                ctx,
-                {
-                  message: "La base de données n'est pas accessible.",
-                  className,
-                },
-                503,
-              );
-
+              ctx,
+              {
+                message: "La base de données n'est pas accessible.",
+                className,
+              },
+              503,
+            );
         } else {
           this.response(
             ctx,
-            { message: "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible." },
+            {
+              message:
+                "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible.",
+            },
             503,
           );
         }
-
-      }
+      },
     );
   }
 }

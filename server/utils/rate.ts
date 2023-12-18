@@ -1,43 +1,21 @@
-import { RateProductType } from "@mongo";
+import { ReviewsProductSchemaWithIDType } from "@mongo";
 
 export class Rate {
-  public static average(rate: RateProductType, rateCount = 0) {
+  public static average(
+    reviewsDocument: ReviewsProductSchemaWithIDType,
+    rateCount = 0,
+  ) {
+    const { reviews } = reviewsDocument;
     let rateSummary = 0;
 
-    for (const rateType in rate) {
-      rateCount += rate[rateType as keyof RateProductType];
-
-      switch (rateType) {
-        case "excellent": {
-          rateSummary += 5 * rate[rateType as keyof RateProductType];
-          break;
-        }
-
-        case "good": {
-          rateSummary += 4 * rate[rateType as keyof RateProductType];
-          break;
-        }
-
-        case "quiteGood": {
-          rateSummary += 3 * rate[rateType as keyof RateProductType];
-          break;
-        }
-
-        case "bad": {
-          rateSummary += 2 * rate[rateType as keyof RateProductType];
-          break;
-        }
-
-        default: {
-          rateSummary += 1 * rate[rateType as keyof RateProductType];
-          break;
-        }
-      }
+    for (const review of reviews) {
+      rateCount++;
+      rateSummary += review.rate;
     }
 
-    return Intl.NumberFormat("fr-FR", {
+    return new Intl.NumberFormat("fr-FR", {
       maximumFractionDigits: 1,
-    })
-      .format(rateSummary / rateCount);
+      minimumFractionDigits: 1,
+    }).format(rateSummary === 0 ? 0 : rateSummary / rateCount);
   }
 }
