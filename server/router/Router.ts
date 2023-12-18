@@ -2,6 +2,7 @@ import { oak } from "@deps";
 import {
   Mongo,
   ProductSchemaWithIDType,
+  ReviewsProductSchemaWithIDType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -21,6 +22,7 @@ export const router = new oak.Router<AppState>();
 new HomeController(
   router,
   Mongo.connectionTo,
+  Mongo.selectFromDB<ReviewsProductSchemaWithIDType>,
 );
 new AuthController(
   router,

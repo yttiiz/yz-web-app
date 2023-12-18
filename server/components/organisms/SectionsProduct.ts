@@ -50,7 +50,7 @@ export const SectionsProduct: ComponentType<
           ${ProductFigure.html(
             product,
             images.legend,
-            Rate.average(product.rate),
+            Rate.average(reviews),
           )}
           <div>
             <div class="booking">

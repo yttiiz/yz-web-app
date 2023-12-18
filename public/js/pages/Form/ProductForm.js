@@ -72,7 +72,6 @@ export class ProductFormPage extends PageBuilder {
     if (res.ok) {
       DefaultFormHelper.removeInputsValues(e.target.children);
       ProductFormHelper.showProductUserReviewDetails(res);
-
     }
   }
 }

@@ -68,8 +68,6 @@ export type ProductSchemaType = {
   details: DetailsProductType;
   thumbnail: ImagesProductType;
   pictures: ImagesProductType[];
-  rate: RateProductType;
-  review: ReviewProductType[];
   reviewId: string;
 };
 

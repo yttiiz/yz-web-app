@@ -5,18 +5,22 @@ import type {
   ProductsDataType,
   RouterAppType,
   RouterContextAppType,
+  SelectReviewFromDBType,
 } from "./mod.ts";
 import type { FindCursorProductType } from "@mongo";
 
 export class HomeController extends DefaultController {
   private collection;
+  private selectFromDB;
 
   constructor(
     router: RouterAppType,
     collection: GetCollectionType,
+    selectFromDB: SelectReviewFromDBType,
   ) {
     super(router);
     this.collection = collection;
+    this.selectFromDB = selectFromDB;
     this.helper = Helper;
     this.index();
   }
@@ -31,6 +35,19 @@ export class HomeController extends DefaultController {
           await (cursor as FindCursorProductType)
             .map((document, key) => data[key + 1] = document);
 
+            for await (const key of Object.keys(data)) {
+              const id = data[key as unknown as keyof typeof data]._id
+              const reviews = await this.selectFromDB(
+                "reviews",
+                id.toString(),
+                "productId",
+              );
+
+              if ('_id' in reviews) {
+                data[key as unknown as keyof typeof data].reviews = reviews;
+              }
+            }
+            
           const body = await this.createHtmlFile(
             ctx,
             {

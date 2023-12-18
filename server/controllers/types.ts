@@ -3,6 +3,7 @@ import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaType,
+  ReviewsProductSchemaWithIDType,
   ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
@@ -89,16 +90,19 @@ export type UpdateUserToDBType = UpdateToDBType<
 
 // Products in DB
 export type ProductsDataType = Record<
-number,
-ProductSchemaWithIDType
+  number,
+  ProductSchemaWithIDType & { reviews?: ReviewsProductSchemaWithIDType }
 >;
 export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
 export type SelectProductFromDBType = SelectFromDBType<
-ProductSchemaWithIDType | NotFoundMessageType
+  ProductSchemaWithIDType | NotFoundMessageType
 >;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
+export type SelectReviewFromDBType = SelectFromDBType<
+  ReviewsProductSchemaWithIDType | NotFoundMessageType
+>;
 export type AddNewItemIntoReviewType = (
   id: ObjectId,
   data: ReviewsType,
