@@ -4,7 +4,6 @@ import type {
   ProductSchemaWithIDType,
   ReviewsProductSchemaType,
   ReviewsProductSchemaWithIDType,
-  ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -101,13 +100,15 @@ export type SelectProductFromDBType = SelectFromDBType<
   ProductSchemaWithIDType | NotFoundMessageType
 >;
 
+// Reviews & Bookings common types
+export type AddNewItemIntoDBType<T> = (
+  id: ObjectId,
+  data: T,
+  collection: string,
+) => Promise<boolean>;
+
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
 export type SelectReviewFromDBType = SelectFromDBType<
   ReviewsProductSchemaWithIDType | NotFoundMessageType
 >;
-export type AddNewItemIntoReviewType = (
-  id: ObjectId,
-  data: ReviewsType,
-  collection: string,
-) => Promise<boolean>;

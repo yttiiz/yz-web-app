@@ -324,8 +324,11 @@ main .container {
     flex-direction: column;
 }
 
-section:not(:last-of-type) {
+section {
     padding-bottom: calc(var(--base-size) * 2);
+}
+
+section:not(:last-of-type) {
     border-bottom: var(--border-black-25-percent);
     margin-bottom: calc(var(--base-size) * 2);
 }

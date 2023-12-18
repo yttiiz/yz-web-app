@@ -69,6 +69,12 @@ export type ProductSchemaType = {
   thumbnail: ImagesProductType;
   pictures: ImagesProductType[];
   reviewId: string;
+  bookingId: string; 
+};
+
+export type ProductBindingFieldsType = {
+  productName: string;
+  productId: string;
 };
 
 export type ProductSchemaWithIDType = SchemaWithID<ProductSchemaType>;
@@ -85,9 +91,7 @@ export type ReviewsType = {
   timestamp: number;
 };
 
-export type ReviewsProductSchemaType = {
-  productName: string;
-  productId: string;
+export type ReviewsProductSchemaType = ProductBindingFieldsType & {
   reviews: ReviewsType[];
 };
 
@@ -95,6 +99,25 @@ export type ReviewsProductSchemaWithIDType = SchemaWithID<
   ReviewsProductSchemaType
 >;
 export type ReviewsProductSchemaWithOptionalFieldsType = Partial<
+  ReviewsProductSchemaType
+>;
+
+//Bookings types
+export type BookingsType = {
+  userId: string;
+  userName: string;
+  startingDate: string;
+  endingDate: string;
+};
+
+export type BookingsProductSchemaType = ProductBindingFieldsType & {
+  booking: BookingsType[];
+};
+
+export type BookingsProductSchemaWithIDType = SchemaWithID<
+  BookingsProductSchemaType
+>;
+export type BookingsProductSchemaWithOptionalFieldsType = Partial<
   ReviewsProductSchemaType
 >;
 

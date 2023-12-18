@@ -19,10 +19,25 @@ export class ProductFormPage extends PageBuilder {
 
     const [bookingForm, reviewForm] = forms;
 
+    this.#handleBookingForm(bookingForm);
+
     if (reviewForm) {
       this.#handleReviewForm(reviewForm);
     }
   };
+
+  #handleBookingForm = (form) => {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const [
+      startingDateInput,
+      endingDateInput
+    ] = form.querySelectorAll("input[type=\"date\"]");
+
+    //Change ending-date input min attribute, according to user selected starting-date.
+    startingDateInput.addEventListener("change", (e) => {
+      endingDateInput.min = e.target.value;
+    });
+  }
 
   /**
    * @param {HTMLFormElement} form
@@ -73,7 +88,12 @@ export class ProductFormPage extends PageBuilder {
 
     if (res.ok) {
       DefaultFormHelper.removeInputsValues(e.target.children);
-      ProductFormHelper.showProductUserReviewDetails(res);
+      
+      if (className === "booking") {
+
+      } else {
+        ProductFormHelper.showProductUserReviewDetails(res);
+      }
     }
   };
 }

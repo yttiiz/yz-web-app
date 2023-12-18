@@ -55,7 +55,7 @@ export const ProductCard: ComponentType<
               <div class="social-btns">
                 <button
                   type="button"
-                  data-button="${product.reviews ? Rate.average(product.reviews) : "0"}"
+                  data-button="${product.reviews ? Rate.average(product.reviews) : "0.0"}"
                   title="notez-le !"
                 >
                   ${StarSvg.html}

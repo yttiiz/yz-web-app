@@ -2,30 +2,32 @@ import { oak, ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
-  AddNewItemIntoReviewType,
   NotFoundMessageType,
   RouterAppType,
   RouterContextAppType,
   SelectProductFromDBType,
 } from "./mod.ts";
+import { AddNewItemIntoDBType } from "@/server/controllers/types.ts";
+import { BookingsType, ReviewsType } from "@mongo";
 
 export class ProductController extends DefaultController {
-  private addNewItemIntoReview;
+  private addNewItemIntoDB;
   private selectFromDB;
 
   constructor(
     router: RouterAppType,
-    addNewItemIntoReview: AddNewItemIntoReviewType,
+    addNewItemIntoDB: AddNewItemIntoDBType<BookingsType | ReviewsType>,
     selectFromDB: SelectProductFromDBType,
   ) {
     super(router);
-    this.addNewItemIntoReview = addNewItemIntoReview;
+    this.addNewItemIntoDB = addNewItemIntoDB;
     this.selectFromDB = selectFromDB;
     this.getProduct();
+    this.postBooking();
     this.postReview();
   }
 
-  getProduct() {
+  private getProduct() {
     const productRoute = `/${dynamicRoutes.get("product")}:id`; // "/product/:id"
 
     this.router?.get(
@@ -66,7 +68,72 @@ export class ProductController extends DefaultController {
     );
   }
 
-  postReview() {
+  private postBooking() {
+    this.router?.post(
+      "/booking",
+      async (ctx: RouterContextAppType<"/booking">) => {
+        const data = await ctx.request.body().value as oak.FormDataReader;
+        const {
+          fields: {
+            "starting-date": startingDate,
+            "ending-date": endingDate,
+            id,
+            className,
+          },
+        } = await data.read({ maxSize: this.MAX_SIZE});
+
+        const { userId, userName } = await this.getUserInfo(ctx);
+
+        const newBooking = {
+          userId,
+          userName,
+          startingDate,
+          endingDate,
+        };
+
+        const product = await this.getProductFromDB(id);
+        
+        if ("_id" in product) {
+          const { bookingId } = product;
+          const _bookikngId = new ObjectId(bookingId);
+          const isInsertionOk = await this.addNewItemIntoDB(
+            _bookikngId,
+            newBooking,
+            "bookings",
+          );
+
+          isInsertionOk
+           ? this.response(
+              ctx,
+              {
+                message: "lorem ipsum ",
+                className,
+              },
+              200,
+            )
+          : this.response(
+            ctx,
+            {
+              message: "mince",
+              className,
+            },
+            503,
+          );
+        } else {
+          this.response(
+            ctx,
+            {
+              message:
+                "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible.",
+            },
+            503,
+          );
+        }
+      }
+    );
+  }
+
+  private postReview() {
     this.router?.post(
       "/review-form",
       async (ctx: RouterContextAppType<"/review-form">) => {
@@ -78,11 +145,9 @@ export class ProductController extends DefaultController {
             rate,
             className,
           },
-        } = await data.read({ maxSize: 10_000_000 });
+        } = await data.read({ maxSize: this.MAX_SIZE });
 
-        const userId: string = (ctx.state.session.get("userId") as ObjectId)
-          .toHexString();
-        const userName: string = ctx.state.session.get("userFullname");
+        const { userId, userName } = await this.getUserInfo(ctx);
 
         const newReview = {
           userId,
@@ -92,13 +157,12 @@ export class ProductController extends DefaultController {
           timestamp: Date.now(),
         };
 
-        const _id = new ObjectId(id);
-        const product = await this.selectFromDB("products", _id);
+        const product = await this.getProductFromDB(id);
 
         if ("_id" in product) {
           const { reviewId } = product;
           const _reviewId = new ObjectId(reviewId);
-          const isInsertionOk = await this.addNewItemIntoReview(
+          const isInsertionOk = await this.addNewItemIntoDB(
             _reviewId,
             newReview,
             "reviews",
@@ -133,5 +197,17 @@ export class ProductController extends DefaultController {
         }
       },
     );
+  }
+
+  private async getUserInfo<T extends string>(ctx: RouterContextAppType<T>) {
+    return {
+      userId: (await ctx.state.session.get("userId") as ObjectId).toHexString(),
+      userName: await ctx.state.session.get("userFullname") as string,
+    }
+  }
+
+  private async getProductFromDB(id: string) {
+    const _id = new ObjectId(id);
+    return await this.selectFromDB("products", _id);
   }
 }

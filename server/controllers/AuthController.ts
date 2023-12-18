@@ -171,7 +171,7 @@ export class AuthController extends DefaultController {
     );
     const data = await ctx.request.body().value as oak.FormDataReader;
     const dataParsed = Validator.dataParser(
-      await data.read({ maxSize: 10_000_000 }),
+      await data.read({ maxSize: this.MAX_SIZE }),
       dataModel,
     );
 

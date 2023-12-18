@@ -14,6 +14,7 @@ import type {
 export class DefaultController {
   public router;
   public helper;
+  protected MAX_SIZE = 10_000_000;
   protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
   protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
 

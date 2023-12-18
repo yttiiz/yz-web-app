@@ -1,4 +1,9 @@
 #data-product {
+    .product,
+    .product > div {
+        gap: calc(var(--base-size) * 1.8);
+    }
+
     .product {
         display:  flex;
         flex-direction: column;
@@ -82,7 +87,6 @@
             position: relative;
             display: inherit;
             flex-direction: inherit;
-            gap: inherit;
         }
 
         & > div  h3 {
@@ -304,10 +308,19 @@
             margin-top: calc(var(--base-size) * .5);
             background: var(--secondary-color);
         }
+    }
 
-        /*=====| BREAKPOINT |=====*/
-        
-        @media screen and (max-width: 950px) {
+    /*=====| BREAKPOINT |=====*/
+    
+    @media screen and (max-width: 950px) {
+        .product {
+            gap: unset;
+            
+            & > figure {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            
             & ul,
             & dl,
             & .reviews > p {
@@ -318,10 +331,10 @@
                 width: 100%;
                 position: unset;
                 background: unset;
-                border-radius: unset;
                 min-width: unset;
                 box-shadow: unset;
-                border-radius: var(--base-size);
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
             }
 
             & .review-form label textarea {

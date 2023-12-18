@@ -4,7 +4,6 @@ import type {
   ComponentType,
   MoleculeNameType,
 } from "../mod.ts";
-import { DetailsProductType } from "@mongo";
 import { FormDataType, InputsForm } from "../mod.ts";
 import { Helper } from "@utils";
 
@@ -14,7 +13,6 @@ export const BookingForm: ComponentType<
 > = {
   name: "BookingForm",
   html: (
-    details: DetailsProductType,
     form: FormDataType,
   ) => (
     `
