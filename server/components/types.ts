@@ -136,7 +136,7 @@ export type ProductDataType = {
   };
   booking: FormDataType;
   reviewsAndRate: {
-    title:  string;
+    title: string;
     empty: string;
   };
   conditions: {

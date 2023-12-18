@@ -4,7 +4,7 @@ import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 
 export class ProductFormPage extends PageBuilder {
   initForm = (
-    id = "product"
+    id = "product",
   ) => {
     /** @type {HTMLFormElement[]} */
     const forms = document.querySelectorAll(`#data-${id} form`);
@@ -18,16 +18,15 @@ export class ProductFormPage extends PageBuilder {
     }
 
     const [bookingForm, reviewForm] = forms;
-    this.#handleReviewForm(reviewForm)
-  }
+    this.#handleReviewForm(reviewForm);
+  };
 
   /**
-   * @param {HTMLFormElement} form 
+   * @param {HTMLFormElement} form
    */
   #handleReviewForm = (form) => {
     for (const input of form.querySelectorAll("input")) {
       input.addEventListener("click", (e) => {
-        
         /** @type {HTMLSpanElement} */
         const currentSpan = e.currentTarget.previousElementSibling;
         /** @type {HTMLDivElement} */
@@ -39,7 +38,7 @@ export class ProductFormPage extends PageBuilder {
 
         for (const label of labelsContainer.querySelectorAll("label")) {
           const searchSpan = label.querySelector("span");
-          
+
           if (
             searchSpan.classList.contains("selected") &&
             currentSpan.textContent !== searchSpan.textContent
@@ -47,12 +46,12 @@ export class ProductFormPage extends PageBuilder {
             searchSpan.classList.remove("selected");
           }
         }
-      })
+      });
     }
-  }
+  };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   #submitHandler = async (e) => {
     e.preventDefault();
@@ -73,5 +72,5 @@ export class ProductFormPage extends PageBuilder {
       DefaultFormHelper.removeInputsValues(e.target.children);
       ProductFormHelper.showProductUserReviewDetails(res);
     }
-  }
+  };
 }

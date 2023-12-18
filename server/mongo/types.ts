@@ -91,8 +91,12 @@ export type ReviewsProductSchemaType = {
   reviews: ReviewsType[];
 };
 
-export type ReviewsProductSchemaWithIDType = SchemaWithID<ReviewsProductSchemaType>;
-export type ReviewsProductSchemaWithOptionalFieldsType = Partial<ReviewsProductSchemaType>;
+export type ReviewsProductSchemaWithIDType = SchemaWithID<
+  ReviewsProductSchemaType
+>;
+export type ReviewsProductSchemaWithOptionalFieldsType = Partial<
+  ReviewsProductSchemaType
+>;
 
 // Product & Reviews type
 export type ProductAndReviewsType = {

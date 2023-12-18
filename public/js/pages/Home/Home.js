@@ -72,7 +72,7 @@ export class HomePage extends PageBuilder {
     ] = this.createHTMLElements("section", "div", "h1");
 
     listItems = renderer(items, listItems);
-    
+
     container.classList.add("container");
 
     title.textContent = "Liste des utilisateurs actifs";

@@ -35,19 +35,19 @@ export class HomeController extends DefaultController {
           await (cursor as FindCursorProductType)
             .map((document, key) => data[key + 1] = document);
 
-            for await (const key of Object.keys(data)) {
-              const id = data[key as unknown as keyof typeof data]._id
-              const reviews = await this.selectFromDB(
-                "reviews",
-                id.toString(),
-                "productId",
-              );
+          for await (const key of Object.keys(data)) {
+            const id = data[key as unknown as keyof typeof data]._id;
+            const reviews = await this.selectFromDB(
+              "reviews",
+              id.toString(),
+              "productId",
+            );
 
-              if ('_id' in reviews) {
-                data[key as unknown as keyof typeof data].reviews = reviews;
-              }
+            if ("_id" in reviews) {
+              data[key as unknown as keyof typeof data].reviews = reviews;
             }
-            
+          }
+
           const body = await this.createHtmlFile(
             ctx,
             {

@@ -25,10 +25,10 @@ export class Mongo {
     if (selectedCollection) {
       const {
         matchedCount,
-        modifiedCount
+        modifiedCount,
       } = await selectedCollection.updateOne(
         { _id: id },
-        { $push: { reviews: data } }
+        { $push: { reviews: data } },
       );
 
       return matchedCount + modifiedCount === 2;
