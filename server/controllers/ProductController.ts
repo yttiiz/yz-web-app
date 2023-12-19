@@ -58,7 +58,6 @@ export class ProductController extends DefaultController {
           const lastBooking = (bookings as BookingsProductSchemaWithIDType)
           .bookings.at(-1);
 
-          //TODO compare today's date to last booking date.
           const body = await this.createHtmlFile(ctx, {
             id: "data-product",
             css: "product",

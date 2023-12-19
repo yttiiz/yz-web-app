@@ -33,14 +33,6 @@ export type ReviewProductType = {
   review: string;
 };
 
-export type RateProductType = {
-  excellent: number;
-  good: number;
-  quiteGood: number;
-  bad: number;
-  execrable: number;
-};
-
 export enum RateProductEnum {
   excellent = 5,
   good = 4,
@@ -122,7 +114,8 @@ export type BookingsProductSchemaWithOptionalFieldsType = Partial<
 >;
 
 // Product & Reviews type
-export type ProductAndReviewsType = {
+export type ProductFullDataType = {
   product: ProductSchemaWithIDType;
   reviews: ReviewsProductSchemaWithIDType;
+  lastBooking: BookingsType;
 };

@@ -1,7 +1,6 @@
 import { oak } from "@deps";
 import {
   Mongo,
-  ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
   UserSchemaType,
   UserSchemaWithIDType,

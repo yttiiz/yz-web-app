@@ -1,12 +1,18 @@
 import { FilesDataType, Validator } from "./mod.ts";
 
 export class Helper {
-  private static DateOpts: Intl.DateTimeFormatOptions = {
+  private static LongDateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
+  };
+
+  private static shortDateOpts: Intl.DateTimeFormatOptions = {
+    year: "2-digit",
+    month: "numeric",
+    day: "numeric",
   };
 
   private static WriteOpts: Deno.WriteFileOptions = {
@@ -59,10 +65,18 @@ export class Helper {
       .format(price);
   }
 
-  public static displayDate(date?: number | Date) {
+  public static displayDate(
+    date?: number | Date,
+    length: "long" | "short" = "long",
+  ) {
     date = date ? date : new Date();
     return Intl
-      .DateTimeFormat("fr-FR", Helper.DateOpts)
+      .DateTimeFormat(
+        "fr-FR",
+        length === "long"
+         ? Helper.LongDateOpts
+         : Helper.shortDateOpts,
+      )
       .format(date)
       .replace(",", " à");
   }

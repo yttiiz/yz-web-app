@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
-import { Helper, Rate } from "@utils";
+import { Helper, Handler } from "@utils";
 import { StarSvg, PicturesSlider, ShareSvg } from "../mod.ts";
 import type {
   ComponentType,
@@ -55,7 +55,7 @@ export const ProductCard: ComponentType<
               <div class="social-btns">
                 <button
                   type="button"
-                  data-button="${product.reviews ? Rate.average(product.reviews) : "0.0"}"
+                  data-button="${product.reviews ? Handler.rateAverage(product.reviews) : "0.0"}"
                   title="notez-le !"
                 >
                   ${StarSvg.html}
