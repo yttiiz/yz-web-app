@@ -37,7 +37,7 @@ new ProfilController(
 new ProductController(
   router,
   Mongo.addNewItemIntoDB,
-  Mongo.selectFromDB<ProductSchemaWithIDType>,
+  Mongo.selectFromDB,
 );
 new ApiController(
   router,

@@ -5,10 +5,15 @@ import {
   NotFoundMessageType,
   RouterAppType,
   RouterContextAppType,
-  SelectProductFromDBType,
 } from "./mod.ts";
-import { AddNewItemIntoDBType } from "@/server/controllers/types.ts";
-import { BookingsType, ReviewsType } from "@mongo";
+import { AddNewItemIntoDBType, SelectFromDBType } from "@/server/controllers/types.ts";
+import {
+  BookingsProductSchemaWithIDType,
+  BookingsType,
+  ProductSchemaWithIDType,
+  ReviewsProductSchemaWithIDType,
+  ReviewsType
+} from "@mongo";
 
 export class ProductController extends DefaultController {
   private addNewItemIntoDB;
@@ -17,7 +22,12 @@ export class ProductController extends DefaultController {
   constructor(
     router: RouterAppType,
     addNewItemIntoDB: AddNewItemIntoDBType<BookingsType | ReviewsType>,
-    selectFromDB: SelectProductFromDBType,
+    selectFromDB: SelectFromDBType<
+      | ProductSchemaWithIDType
+      | BookingsProductSchemaWithIDType
+      | ReviewsProductSchemaWithIDType
+      | NotFoundMessageType
+    >,
   ) {
     super(router);
     this.addNewItemIntoDB = addNewItemIntoDB;
@@ -34,22 +44,30 @@ export class ProductController extends DefaultController {
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
         const _id = new ObjectId(ctx.params.id);
-        const product = await this.selectFromDB("products", _id);
-        const reviews = await this.selectFromDB(
-          "reviews",
+        const getFromDB = async (db: string) => await this.selectFromDB(
+          db,
           ctx.params.id,
           "productId",
         );
 
-        if ("_id" in product && "_id" in reviews) {
+        const product = await this.selectFromDB("products", _id);
+        const reviews = await getFromDB("reviews");
+        const bookings = await getFromDB("bookings");
+
+        if ("_id" in product && "_id" in reviews && "_id" in bookings) {
+          const lastBooking = (bookings as BookingsProductSchemaWithIDType)
+          .bookings.at(-1);
+
+          //TODO compare today's date to last booking date.
           const body = await this.createHtmlFile(ctx, {
             id: "data-product",
             css: "product",
             data: {
               product,
               reviews,
+              lastBooking,
             },
-            title: "Aka " + product.name,
+            title: "Aka " + (product as ProductSchemaWithIDType).name,
           });
           this.response(ctx, body, 200);
         } else {
@@ -94,7 +112,7 @@ export class ProductController extends DefaultController {
         const product = await this.getProductFromDB(id);
         
         if ("_id" in product) {
-          const { bookingId } = product;
+          const { bookingId } = product as ProductSchemaWithIDType;
           const _bookingId = new ObjectId(bookingId);
           const isInsertionOk = await this.addNewItemIntoDB(
             _bookingId,
@@ -160,7 +178,7 @@ export class ProductController extends DefaultController {
         const product = await this.getProductFromDB(id);
 
         if ("_id" in product) {
-          const { reviewId } = product;
+          const { reviewId } = product as ProductSchemaWithIDType;
           const _reviewId = new ObjectId(reviewId);
           const isInsertionOk = await this.addNewItemIntoDB(
             _reviewId,
