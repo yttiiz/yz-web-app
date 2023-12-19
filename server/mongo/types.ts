@@ -111,7 +111,7 @@ export type BookingsType = {
 };
 
 export type BookingsProductSchemaType = ProductBindingFieldsType & {
-  booking: BookingsType[];
+  bookings: BookingsType[];
 };
 
 export type BookingsProductSchemaWithIDType = SchemaWithID<

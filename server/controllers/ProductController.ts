@@ -95,9 +95,9 @@ export class ProductController extends DefaultController {
         
         if ("_id" in product) {
           const { bookingId } = product;
-          const _bookikngId = new ObjectId(bookingId);
+          const _bookingId = new ObjectId(bookingId);
           const isInsertionOk = await this.addNewItemIntoDB(
-            _bookikngId,
+            _bookingId,
             newBooking,
             "bookings",
           );

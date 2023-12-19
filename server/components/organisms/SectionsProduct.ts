@@ -55,7 +55,7 @@ export const SectionsProduct: ComponentType<
           <div>
             <div class="booking">
               ${BookingDetails.html(product.details)}
-              ${BookingForm.html(product.details, booking)}
+              ${BookingForm.html(booking)}
             </div>
             <div class="description">
               ${ProductDetails.html(
