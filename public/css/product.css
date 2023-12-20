@@ -164,6 +164,10 @@
 
         /*=====| review-form |=====*/
 
+        & .review-form .login-register {
+            margin-top: var(--base-size);
+        }
+
         & .review-form form > label:first-of-type {
             display: flex;
             flex-direction: column;

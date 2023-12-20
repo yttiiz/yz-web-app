@@ -11,7 +11,7 @@ import {
   BookingDetails,
   BookingForm,
   ProductDetails,
-  ProductDialog,
+  Dialog,
   ReviewsDetails,
   FormReview,
   ProductFigure,
@@ -97,6 +97,6 @@ export const SectionsProduct: ComponentType<
         </div>
       </div>
     </section>
-    ${ProductDialog.html(true)}`;
+    ${Dialog.html(true)}`;
   },
 };

@@ -45,7 +45,7 @@ export class ProductFormHelper extends DefaultFormHelper {
 
     dialog.querySelector("h2").textContent = "Connectez-vous !";
     dialog.querySelector("p").textContent = "Vous devez vous connecter pour pouvoir réserver un créneau !";
-    dialog.querySelector("button").addEventListener("click", () => {
+    dialog.querySelector("button[data-close]").addEventListener("click", () => {
       dialog.close();
     })
     dialog.showModal();

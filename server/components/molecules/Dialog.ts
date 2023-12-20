@@ -6,26 +6,28 @@ import {
   type MoleculeNameType,
 } from "../mod.ts";
 
-export const ProductDialog: ComponentType<
+export const Dialog: ComponentType<
   MoleculeNameType,
   (...args: any[]) => string
 > = {
-  name: "ProductDialog",
+  name: "Dialog",
   html: (isLoginNeeded: boolean) => {
     return `
     <dialog>
-      <div>
+      <header>
         <h2></h2>
+        <button data-close>
+          <span></span>
+          <span></span>
+        </button>
+      </header>
+      <div>
         <p></p>
         ${isLoginNeeded
           ? LoginRegister.html
           : ""
         }
       </div>
-      <button>
-        <span></span>
-        <span></span>
-      </button>
     </dialog>
     `
   },

@@ -24,7 +24,8 @@
     --btn-border-radius: .5rem;
     --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
     --burger-height: 2.4rem;
-    --width-container: clamp(30rem, 90%, 96rem);
+    --container-width: clamp(30rem, 90%, 96rem);
+    --dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 31.25));
 
     /*=====| Transitions |===== */
     --smooth: .3s ease;
@@ -129,57 +130,75 @@ noscript {
 
 .container {
     margin: auto;
-    width: var(--width-container);
+    width: var(--container-width);
 }
 
 /*=================================================| DIALOG |=================================================*/
 
 dialog {
-    min-width: calc(var(--base-size) * 20);
-    min-height: calc(var(--base-size) * 18);
-    padding: calc(var(--base-size) * 1.5);
+    width: var(--dialog-width);
+    height: max-content;
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background: var(--white);
-    overflow: visible;
+    overflow: hidden;
     z-index: 10;
+    border-radius: var(--btn-border-radius);
     border: none;
+
+    & > header,
+    & > div {
+        padding: calc(var(--base-size) * 1.5);
+    }
+
+    & > header {
+        background: var(--light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--base-size);
+
+        & > h2 {
+            line-height: 1;
+        }
+
+        & > button {
+            position: relative;
+            background: rgb(var(--black-rvb) / .25);
+            border-radius: 50%;
+            width: calc(var(--base-size) * 1.825);
+            aspect-ratio: 1 / 1;
+            transition: background var(--smooth);
+        }
+
+        & > button:hover {
+            background: rgb(var(--black-rvb) / .4);
+        }
+
+        &  > button span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: var(--white);
+            height: .2rem;
+            width: 60%;
+        }
+    
+        &  > button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    
+        &  > button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    }
 
     & > div {
         display: flex;
         flex-direction: column;
         gap: var(--base-size);
-    }
-
-    & > button {
-        position: inherit;
-        right: 0;
-        top: 0;
-        transform: translate(50%, -50%);
-        background: var(--primary-color);
-        box-shadow: var(--box-shadow);
-        border-radius: 50%;
-        width: calc(var(--base-size) * 1.825);
-        aspect-ratio: 1 / 1;
-
-        & span {
-            position: inherit;
-            left: 50%;
-            top: 50%;
-            background: var(--light);
-            height: .2rem;
-            width: 60%;
-        }
-    
-        & span:nth-child(1) {
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-    
-        & span:nth-child(2) {
-            transform: translate(-50%, -50%) rotate(-45deg);
-        }
     }
 }
 
@@ -449,10 +468,6 @@ form[data-style] label {
 form[data-style] input:not(input[type="submit"]) {
     padding: calc(var(--base-size) * .625);
     border: var(--border-black-25-percent);
-}
-
-p + .login-register {
-    margin-top: var(--base-size);
 }
 
 .login-register {
