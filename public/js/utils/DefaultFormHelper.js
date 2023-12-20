@@ -1,4 +1,6 @@
 export class DefaultFormHelper {
+  constructor() {}
+
   /**
    * @param {HTMLFormElement} form
    */
@@ -29,4 +31,25 @@ export class DefaultFormHelper {
         : null;
     }
   };
+
+  /**
+   * @param {{ parent: HTMLDivElement; cssSelector: string; hmtlTag: string; }} param
+   */
+  static getOrCreateElement = ({
+    parent,
+    cssSelector,
+    hmtlTag,
+  }) => {
+    /** @type {HTMLParagraphElement} */
+    let element;
+
+    if (parent.querySelector(cssSelector)) {
+      element = parent.querySelector(cssSelector);
+    } else {
+      element = document.createElement(hmtlTag);
+      parent.appendChild(element);
+    }
+
+    return element;
+  }
 }

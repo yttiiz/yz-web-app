@@ -22,6 +22,7 @@ export type MoleculeNameType =
   | "LogoutForm"
   | "ProductDetails"
   | "ProductFigure"
+  | "ProductDialog"
   | "ReviewsDetails"
   | "FormReview"
   | "Text"

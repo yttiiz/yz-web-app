@@ -132,6 +132,61 @@ noscript {
     width: var(--width-container);
 }
 
+/*=================================================| DIALOG |=================================================*/
+
+dialog {
+    min-width: calc(var(--base-size) * 20);
+    min-height: calc(var(--base-size) * 18);
+    padding: calc(var(--base-size) * 1.5);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white);
+    overflow: visible;
+    z-index: 10;
+    border: none;
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        gap: var(--base-size);
+    }
+
+    & > button {
+        position: inherit;
+        right: 0;
+        top: 0;
+        transform: translate(50%, -50%);
+        background: var(--primary-color);
+        box-shadow: var(--box-shadow);
+        border-radius: 50%;
+        width: calc(var(--base-size) * 1.825);
+        aspect-ratio: 1 / 1;
+
+        & span {
+            position: inherit;
+            left: 50%;
+            top: 50%;
+            background: var(--light);
+            height: .2rem;
+            width: 60%;
+        }
+    
+        & span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    
+        & span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    }
+}
+
+dialog::backdrop {
+    background: rgb(0 0 0 / .5);
+}
+
 /*=================================================| HEADER |=================================================*/
 
 header[data-header="site"] {
@@ -346,17 +401,26 @@ section p[data-msg-infos="error"] {
     color: rgb(128, 0, 0);
 }
 
+h1,
+h2 {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
 h1 {
     font-size: calc(var(--base-size) * 2.1875);
-    font-weight: 500;
     line-height: calc(var(--base-size) * 2.75);
-    color: var(--primary-color);
 }
 
 h1 + p {
     font-size: calc(var(--base-size) * 1.125);
     font-weight: 400;
     margin-top: calc(var(--base-size) * .825);
+}
+
+h2 {
+    font-size: calc(var(--base-size) * 1.85);
+    line-height: calc(var(--base-size) * 2.5);
 }
 
 h3 {

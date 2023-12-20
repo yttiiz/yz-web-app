@@ -19,6 +19,7 @@ export * from "./organisms/ProductsHome.ts";
 export * from "./organisms/ProductCard.ts";
 export * from "./molecules/BookingDetails.ts";
 export * from "./molecules/ProductDetails.ts";
+export * from "./molecules/ProductDialog.ts";
 export * from "./molecules/ProductFigure.ts";
 export * from "./molecules/ReviewsDetails.ts";
 export * from "./molecules/FormReview.ts";

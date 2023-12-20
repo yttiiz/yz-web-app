@@ -1,5 +1,4 @@
 import { PageBuilder } from "../Builder.js";
-import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 
 export class ProductFormPage extends PageBuilder {
@@ -74,9 +73,19 @@ export class ProductFormPage extends PageBuilder {
   #submitHandler = async (e) => {
     e.preventDefault();
 
-    const formData = DefaultFormHelper.setFormData(e.target);
+    const formData = ProductFormHelper.setFormData(e.target);
     const productId = location.pathname.replace("/product/", "");
     const className = e.target.action.replace(location.origin + "/", "");
+    const isClassNameBooking = className === "booking";
+    
+    if (isClassNameBooking) {
+      const isUserConnected = e.target.dataset.userConnected === "true";
+
+      if (!isUserConnected) {
+        ProductFormHelper.displayDialogLoginInfoToUser(e.target);
+        return; 
+      }
+    }
 
     formData.append("id", productId);
     formData.append("className", className);
@@ -87,9 +96,9 @@ export class ProductFormPage extends PageBuilder {
     });
 
     if (res.ok) {
-      DefaultFormHelper.removeInputsValues(e.target.children);
+      ProductFormHelper.removeInputsValues(e.target.children);
       
-      if (className === "booking") {
+      if (isClassNameBooking) {
 
       } else {
         ProductFormHelper.showProductUserReviewDetails(res);

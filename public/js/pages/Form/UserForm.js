@@ -1,6 +1,5 @@
 import { PageBuilder } from "../Builder.js";
 import { UserFormHelper } from "../../utils/UserFormHelper.js";
-import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 
 export class UserFormPage extends PageBuilder {
   initForm = (
@@ -101,7 +100,7 @@ export class UserFormPage extends PageBuilder {
 
     const formData = isDeleteForm
       ? null
-      : DefaultFormHelper.setFormData(e.target);
+      : UserFormHelper.setFormData(e.target);
     const method = location.pathname === "/profil"
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
@@ -112,7 +111,7 @@ export class UserFormPage extends PageBuilder {
     });
 
     if (location.pathname !== "/profil") {
-      DefaultFormHelper.removeInputsValues(e.target.children);
+      UserFormHelper.removeInputsValues(e.target.children);
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {

@@ -11,6 +11,7 @@ import {
   BookingDetails,
   BookingForm,
   ProductDetails,
+  ProductDialog,
   ReviewsDetails,
   FormReview,
   ProductFigure,
@@ -95,6 +96,7 @@ export const SectionsProduct: ComponentType<
           <p>${conditions.content}</p>
         </div>
       </div>
-    </section>`;
+    </section>
+    ${ProductDialog.html(true)}`;
   },
 };
