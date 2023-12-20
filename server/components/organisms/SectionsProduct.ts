@@ -3,6 +3,7 @@
 import { Helper, Handler } from "@utils";
 import type {
   ComponentType,
+  DialogDataType,
   OrganismNameType,
   ProductDataType,
 } from "../mod.ts";
@@ -15,6 +16,7 @@ import {
   ReviewsDetails,
   FormReview,
   ProductFigure,
+  LoginRegister,
 } from "../mod.ts";
 
 const {
@@ -24,6 +26,7 @@ const {
   reviewsAndRate,
   conditions,
   reviewForm,
+  dialog,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -97,6 +100,10 @@ export const SectionsProduct: ComponentType<
         </div>
       </div>
     </section>
-    ${Dialog.html(true)}`;
+    ${Dialog.html({
+      title: dialog.title,
+      paragraph: dialog.paragraph,
+      component: LoginRegister.html
+    } as DialogDataType)}`;
   },
 };

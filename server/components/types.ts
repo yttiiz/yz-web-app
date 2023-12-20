@@ -111,6 +111,12 @@ export type FooterDataType = {
   relatedItems: ItemDataType[];
 };
 
+export type DialogDataType = {
+  title: string;
+  paragraph: string;
+  component?: string;
+}
+
 export type FormDataType = {
   title: string;
   action: string;
@@ -145,6 +151,10 @@ export type ProductDataType = {
     content: string;
   };
   reviewForm: FormDataType;
+  dialog: {
+    title: string,
+    paragraph: string,
+  }
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

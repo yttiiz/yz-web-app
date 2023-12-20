@@ -42,9 +42,7 @@ export class ProductFormHelper extends DefaultFormHelper {
   static displayDialogLoginInfoToUser(form) {
     const dialog = form.closest("#data-product")
     .querySelector("dialog");
-
-    dialog.querySelector("h2").textContent = "Connectez-vous !";
-    dialog.querySelector("p").textContent = "Vous devez vous connecter pour pouvoir réserver un créneau !";
+    
     dialog.querySelector("button[data-close]").addEventListener("click", () => {
       dialog.close();
     })

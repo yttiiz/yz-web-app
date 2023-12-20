@@ -1,9 +1,9 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
-import {
-  LoginRegister,
-  type ComponentType,
-  type MoleculeNameType,
+import type {
+  ComponentType,
+  MoleculeNameType,
+  DialogDataType,
 } from "../mod.ts";
 
 export const Dialog: ComponentType<
@@ -11,22 +11,23 @@ export const Dialog: ComponentType<
   (...args: any[]) => string
 > = {
   name: "Dialog",
-  html: (isLoginNeeded: boolean) => {
+  html: ({
+      title,
+      paragraph,
+      component,
+    }: DialogDataType) => {
     return `
     <dialog>
       <header>
-        <h2></h2>
+        <h2>${title}</h2>
         <button data-close>
           <span></span>
           <span></span>
         </button>
       </header>
       <div>
-        <p></p>
-        ${isLoginNeeded
-          ? LoginRegister.html
-          : ""
-        }
+        <p>${paragraph}</p>
+        ${component ? component : ""}
       </div>
     </dialog>
     `
