@@ -15,7 +15,8 @@ export const InputsForm: ComponentType<
   name: "InputsForm",
   html: (
     content: InputDataType[],
-    isProfilInputs: true | false = true
+    isProfilInputs: true | false = true,
+    date?: string,
   ) => {
     return content
     .map(({ 
@@ -44,7 +45,7 @@ export const InputsForm: ComponentType<
           ${value ? ` value="${value}"` : ""}
           ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
           ${type === "date"
-            ? Validator.minAndMaxDateParser(label as string)
+            ? Validator.minAndMaxDateParser(label as string, date)
             : ""}
         >
         ${type === "password"

@@ -40,7 +40,7 @@ export const SectionsProduct: ComponentType<
     {
       product,
       reviews,
-      lastBooking,
+      actualOrFutureBookings,
     }: ProductFullDataType,
     isUserConnected: boolean,
   ) => {
@@ -61,11 +61,13 @@ export const SectionsProduct: ComponentType<
             <div class="booking">
               ${BookingDetails.html(
                 product.details,
-                lastBooking,
+                actualOrFutureBookings.at(0),
               )}
               ${BookingForm.html(
                 booking,
-                isUserConnected
+                isUserConnected,
+                actualOrFutureBookings
+                .at(0)?.endingDate,
               )}
             </div>
             <div class="description">

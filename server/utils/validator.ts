@@ -8,11 +8,16 @@ export class Validator {
       .replace(/\p{Diacritic}/gu, "");
   }
 
-  public static limitDates() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const day = now.getDate();
+  public static limitDates(date: string | undefined) {
+    if (date) return {
+      min: date
+    };
+    
+    const {
+      year,
+      month,
+      day,
+    } = Validator.createDate();
 
     return {
       min: `${year}-${month}-${day}`,
@@ -23,10 +28,11 @@ export class Validator {
     MAJORITY = 18,
     CENTURY = 100,
   ) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const day = now.getDate();
+    const {
+      year,
+      month,
+      day,
+    } = Validator.createDate();
 
     return {
       min: `${year - CENTURY}-${month}-${day}`,
@@ -34,14 +40,17 @@ export class Validator {
     };
   }
 
-  public static minAndMaxDateParser(label: string) {
+  public static minAndMaxDateParser(
+    label: string,
+    startingDate: string | undefined
+  ) {
     return label.includes("naissance")
       ? (
         `min="${Validator.limitAge().min}"
           max="${Validator.limitAge().max}"`
       )
       : (
-        `min="${Validator.limitDates().min}"`
+        `min="${Validator.limitDates(startingDate).min}"`
       );
   }
 
@@ -109,5 +118,14 @@ export class Validator {
     }
 
     return isOk ? { isOk, data } : { isOk, message };
+  }
+
+  private static createDate() {
+    const now = new Date();
+    return {
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      day: now.getDate(), 
+    }
   }
 }

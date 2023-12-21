@@ -14,6 +14,7 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType
 } from "@mongo";
+import { Handler } from "@utils";
 
 export class ProductController extends DefaultController {
   private addNewItemIntoDB;
@@ -55,8 +56,9 @@ export class ProductController extends DefaultController {
         const bookings = await getFromDB("bookings");
 
         if ("_id" in product && "_id" in reviews && "_id" in bookings) {
-          const lastBooking = (bookings as BookingsProductSchemaWithIDType)
-          .bookings.at(-1);
+          const actualOrFutureBookings = Handler.getProductPresentAndFutureBooking(
+            (bookings as BookingsProductSchemaWithIDType).bookings,
+          );
 
           const body = await this.createHtmlFile(ctx, {
             id: "data-product",
@@ -64,7 +66,7 @@ export class ProductController extends DefaultController {
             data: {
               product,
               reviews,
-              lastBooking,
+              actualOrFutureBookings,
             },
             title: "Aka " + (product as ProductSchemaWithIDType).name,
           });

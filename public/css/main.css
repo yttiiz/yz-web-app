@@ -23,7 +23,7 @@
     --base-size: clamp(1.4rem, 2vw, 1.6rem);
     --btn-border-radius: .5rem;
     --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
-    --burger-height: 2.4rem;
+    --burger-height: calc(var(--base-size) * 1.5);
     --container-width: clamp(30rem, 90%, 96rem);
     --dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 31.25));
 
@@ -220,7 +220,7 @@ header[data-header="site"] {
         & > div {
             display: inherit;
             align-items: center;
-            gap: 2rem;
+            gap: var(--base-size);
         }
     }
 }
@@ -228,12 +228,12 @@ header[data-header="site"] {
 #logo {
     > a {
         display: flex;
-        gap: 1rem;
+        gap: calc(var(--base-size) * .625);
         align-items: center;
         transition: filter var(--smooth);
         
         > svg {
-            width: 3rem;
+            width: calc(var(--base-size) * 1.875);
             height: auto;
             fill: var(--light);
         }
@@ -253,12 +253,12 @@ header[data-header="site"] {
 #user-session {
     display: inherit;
     align-items: inherit;
-    gap: 1rem;
+    gap: calc(var(--base-size) * .625);
 
     & > div {
         display: inherit;
         align-items: center;
-        gap: 1rem;
+        gap: calc(var(--base-size) * .625);
 
         & > form button,
         & > form svg {
@@ -266,7 +266,7 @@ header[data-header="site"] {
         }
     
         & > form button {
-            width: 2.5rem;
+            width: calc(var(--base-size) * 1.5625);
         }
 
         & > form button > svg {
@@ -314,11 +314,11 @@ header[data-header="site"] {
 
     & > button {
         display: flex;
-        width: 3rem;
+        width: calc(var(--base-size) * 1.875);
         height: var(--burger-height);
         flex-direction: column;
         justify-content: space-between;
-        padding: .5rem;
+        padding: calc(var(--base-size) * .3125);
 
         & > span {
             background: var(--light);
@@ -361,7 +361,7 @@ header[data-header="site"] {
     }
 
     & > nav > ul li:not(:last-child) {
-        border-bottom: 1px solid rgb(0 0 0 / .1);
+        border-bottom: .1rem solid rgb(var(--black-rvb) / .1);
     }
 
     & > nav > ul li a {
@@ -375,7 +375,7 @@ header[data-header="site"] {
 }
 
 .line-1 {
-    transform: rotate(-45deg) translate(-.5rem, .4rem);
+    transform: rotate(-45deg) translate(calc(var(--base-size) * -.3125), calc(var(--base-size) * .25));
 }
 
 .line-2 {
@@ -383,7 +383,7 @@ header[data-header="site"] {
 }
 
 .line-3 {
-    transform: rotate(45deg) translate(-.5rem, -.4rem);
+    transform: rotate(45deg) translate(calc(var(--base-size) * -.3125), calc(var(--base-size) * -.25));
 }
 
 /*=================================================| MAIN |=================================================*/

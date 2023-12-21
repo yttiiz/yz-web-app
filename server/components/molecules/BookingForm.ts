@@ -14,6 +14,7 @@ export const BookingForm: ComponentType<
   html: (
     form: FormDataType,
     isUserConnected: boolean,
+    date?: string,
   ) => (
     `
     <div>
@@ -24,7 +25,7 @@ export const BookingForm: ComponentType<
         data-style="booking"
         data-user-connected="${isUserConnected}"
       >
-        ${InputsForm.html(form.content, false)}
+        ${InputsForm.html(form.content, false, date)}
       </form>
     </div>
     `

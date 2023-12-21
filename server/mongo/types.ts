@@ -117,5 +117,5 @@ export type BookingsProductSchemaWithOptionalFieldsType = Partial<
 export type ProductFullDataType = {
   product: ProductSchemaWithIDType;
   reviews: ReviewsProductSchemaWithIDType;
-  lastBooking: BookingsType;
+  actualOrFutureBookings: BookingsType[];
 };

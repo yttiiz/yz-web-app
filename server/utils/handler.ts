@@ -36,4 +36,19 @@ export class Handler {
       endingDate: undefined,
     };
   }
+
+  public static getProductPresentAndFutureBooking(bookings: BookingsType[]) {
+    if (bookings.length > 0) {
+      const today = Date.now();
+
+      return bookings.filter((booking) => {
+        return (
+          new Date(booking.startingDate).getTime() > today ||
+          new Date(booking.endingDate).getTime() >= today
+        )
+      })
+    }
+
+    return bookings;
+  }
 }
