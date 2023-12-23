@@ -1,4 +1,11 @@
-import { BookingsType, ReviewsProductSchemaWithIDType } from "@mongo";
+import { BookingsProductSchemaWithIDType, BookingsType, ReviewsProductSchemaWithIDType } from "@mongo";
+
+type ReturnBookingAvailabilityType = {
+  isAvailable: false;
+  booking: BookingsType;
+} | {
+  isAvailable: true;
+};
 
 export class Handler {
   public static rateAverage(
@@ -37,18 +44,50 @@ export class Handler {
     };
   }
 
-  public static getProductPresentAndFutureBooking(bookings: BookingsType[]) {
+  public static getProductPresentOrNextBookings(bookings: BookingsType[]) {
     if (bookings.length > 0) {
       const today = Date.now();
+      const presentOrNextBookings = [];
 
-      return bookings.filter((booking) => {
-        return (
+      for (const booking of bookings) {
+        if (
           new Date(booking.startingDate).getTime() > today ||
           new Date(booking.endingDate).getTime() >= today
-        )
-      })
+        ) {
+          presentOrNextBookings.push(booking);
+        }
+      }
+
+      return presentOrNextBookings;
     }
 
     return bookings;
+  }
+
+  public static compareBookings(
+    newBooking: BookingsType,
+    bookings: BookingsProductSchemaWithIDType,
+  ): ReturnBookingAvailabilityType {
+    let bool = true;
+    const nextBookings = Handler
+    .getProductPresentOrNextBookings(bookings.bookings);
+    const getTime = (date: string) => new Date(date).getTime();
+    
+    for (const booking of nextBookings) {
+      if (
+        getTime(newBooking.startingDate) > getTime(booking.startingDate) &&
+        getTime(newBooking.startingDate) <= getTime(booking.endingDate)
+      ) {
+        bool = false;
+        return {
+          isAvailable: bool,
+          booking,
+        };
+      }
+    }
+
+    return {
+      isAvailable: bool,
+    };
   }
 }

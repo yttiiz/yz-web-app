@@ -29,6 +29,12 @@ export type IdsType =
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
+// Response
+export type DataResponseType = 
+  | string
+  | UserSchemaWithIDType
+  | Record<string, string | Record<string, string>>;
+
 // Page
 export type ConfigPageType = {
   id: IdsType;
@@ -52,6 +58,7 @@ export type ConfigMainHtmlType =
 export type GetCollectionType = (
   collection: string,
 ) => Promise<Document | undefined>;
+
 export type InsertIntoDBType<T> = (
   data: T,
   collection: string,

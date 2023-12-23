@@ -2,13 +2,13 @@
 import { oak } from "@deps";
 import * as layout from "@components";
 import { Helper, Http } from "@utils";
-import { UserSchemaWithIDType } from "@mongo";
 import type {
   PathAppType,
   ConfigPageType,
   RouterAppType,
   RouterContextAppType,
   ConfigMainHtmlType,
+  DataResponseType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -27,7 +27,7 @@ export class DefaultController {
 
   protected response<T extends PathAppType>(
     ctx: RouterContextAppType<T> | oak.Context,
-    data: string | UserSchemaWithIDType | Record<string, string>,
+    data: DataResponseType,
     status: number,
     redirect?: string,
   ) {

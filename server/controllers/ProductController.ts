@@ -56,7 +56,7 @@ export class ProductController extends DefaultController {
         const bookings = await getFromDB("bookings");
 
         if ("_id" in product && "_id" in reviews && "_id" in bookings) {
-          const actualOrFutureBookings = Handler.getProductPresentAndFutureBooking(
+          const actualOrFutureBookings = Handler.getProductPresentOrNextBookings(
             (bookings as BookingsProductSchemaWithIDType).bookings,
           );
 
@@ -111,33 +111,61 @@ export class ProductController extends DefaultController {
         };
 
         const product = await this.getProductFromDB(id);
-        
-        if ("_id" in product) {
-          const { bookingId } = product as ProductSchemaWithIDType;
-          const _bookingId = new ObjectId(bookingId);
-          const isInsertionOk = await this.addNewItemIntoDB(
-            _bookingId,
+        const bookings = await this.selectFromDB(
+          "bookings",
+          id,
+          "productId",
+        );
+
+        if ("_id" in product && "_id" in bookings) {
+
+          const bookingsAvailability = Handler.compareBookings(
             newBooking,
-            "bookings",
+            bookings as BookingsProductSchemaWithIDType,
           );
 
-          isInsertionOk
-           ? this.response(
+          if (bookingsAvailability.isAvailable) {
+            const { bookingId } = product as ProductSchemaWithIDType;
+            const _bookingId = new ObjectId(bookingId);
+  
+            const isInsertionOk = await this.addNewItemIntoDB(
+              _bookingId,
+              newBooking,
+              "bookings",
+            );
+  
+            isInsertionOk
+             ? this.response(
+                ctx,
+                {
+                  message: "lorem ipsum ",
+                  className,
+                },
+                200,
+              )
+            : this.response(
               ctx,
               {
-                message: "lorem ipsum ",
+                message: "mince",
+                className,
+              },
+              503,
+            );
+          } else {
+            const { booking } = bookingsAvailability;
+            this.response(
+              ctx,
+              {
+                message: "Logement non disponible.",
+                booking: {
+                  start: booking.startingDate,
+                  end: booking.endingDate, 
+                },
                 className,
               },
               200,
             )
-          : this.response(
-            ctx,
-            {
-              message: "mince",
-              className,
-            },
-            503,
-          );
+          }
         } else {
           this.response(
             ctx,
