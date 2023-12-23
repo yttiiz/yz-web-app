@@ -115,7 +115,7 @@ export type DialogDataType = {
   title: string;
   paragraph: string;
   component?: string;
-}
+};
 
 export type FormDataType = {
   title: string;
@@ -152,9 +152,9 @@ export type ProductDataType = {
   };
   reviewForm: FormDataType;
   dialog: {
-    title: string,
-    paragraph: string,
-  }
+    title: string;
+    paragraph: string;
+  };
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

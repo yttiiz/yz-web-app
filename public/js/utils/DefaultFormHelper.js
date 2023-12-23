@@ -51,5 +51,5 @@ export class DefaultFormHelper {
     }
 
     return element;
-  }
+  };
 }

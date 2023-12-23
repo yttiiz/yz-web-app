@@ -1,8 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import type {
-  ComponentType,
-  MoleculeNameType,
-} from "../mod.ts";
+import type { ComponentType, MoleculeNameType } from "../mod.ts";
 
 export const DeleteAccountForm: ComponentType<
   MoleculeNameType,
@@ -12,8 +9,8 @@ export const DeleteAccountForm: ComponentType<
   html: ({
     action,
     method,
-    btnText
-  }: any) => { 
+    btnText,
+  }: any) => {
     return `
       <form
         action="${action}"
@@ -33,6 +30,6 @@ export const DeleteAccountForm: ComponentType<
       </form>
       <span class="show-message-to-user none">
         <a href="/">Retour à l'accueil</a>
-      </span>`
+      </span>`;
   },
 };

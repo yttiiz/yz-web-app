@@ -6,13 +6,16 @@ import {
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
-import { AddNewItemIntoDBType, SelectFromDBType } from "@/server/controllers/types.ts";
+import {
+  AddNewItemIntoDBType,
+  SelectFromDBType,
+} from "@/server/controllers/types.ts";
 import {
   BookingsProductSchemaWithIDType,
   BookingsType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
-  ReviewsType
+  ReviewsType,
 } from "@mongo";
 import { Handler } from "@utils";
 
@@ -45,20 +48,22 @@ export class ProductController extends DefaultController {
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
         const _id = new ObjectId(ctx.params.id);
-        const getFromDB = async (db: string) => await this.selectFromDB(
-          db,
-          ctx.params.id,
-          "productId",
-        );
+        const getFromDB = async (db: string) =>
+          await this.selectFromDB(
+            db,
+            ctx.params.id,
+            "productId",
+          );
 
         const product = await this.selectFromDB("products", _id);
         const reviews = await getFromDB("reviews");
         const bookings = await getFromDB("bookings");
 
         if ("_id" in product && "_id" in reviews && "_id" in bookings) {
-          const actualOrFutureBookings = Handler.getProductPresentOrNextBookings(
-            (bookings as BookingsProductSchemaWithIDType).bookings,
-          );
+          const actualOrFutureBookings = Handler
+            .getProductPresentOrNextBookings(
+              (bookings as BookingsProductSchemaWithIDType).bookings,
+            );
 
           const body = await this.createHtmlFile(ctx, {
             id: "data-product",
@@ -99,7 +104,7 @@ export class ProductController extends DefaultController {
             id,
             className,
           },
-        } = await data.read({ maxSize: this.MAX_SIZE});
+        } = await data.read({ maxSize: this.MAX_SIZE });
 
         const { userId, userName } = await this.getUserInfo(ctx);
 
@@ -118,7 +123,6 @@ export class ProductController extends DefaultController {
         );
 
         if ("_id" in product && "_id" in bookings) {
-
           const bookingsAvailability = Handler.compareBookings(
             newBooking,
             bookings as BookingsProductSchemaWithIDType,
@@ -127,15 +131,15 @@ export class ProductController extends DefaultController {
           if (bookingsAvailability.isAvailable) {
             const { bookingId } = product as ProductSchemaWithIDType;
             const _bookingId = new ObjectId(bookingId);
-  
+
             const isInsertionOk = await this.addNewItemIntoDB(
               _bookingId,
               newBooking,
               "bookings",
             );
-  
+
             isInsertionOk
-             ? this.response(
+              ? this.response(
                 ctx,
                 {
                   message: "lorem ipsum ",
@@ -143,14 +147,14 @@ export class ProductController extends DefaultController {
                 },
                 200,
               )
-            : this.response(
-              ctx,
-              {
-                message: "mince",
-                className,
-              },
-              503,
-            );
+              : this.response(
+                ctx,
+                {
+                  message: "mince",
+                  className,
+                },
+                503,
+              );
           } else {
             const { booking } = bookingsAvailability;
             this.response(
@@ -159,12 +163,12 @@ export class ProductController extends DefaultController {
                 message: "Logement non disponible.",
                 booking: {
                   start: booking.startingDate,
-                  end: booking.endingDate, 
+                  end: booking.endingDate,
                 },
                 className,
               },
               200,
-            )
+            );
           }
         } else {
           this.response(
@@ -176,7 +180,7 @@ export class ProductController extends DefaultController {
             503,
           );
         }
-      }
+      },
     );
   }
 
@@ -250,7 +254,7 @@ export class ProductController extends DefaultController {
     return {
       userId: (await ctx.state.session.get("userId") as ObjectId).toHexString(),
       userName: await ctx.state.session.get("userFullname") as string,
-    }
+    };
   }
 
   private async getProductFromDB(id: string) {

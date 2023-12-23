@@ -73,9 +73,7 @@ export class Helper {
     return Intl
       .DateTimeFormat(
         "fr-FR",
-        length === "long"
-         ? Helper.LongDateOpts
-         : Helper.shortDateOpts,
+        length === "long" ? Helper.LongDateOpts : Helper.shortDateOpts,
       )
       .format(date)
       .replace(",", " à");

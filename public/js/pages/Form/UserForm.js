@@ -36,7 +36,7 @@ export class UserFormPage extends PageBuilder {
     const userImg = userPhotoContainer.querySelector("img");
 
     const modal = document.querySelector("dialog");
-    const modalCancelledBtn = modal.querySelectorAll('button[data-close]');
+    const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -97,9 +97,7 @@ export class UserFormPage extends PageBuilder {
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
 
-    const formData = isDeleteForm
-      ? null
-      : UserFormHelper.setFormData(e.target);
+    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
     const method = location.pathname === "/profil"
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;

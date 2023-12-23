@@ -1,11 +1,9 @@
-import { BookingsProductSchemaWithIDType, BookingsType, ReviewsProductSchemaWithIDType } from "@mongo";
-
-type ReturnBookingAvailabilityType = {
-  isAvailable: false;
-  booking: BookingsType;
-} | {
-  isAvailable: true;
-};
+import {
+  BookingsProductSchemaWithIDType,
+  BookingsType,
+  ReviewsProductSchemaWithIDType,
+} from "@mongo";
+import { ReturnBookingAvailabilityType } from "./mod.ts";
 
 export class Handler {
   public static rateAverage(
@@ -35,7 +33,7 @@ export class Handler {
       return {
         isAvailable: today < startingDate || today > endingDate,
         endingDate,
-      }
+      };
     }
 
     return {
@@ -70,9 +68,9 @@ export class Handler {
   ): ReturnBookingAvailabilityType {
     let bool = true;
     const nextBookings = Handler
-    .getProductPresentOrNextBookings(bookings.bookings);
+      .getProductPresentOrNextBookings(bookings.bookings);
     const getTime = (date: string) => new Date(date).getTime();
-    
+
     for (const booking of nextBookings) {
       if (
         getTime(newBooking.startingDate) > getTime(booking.startingDate) &&

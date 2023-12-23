@@ -30,7 +30,7 @@ export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
 // Response
-export type DataResponseType = 
+export type DataResponseType =
   | string
   | UserSchemaWithIDType
   | Record<string, string | Record<string, string>>;

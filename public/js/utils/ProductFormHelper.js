@@ -30,22 +30,22 @@ export class ProductFormHelper extends DefaultFormHelper {
       parent: container,
       cssSelector: "p[data-msg-infos]",
       hmtlTag: "p",
-    })
+    });
 
     box.dataset.msgInfos = dataSet;
     box.textContent = msg;
   };
 
   /**
-   * @param {HTMLFormElement} form 
+   * @param {HTMLFormElement} form
    */
   static displayDialogLoginInfoToUser(form) {
     const dialog = form.closest("#data-product")
-    .querySelector("dialog");
-    
+      .querySelector("dialog");
+
     dialog.querySelector("button[data-close]").addEventListener("click", () => {
       dialog.close();
-    })
+    });
     dialog.showModal();
   }
 }

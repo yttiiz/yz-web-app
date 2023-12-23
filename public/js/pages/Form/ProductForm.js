@@ -29,14 +29,14 @@ export class ProductFormPage extends PageBuilder {
     /** @type {NodeListOf<HTMLInputElement>} */
     const [
       startingDateInput,
-      endingDateInput
-    ] = form.querySelectorAll("input[type=\"date\"]");
+      endingDateInput,
+    ] = form.querySelectorAll('input[type="date"]');
 
     //Change ending-date input min attribute, according to user selected starting-date.
     startingDateInput.addEventListener("change", (e) => {
       endingDateInput.min = e.target.value;
     });
-  }
+  };
 
   /**
    * @param {HTMLFormElement} form
@@ -77,13 +77,13 @@ export class ProductFormPage extends PageBuilder {
     const productId = location.pathname.replace("/product/", "");
     const className = e.target.action.replace(location.origin + "/", "");
     const isClassNameBooking = className === "booking";
-    
+
     if (isClassNameBooking) {
       const isUserConnected = e.target.dataset.userConnected === "true";
 
       if (!isUserConnected) {
         ProductFormHelper.displayDialogLoginInfoToUser(e.target);
-        return; 
+        return;
       }
     }
 
@@ -97,9 +97,8 @@ export class ProductFormPage extends PageBuilder {
 
     if (res.ok) {
       ProductFormHelper.removeInputsValues(e.target.children);
-      
-      if (isClassNameBooking) {
 
+      if (isClassNameBooking) {
       } else {
         ProductFormHelper.showProductUserReviewDetails(res);
       }

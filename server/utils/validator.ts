@@ -9,10 +9,12 @@ export class Validator {
   }
 
   public static limitDates(date: string | undefined) {
-    if (date) return {
-      min: date
-    };
-    
+    if (date) {
+      return {
+        min: date,
+      };
+    }
+
     const {
       year,
       month,
@@ -42,7 +44,7 @@ export class Validator {
 
   public static minAndMaxDateParser(
     label: string,
-    startingDate: string | undefined
+    startingDate: string | undefined,
   ) {
     return label.includes("naissance")
       ? (
@@ -125,7 +127,7 @@ export class Validator {
     return {
       year: now.getFullYear(),
       month: now.getMonth() + 1,
-      day: now.getDate(), 
-    }
+      day: now.getDate(),
+    };
   }
 }

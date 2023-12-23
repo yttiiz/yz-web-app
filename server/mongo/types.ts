@@ -61,7 +61,7 @@ export type ProductSchemaType = {
   thumbnail: ImagesProductType;
   pictures: ImagesProductType[];
   reviewId: string;
-  bookingId: string; 
+  bookingId: string;
 };
 
 export type ProductBindingFieldsType = {
