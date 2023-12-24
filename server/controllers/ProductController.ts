@@ -47,42 +47,55 @@ export class ProductController extends DefaultController {
     this.router?.get(
       productRoute,
       async (ctx: RouterContextAppType<typeof productRoute>) => {
-        const _id = new ObjectId(ctx.params.id);
-        const getFromDB = async (db: string) =>
-          await this.selectFromDB(
-            db,
-            ctx.params.id,
-            "productId",
-          );
-
-        const product = await this.selectFromDB("products", _id);
-        const reviews = await getFromDB("reviews");
-        const bookings = await getFromDB("bookings");
-
-        if ("_id" in product && "_id" in reviews && "_id" in bookings) {
-          const actualOrFutureBookings = Handler
-            .getProductPresentOrNextBookings(
-              (bookings as BookingsProductSchemaWithIDType).bookings,
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const getFromDB = async (db: string) =>
+            await this.selectFromDB(
+              db,
+              ctx.params.id,
+              "productId",
             );
-
-          const body = await this.createHtmlFile(ctx, {
-            id: "data-product",
-            css: "product",
-            data: {
-              product,
-              reviews,
-              actualOrFutureBookings,
-            },
-            title: "Aka " + (product as ProductSchemaWithIDType).name,
-          });
-          this.response(ctx, body, 200);
-        } else {
+  
+          const product = await this.selectFromDB("products", _id);
+          const reviews = await getFromDB("reviews");
+          const bookings = await getFromDB("bookings");
+  
+          if ("_id" in product && "_id" in reviews && "_id" in bookings) {
+            const actualOrFutureBookings = Handler
+              .getProductPresentOrNextBookings(
+                (bookings as BookingsProductSchemaWithIDType).bookings,
+              );
+  
+            const body = await this.createHtmlFile(ctx, {
+              id: "data-product",
+              css: "product",
+              data: {
+                product,
+                reviews,
+                actualOrFutureBookings,
+              },
+              title: "Aka " + (product as ProductSchemaWithIDType).name,
+            });
+            this.response(ctx, body, 200);
+          } else {
+            const body = await this.createHtmlFile(
+              ctx,
+              {
+                id: "data-not-found",
+                css: "not-found",
+                title: (product as NotFoundMessageType).message,
+              },
+            );
+  
+            this.response(ctx, body, 404);
+          }
+        } catch (_) {
           const body = await this.createHtmlFile(
             ctx,
             {
               id: "data-not-found",
               css: "not-found",
-              title: (product as NotFoundMessageType).message,
+              title: "page inexistante",
             },
           );
 
