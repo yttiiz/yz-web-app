@@ -4,22 +4,45 @@ export class AnimationHelper {
     this.#handleShowPassword();
   }
 
+  handleProductSlider(sliderClassName) {
+    const sliderContainer = document.querySelector(sliderClassName);
+    const slider = sliderContainer.querySelector("figure");
+    const sliderLength = slider.children.length;
+    let index = 0;
+
+    /**
+     * @param {Event} e 
+     */
+    const handleMotion = (e) => {
+      const container = e.currentTarget;
+      const width = container.clientWidth;
+      const { x } = container.getBoundingClientRect();
+
+      const isRightClick = (e.clientX - x) >= (width / 2);
+
+      if (isRightClick) {
+        if (index >= (sliderLength - 1)) return;
+
+        index++; 
+        this.#moveSlider(slider, sliderLength, index);
+
+      } else {
+        if (index <= 0) return;
+
+        index--;
+        this.#moveSlider(slider, sliderLength, index);
+      }
+    };
+
+    sliderContainer.addEventListener("click", handleMotion);
+  }
+
   /**
    * Animates slider motion.
    * @param {string} sliderClassName
    */
-  handleSlider(sliderClassName) {
+  handleHomeSlider(sliderClassName) {
     const sliders = document.querySelectorAll(sliderClassName);
-
-    /**
-     * @param {HTMLDivElement} slider
-     * @param {number} sliderLength
-     * @param {number} index
-     */
-    const moveSlider = (slider, sliderLength, index) => {
-      const slideWidth = slider.clientWidth / sliderLength;
-      slider.style.transform = `translateX(-${slideWidth * index}px)`;
-    };
 
     /**
      * @param {{
@@ -110,7 +133,7 @@ export class AnimationHelper {
           if (index <= 0) return;
 
           index--;
-          moveSlider(slider, sliderLength, index);
+          this.#moveSlider(slider, sliderLength, index);
           changeBtnsVisibility({ prevBtn, nextBtn, sliderLength, index });
           switchActiveLandmark(landmarks, index);
         });
@@ -119,7 +142,7 @@ export class AnimationHelper {
           if (index >= (sliderLength - 1)) return;
 
           index++;
-          moveSlider(slider, sliderLength, index);
+          this.#moveSlider(slider, sliderLength, index);
           changeBtnsVisibility({ prevBtn, nextBtn, sliderLength, index });
           switchActiveLandmark(landmarks, index);
         });
@@ -200,5 +223,15 @@ export class AnimationHelper {
     for (const eye of eyeIcons) {
       eye.addEventListener("click", handler);
     }
+  };
+
+  /**
+   * @param {HTMLDivElement} slider
+   * @param {number} sliderLength
+   * @param {number} index
+   */
+  #moveSlider = (slider, sliderLength, index) => {
+    const slideWidth = slider.clientWidth / sliderLength;
+    slider.style.transform = `translateX(-${slideWidth * index}px)`;
   };
 }

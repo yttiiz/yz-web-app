@@ -4,5 +4,15 @@ import { AnimationHelper, Router } from "./pages/mod.js";
 new Router();
 
 // Animation
-new AnimationHelper()
-  .handleSlider(".slider-product");
+const animationHelper = new AnimationHelper()
+
+// Home page
+if (location.href === location.origin + "/") {
+  animationHelper.handleHomeSlider(".slider-product");
+}
+
+// Product page
+if (location.href.includes("product")) {
+  animationHelper.handleProductSlider(".product > figure");
+}
+  
