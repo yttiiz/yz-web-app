@@ -17,14 +17,14 @@ export class ProductFormHelper extends DefaultFormHelper {
         title: "Félicitations",
         paragraph: message,
         status,
-      }
+      },
     );
 
     dialog.showModal();
   };
 
   /**
-   * @param {Response} response 
+   * @param {Response} response
    */
   static displayDialogUserBookingDetails = async (response) => {
     const status = response.status;
@@ -32,8 +32,8 @@ export class ProductFormHelper extends DefaultFormHelper {
     const { title, message, booking, email } = await response.json();
 
     let paragraph = message
-    .replace("{{ start }}", booking.start)
-    .replace("{{ end }}", booking.end);
+      .replace("{{ start }}", booking.start)
+      .replace("{{ end }}", booking.end);
 
     if (email) {
       paragraph = paragraph.replace("{{ email }}", email);
@@ -45,14 +45,14 @@ export class ProductFormHelper extends DefaultFormHelper {
       {
         title,
         paragraph,
-      }
+      },
     );
 
     dialog.showModal();
   };
 
   /**
-   * @param {boolean} isUserConnected 
+   * @param {boolean} isUserConnected
    */
   static displayDialogLoginInfoToUser = (isUserConnected) => {
     const dialog = document.querySelector("#data-product > dialog");
@@ -61,44 +61,45 @@ export class ProductFormHelper extends DefaultFormHelper {
       {
         isUserConnected,
         title: "Connectez-vous !",
-        paragraph: "Vous devez vous connecter pour pouvoir réserver un créneau !",
-      }
+        paragraph:
+          "Vous devez vous connecter pour pouvoir réserver un créneau !",
+      },
     );
 
     dialog.showModal();
   };
 
   /**
-   * @param {HTMLDialogElement} dialog 
+   * @param {HTMLDialogElement} dialog
    * @param {{
    * isUserConnected?: boolean;
    * title: string;
    * paragraph: string;
    * status: number;
-   * }} param 
+   * }} param
    */
-   static #setDialogContent = (
-     dialog,
-     {
-       isUserConnected,
-       title,
-       paragraph,
-       status
-     }) => {
-     dialog.querySelector("h2").textContent = title;
-     dialog.querySelector("p").textContent = paragraph;
-  
-     if (isUserConnected || isUserConnected === undefined) {
-       if (!dialog.querySelector(".login-register").classList.contains("none")) {
-         dialog.querySelector(".login-register").classList.add("none");
-       }
-  
-       // TODO implements status logic.
-  
-     } else {
-       if (dialog.querySelector(".login-register").classList.contains("none")) {
-         dialog.querySelector(".login-register").classList.remove("none");
-       }
-     }
-   };
+  static #setDialogContent = (
+    dialog,
+    {
+      isUserConnected,
+      title,
+      paragraph,
+      status,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
+
+    if (isUserConnected || isUserConnected === undefined) {
+      if (!dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.add("none");
+      }
+
+      // TODO implements status logic.
+    } else {
+      if (dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.remove("none");
+      }
+    }
+  };
 }

@@ -19,9 +19,9 @@ export class ProductFormPage extends PageBuilder {
 
     // Init close event dialog modal.
     dialog.querySelector("button[data-close]")
-    .addEventListener("click", () => {
-      dialog.close();
-    });
+      .addEventListener("click", () => {
+        dialog.close();
+      });
 
     const [bookingForm, reviewForm] = forms;
 

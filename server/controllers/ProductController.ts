@@ -143,10 +143,17 @@ export class ProductController extends DefaultController {
                 {
                   title: "Réservation confirmée",
                   email: ctx.state.session.get("userEmail"),
-                  message: "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
+                  message:
+                    "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
                   booking: {
-                    start: Helper.displayDate(new Date(newBooking.startingDate), "short"),
-                    end: Helper.displayDate(new Date(newBooking.endingDate), "short"),
+                    start: Helper.displayDate(
+                      new Date(newBooking.startingDate),
+                      "short",
+                    ),
+                    end: Helper.displayDate(
+                      new Date(newBooking.endingDate),
+                      "short",
+                    ),
                   },
                 },
                 200,
@@ -164,10 +171,17 @@ export class ProductController extends DefaultController {
               ctx,
               {
                 title: "Créneau indisponible",
-                message: "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
+                message:
+                  "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
                 booking: {
-                  start: Helper.displayDate(new Date(booking.startingDate), "short"),
-                  end: Helper.displayDate(new Date(booking.endingDate), "short"),
+                  start: Helper.displayDate(
+                    new Date(booking.startingDate),
+                    "short",
+                  ),
+                  end: Helper.displayDate(
+                    new Date(booking.endingDate),
+                    "short",
+                  ),
                 },
               },
               200,
