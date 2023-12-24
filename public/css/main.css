@@ -284,13 +284,21 @@ header[data-header="site"] {
         }
     }
 
+    & img {
+        width: calc(var(--base-size) * 1.875);
+        height: auto;
+        border-radius: 50%;
+        border: .2rem solid rgb(var(--white-rvb) / .25);
+    }
+
     & svg path {
         fill: var(--light);
     }
 
     & a {
         font-weight: 500;
-        color: var(--secondary-color)
+        color: var(--secondary-color);
+        transition: filter var(--smooth);
     }
 
     & a:hover {

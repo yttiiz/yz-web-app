@@ -123,13 +123,15 @@ export class DefaultController {
     
     if (ctx.state.session.has("userFirstname")) {
       const firstname = await ctx.state.session.get("userFirstname");
+      const photo = await ctx.state.session.get("userPhoto");
+      const fullname = await ctx.state.session.get("userFullname");
 
       return header.replace(
         "{{ application-session }}",
-        layout.LogoutForm.html
+        layout.LogoutForm.html(photo, fullname)
           .replace(
-            "{{ user-infos }}",
-            "Bonjour <a href=\"/profil\">" + firstname + "</a>",
+            "{{ user-firstname }}",
+            firstname,
           ),
       );
     }
