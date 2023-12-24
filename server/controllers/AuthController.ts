@@ -113,6 +113,7 @@ export class AuthController extends DefaultController {
         if (isPasswordOk) {
           ctx.state.session.set("userEmail", email);
           ctx.state.session.set("userFirstname", user.firstname);
+          ctx.state.session.set("userPhoto", user.photo);
           ctx.state.session.set(
             "userFullname",
             `${user.firstname} ${user.lastname}`,
