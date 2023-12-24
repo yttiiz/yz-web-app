@@ -19,10 +19,19 @@ export const ProductFigure: ComponentType<
   ) => (
     `
     <figure>
-      <img
-        src="${product.pictures.at(0)?.src}"
-        alt="${product.pictures.at(0)?.alt}"
-      />
+      <figure
+        style="width: ${product.pictures.length * 100}%;"
+        class="figure-img-container"
+      >
+      ${product.pictures
+        .map(picture => (
+          `<img
+            src="${picture.src}"
+            alt="${picture.alt}"
+          />`
+        )
+      ).join("")}
+      </figure>
       <figcaption>
         <span>${legend}</span>
         <span>
@@ -30,7 +39,7 @@ export const ProductFigure: ComponentType<
           <strong>${rate}</strong>
         </span>
       </figcaption>
-      <div>
+      <div class="figcaption-shadow">
       </div>
     </figure>
     `

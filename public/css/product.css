@@ -11,41 +11,50 @@
 
         /*=====| picture |=====*/
 
-        & figure {
+        & > figure,
+        & > figure img {
+            aspect-ratio: 16 / 9; 
+        }
+
+        & > figure {
             position: relative;
             width: 100%;
-            aspect-ratio: 16 / 9; 
             overflow: hidden;
             border-radius: var(--base-size);
             cursor: pointer;
         }
+        
+        & > figure .figure-img-container {
+            display: flex;
+            height: 100%;
+            transition: transform var(--smooth);
+        }
     
-        & figure > div,
-        & figure figcaption {
+        & > figure > .figcaption-shadow,
+        & > figure figcaption {
             position: absolute;
             bottom: 0;
         }
     
-        & figure > div {
+        & > figure > .figcaption-shadow {
             display: block;
             height: 35%;
             z-index: 1;
             background: linear-gradient(transparent, rgb(var(--black-rvb) / .8));
         }
 
-        & figure > div,
-        & figure img,
-        & figure figcaption {
+        & > figure > .figcaption-shadow,
+        & > figure figcaption {
             width: inherit;
         }
     
-        & figure img {
-            height: 100%;
+        & > figure img {
+            width: 100%;
             object-fit: cover;
             object-position: 50% 50%;
         }
     
-        & figure figcaption {
+        & > figure figcaption {
             display: flex;
             justify-content: space-between;
             user-select: none;
@@ -53,24 +62,24 @@
             z-index: 2;
         }
 
-        & figure figcaption span {
+        & > figure figcaption span {
             color: var(--light);
             height: max-content;
             align-self: flex-end;
         }
         
-        & figure figcaption span:last-of-type {
+        & > figure figcaption span:last-of-type {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
-        & figure figcaption svg {
+        & > figure figcaption svg {
             width: calc(var(--base-size) * 1.5);
             height: auto;
             fill: var(--secondary-color)
         }
-        & figure figcaption strong {
+        & > figure figcaption strong {
             color: var(--secondary-color);
             font-weight: 500;
         }
