@@ -26,7 +26,6 @@ const {
   reviewsAndRate,
   conditions,
   reviewForm,
-  dialog,
 }: ProductDataType = await Helper.convertJsonToObject(
   "/server/data/product/product.json",
 );
@@ -103,8 +102,8 @@ export const SectionsProduct: ComponentType<
       </div>
     </section>
     ${Dialog.html({
-      title: dialog.title,
-      paragraph: dialog.paragraph,
+      title: "",
+      paragraph: "",
       component: LoginRegister.html
     } as DialogDataType)}`;
   },

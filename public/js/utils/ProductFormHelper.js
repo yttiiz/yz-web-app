@@ -6,46 +6,99 @@ export class ProductFormHelper extends DefaultFormHelper {
   /**
    * @param {Response} response
    */
-  static showProductUserReviewDetails = async (response) => {
+  static displayDialogUserReviewDetails = async (response) => {
     const status = response.status;
-    const { message, className } = await response.json();
+    const { message } = await response.json();
 
-    ProductFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: status === 200 ? "success" : "error",
-    }, className);
-  };
-
-  /**
-   * @param {{ msg: string; dataSet: "error" | "success" }} param
-   * @param {string} className
-   */
-  static #paragraphToShowInfo = ({ msg, dataSet }, className) => {
-    /** @type {HTMLDivElement} */
-    const container = document.querySelector(
-      ProductFormHelper.getClassName(className),
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        title: "Félicitations",
+        paragraph: message,
+        status,
+      }
     );
 
-    const box = ProductFormHelper.getOrCreateElement({
-      parent: container,
-      cssSelector: "p[data-msg-infos]",
-      hmtlTag: "p",
-    });
-
-    box.dataset.msgInfos = dataSet;
-    box.textContent = msg;
+    dialog.showModal();
   };
 
   /**
-   * @param {HTMLFormElement} form
+   * @param {Response} response 
    */
-  static displayDialogLoginInfoToUser(form) {
-    const dialog = form.closest("#data-product")
-      .querySelector("dialog");
+  static displayDialogUserBookingDetails = async (response) => {
+    const status = response.status;
+    /** @type {{ message: string; booking: Record<string, unknown>}} */
+    const { title, message, booking, email } = await response.json();
 
-    dialog.querySelector("button[data-close]").addEventListener("click", () => {
-      dialog.close();
-    });
+    let paragraph = message
+    .replace("{{ start }}", booking.start)
+    .replace("{{ end }}", booking.end);
+
+    if (email) {
+      paragraph = paragraph.replace("{{ email }}", email);
+    }
+
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        title,
+        paragraph,
+      }
+    );
+
     dialog.showModal();
-  }
+  };
+
+  /**
+   * @param {boolean} isUserConnected 
+   */
+  static displayDialogLoginInfoToUser = (isUserConnected) => {
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        isUserConnected,
+        title: "Connectez-vous !",
+        paragraph: "Vous devez vous connecter pour pouvoir réserver un créneau !",
+      }
+    );
+
+    dialog.showModal();
+  };
+
+  /**
+   * @param {HTMLDialogElement} dialog 
+   * @param {{
+   * isUserConnected?: boolean;
+   * title: string;
+   * paragraph: string;
+   * status: number;
+   * }} param 
+   */
+   static #setDialogContent = (
+     dialog,
+     {
+       isUserConnected,
+       title,
+       paragraph,
+       status
+     }) => {
+     dialog.querySelector("h2").textContent = title;
+     dialog.querySelector("p").textContent = paragraph;
+  
+     if (isUserConnected || isUserConnected === undefined) {
+       if (!dialog.querySelector(".login-register").classList.contains("none")) {
+         dialog.querySelector(".login-register").classList.add("none");
+       }
+  
+       // TODO implements status logic.
+  
+     } else {
+       if (dialog.querySelector(".login-register").classList.contains("none")) {
+         dialog.querySelector(".login-register").classList.remove("none");
+       }
+     }
+   };
 }

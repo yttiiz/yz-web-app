@@ -17,7 +17,7 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType,
 } from "@mongo";
-import { Handler } from "@utils";
+import { Handler, Helper } from "@utils";
 
 export class ProductController extends DefaultController {
   private addNewItemIntoDB;
@@ -102,7 +102,6 @@ export class ProductController extends DefaultController {
             "starting-date": startingDate,
             "ending-date": endingDate,
             id,
-            className,
           },
         } = await data.read({ maxSize: this.MAX_SIZE });
 
@@ -142,8 +141,13 @@ export class ProductController extends DefaultController {
               ? this.response(
                 ctx,
                 {
-                  message: "lorem ipsum ",
-                  className,
+                  title: "Réservation confirmée",
+                  email: ctx.state.session.get("userEmail"),
+                  message: "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
+                  booking: {
+                    start: Helper.displayDate(new Date(newBooking.startingDate), "short"),
+                    end: Helper.displayDate(new Date(newBooking.endingDate), "short"),
+                  },
                 },
                 200,
               )
@@ -151,7 +155,6 @@ export class ProductController extends DefaultController {
                 ctx,
                 {
                   message: "mince",
-                  className,
                 },
                 503,
               );
@@ -160,12 +163,12 @@ export class ProductController extends DefaultController {
             this.response(
               ctx,
               {
-                message: "Logement non disponible.",
+                title: "Créneau indisponible",
+                message: "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
                 booking: {
-                  start: booking.startingDate,
-                  end: booking.endingDate,
+                  start: Helper.displayDate(new Date(booking.startingDate), "short"),
+                  end: Helper.displayDate(new Date(booking.endingDate), "short"),
                 },
-                className,
               },
               200,
             );

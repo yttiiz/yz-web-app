@@ -203,7 +203,7 @@ dialog {
 }
 
 dialog::backdrop {
-    background: rgb(0 0 0 / .5);
+    background: rgb(0 0 0 / .75);
 }
 
 /*=================================================| HEADER |=================================================*/
@@ -487,6 +487,10 @@ form[data-style] input:not(input[type="submit"]) {
     & a:not(:first-of-type) {
         text-decoration: underline;
     }
+}
+
+.login-register.none {
+    display: none;
 }
 
 /*=================================================| FOOTER |=================================================*/

@@ -151,10 +151,6 @@ export type ProductDataType = {
     content: string;
   };
   reviewForm: FormDataType;
-  dialog: {
-    title: string;
-    paragraph: string;
-  };
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

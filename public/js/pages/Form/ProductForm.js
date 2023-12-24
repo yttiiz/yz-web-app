@@ -7,6 +7,7 @@ export class ProductFormPage extends PageBuilder {
   ) => {
     /** @type {HTMLFormElement[]} */
     const forms = document.querySelectorAll(`#data-${id} form`);
+    const dialog = document.querySelector(`#data-${id} dialog`);
 
     // Init forms submission.
     for (const form of forms) {
@@ -15,6 +16,12 @@ export class ProductFormPage extends PageBuilder {
         (e) => this.#submitHandler(e),
       );
     }
+
+    // Init close event dialog modal.
+    dialog.querySelector("button[data-close]")
+    .addEventListener("click", () => {
+      dialog.close();
+    });
 
     const [bookingForm, reviewForm] = forms;
 
@@ -82,13 +89,14 @@ export class ProductFormPage extends PageBuilder {
       const isUserConnected = e.target.dataset.userConnected === "true";
 
       if (!isUserConnected) {
-        ProductFormHelper.displayDialogLoginInfoToUser(e.target);
+        ProductFormHelper.displayDialogLoginInfoToUser(
+          isUserConnected,
+        );
         return;
       }
     }
 
     formData.append("id", productId);
-    formData.append("className", className);
 
     const res = await fetch(e.target.action, {
       method: "POST",
@@ -98,10 +106,9 @@ export class ProductFormPage extends PageBuilder {
     if (res.ok) {
       ProductFormHelper.removeInputsValues(e.target.children);
 
-      if (isClassNameBooking) {
-      } else {
-        ProductFormHelper.showProductUserReviewDetails(res);
-      }
+      isClassNameBooking
+        ? ProductFormHelper.displayDialogUserBookingDetails(res)
+        : ProductFormHelper.displayDialogUserReviewDetails(res);
     }
   };
 }
