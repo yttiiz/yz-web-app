@@ -22,6 +22,7 @@ export type MoleculeNameType =
   | "LogoutForm"
   | "ProductDetails"
   | "ProductFigure"
+  | "Dialog"
   | "ReviewsDetails"
   | "FormReview"
   | "Text"
@@ -108,6 +109,12 @@ export type HeaderDataType = {
 export type FooterDataType = {
   basicItems: ItemDataType[];
   relatedItems: ItemDataType[];
+};
+
+export type DialogDataType = {
+  title: string;
+  paragraph: string;
+  component?: string;
 };
 
 export type FormDataType = {

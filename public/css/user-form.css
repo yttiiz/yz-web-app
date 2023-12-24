@@ -83,58 +83,7 @@
         }
     }
 
-    & .delete-account-modale {
-        left: 0;
-        top: 0;
-        position: fixed;
-        z-index: 1;
-        width: 100vw;
-        height: 100vh;
-        background: var(--shadow);
-
-        & > div {
-            display: flex;
-            flex-direction: column;
-            gap: var(--base-size);
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: clamp(30rem, 80%, 50rem);
-            padding: calc(var(--base-size) * 1.125);
-            height: max-content;
-            background: var(--light);
-        }
-
-        & > div > button {
-            position: inherit;
-            right: 0;
-            top: 0;
-            transform: translate(50%, -50%);
-            background: var(--primary-color);
-            box-shadow: var(--box-shadow);
-            border-radius: 50%;
-            width: calc(var(--base-size) * 1.825);
-            aspect-ratio: 1 / 1;
-        }
-
-        & > div > button span {
-            position: inherit;
-            left: 50%;
-            top: 50%;
-            background: var(--light);
-            height: .2rem;
-            width: 60%;
-        }
-
-        & > div > button span:nth-child(1) {
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        & > div > button span:nth-child(2) {
-            transform: translate(-50%, -50%) rotate(-45deg);
-        }
-
+    & dialog {
         & > div > form {
             padding-top: var(--base-size);
             display: inherit;

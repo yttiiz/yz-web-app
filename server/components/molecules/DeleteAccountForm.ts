@@ -1,46 +1,35 @@
-import { Helper } from "@utils";
-import type {
-  ComponentType,
-  DeleteAccountDataType,
+// deno-lint-ignore-file no-explicit-any
+import type { ComponentType, MoleculeNameType } from "../mod.ts";
+
+export const DeleteAccountForm: ComponentType<
   MoleculeNameType,
-} from "../mod.ts";
-
-const {
-  deleteModal,
-}: DeleteAccountDataType = await Helper.convertJsonToObject(
-  "/server/data/profil/delete.profil.json",
-);
-
-export const DeleteAccountForm: ComponentType<MoleculeNameType> = {
+  (...args: any[]) => string
+> = {
   name: "DeleteAccountForm",
-  html: `
-  <div class="delete-account-modale none">
-    <div>
-      <button type="button" data-type="canceller">
-        <span></span>
-        <span></span>
-      </button>
-      <h3>${deleteModal.title}</h3>
-      <p>${deleteModal.paragraph}</p>
+  html: ({
+    action,
+    method,
+    btnText,
+  }: any) => {
+    return `
       <form
-        action="${deleteModal.action}"
-        method="${deleteModal.method}"
+        action="${action}"
+        method="${method}"
         data-type="delete-account"
         data-style="delete-user"
         type="multipart/form-data"
       >
-        <button type="button" data-type="canceller">
+        <button type="button" data-close>
           Annuler
         </button>
         <input
           type="submit"
           name="delete-account"
-          value="${deleteModal.btnText}"
+          value="${btnText}"
         />
       </form>
       <span class="show-message-to-user none">
         <a href="/">Retour à l'accueil</a>
-      </span>
-    </div>
-  </div>`,
+      </span>`;
+  },
 };

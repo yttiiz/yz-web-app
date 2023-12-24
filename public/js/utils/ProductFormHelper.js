@@ -1,40 +1,105 @@
-export class ProductFormHelper {
+import { DefaultFormHelper } from "./DefaultFormHelper.js";
+
+export class ProductFormHelper extends DefaultFormHelper {
   static getClassName = (className) => `#data-product .${className}`;
 
   /**
    * @param {Response} response
    */
-  static showProductUserReviewDetails = async (response) => {
+  static displayDialogUserReviewDetails = async (response) => {
     const status = response.status;
-    const { message, className } = await response.json();
+    const { message } = await response.json();
 
-    ProductFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: status === 200 ? "success" : "error",
-    }, className);
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        title: "Félicitations",
+        paragraph: message,
+        status,
+      },
+    );
+
+    dialog.showModal();
   };
 
   /**
-   * @param {{ msg: string; dataSet: "error" | "success" }} param
-   * @param {string} className
+   * @param {Response} response
    */
-  static #paragraphToShowInfo = ({ msg, dataSet }, className) => {
-    /** @type {HTMLParagraphElement} */
-    let box;
+  static displayDialogUserBookingDetails = async (response) => {
+    const status = response.status;
+    /** @type {{ message: string; booking: Record<string, unknown>}} */
+    const { title, message, booking, email } = await response.json();
 
-    /** @type {HTMLDivElement} */
-    const container = document.querySelector(
-      ProductFormHelper.getClassName(className),
-    );
+    let paragraph = message
+      .replace("{{ start }}", booking.start)
+      .replace("{{ end }}", booking.end);
 
-    if (container.querySelector("p[data-msg-infos]")) {
-      box = container.querySelector("p[data-msg-infos]");
-    } else {
-      box = document.createElement("p");
-      container.appendChild(box);
+    if (email) {
+      paragraph = paragraph.replace("{{ email }}", email);
     }
 
-    box.dataset.msgInfos = dataSet;
-    box.textContent = msg;
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        title,
+        paragraph,
+      },
+    );
+
+    dialog.showModal();
+  };
+
+  /**
+   * @param {boolean} isUserConnected
+   */
+  static displayDialogLoginInfoToUser = (isUserConnected) => {
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.#setDialogContent(
+      dialog,
+      {
+        isUserConnected,
+        title: "Connectez-vous !",
+        paragraph:
+          "Vous devez vous connecter pour pouvoir réserver un créneau !",
+      },
+    );
+
+    dialog.showModal();
+  };
+
+  /**
+   * @param {HTMLDialogElement} dialog
+   * @param {{
+   * isUserConnected?: boolean;
+   * title: string;
+   * paragraph: string;
+   * status: number;
+   * }} param
+   */
+  static #setDialogContent = (
+    dialog,
+    {
+      isUserConnected,
+      title,
+      paragraph,
+      status,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
+
+    if (isUserConnected || isUserConnected === undefined) {
+      if (!dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.add("none");
+      }
+
+      // TODO implements status logic.
+    } else {
+      if (dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.remove("none");
+      }
+    }
   };
 }

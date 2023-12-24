@@ -4,7 +4,6 @@ import type {
   ProductSchemaWithIDType,
   ReviewsProductSchemaType,
   ReviewsProductSchemaWithIDType,
-  ReviewsType,
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -30,6 +29,12 @@ export type IdsType =
 export type RouterAppType = oak.Router<AppState>;
 export type RouterContextAppType<T extends string> = oak.RouterContext<T>;
 
+// Response
+export type DataResponseType =
+  | string
+  | UserSchemaWithIDType
+  | Record<string, string | Record<string, string>>;
+
 // Page
 export type ConfigPageType = {
   id: IdsType;
@@ -53,6 +58,7 @@ export type ConfigMainHtmlType =
 export type GetCollectionType = (
   collection: string,
 ) => Promise<Document | undefined>;
+
 export type InsertIntoDBType<T> = (
   data: T,
   collection: string,
@@ -101,13 +107,15 @@ export type SelectProductFromDBType = SelectFromDBType<
   ProductSchemaWithIDType | NotFoundMessageType
 >;
 
+// Reviews & Bookings common types
+export type AddNewItemIntoDBType<T> = (
+  id: ObjectId,
+  data: T,
+  collection: string,
+) => Promise<boolean>;
+
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
 export type SelectReviewFromDBType = SelectFromDBType<
   ReviewsProductSchemaWithIDType | NotFoundMessageType
 >;
-export type AddNewItemIntoReviewType = (
-  id: ObjectId,
-  data: ReviewsType,
-  collection: string,
-) => Promise<boolean>;

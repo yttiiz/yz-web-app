@@ -1,6 +1,5 @@
 import { PageBuilder } from "../Builder.js";
 import { UserFormHelper } from "../../utils/UserFormHelper.js";
-import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 
 export class UserFormPage extends PageBuilder {
   initForm = (
@@ -36,9 +35,8 @@ export class UserFormPage extends PageBuilder {
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
 
-    /** @type {HTMLDivElement} */
-    const modal = document.querySelector(".delete-account-modale");
-    const modalBtns = modal.querySelectorAll('button[data-type="canceller"]');
+    const modal = document.querySelector("dialog");
+    const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -82,11 +80,11 @@ export class UserFormPage extends PageBuilder {
     // Set button to display form "delete user" modal.
     document.querySelector(".delete-account button")
       .addEventListener("click", () => {
-        modal.classList.remove("none");
+        modal.showModal();
       });
 
     // Set button to abort deleting
-    for (const btn of modalBtns) {
+    for (const btn of modalCancelledBtn) {
       btn.addEventListener("click", this.#hideModalHandler);
     }
   };
@@ -99,9 +97,7 @@ export class UserFormPage extends PageBuilder {
 
     const isDeleteForm = e.target.dataset.type === "delete-account";
 
-    const formData = isDeleteForm
-      ? null
-      : DefaultFormHelper.setFormData(e.target);
+    const formData = isDeleteForm ? null : UserFormHelper.setFormData(e.target);
     const method = location.pathname === "/profil"
       ? (isDeleteForm ? "DELETE" : "PUT")
       : null;
@@ -112,7 +108,7 @@ export class UserFormPage extends PageBuilder {
     });
 
     if (location.pathname !== "/profil") {
-      DefaultFormHelper.removeInputsValues(e.target.children);
+      UserFormHelper.removeInputsValues(e.target.children);
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
@@ -148,7 +144,7 @@ export class UserFormPage extends PageBuilder {
    * @param {Event} e
    */
   #hideModalHandler = (e) => {
-    e.currentTarget.closest(".delete-account-modale")
-      .classList.add("none");
+    e.currentTarget.closest("dialog")
+      .close();
   };
 }

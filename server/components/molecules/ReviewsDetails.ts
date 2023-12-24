@@ -6,7 +6,7 @@ import {
   type ComponentType,
   type MoleculeNameType,
 } from "../mod.ts";
-import { RateProductEnum, ReviewsProductWithIDType } from "@mongo";
+import { RateProductEnum, ReviewsProductSchemaWithIDType } from "@mongo";
 
 const displayStars = (rate: number) => {
   let stars = ""
@@ -28,7 +28,7 @@ export const ReviewsDetails: ComponentType<
 > = {
   name: "ReviewsDetails",
   html: (
-    reviews: ReviewsProductWithIDType,
+    reviews: ReviewsProductSchemaWithIDType,
     reviewsTitle: string,
     reviewsEmpty: string,
   ) => (

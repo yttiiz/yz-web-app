@@ -18,12 +18,14 @@
       {
         "type": "date",
         "label": "début de séjour",
-        "name": "starting-date"
+        "name": "starting-date",
+        "required": true
       },
       {
         "type": "date",
         "label": "fin de séjour",
-        "name": "ending-date"
+        "name": "ending-date",
+        "required": true
       },
       {
         "type": "submit",

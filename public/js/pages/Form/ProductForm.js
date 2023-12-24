@@ -1,5 +1,4 @@
 import { PageBuilder } from "../Builder.js";
-import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 
 export class ProductFormPage extends PageBuilder {
@@ -8,6 +7,7 @@ export class ProductFormPage extends PageBuilder {
   ) => {
     /** @type {HTMLFormElement[]} */
     const forms = document.querySelectorAll(`#data-${id} form`);
+    const dialog = document.querySelector(`#data-${id} dialog`);
 
     // Init forms submission.
     for (const form of forms) {
@@ -17,11 +17,32 @@ export class ProductFormPage extends PageBuilder {
       );
     }
 
+    // Init close event dialog modal.
+    dialog.querySelector("button[data-close]")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+
     const [bookingForm, reviewForm] = forms;
+
+    this.#handleBookingForm(bookingForm);
 
     if (reviewForm) {
       this.#handleReviewForm(reviewForm);
     }
+  };
+
+  #handleBookingForm = (form) => {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const [
+      startingDateInput,
+      endingDateInput,
+    ] = form.querySelectorAll('input[type="date"]');
+
+    //Change ending-date input min attribute, according to user selected starting-date.
+    startingDateInput.addEventListener("change", (e) => {
+      endingDateInput.min = e.target.value;
+    });
   };
 
   /**
@@ -59,12 +80,23 @@ export class ProductFormPage extends PageBuilder {
   #submitHandler = async (e) => {
     e.preventDefault();
 
-    const formData = DefaultFormHelper.setFormData(e.target);
+    const formData = ProductFormHelper.setFormData(e.target);
     const productId = location.pathname.replace("/product/", "");
     const className = e.target.action.replace(location.origin + "/", "");
+    const isClassNameBooking = className === "booking";
+
+    if (isClassNameBooking) {
+      const isUserConnected = e.target.dataset.userConnected === "true";
+
+      if (!isUserConnected) {
+        ProductFormHelper.displayDialogLoginInfoToUser(
+          isUserConnected,
+        );
+        return;
+      }
+    }
 
     formData.append("id", productId);
-    formData.append("className", className);
 
     const res = await fetch(e.target.action, {
       method: "POST",
@@ -72,8 +104,11 @@ export class ProductFormPage extends PageBuilder {
     });
 
     if (res.ok) {
-      DefaultFormHelper.removeInputsValues(e.target.children);
-      ProductFormHelper.showProductUserReviewDetails(res);
+      ProductFormHelper.removeInputsValues(e.target.children);
+
+      isClassNameBooking
+        ? ProductFormHelper.displayDialogUserBookingDetails(res)
+        : ProductFormHelper.displayDialogUserReviewDetails(res);
     }
   };
 }

@@ -1,19 +1,22 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
-import { Helper, Rate } from "@utils";
+import { Helper, Handler } from "@utils";
 import type {
   ComponentType,
+  DialogDataType,
   OrganismNameType,
   ProductDataType,
 } from "../mod.ts";
-import { ProductAndReviewsType } from "@mongo";
+import { ProductFullDataType } from "@mongo";
 import {
   BookingDetails,
   BookingForm,
   ProductDetails,
+  Dialog,
   ReviewsDetails,
   FormReview,
   ProductFigure,
+  LoginRegister,
 } from "../mod.ts";
 
 const {
@@ -35,8 +38,9 @@ export const SectionsProduct: ComponentType<
   html: (
     {
       product,
-      reviews
-    }: ProductAndReviewsType,
+      reviews,
+      actualOrFutureBookings,
+    }: ProductFullDataType,
     isUserConnected: boolean,
   ) => {
     return `
@@ -50,12 +54,20 @@ export const SectionsProduct: ComponentType<
           ${ProductFigure.html(
             product,
             images.legend,
-            Rate.average(reviews),
+            Handler.rateAverage(reviews),
           )}
           <div>
             <div class="booking">
-              ${BookingDetails.html(product.details)}
-              ${BookingForm.html(product.details, booking)}
+              ${BookingDetails.html(
+                product.details,
+                actualOrFutureBookings.at(0),
+              )}
+              ${BookingForm.html(
+                booking,
+                isUserConnected,
+                actualOrFutureBookings
+                .at(0)?.endingDate,
+              )}
             </div>
             <div class="description">
               ${ProductDetails.html(
@@ -72,7 +84,10 @@ export const SectionsProduct: ComponentType<
               )}
             </div>
             <div class="review-form">
-              ${FormReview.html(reviewForm, isUserConnected)}
+              ${FormReview.html(
+                reviewForm,
+                isUserConnected
+              )}
             </div>
           </div>
         </div>
@@ -85,6 +100,11 @@ export const SectionsProduct: ComponentType<
           <p>${conditions.content}</p>
         </div>
       </div>
-    </section>`;
+    </section>
+    ${Dialog.html({
+      title: "",
+      paragraph: "",
+      component: LoginRegister.html
+    } as DialogDataType)}`;
   },
 };

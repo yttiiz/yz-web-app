@@ -1,7 +1,6 @@
 import { oak } from "@deps";
 import {
   Mongo,
-  ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
   UserSchemaType,
   UserSchemaWithIDType,
@@ -36,8 +35,8 @@ new ProfilController(
 );
 new ProductController(
   router,
-  Mongo.addNewItemIntoReview,
-  Mongo.selectFromDB<ProductSchemaWithIDType>,
+  Mongo.addNewItemIntoDB,
+  Mongo.selectFromDB,
 );
 new ApiController(
   router,

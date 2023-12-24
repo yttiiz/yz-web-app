@@ -62,7 +62,7 @@ export class ProfilController extends DefaultController {
       async (ctx: RouterContextAppType<"/profil">) => {
         let photo = "";
         const data = await ctx.request.body().value as oak.FormDataReader;
-        const { fields, files } = await data.read({ maxSize: 10_000_000 });
+        const { fields, files } = await data.read({ maxSize: this.MAX_SIZE });
         const userId = await ctx.state.session.get("userId") as ObjectId;
 
         files

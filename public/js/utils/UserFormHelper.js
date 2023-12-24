@@ -1,4 +1,6 @@
-export class UserFormHelper {
+import { DefaultFormHelper } from "./DefaultFormHelper.js";
+
+export class UserFormHelper extends DefaultFormHelper {
   static id = (id) => `#data-${id}-form`;
 
   /**
@@ -67,20 +69,16 @@ export class UserFormHelper {
    * @param {string} id
    */
   static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
-    /** @type {HTMLParagraphElement} */
-    let box;
-
     /** @type {HTMLDivElement} */
     const container = document.querySelector(
       UserFormHelper.id(id) + " section",
     );
 
-    if (container.querySelector("p[data-msg-infos]")) {
-      box = container.querySelector("p[data-msg-infos]");
-    } else {
-      box = document.createElement("p");
-      container.appendChild(box);
-    }
+    const box = UserFormHelper.getOrCreateElement({
+      parent: container,
+      cssSelector: "p[data-msg-infos]",
+      hmtlTag: "p",
+    });
 
     box.dataset.msgInfos = dataSet;
     box.textContent = msg;

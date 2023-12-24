@@ -5,15 +5,24 @@ import {
   InputsForm,
   DeleteAccount,
   DeleteAccountForm,
+  Dialog,
 } from "../mod.ts";
 import type {
   ComponentType,
   OrganismNameType,
   FormDataType,
+  DeleteAccountDataType,
+  DialogDataType,
  } from "../mod.ts";
 
 const data: FormDataType = await Helper.convertJsonToObject(
   "/server/data/profil/profil.json",
+);
+
+const {
+  deleteModal,
+}: DeleteAccountDataType = await Helper.convertJsonToObject(
+  "/server/data/profil/delete.profil.json",
 );
 
 export const SectionsProfilForm: ComponentType<
@@ -60,7 +69,15 @@ export const SectionsProfilForm: ComponentType<
     <section>
       ${DeleteAccount.html}
     </section>
-    ${DeleteAccountForm.html}
+    ${Dialog.html({
+      title: deleteModal.title,
+      paragraph: deleteModal.paragraph,
+      component: DeleteAccountForm.html({
+        action: deleteModal.action,
+        method: deleteModal.method,
+        btnText: deleteModal.btnText,
+      })
+    } as DialogDataType)}
     `;
   }
 }

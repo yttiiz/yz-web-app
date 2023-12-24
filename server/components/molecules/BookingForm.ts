@@ -4,9 +4,7 @@ import type {
   ComponentType,
   MoleculeNameType,
 } from "../mod.ts";
-import { DetailsProductType } from "@mongo";
 import { FormDataType, InputsForm } from "../mod.ts";
-import { Helper } from "@utils";
 
 export const BookingForm: ComponentType<
   MoleculeNameType,
@@ -14,8 +12,9 @@ export const BookingForm: ComponentType<
 > = {
   name: "BookingForm",
   html: (
-    details: DetailsProductType,
     form: FormDataType,
+    isUserConnected: boolean,
+    date?: string,
   ) => (
     `
     <div>
@@ -24,8 +23,9 @@ export const BookingForm: ComponentType<
         action="${form.action}"
         method="${form.method}"
         data-style="booking"
+        data-user-connected="${isUserConnected}"
       >
-        ${InputsForm.html(form.content, false)}
+        ${InputsForm.html(form.content, false, date)}
       </form>
     </div>
     `

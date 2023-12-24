@@ -1,7 +1,6 @@
 import { MongoClient, MongoStore, ObjectId } from "@deps";
 import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
-import { ReviewsType } from "./types.ts";
 
 /**
  * The app MongoDB Manager.
@@ -15,9 +14,9 @@ export class Mongo {
     return users?.find();
   }
 
-  public static async addNewItemIntoReview(
+  public static async addNewItemIntoDB<T>(
     id: ObjectId,
-    data: ReviewsType,
+    data: T,
     collection: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo(collection);
@@ -28,7 +27,7 @@ export class Mongo {
         modifiedCount,
       } = await selectedCollection.updateOne(
         { _id: id },
-        { $push: { reviews: data } },
+        { $push: { [collection]: data } },
       );
 
       return matchedCount + modifiedCount === 2;

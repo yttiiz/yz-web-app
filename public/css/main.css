@@ -23,8 +23,9 @@
     --base-size: clamp(1.4rem, 2vw, 1.6rem);
     --btn-border-radius: .5rem;
     --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
-    --burger-height: 2.4rem;
-    --width-container: clamp(30rem, 90%, 96rem);
+    --burger-height: calc(var(--base-size) * 1.5);
+    --container-width: clamp(30rem, 90%, 96rem);
+    --dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 31.25));
 
     /*=====| Transitions |===== */
     --smooth: .3s ease;
@@ -129,7 +130,80 @@ noscript {
 
 .container {
     margin: auto;
-    width: var(--width-container);
+    width: var(--container-width);
+}
+
+/*=================================================| DIALOG |=================================================*/
+
+dialog {
+    width: var(--dialog-width);
+    height: max-content;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white);
+    overflow: hidden;
+    z-index: 10;
+    border-radius: var(--btn-border-radius);
+    border: none;
+
+    & > header,
+    & > div {
+        padding: calc(var(--base-size) * 1.5);
+    }
+
+    & > header {
+        background: var(--light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--base-size);
+
+        & > h2 {
+            line-height: 1;
+        }
+
+        & > button {
+            position: relative;
+            background: rgb(var(--black-rvb) / .25);
+            border-radius: 50%;
+            width: calc(var(--base-size) * 1.825);
+            aspect-ratio: 1 / 1;
+            transition: background var(--smooth);
+        }
+
+        & > button:hover {
+            background: rgb(var(--black-rvb) / .4);
+        }
+
+        &  > button span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: var(--white);
+            height: .2rem;
+            width: 60%;
+        }
+    
+        &  > button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    
+        &  > button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        gap: var(--base-size);
+    }
+}
+
+dialog::backdrop {
+    background: rgb(0 0 0 / .75);
 }
 
 /*=================================================| HEADER |=================================================*/
@@ -146,7 +220,7 @@ header[data-header="site"] {
         & > div {
             display: inherit;
             align-items: center;
-            gap: 2rem;
+            gap: var(--base-size);
         }
     }
 }
@@ -154,12 +228,12 @@ header[data-header="site"] {
 #logo {
     > a {
         display: flex;
-        gap: 1rem;
+        gap: calc(var(--base-size) * .625);
         align-items: center;
         transition: filter var(--smooth);
         
         > svg {
-            width: 3rem;
+            width: calc(var(--base-size) * 1.875);
             height: auto;
             fill: var(--light);
         }
@@ -179,12 +253,12 @@ header[data-header="site"] {
 #user-session {
     display: inherit;
     align-items: inherit;
-    gap: 1rem;
+    gap: calc(var(--base-size) * .625);
 
     & > div {
         display: inherit;
         align-items: center;
-        gap: 1rem;
+        gap: calc(var(--base-size) * .625);
 
         & > form button,
         & > form svg {
@@ -192,7 +266,7 @@ header[data-header="site"] {
         }
     
         & > form button {
-            width: 2.5rem;
+            width: calc(var(--base-size) * 1.5625);
         }
 
         & > form button > svg {
@@ -240,11 +314,11 @@ header[data-header="site"] {
 
     & > button {
         display: flex;
-        width: 3rem;
+        width: calc(var(--base-size) * 1.875);
         height: var(--burger-height);
         flex-direction: column;
         justify-content: space-between;
-        padding: .5rem;
+        padding: calc(var(--base-size) * .3125);
 
         & > span {
             background: var(--light);
@@ -287,7 +361,7 @@ header[data-header="site"] {
     }
 
     & > nav > ul li:not(:last-child) {
-        border-bottom: 1px solid rgb(0 0 0 / .1);
+        border-bottom: .1rem solid rgb(var(--black-rvb) / .1);
     }
 
     & > nav > ul li a {
@@ -301,7 +375,7 @@ header[data-header="site"] {
 }
 
 .line-1 {
-    transform: rotate(-45deg) translate(-.5rem, .4rem);
+    transform: rotate(-45deg) translate(calc(var(--base-size) * -.3125), calc(var(--base-size) * .25));
 }
 
 .line-2 {
@@ -309,7 +383,7 @@ header[data-header="site"] {
 }
 
 .line-3 {
-    transform: rotate(45deg) translate(-.5rem, -.4rem);
+    transform: rotate(45deg) translate(calc(var(--base-size) * -.3125), calc(var(--base-size) * -.25));
 }
 
 /*=================================================| MAIN |=================================================*/
@@ -324,8 +398,11 @@ main .container {
     flex-direction: column;
 }
 
-section:not(:last-of-type) {
+section {
     padding-bottom: calc(var(--base-size) * 2);
+}
+
+section:not(:last-of-type) {
     border-bottom: var(--border-black-25-percent);
     margin-bottom: calc(var(--base-size) * 2);
 }
@@ -343,17 +420,26 @@ section p[data-msg-infos="error"] {
     color: rgb(128, 0, 0);
 }
 
+h1,
+h2 {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
 h1 {
     font-size: calc(var(--base-size) * 2.1875);
-    font-weight: 500;
     line-height: calc(var(--base-size) * 2.75);
-    color: var(--primary-color);
 }
 
 h1 + p {
     font-size: calc(var(--base-size) * 1.125);
     font-weight: 400;
     margin-top: calc(var(--base-size) * .825);
+}
+
+h2 {
+    font-size: calc(var(--base-size) * 1.85);
+    line-height: calc(var(--base-size) * 2.5);
 }
 
 h3 {
@@ -384,10 +470,6 @@ form[data-style] input:not(input[type="submit"]) {
     border: var(--border-black-25-percent);
 }
 
-p + .login-register {
-    margin-top: var(--base-size);
-}
-
 .login-register {
     display: flex;
     gap: var(--base-size);
@@ -405,6 +487,10 @@ p + .login-register {
     & a:not(:first-of-type) {
         text-decoration: underline;
     }
+}
+
+.login-register.none {
+    display: none;
 }
 
 /*=================================================| FOOTER |=================================================*/
