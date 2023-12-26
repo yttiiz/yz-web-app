@@ -9,13 +9,13 @@ export class UserFormHelper extends DefaultFormHelper {
   static displayDialogRegisterDetails = async (response) => {
     const { message } = await response.json();
     const dialog = document.querySelector("#data-user-form > dialog");
-    
+
     UserFormHelper.setUserDialogContent(
       dialog,
       {
         title: message.includes("suspects") ? "Avertissement" : "Bienvenue",
         paragraph: message,
-      }
+      },
     );
 
     dialog.showModal();
@@ -35,13 +35,13 @@ export class UserFormHelper extends DefaultFormHelper {
 
   static displayDialogToDeleteAccount = () => {
     const dialog = document.querySelector("#data-profil-form > dialog");
-    
+
     UserFormHelper.setProfilDialogContent(
       dialog,
       {
         title: "Suppression du compte",
         paragraph: "Etes-vous vraiment sûr de vouloir supprimer votre compte ?",
-      }
+      },
     );
 
     dialog.showModal();
@@ -78,7 +78,7 @@ export class UserFormHelper extends DefaultFormHelper {
     const status = response.status;
     const { message } = await response.json();
     const dialog = document.querySelector("#data-profil-form > dialog");
-    
+
     UserFormHelper.setProfilDialogContent(
       dialog,
       {

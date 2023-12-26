@@ -74,30 +74,29 @@ export class UserFormPage extends PageBuilder {
         /** @type {HTMLDivElement} */
         const showFileInfos = e.currentTarget.nextElementSibling;
         /**
-         * @param {HTMLInputElement} input 
+         * @param {HTMLInputElement} input
          */
         const handleFileContent = (input) => {
           input.addEventListener("change", (e) => {
             if (e.currentTarget.files.length === 1) {
-              
               const { name, size } = e.currentTarget.files[0];
               const sizeInKo = new Intl.NumberFormat("fr-FR", {
                 maximumFractionDigits: 2,
               }).format(size / 1000);
 
-              showFileInfos.innerHTML = `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
-              
+              showFileInfos.innerHTML =
+                `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
+
               if (showFileInfos.classList.contains("none")) {
-                showFileInfos.classList.remove("none")
-                showFileInfos.classList.add("show-file")
+                showFileInfos.classList.remove("none");
+                showFileInfos.classList.add("show-file");
               }
             }
-          })
+          });
         };
 
         if (userPhotoContainer.querySelector("input")) {
           input = userPhotoContainer.querySelector("input");
-
         } else {
           input = document.createElement("input");
           input.type = "file";

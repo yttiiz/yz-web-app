@@ -32,10 +32,6 @@ export const SectionAuthForm: ComponentType<
         </form>
       </div>
     </section>
-    ${path === "/register"
-      ? Dialog.html({})
-      : ""
-    }`
-    ;
+    ${path === "/register" ? Dialog.html({}) : ""}`;
   },
 };

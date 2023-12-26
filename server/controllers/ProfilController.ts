@@ -61,7 +61,7 @@ export class ProfilController extends DefaultController {
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
         let photo = "", isNewPhoto = true;
-        
+
         const data = await ctx.request.body().value as oak.FormDataReader;
         const { fields, files } = await data.read({ maxSize: this.MAX_SIZE });
         const userId = await ctx.state.session.get("userId") as ObjectId;
@@ -76,7 +76,7 @@ export class ProfilController extends DefaultController {
 
         const updatedData = await this.removeEmptyFields(fields);
         photo ? updatedData.photo = photo : null;
-                
+
         const isUserUpdate = await this.updateToDB(
           userId,
           updatedData,
@@ -87,7 +87,7 @@ export class ProfilController extends DefaultController {
           if (fields.firstname) {
             ctx.state.session.set("userFirstname", fields.firstname);
           }
-          
+
           if (photo) {
             ctx.state.session.set("userPhoto", photo);
           }

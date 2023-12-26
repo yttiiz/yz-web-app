@@ -32,7 +32,6 @@ export class DefaultFormHelper {
     }
   };
 
-
   /**
    * @param {HTMLDialogElement} dialog
    * @param {{
@@ -88,41 +87,45 @@ export class DefaultFormHelper {
   /**
    * @param {HTMLDialogElement} dialog
    * @param {{
-  * title: string;
-  * paragraph: string;
-  * status?: number;
-  * handler?: (e: Event) => void;
-  * }} param
-  */
- static setProfilDialogContent = (
-   dialog,
-   {
-     title,
-     paragraph,
-     status,
-     handler,
-   },
- ) => {
-   dialog.querySelector("h2").textContent = title;
-   dialog.querySelector("p").textContent = paragraph;
+   * title: string;
+   * paragraph: string;
+   * status?: number;
+   * handler?: (e: Event) => void;
+   * }} param
+   */
+  static setProfilDialogContent = (
+    dialog,
+    {
+      title,
+      paragraph,
+      status,
+      handler,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
 
     if (status) {
-      switch(status) {
+      switch (status) {
         case 201: {
           if (!dialog.querySelector("form").classList.contains("none")) {
-            dialog.querySelector("form").classList.add("none")
+            dialog.querySelector("form").classList.add("none");
           }
           break;
         }
-  
+
         case 200: {
           if (!dialog.querySelector("form").classList.contains("none")) {
-            dialog.querySelector("form").classList.add("none")
+            dialog.querySelector("form").classList.add("none");
           }
 
-          if (dialog.querySelector(".show-message-to-user").classList.contains("none")) {
+          if (
+            dialog.querySelector(".show-message-to-user").classList.contains(
+              "none",
+            )
+          ) {
             dialog.querySelector(".show-message-to-user")
-            .classList.remove("none");
+              .classList.remove("none");
           }
 
           if (handler) {
@@ -136,9 +139,9 @@ export class DefaultFormHelper {
       }
     } else {
       if (dialog.querySelector("form").classList.contains("none")) {
-        dialog.querySelector("form").classList.remove("none")
+        dialog.querySelector("form").classList.remove("none");
       }
-    }    
+    }
   };
 
   /**

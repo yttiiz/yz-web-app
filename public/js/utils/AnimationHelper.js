@@ -11,7 +11,7 @@ export class AnimationHelper {
     let index = 0;
 
     /**
-     * @param {Event} e 
+     * @param {Event} e
      */
     const handleMotion = (e) => {
       const container = e.currentTarget;
@@ -23,9 +23,8 @@ export class AnimationHelper {
       if (isRightClick) {
         if (index >= (sliderLength - 1)) return;
 
-        index++; 
+        index++;
         this.#moveSlider(slider, sliderLength, index);
-
       } else {
         if (index <= 0) return;
 
