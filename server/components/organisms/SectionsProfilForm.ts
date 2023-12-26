@@ -54,6 +54,7 @@ export const SectionsProfilForm: ComponentType<
                 <img src="/img/users/default.png" alt="default user image" />
               </figure>
               <button type="button">${changePhoto ?? "change picture"}</button>
+              <div class="none"></div>
             </div>
             <div class="user-infos">
               ${InputsForm.html(content)}
