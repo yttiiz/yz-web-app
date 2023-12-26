@@ -21,6 +21,16 @@ export class UserFormPage extends PageBuilder {
         (e) => this.#submitHandler(e),
       );
     }
+
+    if (document.querySelector("dialog")) {
+      const modal = document.querySelector("dialog");
+      const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
+
+      // Set button to abort deleting
+      for (const btn of modalCancelledBtn) {
+        btn.addEventListener("click", this.#hideModalHandler);
+      }
+    }
   };
 
   /**
@@ -34,9 +44,6 @@ export class UserFormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
-
-    const modal = document.querySelector("dialog");
-    const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -107,11 +114,6 @@ export class UserFormPage extends PageBuilder {
       .addEventListener("click", () => {
         UserFormHelper.displayDialogToDeleteAccount();
       });
-
-    // Set button to abort deleting
-    for (const btn of modalCancelledBtn) {
-      btn.addEventListener("click", this.#hideModalHandler);
-    }
   };
 
   /**
@@ -146,7 +148,7 @@ export class UserFormPage extends PageBuilder {
             break;
 
           case location.origin + "/register":
-            UserFormHelper.showRegisterDetails(res);
+            UserFormHelper.displayDialogRegisterDetails(res);
             break;
 
           case location.origin + "/profil": {

@@ -6,13 +6,19 @@ export class UserFormHelper extends DefaultFormHelper {
   /**
    * @param {Response} response
    */
-  static showRegisterDetails = async (response) => {
+  static displayDialogRegisterDetails = async (response) => {
     const { message } = await response.json();
+    const dialog = document.querySelector("#data-user-form > dialog");
+    
+    UserFormHelper.setUserDialogContent(
+      dialog,
+      {
+        title: message.includes("suspects") ? "Avertissement" : "Bienvenue",
+        paragraph: message,
+      }
+    );
 
-    UserFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: message.includes("suspects") ? "error" : "success",
-    }, "user");
+    dialog.showModal();
   };
 
   /**
@@ -106,7 +112,7 @@ export class UserFormHelper extends DefaultFormHelper {
   static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
     /** @type {HTMLDivElement} */
     const container = document.querySelector(
-      UserFormHelper.id(id) + " section",
+      UserFormHelper.id(id) + " .container",
     );
 
     const box = UserFormHelper.getOrCreateElement({

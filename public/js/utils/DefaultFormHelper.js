@@ -32,6 +32,25 @@ export class DefaultFormHelper {
     }
   };
 
+
+  /**
+   * @param {HTMLDialogElement} dialog
+   * @param {{
+   * title: string;
+   * paragraph: string;
+   * }} param
+   */
+  static setUserDialogContent = (
+    dialog,
+    {
+      title,
+      paragraph,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
+  };
+
   /**
    * @param {HTMLDialogElement} dialog
    * @param {{
@@ -69,23 +88,23 @@ export class DefaultFormHelper {
   /**
    * @param {HTMLDialogElement} dialog
    * @param {{
-   * title: string;
-   * paragraph: string;
-   * status?: number;
-   * handler?: (e: Event) => void;
-   * }} param
-   */
-  static setProfilDialogContent = (
-    dialog,
-    {
-      title,
-      paragraph,
-      status,
-      handler,
-    },
-  ) => {
-    dialog.querySelector("h2").textContent = title;
-    dialog.querySelector("p").textContent = paragraph;
+  * title: string;
+  * paragraph: string;
+  * status?: number;
+  * handler?: (e: Event) => void;
+  * }} param
+  */
+ static setProfilDialogContent = (
+   dialog,
+   {
+     title,
+     paragraph,
+     status,
+     handler,
+   },
+ ) => {
+   dialog.querySelector("h2").textContent = title;
+   dialog.querySelector("p").textContent = paragraph;
 
     if (status) {
       switch(status) {

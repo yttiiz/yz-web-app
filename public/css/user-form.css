@@ -18,6 +18,21 @@
     }
 }
 
+#data-user-form {
+    & form[data-style="user-login"] {
+        margin: 0 auto;
+        width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
+        padding: calc(var(--base-size) * 2);
+        border: var(--border-black-25-percent);
+        border-radius: var(--base-size);
+        grid-template-columns: 1fr;
+    }
+
+    & form[data-style="user-login"] + p {
+        text-align: center;
+    }
+}
+
 #data-profil-form {
     & section form {
         display: flex;
