@@ -71,8 +71,6 @@ export const SectionsProfilForm: ComponentType<
       ${DeleteAccount.html}
     </section>
     ${Dialog.html({
-      title: deleteModal.title,
-      paragraph: deleteModal.paragraph,
       component: DeleteAccountForm.html({
         action: deleteModal.action,
         method: deleteModal.method,

@@ -33,6 +33,96 @@ export class DefaultFormHelper {
   };
 
   /**
+   * @param {HTMLDialogElement} dialog
+   * @param {{
+   * isUserConnected?: boolean;
+   * title: string;
+   * paragraph: string;
+   * status: number;
+   * }} param
+   */
+  static setProductDialogContent = (
+    dialog,
+    {
+      isUserConnected,
+      title,
+      paragraph,
+      status,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
+
+    if (isUserConnected || isUserConnected === undefined) {
+      if (!dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.add("none");
+      }
+
+      // TODO implements status logic.
+    } else {
+      if (dialog.querySelector(".login-register").classList.contains("none")) {
+        dialog.querySelector(".login-register").classList.remove("none");
+      }
+    }
+  };
+
+  /**
+   * @param {HTMLDialogElement} dialog
+   * @param {{
+   * title: string;
+   * paragraph: string;
+   * status?: number;
+   * handler?: (e: Event) => void;
+   * }} param
+   */
+  static setProfilDialogContent = (
+    dialog,
+    {
+      title,
+      paragraph,
+      status,
+      handler,
+    },
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").textContent = paragraph;
+
+    if (status) {
+      switch(status) {
+        case 201: {
+          if (!dialog.querySelector("form").classList.contains("none")) {
+            dialog.querySelector("form").classList.add("none")
+          }
+          break;
+        }
+  
+        case 200: {
+          if (!dialog.querySelector("form").classList.contains("none")) {
+            dialog.querySelector("form").classList.add("none")
+          }
+
+          if (dialog.querySelector(".show-message-to-user").classList.contains("none")) {
+            dialog.querySelector(".show-message-to-user")
+            .classList.remove("none");
+          }
+
+          if (handler) {
+            dialog.querySelector("button")
+              .removeEventListener("click", handler);
+            dialog.querySelector("button")
+              .addEventListener("click", () => window.location.href = "/");
+          }
+          break;
+        }
+      }
+    } else {
+      if (dialog.querySelector("form").classList.contains("none")) {
+        dialog.querySelector("form").classList.remove("none")
+      }
+    }    
+  };
+
+  /**
    * @param {{ parent: HTMLDivElement; cssSelector: string; hmtlTag: string; }} param
    */
   static getOrCreateElement = ({

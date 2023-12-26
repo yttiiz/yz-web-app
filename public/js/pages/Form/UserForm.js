@@ -105,7 +105,7 @@ export class UserFormPage extends PageBuilder {
     // Set button to display form "delete user" modal.
     document.querySelector(".delete-account button")
       .addEventListener("click", () => {
-        modal.showModal();
+        UserFormHelper.displayDialogToDeleteAccount();
       });
 
     // Set button to abort deleting
@@ -151,11 +151,11 @@ export class UserFormPage extends PageBuilder {
 
           case location.origin + "/profil": {
             isDeleteForm
-              ? UserFormHelper.showProfilDeleteDetails(
+              ? UserFormHelper.displayDialogProfilDeletedDetails(
                 res,
                 this.#hideModalHandler,
               )
-              : UserFormHelper.showProfilUpdateDetails(res);
+              : UserFormHelper.displayDialogProfilUpdatedDetails(res);
             break;
           }
         }

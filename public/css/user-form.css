@@ -133,8 +133,8 @@
         }
     }
 
-    .show-message-to-user.none,
-    .delete-account-modale.none {
+    & dialog > div > form.none,
+    .show-message-to-user.none {
         display: none;
     }
 }
