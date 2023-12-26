@@ -102,8 +102,6 @@ export const SectionsProduct: ComponentType<
       </div>
     </section>
     ${Dialog.html({
-      title: "",
-      paragraph: "",
       component: LoginRegister.html
     } as DialogDataType)}`;
   },

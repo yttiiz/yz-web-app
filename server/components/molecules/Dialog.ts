@@ -12,21 +12,19 @@ export const Dialog: ComponentType<
 > = {
   name: "Dialog",
   html: ({
-      title,
-      paragraph,
       component,
     }: DialogDataType) => {
     return `
     <dialog>
       <header>
-        <h2>${title}</h2>
+        <h2></h2>
         <button data-close>
           <span></span>
           <span></span>
         </button>
       </header>
       <div>
-        <p>${paragraph}</p>
+        <p></p>
         ${component ? component : ""}
       </div>
     </dialog>

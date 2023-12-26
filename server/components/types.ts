@@ -112,8 +112,6 @@ export type FooterDataType = {
 };
 
 export type DialogDataType = {
-  title: string;
-  paragraph: string;
   component?: string;
 };
 

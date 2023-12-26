@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
-import { InputsForm } from "../mod.ts";
+import { Dialog, InputsForm } from "../mod.ts";
 import type { ComponentType, FormDataType, OrganismNameType } from "../mod.ts";
 
 export const SectionAuthForm: ComponentType<
@@ -31,6 +31,7 @@ export const SectionAuthForm: ComponentType<
           ${InputsForm.html(content, false)}
         </form>
       </div>
-    </section>`;
+    </section>
+    ${path === "/register" ? Dialog.html({}) : ""}`;
   },
 };

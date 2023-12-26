@@ -55,17 +55,17 @@ export class ProductController extends DefaultController {
               ctx.params.id,
               "productId",
             );
-  
+
           const product = await this.selectFromDB("products", _id);
           const reviews = await getFromDB("reviews");
           const bookings = await getFromDB("bookings");
-  
+
           if ("_id" in product && "_id" in reviews && "_id" in bookings) {
             const actualOrFutureBookings = Handler
               .getProductPresentOrNextBookings(
                 (bookings as BookingsProductSchemaWithIDType).bookings,
               );
-  
+
             const body = await this.createHtmlFile(ctx, {
               id: "data-product",
               css: "product",
@@ -86,7 +86,7 @@ export class ProductController extends DefaultController {
                 title: (product as NotFoundMessageType).message,
               },
             );
-  
+
             this.response(ctx, body, 404);
           }
         } catch (_) {

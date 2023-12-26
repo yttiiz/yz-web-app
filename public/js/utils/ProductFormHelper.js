@@ -11,7 +11,7 @@ export class ProductFormHelper extends DefaultFormHelper {
     const { message } = await response.json();
 
     const dialog = document.querySelector("#data-product > dialog");
-    ProductFormHelper.#setDialogContent(
+    ProductFormHelper.setProductDialogContent(
       dialog,
       {
         title: "Félicitations",
@@ -40,7 +40,7 @@ export class ProductFormHelper extends DefaultFormHelper {
     }
 
     const dialog = document.querySelector("#data-product > dialog");
-    ProductFormHelper.#setDialogContent(
+    ProductFormHelper.setProductDialogContent(
       dialog,
       {
         title,
@@ -56,7 +56,7 @@ export class ProductFormHelper extends DefaultFormHelper {
    */
   static displayDialogLoginInfoToUser = (isUserConnected) => {
     const dialog = document.querySelector("#data-product > dialog");
-    ProductFormHelper.#setDialogContent(
+    ProductFormHelper.setProductDialogContent(
       dialog,
       {
         isUserConnected,
@@ -67,39 +67,5 @@ export class ProductFormHelper extends DefaultFormHelper {
     );
 
     dialog.showModal();
-  };
-
-  /**
-   * @param {HTMLDialogElement} dialog
-   * @param {{
-   * isUserConnected?: boolean;
-   * title: string;
-   * paragraph: string;
-   * status: number;
-   * }} param
-   */
-  static #setDialogContent = (
-    dialog,
-    {
-      isUserConnected,
-      title,
-      paragraph,
-      status,
-    },
-  ) => {
-    dialog.querySelector("h2").textContent = title;
-    dialog.querySelector("p").textContent = paragraph;
-
-    if (isUserConnected || isUserConnected === undefined) {
-      if (!dialog.querySelector(".login-register").classList.contains("none")) {
-        dialog.querySelector(".login-register").classList.add("none");
-      }
-
-      // TODO implements status logic.
-    } else {
-      if (dialog.querySelector(".login-register").classList.contains("none")) {
-        dialog.querySelector(".login-register").classList.remove("none");
-      }
-    }
   };
 }

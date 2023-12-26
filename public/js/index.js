@@ -4,7 +4,7 @@ import { AnimationHelper, Router } from "./pages/mod.js";
 new Router();
 
 // Animation
-const animationHelper = new AnimationHelper()
+const animationHelper = new AnimationHelper();
 
 // Home page
 if (location.href === location.origin + "/") {
@@ -15,4 +15,3 @@ if (location.href === location.origin + "/") {
 if (location.href.includes("product")) {
   animationHelper.handleProductSlider(".product > figure");
 }
-  

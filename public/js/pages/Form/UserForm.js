@@ -21,6 +21,16 @@ export class UserFormPage extends PageBuilder {
         (e) => this.#submitHandler(e),
       );
     }
+
+    if (document.querySelector("dialog")) {
+      const modal = document.querySelector("dialog");
+      const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
+
+      // Set button to abort deleting
+      for (const btn of modalCancelledBtn) {
+        btn.addEventListener("click", this.#hideModalHandler);
+      }
+    }
   };
 
   /**
@@ -34,9 +44,6 @@ export class UserFormPage extends PageBuilder {
     /** @type {HTMLDivElement} */
     const userPhotoContainer = document.querySelector(".user-photo");
     const userImg = userPhotoContainer.querySelector("img");
-
-    const modal = document.querySelector("dialog");
-    const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
 
     /** @type {NodeListOf<HTMLInputElement>} */
     const userInfosInputs = document.querySelectorAll(".user-infos input");
@@ -64,6 +71,29 @@ export class UserFormPage extends PageBuilder {
       .addEventListener("click", (e) => {
         /** @type {HTMLInputElement} */
         let input;
+        /** @type {HTMLDivElement} */
+        const showFileInfos = e.currentTarget.nextElementSibling;
+        /**
+         * @param {HTMLInputElement} input
+         */
+        const handleFileContent = (input) => {
+          input.addEventListener("change", (e) => {
+            if (e.currentTarget.files.length === 1) {
+              const { name, size } = e.currentTarget.files[0];
+              const sizeInKo = new Intl.NumberFormat("fr-FR", {
+                maximumFractionDigits: 2,
+              }).format(size / 1000);
+
+              showFileInfos.innerHTML =
+                `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
+
+              if (showFileInfos.classList.contains("none")) {
+                showFileInfos.classList.remove("none");
+                showFileInfos.classList.add("show-file");
+              }
+            }
+          });
+        };
 
         if (userPhotoContainer.querySelector("input")) {
           input = userPhotoContainer.querySelector("input");
@@ -72,6 +102,7 @@ export class UserFormPage extends PageBuilder {
           input.type = "file";
           input.name = "photo";
           userPhotoContainer.insertBefore(input, e.currentTarget);
+          handleFileContent(input);
         }
 
         input.click();
@@ -80,13 +111,8 @@ export class UserFormPage extends PageBuilder {
     // Set button to display form "delete user" modal.
     document.querySelector(".delete-account button")
       .addEventListener("click", () => {
-        modal.showModal();
+        UserFormHelper.displayDialogToDeleteAccount();
       });
-
-    // Set button to abort deleting
-    for (const btn of modalCancelledBtn) {
-      btn.addEventListener("click", this.#hideModalHandler);
-    }
   };
 
   /**
@@ -121,16 +147,16 @@ export class UserFormPage extends PageBuilder {
             break;
 
           case location.origin + "/register":
-            UserFormHelper.showRegisterDetails(res);
+            UserFormHelper.displayDialogRegisterDetails(res);
             break;
 
           case location.origin + "/profil": {
             isDeleteForm
-              ? UserFormHelper.showProfilDeleteDetails(
+              ? UserFormHelper.displayDialogProfilDeletedDetails(
                 res,
                 this.#hideModalHandler,
               )
-              : UserFormHelper.showProfilUpdateDetails(res);
+              : UserFormHelper.displayDialogProfilUpdatedDetails(res);
             break;
           }
         }

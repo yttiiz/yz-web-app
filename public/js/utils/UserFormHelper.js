@@ -6,13 +6,19 @@ export class UserFormHelper extends DefaultFormHelper {
   /**
    * @param {Response} response
    */
-  static showRegisterDetails = async (response) => {
+  static displayDialogRegisterDetails = async (response) => {
     const { message } = await response.json();
+    const dialog = document.querySelector("#data-user-form > dialog");
 
-    UserFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: message.includes("suspects") ? "error" : "success",
-    }, "user");
+    UserFormHelper.setUserDialogContent(
+      dialog,
+      {
+        title: message.includes("suspects") ? "Avertissement" : "Bienvenue",
+        paragraph: message,
+      },
+    );
+
+    dialog.showModal();
   };
 
   /**
@@ -27,26 +33,61 @@ export class UserFormHelper extends DefaultFormHelper {
     }, "user");
   };
 
-  /**
-   * @param {Response} response
-   */
-  static showProfilUpdateDetails = async (response) => {
-    const status = response.status;
-    const { message } = await response.json();
+  static displayDialogToDeleteAccount = () => {
+    const dialog = document.querySelector("#data-profil-form > dialog");
 
-    UserFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: status === 201 ? "success" : "error",
-    }, "profil");
+    UserFormHelper.setProfilDialogContent(
+      dialog,
+      {
+        title: "Suppression du compte",
+        paragraph: "Etes-vous vraiment sûr de vouloir supprimer votre compte ?",
+      },
+    );
+
+    dialog.showModal();
   };
 
   /**
    * @param {Response} response
    */
-  static showProfilDeleteDetails = async (response) => {
+  static displayDialogProfilUpdatedDetails = async (response) => {
+    const status = response.status;
     const { message } = await response.json();
+    const dialog = document.querySelector("#data-profil-form > dialog");
 
-    UserFormHelper.#redesignModalToShowInfo(message);
+    UserFormHelper.setProfilDialogContent(
+      dialog,
+      {
+        title: "Mise à jour",
+        paragraph: message,
+        status,
+      },
+    );
+
+    dialog.showModal();
+  };
+
+  /**
+   * @param {Response} response
+   * @param {(e: Event) => void} hideModalhandler
+   */
+  static displayDialogProfilDeletedDetails = async (
+    response,
+    hideModalhandler,
+  ) => {
+    const status = response.status;
+    const { message } = await response.json();
+    const dialog = document.querySelector("#data-profil-form > dialog");
+
+    UserFormHelper.setProfilDialogContent(
+      dialog,
+      {
+        title: "Compte supprimé",
+        paragraph: message,
+        status,
+        handler: hideModalhandler,
+      },
+    );
   };
 
   /**
@@ -71,7 +112,7 @@ export class UserFormHelper extends DefaultFormHelper {
   static #paragraphToShowInfo = ({ msg, dataSet }, id) => {
     /** @type {HTMLDivElement} */
     const container = document.querySelector(
-      UserFormHelper.id(id) + " section",
+      UserFormHelper.id(id) + " .container",
     );
 
     const box = UserFormHelper.getOrCreateElement({
@@ -82,27 +123,5 @@ export class UserFormHelper extends DefaultFormHelper {
 
     box.dataset.msgInfos = dataSet;
     box.textContent = msg;
-  };
-
-  /**
-   * @param {string} msg
-   * @param {() => void} hideModalhandler
-   */
-  static #redesignModalToShowInfo = (
-    msg,
-    hideModalhandler,
-  ) => {
-    const modal = document.querySelector(".delete-account-modale > div");
-    const form = modal.querySelector("form");
-
-    modal.removeChild(form);
-    modal.querySelector("p").textContent = msg;
-    modal.querySelector(".show-message-to-user")
-      .classList.remove("none");
-
-    modal.querySelector("button")
-      .removeEventListener("click", hideModalhandler);
-    modal.querySelector("button")
-      .addEventListener("click", () => window.location.href = "/");
   };
 }

@@ -5,10 +5,8 @@
     "btnText": "Supprimer le compte"
   },
   "deleteModal": {
-    "title": "Suppression du compte",
     "action": "/profil",
     "method": "DELETE",
-    "paragraph": "Etes-vous vraiment sûr de vouloir supprimer votre compte ?",
     "btnText": "Je supprime mon compte"
   }
 }
