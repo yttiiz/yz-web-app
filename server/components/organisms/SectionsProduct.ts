@@ -65,8 +65,9 @@ export const SectionsProduct: ComponentType<
               ${BookingForm.html(
                 booking,
                 isUserConnected,
-                actualOrFutureBookings
-                .at(0)?.endingDate,
+                Handler.setInputDateMinAttribute(
+                  actualOrFutureBookings,
+                ),
               )}
             </div>
             <div class="description">

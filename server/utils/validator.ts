@@ -122,7 +122,7 @@ export class Validator {
     return isOk ? { isOk, data } : { isOk, message };
   }
 
-  private static createDate() {
+  public static createDate() {
     const now = new Date();
     return {
       year: now.getFullYear(),

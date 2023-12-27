@@ -3,7 +3,7 @@ import {
   BookingsType,
   ReviewsProductSchemaWithIDType,
 } from "@mongo";
-import { ReturnBookingAvailabilityType } from "./mod.ts";
+import type { ReturnBookingAvailabilityType } from "./mod.ts";
 
 export class Handler {
   public static rateAverage(
@@ -49,8 +49,8 @@ export class Handler {
 
       for (const booking of bookings) {
         if (
-          new Date(booking.startingDate).getTime() > today ||
-          new Date(booking.endingDate).getTime() >= today
+          Handler.getTime(booking.startingDate) > today ||
+          Handler.getTime(booking.endingDate) >= today
         ) {
           presentOrNextBookings.push(booking);
         }
@@ -67,15 +67,23 @@ export class Handler {
     bookings: BookingsProductSchemaWithIDType,
   ): ReturnBookingAvailabilityType {
     let bool = true;
-    const nextBookings = Handler
+    let nextBookings = Handler
       .getProductPresentOrNextBookings(bookings.bookings);
-    const getTime = (date: string) => new Date(date).getTime();
+
+    nextBookings = nextBookings.sort((a, b) => (
+      Handler.getTime(a.startingDate) - Handler.getTime(b.startingDate)
+    ));
 
     for (const booking of nextBookings) {
-      if (
-        getTime(newBooking.startingDate) > getTime(booking.startingDate) &&
-        getTime(newBooking.startingDate) <= getTime(booking.endingDate)
-      ) {
+      const isInsideBooking = 
+        Handler.getTime(newBooking.startingDate) > Handler.getTime(booking.startingDate) &&
+        Handler.getTime(newBooking.startingDate) <= Handler.getTime(booking.endingDate);
+
+      const isSurroundingBooking = 
+        Handler.getTime(newBooking.startingDate) < Handler.getTime(booking.startingDate) &&
+        Handler.getTime(newBooking.endingDate) >= Handler.getTime(booking.endingDate);
+      
+      if (isInsideBooking || isSurroundingBooking) {
         bool = false;
         return {
           isAvailable: bool,
@@ -88,4 +96,25 @@ export class Handler {
       isAvailable: bool,
     };
   }
+
+  public static setInputDateMinAttribute(lastBookings: BookingsType[]) {
+    const today = new Date();
+
+    for (const booking of lastBookings) {
+      if (
+        Handler.getTime(booking.startingDate) > today.getTime() ||
+        Handler.getTime(booking.endingDate) >= today.getTime()
+      ) {
+        return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`;
+
+      } else {
+        return booking.endingDate;
+      }
+    }
+  }
+
+  private static getTime(date: string) {
+    return new Date(date).getTime();
+  }
+    
 }
