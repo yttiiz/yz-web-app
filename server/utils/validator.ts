@@ -61,6 +61,7 @@ export class Validator {
     dataModel: FormDataType,
   ): DataParserReturnType {
     const UNAUTHORIZED_CHARACTER = /[^\w\s\-@.\u00C0-\u00FF]/g;
+    const UNAUTHORIZED_IN_TEXTAREA = /[%&<>\[\]{}]/g;
 
     let key = 0, isOk = true;
     let message = "Il semble que votre saisie contient :";
@@ -70,9 +71,26 @@ export class Validator {
 
     // CHECK FIELDS
     for (const prop in data.fields) {
-      // Check unauthorized character.
-      if (data.fields[prop].search(UNAUTHORIZED_CHARACTER) !== -1) {
+
+      // Check textarea field type.
+      if (
+        dataModel.content[key].type === "textarea" &&
+        data.fields[prop].search(UNAUTHORIZED_IN_TEXTAREA) !== -1
+      ) {
         message += " des caractères non autorisés.";
+        isOk = false;
+
+        break;
+      }
+      
+      // Check not textarea field type.
+      if (
+        dataModel.content[key].type !== "textarea" &&
+        data.fields[prop].search(UNAUTHORIZED_CHARACTER) !== -1
+      ) {
+        message += isMsgSet(message)
+        ? ""
+        : " des caractères non autorisés.";
         isOk = false;
 
         break;

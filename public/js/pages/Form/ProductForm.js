@@ -32,6 +32,9 @@ export class ProductFormPage extends PageBuilder {
     }
   };
 
+  /**
+   * @param {HTMLFormElement} form
+   */
   #handleBookingForm = (form) => {
     /** @type {NodeListOf<HTMLInputElement>} */
     const [
@@ -103,12 +106,17 @@ export class ProductFormPage extends PageBuilder {
       body: formData,
     });
 
+    console.log(res)
+
     if (res.ok) {
       ProductFormHelper.removeInputsValues(e.target.children);
 
       isClassNameBooking
         ? ProductFormHelper.displayDialogUserBookingDetails(res)
         : ProductFormHelper.displayDialogUserReviewDetails(res);
+
+    } else if (res.status === 401) {
+      ProductFormHelper.displayDialogErrorInfoToUser(res);
     }
   };
 }

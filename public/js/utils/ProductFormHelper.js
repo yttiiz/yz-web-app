@@ -27,7 +27,6 @@ export class ProductFormHelper extends DefaultFormHelper {
    * @param {Response} response
    */
   static displayDialogUserBookingDetails = async (response) => {
-    const status = response.status;
     /** @type {{ message: string; booking: Record<string, unknown>}} */
     const { title, message, booking, email } = await response.json();
 
@@ -63,6 +62,25 @@ export class ProductFormHelper extends DefaultFormHelper {
         title: "Connectez-vous !",
         paragraph:
           "Vous devez vous connecter pour pouvoir réserver un créneau !",
+      },
+    );
+
+    dialog.showModal();
+  };
+
+  /**
+   * @param {Response} response
+   */
+  static displayDialogErrorInfoToUser = async (response) => {
+    /** @type {{ message: string; booking: Record<string, unknown>}} */
+    const { message } = await response.json();
+
+    const dialog = document.querySelector("#data-product > dialog");
+    ProductFormHelper.setProductDialogContent(
+      dialog,
+      {
+        title: "Erreur de saisie",
+        paragraph: message,
       },
     );
 

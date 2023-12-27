@@ -17,7 +17,8 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType,
 } from "@mongo";
-import { Handler, Helper } from "@utils";
+import { Handler, Helper, Validator } from "@utils";
+import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
   private addNewItemIntoDB;
@@ -110,13 +111,30 @@ export class ProductController extends DefaultController {
       "/booking",
       async (ctx: RouterContextAppType<"/booking">) => {
         const data = await ctx.request.body().value as oak.FormDataReader;
+        const { booking } = await this.helper.convertJsonToObject(
+          `/server/data/product/product.json`,
+        ) as ProductDataType;
+
+        const dataParsed = Validator.dataParser(
+          await data.read({ maxSize: this.MAX_SIZE }),
+          booking,
+        );
+
+        if (!dataParsed.isOk) {
+          return this.response(
+            ctx,
+            { message: dataParsed.message },
+            401,
+          );
+        }
+        
         const {
           fields: {
             "starting-date": startingDate,
             "ending-date": endingDate,
             id,
           },
-        } = await data.read({ maxSize: this.MAX_SIZE });
+        } = dataParsed.data;
 
         const { userId, userName } = await this.getUserInfo(ctx);
 
@@ -219,6 +237,23 @@ export class ProductController extends DefaultController {
       "/review-form",
       async (ctx: RouterContextAppType<"/review-form">) => {
         const data = await ctx.request.body().value as oak.FormDataReader;
+        const { reviewForm } = await this.helper.convertJsonToObject(
+          `/server/data/product/product.json`,
+        ) as ProductDataType;
+
+        const dataParsed = Validator.dataParser(
+          await data.read({ maxSize: this.MAX_SIZE }),
+          reviewForm,
+        );
+
+        if (!dataParsed.isOk) {
+          return this.response(
+            ctx,
+            { message: dataParsed.message },
+            401,
+          );
+        }
+        
         const {
           fields: {
             id,
@@ -226,7 +261,7 @@ export class ProductController extends DefaultController {
             rate,
             className,
           },
-        } = await data.read({ maxSize: this.MAX_SIZE });
+        } = dataParsed.data;
 
         const { userId, userName } = await this.getUserInfo(ctx);
 
