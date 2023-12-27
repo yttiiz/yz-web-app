@@ -55,31 +55,36 @@
         "type": "radio",
         "label": "5 - excellent",
         "name": "rate",
-        "value": "5"
+        "value": "5",
+        "required": true
       },
       {
         "type": "radio",
         "label": "4 - bien",
         "name": "rate",
-        "value": "4"
+        "value": "4",
+        "required": true
       },
       {
         "type": "radio",
         "label": "3 - passable",
         "name": "rate",
-        "value": "3"
+        "value": "3",
+        "required": true
       },
       {
         "type": "radio",
         "label": "2 - très moyen",
         "name": "rate",
-        "value": "2"
+        "value": "2",
+        "required": true
       },
       {
         "type": "radio",
         "label": "1 - pas terrible",
         "name": "rate",
-        "value": "1"
+        "value": "1",
+        "required": true
       },
       {
         "type": "submit",

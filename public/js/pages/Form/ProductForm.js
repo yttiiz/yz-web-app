@@ -106,8 +106,6 @@ export class ProductFormPage extends PageBuilder {
       body: formData,
     });
 
-    console.log(res)
-
     if (res.ok) {
       ProductFormHelper.removeInputsValues(e.target.children);
 
