@@ -105,7 +105,7 @@ export class Handler {
         Handler.getTime(booking.startingDate) > today.getTime() ||
         Handler.getTime(booking.endingDate) >= today.getTime()
       ) {
-        return `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`;
+        return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 
       } else {
         return booking.endingDate;

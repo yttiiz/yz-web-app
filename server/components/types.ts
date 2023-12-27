@@ -109,6 +109,7 @@ export type HeaderDataType = {
 export type FooterDataType = {
   basicItems: ItemDataType[];
   relatedItems: ItemDataType[];
+  copyrights: string;
 };
 
 export type DialogDataType = {
