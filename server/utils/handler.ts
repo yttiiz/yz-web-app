@@ -70,9 +70,7 @@ export class Handler {
     let nextBookings = Handler
       .getProductPresentOrNextBookings(bookings.bookings);
 
-    nextBookings = nextBookings.sort((a, b) => (
-      Handler.getTime(a.startingDate) - Handler.getTime(b.startingDate)
-    ));
+    nextBookings = Handler.orderFromClosestToOlderBookings(nextBookings);
 
     for (const booking of nextBookings) {
       const isInsideBooking = 
@@ -100,10 +98,12 @@ export class Handler {
   public static setInputDateMinAttribute(lastBookings: BookingsType[]) {
     const today = new Date();
 
+    lastBookings = Handler.orderFromClosestToOlderBookings(lastBookings);
+
     for (const booking of lastBookings) {
       if (
         Handler.getTime(booking.startingDate) > today.getTime() ||
-        Handler.getTime(booking.endingDate) >= today.getTime()
+        Handler.getTime(booking.endingDate) < today.getTime()
       ) {
         return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 
@@ -111,6 +111,12 @@ export class Handler {
         return booking.endingDate;
       }
     }
+  }
+
+  public static orderFromClosestToOlderBookings(bookings: BookingsType[]) {
+    return bookings.sort((a, b) => (
+      Handler.getTime(a.startingDate) - Handler.getTime(b.startingDate)
+    ));
   }
 
   private static getTime(date: string) {
