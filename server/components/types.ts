@@ -32,6 +32,7 @@ export type MoleculeNameType =
 export type AtomNameType =
   | "LikeSvg"
   | "ShareSvg"
+  | "ShareForm"
   | "StarSvg"
   | "UserSvg"
   | "Logo"
@@ -109,6 +110,7 @@ export type HeaderDataType = {
 export type FooterDataType = {
   basicItems: ItemDataType[];
   relatedItems: ItemDataType[];
+  copyrights: string;
 };
 
 export type DialogDataType = {

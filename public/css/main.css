@@ -506,23 +506,35 @@ form[data-style] input:not(input[type="submit"]) {
 footer {
   background: var(--dark);
 
-  & > div {
+  & * {
+    color: var(--light);
+  }
+
+  & > div,
+  & > div > div {
       display: flex;
       gap: 2rem;
   }
+
+  & > div {
+    flex-direction: column;
+  }
   
-  & > div li::marker {
+  & > div > div li::marker {
       color: var(--primary-color);
       font-size: calc(var(--base-size) * .625);
   }
   
-  & > div li > a {
-      color: var(--light);
+  & > div > div li > a {
       text-decoration: none;
   }
 
-  & > div li > a:hover {
+  & > div > div li > a:hover {
       opacity: .7;
+  }
+
+  & > div > div:last-of-type {
+    justify-content: center;
   }
 }
 

@@ -9,6 +9,7 @@ import type {
 const {
   basicItems,
   relatedItems,
+  copyrights,
 }: FooterDataType = await Helper.convertJsonToObject(
   "/server/data/basics/footer.json",
 );
@@ -17,6 +18,7 @@ export const Footer: ComponentType<TemplateNameType> = {
   name: "Footer",
   html: `<footer>
     <div class="container">
+      <div>
         <ul>
         ${
           basicItems
@@ -37,6 +39,10 @@ export const Footer: ComponentType<TemplateNameType> = {
             ).join("")
         }
         </ul>
+      </div>
+      <div>
+        <span>${copyrights} ${new Date().getFullYear()}</span>
+      </div>
     </div>
-</footer>`,
+  </footer>`,
 };

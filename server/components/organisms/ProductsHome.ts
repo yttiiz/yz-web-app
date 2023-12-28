@@ -1,7 +1,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
-import { ProductCard } from "../mod.ts";
+import { Dialog, ProductCard, ShareForm } from "../mod.ts";
 import type {
   ComponentType,
   HomePageDataType,
@@ -35,6 +35,9 @@ export const ProductsHome: ComponentType<
             .join("")}
         </ul>
       </div>
-    </section>`;
+    </section>
+    ${Dialog.html(
+      { component: ShareForm.html },
+    )}`;
   },
 };

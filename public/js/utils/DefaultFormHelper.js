@@ -145,6 +145,50 @@ export class DefaultFormHelper {
   };
 
   /**
+   * @param {HTMLDialogElement} dialog
+   * @param {{
+   * title: string;
+   * paragraph: string;
+   * }} param
+   * @param {HTMLButtonElement} btn
+   */
+  static setHomeDialogContent = (
+    dialog,
+    {
+      title,
+      paragraph,
+    },
+    btn,
+  ) => {
+    dialog.querySelector("h2").textContent = title;
+    dialog.querySelector("p").innerHTML = paragraph;
+
+    const input = dialog.querySelector("input");
+    const sharedLink = btn.closest("div").nextElementSibling.href;
+
+    input.value = sharedLink;
+    
+    dialog.querySelector("div > div button")
+    .addEventListener("click", async (e) => {
+      const permission = await navigator.permissions.query({ name: "clipboard-write"});
+      
+      if (permission.state === "granted" || permission.state === "prompt") {
+        // Write link to clipboard.
+        navigator.clipboard.writeText(sharedLink);
+        
+        input.select();
+        e.target.textContent = "Copié";
+
+        // Remove selected state and put back original text content.
+        setTimeout(() => {
+          window.getSelection().removeAllRanges();
+          e.target.textContent = "Copier";
+        }, 2000);
+      }
+    });
+  };
+
+  /**
    * @param {{ parent: HTMLDivElement; cssSelector: string; hmtlTag: string; }} param
    */
   static getOrCreateElement = ({
