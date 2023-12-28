@@ -7,6 +7,7 @@ export * from "./atoms/LoginRegister.ts";
 export * from "./atoms/UserSvg.ts";
 export * from "./atoms/LikeSvg.ts";
 export * from "./atoms/ShareSvg.ts";
+export * from "./atoms/ShareForm.ts";
 export * from "./atoms/StarSvg.ts";
 export * from "./atoms/EyeOpenSvg.ts";
 export * from "./atoms/EyeShutSvg.ts";

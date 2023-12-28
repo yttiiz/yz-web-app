@@ -247,6 +247,43 @@
         }
     }
 
+    & dialog {
+        & > div > div {
+            display: flex;
+            gap: var(--base-size);
+            padding: calc(var(--base-size) * .3333);
+            border: var(--border-black-25-percent);
+            border-radius: var(--btn-border-radius);
+
+            & input,
+            & button {
+                font-weight: 400;
+            }
+
+            & input {
+                width: 100%;
+                outline: none;
+                border: none;
+                padding: var(--btn-padding);
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            & button {
+                padding: var(--btn-padding);
+                border-radius: var(--btn-border-radius);
+                font-size: var(--base-size);
+                color: var(--light);
+                background: var(--primary-color);
+                transition: filter var(--smooth);
+            }
+
+            & button:hover {
+                filter: contrast(1.5);
+            }
+        }
+    }
+
     & section ul.users > li {
         & > div {
             gap: .5rem;
