@@ -25,16 +25,16 @@ export const Header: ComponentType<TemplateNameType> = {
           </button>
           <nav class="none">
             <ul>
-            ${items.map((item) => (
-            `<li>
-              <a href="${item.link}">
-                ${item.text}
-              </a>
-            </li>`))
-            .join("")}
-          </ul>
-        </nav> 
-      </div>
+              ${items.map((item) => (
+              `<li>
+                <a href="${item.link}">
+                  ${item.text}
+                </a>
+              </li>`))
+              .join("")}
+            </ul>
+          </nav> 
+        </div>
         <div id="logo">
           <a href="${link}">
             ${Logo.html}

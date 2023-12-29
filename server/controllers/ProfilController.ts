@@ -32,6 +32,7 @@ export class ProfilController extends DefaultController {
       async (ctx: RouterContextAppType<"/profil">) => {
         if (!ctx.state.session) {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+
         } else if (ctx.state.session.has("userFirstname")) {
           const body = await this.createHtmlFile(
             ctx,
@@ -41,7 +42,9 @@ export class ProfilController extends DefaultController {
               title: "modifier votre profil",
             },
           );
+
           this.response(ctx, body, 200);
+          
         } else {
           this.response(
             ctx,

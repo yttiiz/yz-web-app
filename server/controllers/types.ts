@@ -23,7 +23,8 @@ export type IdsType =
   | "data-product"
   | "data-user-form"
   | "data-profil-form"
-  | "data-not-found";
+  | "data-not-found"
+  | "data-booking";
 
 // Router
 export type RouterAppType = oak.Router<AppState>;
