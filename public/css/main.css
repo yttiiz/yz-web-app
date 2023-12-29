@@ -10,8 +10,8 @@
     --grey-dark: #525151;
     --light: #ebebeb;
     --white: #ffffff;
-    
-    
+
+
     /*=====| Colors & opacity |===== */
     --black-rvb: 0 0 0;
     --white-rvb: 255 255 255;
@@ -44,7 +44,8 @@ body {
     grid-template-rows: 7rem auto max-content;
 }
 
-body, body * {
+body,
+body * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -148,23 +149,23 @@ dialog {
     border-radius: var(--btn-border-radius);
     border: none;
 
-    & > header,
-    & > div {
+    &>header,
+    &>div {
         padding: calc(var(--base-size) * 1.5);
     }
 
-    & > header {
+    &>header {
         background: var(--light);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: var(--base-size);
 
-        & > h2 {
+        &>h2 {
             line-height: 1;
         }
 
-        & > button {
+        &>button {
             position: relative;
             background: rgb(var(--black-rvb) / .25);
             border-radius: 50%;
@@ -173,11 +174,11 @@ dialog {
             transition: background var(--smooth);
         }
 
-        & > button:hover {
+        &>button:hover {
             background: rgb(var(--black-rvb) / .4);
         }
 
-        &  > button span {
+        &>button span {
             position: absolute;
             left: 50%;
             top: 50%;
@@ -185,17 +186,17 @@ dialog {
             height: .2rem;
             width: 60%;
         }
-    
-        &  > button span:nth-child(1) {
+
+        &>button span:nth-child(1) {
             transform: translate(-50%, -50%) rotate(45deg);
         }
-    
-        &  > button span:nth-child(2) {
+
+        &>button span:nth-child(2) {
             transform: translate(-50%, -50%) rotate(-45deg);
         }
     }
 
-    & > div {
+    &>div {
         display: flex;
         flex-direction: column;
         gap: var(--base-size);
@@ -210,14 +211,14 @@ dialog::backdrop {
 
 header[data-header="site"] {
     background: var(--primary-color);
-        
-    & > div {
+
+    &>div {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 100%;
 
-        & > div {
+        &>div {
             display: inherit;
             align-items: center;
             gap: var(--base-size);
@@ -226,26 +227,26 @@ header[data-header="site"] {
 }
 
 #logo {
-    > a {
+    >a {
         display: flex;
         gap: calc(var(--base-size) * .625);
         align-items: center;
         transition: filter var(--smooth);
-        
-        > svg {
+
+        >svg {
             width: calc(var(--base-size) * 1.875);
             height: auto;
             fill: var(--light);
         }
-        
-        > span {
+
+        >span {
             font-size: calc(var(--base-size) * 1.25);
             font-weight: 600;
             color: var(--light);
         }
     }
 
-    > a:hover {
+    >a:hover {
         filter: contrast(1.5)
     }
 }
@@ -255,31 +256,31 @@ header[data-header="site"] {
     align-items: inherit;
     gap: calc(var(--base-size) * .625);
 
-    & > div {
+    &>div {
         display: inherit;
         align-items: center;
         gap: calc(var(--base-size) * .625);
 
-        & > form button,
-        & > form svg {
+        &>form button,
+        &>form svg {
             aspect-ratio: 1 / 1;
         }
-    
-        & > form button {
+
+        &>form button {
             width: calc(var(--base-size) * 1.5625);
         }
 
-        & > form button > svg {
+        &>form button>svg {
             width: 100%;
             height: auto;
             transition: opacity var(--smooth);
         }
 
-        & > form button > svg:hover {
+        &>form button>svg:hover {
             opacity: .7;
         }
 
-        & > span {
+        &>span {
             color: var(--light);
         }
     }
@@ -320,7 +321,7 @@ header[data-header="site"] {
 #burger {
     position: relative;
 
-    & > button {
+    &>button {
         display: flex;
         width: calc(var(--base-size) * 1.875);
         height: var(--burger-height);
@@ -328,7 +329,7 @@ header[data-header="site"] {
         justify-content: space-between;
         padding: calc(var(--base-size) * .3125);
 
-        & > span {
+        &>span {
             background: var(--light);
             height: .1rem;
             width: 100%;
@@ -336,22 +337,22 @@ header[data-header="site"] {
         }
     }
 
-    & > nav,
-    & > nav::before {
+    &>nav,
+    &>nav::before {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         background: var(--light);
     }
 
-    & > nav {
+    &>nav {
         width: max-content;
         top: calc(var(--burger-height) + 2.5rem);
         box-shadow: var(--box-shadow);
         z-index: 1;
     }
 
-    & > nav::before {
+    &>nav::before {
         --height: 1.1rem;
         content: '';
         top: calc(var(--height) * -1);
@@ -360,24 +361,24 @@ header[data-header="site"] {
         clip-path: polygon(0 100%, 50% 0, 100% 100%);
     }
 
-    & > nav.none {
+    &>nav.none {
         display: none;
     }
 
-    & > nav > ul {
+    &>nav>ul {
         list-style: none;
     }
 
-    & > nav > ul li:not(:last-child) {
+    &>nav>ul li:not(:last-child) {
         border-bottom: .1rem solid rgb(var(--black-rvb) / .1);
     }
 
-    & > nav > ul li a {
+    &>nav>ul li a {
         display: block;
         padding: .75rem 2rem;
     }
 
-    & > nav > ul li a:hover {
+    &>nav>ul li a:hover {
         background: rgb(0 0 0 / .1);
     }
 }
@@ -396,8 +397,8 @@ header[data-header="site"] {
 
 /*=================================================| MAIN |=================================================*/
 
-main > div,
-footer > div {
+main>div,
+footer>div {
     padding: 2rem 0;
 }
 
@@ -439,7 +440,7 @@ h1 {
     line-height: calc(var(--base-size) * 2.75);
 }
 
-h1 + p {
+h1+p {
     font-size: calc(var(--base-size) * 1.125);
     font-weight: 400;
     margin-top: calc(var(--base-size) * .825);
@@ -455,15 +456,15 @@ h3 {
     font-weight: 400;
 }
 
-#data-home section .container > ul,
+#data-home section .container>ul,
 #data-user-form section form {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
 main .container,
-#data-home section .container > ul,
-#data-home section .container > ul > li,
+#data-home section .container>ul,
+#data-home section .container>ul>li,
 #data-user-form section form {
     gap: calc(var(--base-size) * 1.8);
 }
@@ -504,53 +505,59 @@ form[data-style] input:not(input[type="submit"]) {
 /*=================================================| FOOTER |=================================================*/
 
 footer {
-  background: var(--dark);
+    background: var(--dark);
 
-  & * {
-    color: var(--light);
-  }
+    & * {
+        color: var(--light);
+    }
 
-  & > div,
-  & > div > div {
-      display: flex;
-      gap: 2rem;
-  }
+    & > div,
+    & > div > div {
+        display: flex;
+        gap: 2rem;
+    }
 
-  & > div {
-    flex-direction: column;
-  }
-  
-  & > div > div li::marker {
-      color: var(--primary-color);
-      font-size: calc(var(--base-size) * .625);
-  }
-  
-  & > div > div li > a {
-      text-decoration: none;
-  }
+    & > div {
+        flex-direction: column;
+    }
 
-  & > div > div li > a:hover {
-      opacity: .7;
-  }
+    & > div > div li::marker {
+        color: var(--primary-color);
+        font-size: calc(var(--base-size) * .625);
+    }
 
-  & > div > div:last-of-type {
-    justify-content: center;
-  }
+    & > div > div li > a {
+        text-decoration: none;
+    }
+
+    & > div > div li > a:hover {
+        opacity: .7;
+    }
+
+    & > div > div:last-of-type {
+        font-size: calc(var(--base-size) * .85);
+        justify-content: center;
+
+        & * {
+            color: rgb(var(--white-rvb) / .5);
+        }
+    }
 }
 
 /*=================================================| BREAKPOINTS |=================================================*/
 
 @media screen and (max-width: 750px) {
-  #data-home section .container > ul,
-  #data-user-form section form {
-      grid-template-columns: 1fr;
-  }
+
+    #data-home section .container>ul,
+    #data-user-form section form {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media screen and (max-width: 550px) {
-  #logo {
-      > a span {
-          display: none;
-      }
-  }
+    #logo {
+        >a span {
+            display: none;
+        }
+    }
 }

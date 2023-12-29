@@ -96,9 +96,22 @@ export type InputDataType = {
   autocomplete?: string;
 };
 
+export type OpenGraphDataType = {
+  title: string;
+  type: string;
+  url: string;
+  image: {
+    url: string;
+    type: string;
+    width: string;
+    height: string;
+  };
+};
+
 export type HeadPageDataType = {
   title: string;
   description: string;
+  openGraph: OpenGraphDataType;
 };
 
 export type HeaderDataType = {

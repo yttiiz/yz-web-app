@@ -1,4 +1,15 @@
 {
   "title": "Yz App",
-  "description": "Deno Application created by Yttiiz"
+  "description": "Deno Application created by Yttiiz",
+  "openGraph": {
+    "title": "Yz App",
+    "type": "website",
+    "url": "http://127.0.0.1",
+    "image": {
+      "url": "http://127.0.0.1/yz_website.jpeg",
+      "type": "image/jpeg",
+      "width": "720",
+      "height": "480"
+    }
+  }
 }

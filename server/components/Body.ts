@@ -4,6 +4,7 @@ import type { ComponentType, HeadPageDataType } from "./mod.ts";
 const {
   title,
   description,
+  openGraph,
 }: HeadPageDataType = await Helper.convertJsonToObject(
   "/server/data/basics/app.json",
 );
@@ -17,6 +18,14 @@ export const Body: ComponentType = {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${title}</title>
       <meta name="description" content="${description}">
+      <meta property="og:title" content="${openGraph.title}" />
+      <meta property="og:description" content="${description}" />
+      <meta property="og:type" content="${openGraph.type}" />
+      <meta property="og:url" content="${openGraph.url}" />
+      <meta property="og:image:url" content="${openGraph.image.url}" />
+      <meta property="og:image:type" content="${openGraph.image.type}" />
+      <meta property="og:image:width" content="${openGraph.image.width}" />
+      <meta property="og:image:height" content="${openGraph.image.height}" />
       <link rel="stylesheet" href="./css/main.css">
       <link rel="stylesheet" href="./css/{{ css }}.css">
       <link rel="icon" href="./img/favicon.svg" type="image/svg+xml">
