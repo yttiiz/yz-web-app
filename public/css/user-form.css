@@ -16,6 +16,10 @@
     & section form input[type="password"] {
         padding-right: 4rem;
     }
+    
+    & section form input[name="file-text"] {
+        padding-right: calc(var(--base-size) * 7.25);
+    }
 }
 
 #data-user-form {
@@ -74,6 +78,7 @@
             height: max-content;
             padding: var(--btn-padding);
             font-size: var(--base-size);
+            font-weight: 400;
             color: var(--light);
             background: var(--secondary-color);
             border-radius: var(--btn-border-radius);
@@ -154,11 +159,15 @@
     }
 }
 
+#eye-password,
+#search-photo {
+    display: flex;
+    position: absolute;
+    right: 3%;
+}
+
 #eye-password {
-        display: flex;
-        position: absolute;
-        bottom: clamp(15%, 1.5vw, 20%);
-        right: 3%;
+    bottom: clamp(15%, 1.5vw, 20%);
 
     & > span {
         cursor: pointer;
@@ -172,6 +181,23 @@
         fill: var(--primary-color);
         width: 2rem;
         height: auto;
+    }
+}
+
+#search-photo {
+    bottom: clamp(8%, 1.75vw, 12%);
+
+    & button {
+        padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
+        border-radius: var(--btn-border-radius);
+        font-size: var(--base-size);
+        font-weight: 400;
+        color: var(--light);
+        background: var(--secondary-color);
+    }
+
+    & input {
+        display: none;
     }
 }
 

@@ -60,7 +60,7 @@ export const SectionsProduct: ComponentType<
             <div class="booking">
               ${BookingDetails.html(
                 product.details,
-                Handler.orderFromClosestToOlderBookings(
+                Handler.sortFromClosestToOlderBookings(
                   actualOrFutureBookings,
                 ).at(0),
               )}

@@ -29,7 +29,7 @@ export const InputsForm: ComponentType<
       maxLength,
       value,
       autocomplete,
-    }) => type !== "submit"
+    }) => type !== "submit" && name !== "photo"
     ? (
       `<label>
         ${type !== "radio"
@@ -62,9 +62,17 @@ export const InputsForm: ComponentType<
           : ""}
         ${type === "radio"
           ? label : ""}
+        ${name === "file-text"
+          ? (
+              `<div id="search-photo">
+                <button type="button">Rechercher</button>
+              </div>`
+            )
+          : ""
+        }
       </label>`
       )
-    : isProfilInputs
+    : isProfilInputs || name === "photo"
     ? ""
     : (
       `<input type="${type}"
