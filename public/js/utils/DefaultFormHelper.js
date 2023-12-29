@@ -12,6 +12,8 @@ export class DefaultFormHelper {
       if (typeof value === "object" && value.size === 0) {
         formData.delete(key);
       }
+
+      if (key === "text-file") formData.delete(key);
     }
 
     return formData;

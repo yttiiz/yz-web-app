@@ -57,10 +57,17 @@
       "required": true
     },
     {
-      "type": "file",
+      "type": "text",
       "label": "Photo de profil",
-      "name": "photo",
+      "placeholder": "Choisissez votre image...",
+      "name": "file-text",
       "required": false,
+      "minLength": 2,
+      "maxLength": 120
+    },
+    {
+      "type": "file",
+      "name": "photo",
       "accept": ".png, .jpg, .webp, .jpeg"
     },
     {

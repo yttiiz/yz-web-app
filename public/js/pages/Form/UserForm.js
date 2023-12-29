@@ -15,6 +15,12 @@ export class UserFormPage extends PageBuilder {
       (e) => this.#submitHandler(e),
     );
 
+    // Set input file to change photo
+    if (form.action.includes("/register")) {
+      form.querySelector("#search-photo button")
+      .addEventListener("click", UserFormHelper.handleInputFile);
+    }
+
     if (deleteForm) {
       deleteForm.addEventListener(
         "submit",
@@ -68,45 +74,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set input file to change photo
     userPhotoContainer.querySelector("button")
-      .addEventListener("click", (e) => {
-        /** @type {HTMLInputElement} */
-        let input;
-        /** @type {HTMLDivElement} */
-        const showFileInfos = e.currentTarget.nextElementSibling;
-        /**
-         * @param {HTMLInputElement} input
-         */
-        const handleFileContent = (input) => {
-          input.addEventListener("change", (e) => {
-            if (e.currentTarget.files.length === 1) {
-              const { name, size } = e.currentTarget.files[0];
-              const sizeInKo = new Intl.NumberFormat("fr-FR", {
-                maximumFractionDigits: 2,
-              }).format(size / 1000);
-
-              showFileInfos.innerHTML =
-                `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
-
-              if (showFileInfos.classList.contains("none")) {
-                showFileInfos.classList.remove("none");
-                showFileInfos.classList.add("show-file");
-              }
-            }
-          });
-        };
-
-        if (userPhotoContainer.querySelector("input")) {
-          input = userPhotoContainer.querySelector("input");
-        } else {
-          input = document.createElement("input");
-          input.type = "file";
-          input.name = "photo";
-          userPhotoContainer.insertBefore(input, e.currentTarget);
-          handleFileContent(input);
-        }
-
-        input.click();
-      });
+      .addEventListener("click", UserFormHelper.handleInputFile);
 
     // Set button to display form "delete user" modal.
     document.querySelector(".delete-account button")

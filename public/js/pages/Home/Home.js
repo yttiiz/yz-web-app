@@ -18,7 +18,7 @@ export class HomePage extends PageBuilder {
     /** @type {HTMLDialogElement} */
     const dialog = document.querySelector(`#data-home dialog`);
 
-    // Init display event dialog modal.
+    // Init display event 'share link' dialog modal.
     for (const btn of sharedBtn) {
       btn.addEventListener("click", (e) => {
         
