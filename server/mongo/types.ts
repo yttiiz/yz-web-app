@@ -45,7 +45,6 @@ export type DetailsProductType = {
   rooms: number;
   area: number;
   price: number;
-  available: boolean;
   type: string;
 };
 
@@ -95,12 +94,23 @@ export type ReviewsProductSchemaWithOptionalFieldsType = Partial<
 >;
 
 //Bookings types
-export type BookingsType = {
-  userId: string;
-  userName: string;
+export type BookingDateType = {
   startingDate: string;
   endingDate: string;
 };
+
+export type BookingsType = BookingDateType & {
+  userId: string;
+  userName: string;
+};
+
+export type BookingUserInfoType = (
+  ProductBindingFieldsType &
+  BookingDateType & {
+    details: DetailsProductType
+    thumbnail: ImagesProductType;
+  }
+);
 
 export type BookingsProductSchemaType = ProductBindingFieldsType & {
   bookings: BookingsType[];
@@ -112,6 +122,8 @@ export type BookingsProductSchemaWithIDType = SchemaWithID<
 export type BookingsProductSchemaWithOptionalFieldsType = Partial<
   ReviewsProductSchemaType
 >;
+
+export type FindCursorBookingsProductType = FindCursor<BookingsProductSchemaWithIDType>;
 
 // Product & Reviews type
 export type ProductFullDataType = {

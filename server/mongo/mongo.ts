@@ -10,8 +10,13 @@ export class Mongo {
   private static errorMsg = "connexion failed";
 
   public static async connectionTo(collection: string) {
-    const users = await Mongo.clientConnectTo(collection);
-    return users?.find();
+    const selectedCollection = await Mongo.clientConnectTo(collection);
+
+    if (selectedCollection) {
+      return selectedCollection?.find();
+    }
+
+    return { message: Mongo.errorMsg };
   }
 
   public static async addNewItemIntoDB<T>(
@@ -31,7 +36,9 @@ export class Mongo {
       );
 
       return matchedCount + modifiedCount === 2;
-    } else return false;
+    }
+    
+    return false;
   }
 
   public static async updateToDB<T extends Document>(
@@ -51,7 +58,9 @@ export class Mongo {
       );
 
       return matchedCount + modifiedCount === 2;
-    } else return false;
+    }
+    
+    return false;
   }
 
   public static async insertIntoDB<T extends Document>(
@@ -63,7 +72,9 @@ export class Mongo {
     if (selectedCollection) {
       const id: ObjectId = await selectedCollection.insertOne(data);
       return id.toHexString();
-    } else return Mongo.errorMsg;
+    }
+    
+    return Mongo.errorMsg;
   }
 
   public static async selectFromDB<T extends Document>(
@@ -88,7 +99,9 @@ export class Mongo {
         : "Produit non trouvé.";
 
       return { message };
-    } else return { message: Mongo.errorMsg };
+    }
+    
+    return { message: Mongo.errorMsg };
   }
 
   public static async deleteFromDB<T extends Document>(

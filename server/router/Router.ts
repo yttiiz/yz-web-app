@@ -41,6 +41,7 @@ new ProductController(
 );
 new BookingController(
   router,
+  Mongo.connectionTo,
 );
 new ApiController(
   router,

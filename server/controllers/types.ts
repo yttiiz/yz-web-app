@@ -58,7 +58,7 @@ export type ConfigMainHtmlType =
 // DB Generics
 export type GetCollectionType = (
   collection: string,
-) => Promise<Document | undefined>;
+) => Promise<Document | NotFoundMessageType>;
 
 export type InsertIntoDBType<T> = (
   data: T,

@@ -79,7 +79,7 @@ export class DefaultFormHelper {
         dialog.querySelector(".login-register").classList.add("none");
       }
 
-      // TODO implements status logic.
+      // TODO WIP implements status logic.
     } else {
       if (dialog.querySelector(".login-register").classList.contains("none")) {
         dialog.querySelector(".login-register").classList.remove("none");

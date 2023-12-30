@@ -1,0 +1,13 @@
+{
+  "title": "Vos réservations",
+  "description": "Vous trouverez ici toutes les révervations que vous avez effectuées sur l'année",
+  "card": {
+    "createdAtTitle": "Réservation effectuée le :",
+    "periodTitle": "Pour la période du :",
+    "details": {
+      "type": "Type :",
+      "area": "Superficie :",
+      "rooms": "Nombre de pièces :"
+    }
+  }
+}

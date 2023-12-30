@@ -2,25 +2,11 @@
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
 import {
-  StarSvg,
+  RateStars,
   type ComponentType,
   type MoleculeNameType,
 } from "../mod.ts";
 import { RateProductEnum, ReviewsProductSchemaWithIDType } from "@mongo";
-
-const displayStars = (rate: number) => {
-  let stars = ""
-  
-  for (let i = 0; i < RateProductEnum.excellent; i++) {
-    stars +=
-      `<li${i + 1 <= rate ? " class=\"ranking\"": ""}>
-        ${StarSvg.html}
-      </li>`;
-  }
-
-
-  return stars;
-};
 
 export const ReviewsDetails: ComponentType<
   MoleculeNameType,
@@ -56,9 +42,7 @@ export const ReviewsDetails: ComponentType<
                 <span>
                   a noté : <strong>${rate}/${RateProductEnum.excellent}</strong>
                 </span>
-                <ul title="${rate}/${RateProductEnum.excellent}">
-                  ${displayStars(rate)}
-                </ul>
+                ${RateStars.html(rate)}
               </div>
             </dd>
             `

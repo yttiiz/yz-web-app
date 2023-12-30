@@ -1,4 +1,3 @@
-import { Helper } from "@utils";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   GetCollectionType,
@@ -10,28 +9,36 @@ import type {
 import type { FindCursorProductType } from "@mongo";
 
 export class HomeController extends DefaultController {
-  private collection;
+  private getCollection;
   private selectFromDB;
 
   constructor(
     router: RouterAppType,
-    collection: GetCollectionType,
+    getCollection: GetCollectionType,
     selectFromDB: SelectReviewFromDBType,
   ) {
     super(router);
-    this.collection = collection;
+    this.getCollection = getCollection;
     this.selectFromDB = selectFromDB;
-    this.helper = Helper;
     this.index();
   }
 
   private index() {
     this.router?.get("/", async (ctx: RouterContextAppType<"/">) => {
       const data: ProductsDataType = {};
-      const cursor = await this.collection("products");
+      const cursor = await this.getCollection("products");
 
       try {
-        if (cursor) {
+        if ("message" in cursor && cursor["message"].includes("failed")) {
+          this.response(
+            ctx,
+            JSON.stringify({
+              errorMsg: this.errorMsg,
+            }),
+            502,
+          );
+          
+        } else {
           await (cursor as FindCursorProductType)
             .map((document, key) => data[key + 1] = document);
 
@@ -57,14 +64,6 @@ export class HomeController extends DefaultController {
             },
           );
           this.response(ctx, body, 200);
-        } else {
-          this.response(
-            ctx,
-            JSON.stringify({
-              errorMsg: this.errorMsg,
-            }),
-            502,
-          );
         }
       } catch (error) {
         this.helper.writeLog(error);

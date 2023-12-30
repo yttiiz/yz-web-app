@@ -6,8 +6,10 @@ export type TemplateNameType =
 export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
+  | "SectionsBooking"
   | "SectionsProduct"
-  | "ProductsHome"
+  | "SectionProductsHome"
+  | "BookingCard"
   | "ProductCard";
 
 export type MoleculeNameType =
@@ -22,6 +24,7 @@ export type MoleculeNameType =
   | "LogoutForm"
   | "ProductDetails"
   | "ProductFigure"
+  | "RateStars"
   | "Dialog"
   | "ReviewsDetails"
   | "FormReview"
@@ -144,6 +147,18 @@ export type DeleteAccountDataType = {
     action: string;
     method: string;
   };
+};
+
+export type BookingCardDataType = {
+  createdAtTitle: string;
+  periodTitle: string;
+  details: ProductDescriptionType;
+};
+
+export type BookingDataType = {
+  title: string;
+  description: string;
+  card: BookingCardDataType;
 };
 
 export type ProductDataType = {

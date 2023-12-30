@@ -156,7 +156,7 @@ export class DefaultController {
       case "data-home": {
         return main.replace(
           "{{ content-insertion }}",
-          await layout.ProductsHome.html(data),
+          await layout.SectionProductsHome.html(data),
         );
       }
 
@@ -171,11 +171,19 @@ export class DefaultController {
         );
       }
 
+      // Booking rendering.
+      case "data-booking": {
+        return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionsBooking.html()
+        );
+      }
+
       // Profil form rendering.
       case "data-profil-form": {
         return main.replace(
           "{{ content-insertion }}",
-          layout.SectionsProfilForm.html()
+          layout.SectionsProfilForm.html(),
         );
       }
 
@@ -184,7 +192,7 @@ export class DefaultController {
         return main.replace(
           "{{ content-insertion }}",
           layout.NotFound.html,
-          );
+        );
       }
 
       default: {
@@ -196,7 +204,7 @@ export class DefaultController {
           );
         }
     
-        return main.replace("{{ content-insertion }}", "")
+        return main.replace("{{ content-insertion }}", "");
       }
     }
   }

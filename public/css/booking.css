@@ -1,0 +1,119 @@
+.user-bookings {
+    .booking-card {
+        overflow: hidden;
+        border-radius: var(--base-size);
+        border: var(--border-black-25-percent);
+
+        & > header,
+        & > div {
+            padding: calc(var(--base-size) * 1.5);
+            display: flex;
+        }
+        
+        /*=================================================| card header |=================================================*/
+        
+        & > header {
+            justify-content: space-between;
+            background: var(--light);
+        }
+
+        & > header > div:last-of-type {
+            text-align: right;
+        }
+
+        & > header h4,
+        & > header p {
+            line-height: 1;
+        }
+        
+        & > header p {
+            margin-top: calc(var(--base-size) * .75);
+            color: var(--primary-color);
+            font-weight: 400;
+        }
+
+        /*=================================================| card content |=================================================*/
+
+        & .card-content > figure {
+            display: inherit;
+            gap: var(--base-size);
+            width: max-content;
+        }
+        
+        & .card-content > figure img {
+            border-radius: 50%;
+            width: calc(var(--base-size) * 12.5);
+            aspect-ratio: 1 / 1;
+            object-position: center;
+            object-fit: cover;
+        }
+
+        & .card-content > figure figcaption {
+
+        }
+
+        & .card-content > figure figcaption span {
+            position: relative;
+            display: inline-block;
+            width: calc(var(--base-size) * 1.5);
+        }
+
+        & .card-content > figure figcaption span::after {
+            position: absolute;
+            transform: translateY(-50%);
+            top: 50%;
+            right: calc(var(--base-size) * -1);
+            font-weight: 500;
+            content: attr(data-rate);
+        }
+
+        & .card-content > figure figcaption svg {
+            width: 100%;
+            height: auto;
+            fill: var(--secondary-color);
+        }
+
+        & .card-content > figure figcaption p {
+            font-weight: 400;
+            margin-top: var(--base-size);
+            border-top: var(--border-black-25-percent);
+            padding-top: var(--base-size);
+        }
+
+        & .card-content > figure figcaption p strong {
+            font-size: calc(var(--base-size) * 1.6);
+            font-weight: 500;
+            color: var(--danger);
+        }
+
+    }
+
+    /*=================================================| BREAKPOINTS |=================================================*/
+    
+    @media screen and (max-width: 850px) {
+        .booking-card > header {
+            flex-direction: column;
+        }
+
+        .booking-card > header > div:first-of-type {
+            padding-bottom: var(--base-size);
+        }
+
+        .booking-card > header > div:last-of-type {
+            border-top: var(--border-black-25-percent);
+            padding-top: var(--base-size);
+            text-align: left;
+        }
+
+        .booking-card header p {
+            margin-top: calc(var(--base-size) * .5);
+        }
+    }
+
+    @media screen and (max-width: 850px) {
+        .booking-card > div > figure img {
+            display: none;
+        }
+    }
+
+}
