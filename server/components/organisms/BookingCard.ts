@@ -22,6 +22,7 @@ StarSvg,
       area,
       rooms,
     },
+    amount,
   }: BookingCardDataType,
   {
     productName,
@@ -66,6 +67,23 @@ StarSvg,
           </figcaption>
         </figure>
         <div>
+          <h4>${amount.toLocaleUpperCase()}</h4>
+          <p>pour 
+            <strong>
+              ${Handler.getDaysNumber(
+                startingDate,
+                endingDate
+              )} nuit${Handler.getDaysNumber(
+                startingDate,
+                endingDate
+              ) > 1 ? "s" : ""}
+            </strong> à ${Helper.formatPrice(details.price)}
+          </p>
+          <span>
+            ${Helper.formatPrice(
+              details.price * Handler.getDaysNumber(startingDate, endingDate),
+            )}
+          </span>
         </div>
       </div>
     </div>

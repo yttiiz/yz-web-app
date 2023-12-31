@@ -12,7 +12,6 @@ import type {
 
  const {
   title,
-  description,
   card,
  }: BookingDataType = await Helper.convertJsonToObject(
   "/server/data/booking/booking.json",
@@ -29,21 +28,26 @@ export const SectionsBooking: ComponentType<
       <div class="container">
         <div>
           <h1>${title}</h1>
-          <p>${description} ${new Date().getFullYear()}.</p>
         </div>
         <div class="user-bookings">
-          <ul>
-          ${bookingsUserInfo.map(
-            bookingUserInfo => (
-              `<li>
-                ${BookingCard.html(
-                  card,
-                  bookingUserInfo,
-                )}
-              </li>`
+          ${bookingsUserInfo.length > 0
+            ?
+            (
+              `<ul>
+              ${bookingsUserInfo.map(
+                bookingUserInfo => (
+                  `<li>
+                    ${BookingCard.html(
+                      card,
+                      bookingUserInfo,
+                    )}
+                  </li>`
+                )
+              ).join("")}
+              </ul>`
             )
-          ).join("")}
-          </ul>
+            : "Aucune réservation effectuée pour le moment."
+          }
         </div>
       </div>
     </section>

@@ -153,11 +153,11 @@ export type BookingCardDataType = {
   createdAtTitle: string;
   periodTitle: string;
   details: ProductDescriptionType;
+  amount: string;
 };
 
 export type BookingDataType = {
   title: string;
-  description: string;
   card: BookingCardDataType;
 };
 

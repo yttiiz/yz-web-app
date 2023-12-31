@@ -177,7 +177,7 @@ export class DefaultController {
           "{{ content-insertion }}",
           layout.SectionsBooking.html(
             data,
-          )
+          ),
         );
       }
 

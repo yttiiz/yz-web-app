@@ -125,6 +125,12 @@ export class Handler {
     }
   }
 
+  public static getDaysNumber(start: string, end: string) {
+    const DAY = 1000 * 60 * 60 * 24;
+
+    return Math.round((Handler.getTime(end) - Handler.getTime(start)) / DAY);
+  }
+
   public static sortFromClosestToOlderBookings(bookings: BookingsType[]) {
     return bookings.sort((a, b) => (
       Handler.getTime(a.startingDate) - Handler.getTime(b.startingDate)
