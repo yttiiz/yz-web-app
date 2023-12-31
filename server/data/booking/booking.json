@@ -8,6 +8,11 @@
       "area": "Superficie :",
       "rooms": "Nombre de pièces :"
     },
-    "amount": "Montant total"
+    "amount": "Montant total",
+    "cancelBookingForm": {
+      "action": "/cancel-booking",
+      "method": "DELETE",
+      "btnText": "Annuler ma réservation"
+    }
   }
 }

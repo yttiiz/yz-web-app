@@ -105,14 +105,25 @@
         }
         
         & .card-content > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             text-align: right;
         }
 
-        & .card-content > div > span {
+        & .card-content > div span {
             display: inline-block;
             font-size: calc(var(--base-size) * 2);
             font-weight: 500;
             color: var(--primary-color);
+        }
+
+        & .card-content > div form button {
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            font-size: var(--base-size);
+            color: var(--light);
+            background: var(--primary-color);
         }
     }
 
@@ -150,7 +161,10 @@
     @media screen and (max-width: 650px) {
         & .card-content > figure {
             width: 100%;
-        } 
-    }
+        }
 
+        & .card-content > div {
+            gap: var(--base-size);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { Dialog, BookingCard } from "../mod.ts";
+import { Dialog, BookingCard } from "../mod.ts";
 import type {
   ComponentType,
   OrganismNameType,
@@ -52,6 +52,12 @@ export const SectionsBooking: ComponentType<
       </div>
     </section>
     <section>
+      <div class="container">
+        <div>
+          <h1>Lorem ipsum dolor</h1>
+          <p>Lorem ipsum dolor.</p>
+        </div>
+      </div>
     </section>
     ${Dialog.html({})}`;
   }

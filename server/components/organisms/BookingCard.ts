@@ -23,6 +23,11 @@ StarSvg,
       rooms,
     },
     amount,
+    cancelBookingForm: {
+      action,
+      method,
+      btnText,
+    }
   }: BookingCardDataType,
   {
     productName,
@@ -31,7 +36,8 @@ StarSvg,
     details,
     thumbnail,
     rates,
-  }: BookingUserInfoType) => {
+  }: BookingUserInfoType,
+  ) => {
     return `
     <div class="booking-card">
       <header>
@@ -67,23 +73,36 @@ StarSvg,
           </figcaption>
         </figure>
         <div>
-          <h4>${amount.toLocaleUpperCase()}</h4>
-          <p>pour 
-            <strong>
-              ${Handler.getDaysNumber(
-                startingDate,
-                endingDate
-              )} nuit${Handler.getDaysNumber(
-                startingDate,
-                endingDate
-              ) > 1 ? "s" : ""}
-            </strong> à ${Helper.formatPrice(details.price)}
-          </p>
-          <span>
-            ${Helper.formatPrice(
-              details.price * Handler.getDaysNumber(startingDate, endingDate),
-            )}
-          </span>
+          <div>
+            <h4>${amount.toLocaleUpperCase()}</h4>
+            <p>pour 
+              <strong>
+                ${Handler.getDaysNumber(
+                  startingDate,
+                  endingDate
+                )} nuit${Handler.getDaysNumber(
+                  startingDate,
+                  endingDate
+                ) > 1 ? "s" : ""}
+              </strong> à ${Helper.formatPrice(details.price)}
+            </p>
+            <span>
+              ${Helper.formatPrice(
+                details.price * Handler.getDaysNumber(startingDate, endingDate),
+              )}
+            </span>
+          </div>
+          ${new Date(startingDate).getTime() > Date.now()
+          ?
+          (
+            `<form
+              action="${action}"
+              method="${method}"
+            >
+              <button type="submit">${btnText}</button>
+            </form>`
+          )
+          : ""}
         </div>
       </div>
     </div>
