@@ -563,7 +563,7 @@ footer {
     }
 
     #burger > nav::before {
-        left: var(--base-size);
+        left: calc(var(--base-size) * 1.25);
     }
 }
 

@@ -37,6 +37,7 @@ StarSvg,
     details,
     thumbnail,
     rates,
+    createdAt,
   }: BookingUserInfoType,
   ) => {
     return `
@@ -44,7 +45,7 @@ StarSvg,
       <header>
         <div>
           <h4>${createdAtTitle}</h4>
-          <p>10/10/2023</p>
+          <p>${Helper.displayDate(createdAt)}</p>
         </div>
         <div>
           <h4>${periodTitle}</h4>
@@ -102,6 +103,7 @@ StarSvg,
               data-booking-id="${bookingId}"
               data-booking-start="${startingDate}"
               data-booking-end="${endingDate}"
+              data-booking-created-at="${createdAt}"
             >
               <button type="submit">${btnText}</button>
             </form>`

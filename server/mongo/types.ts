@@ -99,6 +99,7 @@ export type FindCursorReviewProductType = FindCursor<ReviewsProductSchemaWithIDT
 export type BookingDateType = {
   startingDate: string;
   endingDate: string;
+  createdAt: number;
 };
 
 export type BookingsType = BookingDateType & {

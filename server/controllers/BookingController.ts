@@ -94,6 +94,7 @@ export class BookingController extends DefaultController {
                         details,
                         thumbnail,
                         rates,
+                        createdAt: booking.createdAt,
                       });
                     }
                   }
@@ -137,7 +138,8 @@ export class BookingController extends DefaultController {
         const {
           bookingId,
           bookingStart,
-          bookingEnd
+          bookingEnd,
+          bookingCreatedAt,
         } = fields;
 
         const _id = new ObjectId(bookingId);
@@ -146,6 +148,7 @@ export class BookingController extends DefaultController {
           userName: ctx.state.session.get("userFullname"),
           startingDate: bookingStart,
           endingDate: bookingEnd,
+          createdAt: +bookingCreatedAt,
         };
 
         const isUserDelete = await this.removeItemFromDB(
