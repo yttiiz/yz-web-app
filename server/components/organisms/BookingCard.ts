@@ -30,6 +30,7 @@ StarSvg,
     }
   }: BookingCardDataType,
   {
+    bookingId,
     productName,
     startingDate,
     endingDate,
@@ -98,6 +99,9 @@ StarSvg,
             `<form
               action="${action}"
               method="${method}"
+              data-booking-id="${bookingId}"
+              data-booking-start="${startingDate}"
+              data-booking-end="${endingDate}"
             >
               <button type="submit">${btnText}</button>
             </form>`

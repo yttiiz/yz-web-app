@@ -109,11 +109,14 @@ export type SelectProductFromDBType = SelectFromDBType<
 >;
 
 // Reviews & Bookings common types
-export type AddNewItemIntoDBType<T> = (
+export type HandleItemIntoDBType<T> = (
   id: ObjectId,
   data: T,
   collection: string,
 ) => Promise<boolean>;
+
+export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;
+export type RemoveItemFromDBType<T> = HandleItemIntoDBType<T>;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;

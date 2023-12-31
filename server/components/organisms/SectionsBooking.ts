@@ -5,7 +5,6 @@ import { Dialog, BookingCard } from "../mod.ts";
 import type {
   ComponentType,
   OrganismNameType,
-  DialogDataType,
   BookingDataType,
  } from "../mod.ts";
  import { BookingUserInfoType } from "@mongo";

@@ -42,6 +42,7 @@ new ProductController(
 new BookingController(
   router,
   Mongo.connectionTo,
+  Mongo.removeItemFromDB,
 );
 new ApiController(
   router,

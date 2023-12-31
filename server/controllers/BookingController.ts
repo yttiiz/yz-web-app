@@ -3,25 +3,31 @@ import { DefaultController } from "./DefaultController.ts";
 import type {
   GetCollectionType,
   RouterAppType,
+  RemoveItemFromDBType,
   RouterContextAppType,
 } from "./mod.ts";
-import type { 
-  BookingUserInfoType,
-  FindCursorBookingsProductType,
-  FindCursorProductType,
-  FindCursorReviewProductType,
+import { 
+  type BookingsType,
+  type BookingUserInfoType,
+  type FindCursorBookingsProductType,
+  type FindCursorProductType,
+  type FindCursorReviewProductType,
 } from "@mongo";
 
 export class BookingController extends DefaultController {
   private getCollection;
+  private removeItemFromDB;
 
   constructor(
     router: RouterAppType,
     getCollection: GetCollectionType,
+    removeItemFromDB: RemoveItemFromDBType<BookingsType>,
   ) {
     super(router);
     this.getCollection = getCollection;
+    this.removeItemFromDB = removeItemFromDB
     this.getBooking();
+    this.deleteBooking();
   }
 
   private getBooking() {
@@ -82,6 +88,7 @@ export class BookingController extends DefaultController {
                       data.push({
                         productId: document.productId,
                         productName: document.productName,
+                        bookingId: document._id.toString(),
                         startingDate: booking.startingDate,
                         endingDate: booking.endingDate,
                         details,
@@ -117,7 +124,48 @@ export class BookingController extends DefaultController {
         } else {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
         }
-      }
+      },
     )
+  }
+
+  deleteBooking() {
+    this.router?.delete(
+      "/cancel-booking",
+      async (ctx: RouterContextAppType<"/cancel-booking">) => {
+        const data = await ctx.request.body().value as oak.FormDataReader;
+        const { fields } = await data.read({ maxSize: this.MAX_SIZE });
+        const {
+          bookingId,
+          bookingStart,
+          bookingEnd
+        } = fields;
+
+        const _id = new ObjectId(bookingId);
+        const bookingToDelete = {
+          userId: (ctx.state.session.get("userId") as ObjectId).toString(),
+          userName: ctx.state.session.get("userFullname"),
+          startingDate: bookingStart,
+          endingDate: bookingEnd,
+        };
+
+        const isUserDelete = await this.removeItemFromDB(
+          _id,
+          bookingToDelete,
+          "bookings",
+        );
+
+        this.response(
+          ctx,
+          {
+            message: `Votre réservation ${
+              isUserDelete
+                ? "a bien été"
+                : "n'a pas pu être"
+            } annulée`,
+          },
+          200,
+        );
+      },
+    );
   }
 }

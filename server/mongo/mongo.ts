@@ -41,6 +41,28 @@ export class Mongo {
     return false;
   }
 
+  public static async removeItemFromDB<T>(
+    id: ObjectId,
+    data: T,
+    collection: string,
+  ) {
+    const selectedCollection = await Mongo.clientConnectTo(collection);
+
+    if (selectedCollection) {
+      const {
+        matchedCount,
+        modifiedCount,
+      } = await selectedCollection.updateOne(
+        { _id: id },
+        { $pull: { [collection]: data } },
+      );
+
+      return matchedCount + modifiedCount === 2;
+    }
+
+    return false;
+  }
+
   public static async updateToDB<T extends Document>(
     id: ObjectId,
     data: T,

@@ -109,6 +109,7 @@ export type BookingsType = BookingDateType & {
 export type BookingUserInfoType = (
   ProductBindingFieldsType &
   BookingDateType & {
+    bookingId: string;
     details: DetailsProductType
     thumbnail: ImagesProductType;
     rates: number[];

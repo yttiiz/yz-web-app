@@ -2,12 +2,12 @@ import { PageBuilder } from "../Builder.js";
 import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 
 export class ProductFormPage extends PageBuilder {
-  initForm = (
-    id = "product",
-  ) => {
+  initForm = () => {
+    const id = "#data-product";
+    
     /** @type {HTMLFormElement[]} */
-    const forms = document.querySelectorAll(`#data-${id} form`);
-    const dialog = document.querySelector(`#data-${id} dialog`);
+    const forms = document.querySelectorAll(`${id} form`);
+    const dialog = document.querySelector(`${id} dialog`);
 
     // Init forms submission.
     for (const form of forms) {

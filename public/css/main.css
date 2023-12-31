@@ -552,8 +552,22 @@ footer {
 
 /*=================================================| BREAKPOINTS |=================================================*/
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 1200px) {
+    #burger > nav,
+    #burger > nav::before {
+        transform: unset;
+    }
 
+    #burger > nav {
+        left: calc(var(--base-size) * -1);
+    }
+
+    #burger > nav::before {
+        left: var(--base-size);
+    }
+}
+
+@media screen and (max-width: 750px) {
     #data-home section .container > ul,
     #data-user-form section form {
         grid-template-columns: 1fr;
