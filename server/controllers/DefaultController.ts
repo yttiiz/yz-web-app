@@ -175,7 +175,9 @@ export class DefaultController {
       case "data-booking": {
         return main.replace(
           "{{ content-insertion }}",
-          layout.SectionsBooking.html()
+          layout.SectionsBooking.html(
+            data,
+          )
         );
       }
 

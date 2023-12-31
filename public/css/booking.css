@@ -1,4 +1,14 @@
 .user-bookings {
+    & ul {
+        list-style: none;
+    }
+
+    & > ul {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--base-size) * 2);
+    }
+
     .booking-card {
         overflow: hidden;
         border-radius: var(--base-size);
@@ -40,47 +50,51 @@
             width: max-content;
         }
         
-        & .card-content > figure img {
-            border-radius: 50%;
+        & .card-content img,
+        & .card-content figcaption {
             width: calc(var(--base-size) * 12.5);
+        }
+
+        & .card-content img {
+            border-radius: 50%;
             aspect-ratio: 1 / 1;
             object-position: center;
             object-fit: cover;
         }
 
-        & .card-content > figure figcaption {
-
-        }
-
-        & .card-content > figure figcaption span {
+        & .card-content figcaption span {
             position: relative;
             display: inline-block;
             width: calc(var(--base-size) * 1.5);
         }
 
-        & .card-content > figure figcaption span::after {
+        & .card-content figcaption span::after {
             position: absolute;
             transform: translateY(-50%);
             top: 50%;
-            right: calc(var(--base-size) * -1);
+            left: calc(calc(var(--base-size) * .5) + 100%);
             font-weight: 500;
             content: attr(data-rate);
         }
 
-        & .card-content > figure figcaption svg {
+        & .card-content figcaption svg {
             width: 100%;
             height: auto;
             fill: var(--secondary-color);
         }
 
-        & .card-content > figure figcaption p {
+        & .card-content figcaption li:not(:last-of-type) {
+            margin-bottom: calc(var(--base-size) * .3);
+        }
+
+        & .card-content figcaption p {
             font-weight: 400;
             margin-top: var(--base-size);
             border-top: var(--border-black-25-percent);
             padding-top: var(--base-size);
         }
 
-        & .card-content > figure figcaption p strong {
+        & .card-content figcaption p strong {
             font-size: calc(var(--base-size) * 1.6);
             font-weight: 500;
             color: var(--danger);

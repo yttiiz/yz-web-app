@@ -9,6 +9,7 @@ import type {
   BookingUserInfoType,
   FindCursorBookingsProductType,
   FindCursorProductType,
+  FindCursorReviewProductType,
 } from "@mongo";
 
 export class BookingController extends DefaultController {
@@ -30,13 +31,16 @@ export class BookingController extends DefaultController {
         if (ctx.state.session) {
           const data: BookingUserInfoType[] = [];
           const userId: ObjectId = ctx.state.session.get("userId");
-          const bookingCursor = await this.getCollection("bookings");
-          const productCursor = await this.getCollection("products");
+          
+          const bookingsCursor = await this.getCollection("bookings");
+          const productsCursor = await this.getCollection("products");
+          const reviewsCursor = await this.getCollection("reviews");
 
           try {
             if (
-              ("message" in bookingCursor && bookingCursor["message"].includes("failed")) ||
-              ("message" in productCursor && productCursor["message"].includes("failed"))
+              ("message" in bookingsCursor && bookingsCursor["message"].includes("failed")) ||
+              ("message" in productsCursor && productsCursor["message"].includes("failed")) ||
+              ("message" in reviewsCursor && reviewsCursor["message"].includes("failed"))
             ) {
               this.response(
                 ctx,
@@ -47,10 +51,11 @@ export class BookingController extends DefaultController {
               );
 
             } else {
-              const products = await (productCursor as FindCursorProductType).toArray();
+              const products = await (productsCursor as FindCursorProductType).toArray();
+              const reviews = await (reviewsCursor as FindCursorReviewProductType).toArray();
               
               // Get bookings related to user.
-              for await (const document of (bookingCursor as FindCursorBookingsProductType)) {
+              for await (const document of (bookingsCursor as FindCursorBookingsProductType)) {
                 for (const booking of document.bookings) {
 
                   if (booking.userId === userId.toString()) {
@@ -63,9 +68,17 @@ export class BookingController extends DefaultController {
                     // Get product thumbnail related to current booking.
                     const thumbnail = products.find(product => (
                       document.productId === product._id.toString()
-                    ))?.thumbnail;
+                      ))?.thumbnail;
+                      
+                    // Get product rates related to current booking.
+                    const rates = reviews.find(review => (
+                      document.productId === review.productId
+                    ))?.reviews.reduce((acc, review) => {
+                      acc.push(review.rate);
+                      return acc;
+                    }, [] as number[]);
 
-                    if (details && thumbnail) {
+                    if (details && thumbnail && rates) {
                       data.push({
                         productId: document.productId,
                         productName: document.productName,
@@ -73,11 +86,16 @@ export class BookingController extends DefaultController {
                         endingDate: booking.endingDate,
                         details,
                         thumbnail,
+                        rates,
                       });
                     }
                   }
                 }
               }
+
+              data.sort((a, b) => (
+                new Date(a.startingDate).getTime() - new Date(b.startingDate).getTime()
+              ));
 
               const body = await this.createHtmlFile(
                 ctx,

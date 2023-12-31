@@ -93,6 +93,8 @@ export type ReviewsProductSchemaWithOptionalFieldsType = Partial<
   ReviewsProductSchemaType
 >;
 
+export type FindCursorReviewProductType = FindCursor<ReviewsProductSchemaWithIDType>;
+
 //Bookings types
 export type BookingDateType = {
   startingDate: string;
@@ -109,6 +111,7 @@ export type BookingUserInfoType = (
   BookingDateType & {
     details: DetailsProductType
     thumbnail: ImagesProductType;
+    rates: number[];
   }
 );
 

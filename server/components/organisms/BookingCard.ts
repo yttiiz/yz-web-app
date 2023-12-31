@@ -1,12 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
+import { Handler, Helper } from "@utils";
 import {
 StarSvg,
   type BookingCardDataType,
   type ComponentType,
   type OrganismNameType,
  } from "../mod.ts";
-
+ import { BookingUserInfoType } from "@mongo";
 
  export const BookingCard: ComponentType<
   OrganismNameType,
@@ -21,7 +22,15 @@ StarSvg,
       area,
       rooms,
     },
-  }: BookingCardDataType,) => {
+  }: BookingCardDataType,
+  {
+    productName,
+    startingDate,
+    endingDate,
+    details,
+    thumbnail,
+    rates,
+  }: BookingUserInfoType) => {
     return `
     <div class="booking-card">
       <header>
@@ -31,21 +40,29 @@ StarSvg,
         </div>
         <div>
           <h4>${periodTitle}</h4>
-          <p>15/10/2023 au 22/10/2023</p>
+          <p>${
+            Helper.displayDate(
+              new Date(startingDate),
+              "base",
+            )} au ${
+            Helper.displayDate(
+              new Date(endingDate),
+              "base",
+          )}</p>
         </div>
       </header>
       <div class="card-content">
         <figure>
-          <img src="/img/products/fixture_0003.jpg" alt="" />
+          <img src="${thumbnail.src}" alt="${thumbnail.alt}" />
           <figcaption>
-            <h3>Aka Untel</h3>
-            <span data-rate="4">${StarSvg.html}</span>
+            <h3>Aka ${productName}</h3>
+            <span data-rate="${Handler.rateAverage(rates)}">${StarSvg.html}</span>
             <ul>
-              <li>${type} F1</li>
-              <li>${area} 37 m2</li>
-              <li>${rooms} 2</li>
+              <li>${type} ${details.type}</li>
+              <li>${area} ${details.area}m<sup>2</sup></li>
+              <li>${rooms} ${details.rooms}</li>
             </ul>
-            <p><strong>39,99€</strong> la nuit</p>
+            <p><strong>${Helper.formatPrice(details.price)}</strong> la nuit</p>
           </figcaption>
         </figure>
         <div>

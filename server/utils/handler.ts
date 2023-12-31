@@ -7,15 +7,23 @@ import type { ReturnBookingAvailabilityType } from "./mod.ts";
 
 export class Handler {
   public static rateAverage(
-    reviewsDocument: ReviewsProductSchemaWithIDType,
+    ratesOrReviewsDocument: (
+      | ReviewsProductSchemaWithIDType
+      | number[]
+    ),
     rateCount = 0,
   ) {
-    const { reviews } = reviewsDocument;
     let rateSummary = 0;
+    const reviews = "_id" in ratesOrReviewsDocument
+     ? ratesOrReviewsDocument.reviews
+     : ratesOrReviewsDocument;
 
     for (const review of reviews) {
       rateCount++;
-      rateSummary += review.rate;
+
+      typeof review === "number"
+      ? (rateSummary += review)
+      : (rateSummary += review.rate);
     }
 
     return new Intl.NumberFormat("fr-FR", {

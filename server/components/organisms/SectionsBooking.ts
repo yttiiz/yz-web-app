@@ -8,6 +8,7 @@ import type {
   DialogDataType,
   BookingDataType,
  } from "../mod.ts";
+ import { BookingUserInfoType } from "@mongo";
 
  const {
   title,
@@ -22,7 +23,7 @@ export const SectionsBooking: ComponentType<
  (...args: any[]) => string
 > = {
   name: "SectionsBooking",
-  html: () => {
+  html: (bookingsUserInfo: BookingUserInfoType[]) => {
     return `
     <section>
       <div class="container">
@@ -31,9 +32,18 @@ export const SectionsBooking: ComponentType<
           <p>${description} ${new Date().getFullYear()}.</p>
         </div>
         <div class="user-bookings">
-          ${BookingCard.html(
-            card,
-          )}
+          <ul>
+          ${bookingsUserInfo.map(
+            bookingUserInfo => (
+              `<li>
+                ${BookingCard.html(
+                  card,
+                  bookingUserInfo,
+                )}
+              </li>`
+            )
+          ).join("")}
+          </ul>
         </div>
       </div>
     </section>
