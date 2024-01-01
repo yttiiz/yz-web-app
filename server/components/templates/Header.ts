@@ -7,7 +7,7 @@ import type {
   HeaderDataType,
   TemplateNameType,
 } from "../mod.ts";
-import { SessionType } from "@controllers";
+import { SessionAndDataType } from "@controllers";
 
 const {
   logo: { link, text },
@@ -19,22 +19,36 @@ export const Header: ComponentType<
   (...args: any[]) => string
 > = {
   name: "Header",
-  html: (session: SessionType) => {
+  html: ({
+    session,
+    data,
+  }: SessionAndDataType
+  ) => {
+    const isServerError = typeof data === "string";
+
     return `
     <header data-header="site">
       <div class="container">
         <div>
-          <div id="burger">
-            <button type="button">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-            ${HeaderNavigation.html(
-              session.get("userFirstname"),
-              items,
-            )}
-          </div>
+          ${isServerError
+            ? ""
+            :
+            (
+              `
+              <div id="burger">
+                <button type="button">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+                ${HeaderNavigation.html(
+                  session.has("userFirstname"),
+                  items,
+                )}
+              </div>
+              `
+            )
+          }
           <div id="logo">
             <a href="${link}">
               ${Logo.html}
@@ -42,9 +56,17 @@ export const Header: ComponentType<
             </a>
           </div>
         </div>
-        <div>
-          ${HeaderUserSession.html(session)}
-        </div>
+        ${isServerError
+          ? ""
+          :
+          (
+            `
+            <div>
+              ${HeaderUserSession.html(session)}
+            </div>
+            `
+          )
+        }
       </div>
     </header>`
   },

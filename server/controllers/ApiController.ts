@@ -13,7 +13,7 @@ export class ApiController {
   private collection;
   private selectFromDB;
   private helper;
-  private errorMsg = "Impossible de se connecter à la base de données.";
+  private errorMsg = "Impossible de se connecter à la base de données de l'api.";
   private contentType = {
     name: "Content-Type",
     value: "application/json",
@@ -38,7 +38,16 @@ export class ApiController {
       const cursor = await this.collection("users");
 
       try {
-        if (cursor) {
+        if ("message" in cursor && cursor["message"].includes("failed")) {
+          this.response(
+            ctx,
+            JSON.stringify({
+              errorMsg: this.errorMsg,
+            }),
+            502,
+          );
+
+        } else {
           await (cursor as FindCursorUserType)
             .map((document, key) => users[key + 1] = document);
 
@@ -51,14 +60,7 @@ export class ApiController {
           }
 
           this.response(ctx, JSON.stringify(users), 200);
-        } else {
-          this.response(
-            ctx,
-            JSON.stringify({
-              errorMsg: this.errorMsg,
-            }),
-            502,
-          );
+          
         }
       } catch (error) {
         this.writeErrorLogAndSetResponse(ctx, error);

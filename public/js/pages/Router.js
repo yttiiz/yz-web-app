@@ -32,7 +32,7 @@ export class Router {
           break;
         }
 
-        this.#home.renderError(res.status, res.url);
+        this.#home.renderError(await res.json());
         break;
       }
 

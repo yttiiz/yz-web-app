@@ -9,7 +9,7 @@ import type {
   RouterContextAppType,
   ConfigMainHtmlType,
   DataResponseType,
-  SessionType,
+  SessionAndDataType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -65,8 +65,10 @@ export class DefaultController {
     }: ConfigPageType,
   ) {
     const isUserConnected: boolean = ctx.state.session.has("userFirstname");
+    const appData = { session: ctx.state.session, data };
+
     let [html, header, main, footer] = this.createComponents(
-      ctx.state.session,
+      appData,
       "Body",
       "Header",
       "Main",
@@ -84,14 +86,14 @@ export class DefaultController {
   }
 
   private createComponents(
-    session: SessionType,
+    appData: SessionAndDataType,
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
     for (const arg of args) {
-      arg === "Header"
-        ? components.push(layout[arg].html(session))
+      arg === "Header" || arg === "Footer"
+        ? components.push(layout[arg].html(appData))
         : components.push(layout[arg].html);
     }
 
@@ -126,6 +128,11 @@ export class DefaultController {
     switch(id) {
       // Home rendering.
       case "data-home": {
+        if (typeof data === "string") return main.replace(
+          "{{ content-insertion }}",
+          layout.SectionErrorHome.html(data),
+        );
+
         return main.replace(
           "{{ content-insertion }}",
           await layout.SectionProductsHome.html(data),

@@ -58,33 +58,11 @@ export class HomePage extends PageBuilder {
   };
 
   /**
-   * @param {number} status
-   * @param {string} url
+   * @param {{ errorMsg: string }} message
    */
-  renderError = (status, url) => {
-    const [
-      section,
-      container,
-      title,
-      text,
-    ] = this.createHTMLElements("section", "div", "h1", "p");
-
-    const displayError = (
-      msg = status === 404
-        ? "Aucune api trouvée à cette adresse : " + url
-        : "Erreur interne du serveur.",
-    ) => {
-      title.textContent = "Erreur code : " + status;
-      text.textContent = msg;
-    };
-
-    displayError();
-
-    container.classList.add("container");
-
-    this.insertChildren(container, title, text);
-    this.insertChildren(section, container);
-    this.insertChildren(this.#root, section);
+  renderError = ({ errorMsg }) => {
+    this.#root.querySelector(".container p")
+    .innerHTML += `<br /> ${errorMsg}`;
   };
 
   /**

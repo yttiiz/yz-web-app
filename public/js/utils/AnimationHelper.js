@@ -189,10 +189,12 @@ export class AnimationHelper {
       }
     };
 
-    document.querySelector("#burger")
-      .addEventListener("click", burgerHandler);
-    // deno-lint-ignore no-window-prefix
-    window.addEventListener("click", windowHandler);
+    if (document.querySelector("#burger")) {
+      document.querySelector("#burger")
+        .addEventListener("click", burgerHandler);
+      // deno-lint-ignore no-window-prefix
+      window.addEventListener("click", windowHandler);
+    }
   };
 
   /**

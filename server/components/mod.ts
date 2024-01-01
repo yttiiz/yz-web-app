@@ -18,6 +18,7 @@ export * from "./organisms/SectionAuthForm.ts";
 export * from "./organisms/SectionsProduct.ts";
 export * from "./organisms/SectionsBooking.ts";
 export * from "./organisms/SectionProductsHome.ts";
+export * from "./organisms/SectionErrorHome.ts";
 export * from "./organisms/BookingCard.ts";
 export * from "./organisms/ProductCard.ts";
 export * from "./molecules/BookingDetails.ts";
