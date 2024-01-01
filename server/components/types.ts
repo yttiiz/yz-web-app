@@ -19,6 +19,8 @@ export type MoleculeNameType =
   | "DeleteAccountForm"
   | "InputsForm"
   | "InputsGroupForm"
+  | "HeaderNavigation"
+  | "HeaderUserSession"
   | "TextAreaForm"
   | "Login"
   | "LogoutForm"
@@ -66,6 +68,11 @@ export type ItemDataType = {
   link: string;
   text: string;
   className?: string;
+};
+
+export type ItemDataTypeAndUserRelationship =
+  ItemDataType & {
+  isRelatedToUser: boolean;
 };
 
 export type ButtonType = {
@@ -128,7 +135,7 @@ export type HeadPageDataType = {
 
 export type HeaderDataType = {
   logo: ItemDataType;
-  items: ItemDataType[];
+  items: ItemDataTypeAndUserRelationship[];
   login: ItemDataType[];
 };
 

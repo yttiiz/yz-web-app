@@ -326,8 +326,13 @@
 
 @media screen and (max-width: 1080px) {
     #data-home .products header > div:last-of-type {
-        flex-direction: column;
-        gap: unset;
-        align-items: unset;
+        position: relative;
+
+        & > span {
+            line-height: 1;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
     }
 }

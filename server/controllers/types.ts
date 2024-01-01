@@ -36,6 +36,14 @@ export type DataResponseType =
   | UserSchemaWithIDType
   | Record<string, string | Record<string, string>>;
 
+// Session
+export type SessionType = {
+  get: (value: string) => string;
+  set: (value: string) => void;
+  flash: (key: string, value: string) => void;
+  has: (value: string) => boolean;
+};
+
 // Page
 export type ConfigPageType = {
   id: IdsType;

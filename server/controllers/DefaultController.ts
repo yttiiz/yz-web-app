@@ -9,6 +9,7 @@ import type {
   RouterContextAppType,
   ConfigMainHtmlType,
   DataResponseType,
+  SessionType,
 } from "./mod.ts";
 
 export class DefaultController {
@@ -65,6 +66,7 @@ export class DefaultController {
   ) {
     const isUserConnected: boolean = ctx.state.session.has("userFirstname");
     let [html, header, main, footer] = this.createComponents(
+      ctx.state.session,
       "Body",
       "Header",
       "Main",
@@ -73,7 +75,6 @@ export class DefaultController {
 
     html = this.setTitle(html, title);
     html = this.setCss(html, css);
-    header = await this.setHeaderHtml(header, ctx);
     main = await this.setMainHtml({ main, id, data, path, isUserConnected });
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
@@ -83,12 +84,15 @@ export class DefaultController {
   }
 
   private createComponents(
+    session: SessionType,
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
     for (const arg of args) {
-      components.push(layout[arg].html);
+      arg === "Header"
+        ? components.push(layout[arg].html(session))
+        : components.push(layout[arg].html);
     }
 
     return components;
@@ -108,38 +112,6 @@ export class DefaultController {
     css: string
   ): string {
     return html.replace("{{ css }}", css);
-  }
-
-  private async setHeaderHtml<T extends string>(
-    header: string,
-    ctx: RouterContextAppType<T> | oak.Context,
-  ): Promise<string> {
-    if (!ctx.state.session) {
-      return header.replace(
-        "{{ application-session }}",
-        "",
-      );
-    }
-    
-    if (ctx.state.session.has("userFirstname")) {
-      const firstname = await ctx.state.session.get("userFirstname");
-      const photo = await ctx.state.session.get("userPhoto");
-      const fullname = await ctx.state.session.get("userFullname");
-
-      return header.replace(
-        "{{ application-session }}",
-        layout.LogoutForm.html(photo, fullname)
-          .replace(
-            "{{ user-firstname }}",
-            firstname,
-          ),
-      );
-    }
-
-    return header.replace(
-      "{{ application-session }}",
-      layout.Login.html,
-    );
   }
 
   private async setMainHtml({

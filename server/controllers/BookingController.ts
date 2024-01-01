@@ -34,7 +34,7 @@ export class BookingController extends DefaultController {
     this.router?.get(
       "/booking",
       async (ctx: RouterContextAppType<"/booking">) => {
-        if (ctx.state.session) {
+        if (ctx.state.session && ctx.state.session.has("userId")) {
           const data: BookingUserInfoType[] = [];
           const userId: ObjectId = ctx.state.session.get("userId");
           
