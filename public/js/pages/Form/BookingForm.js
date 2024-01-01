@@ -1,0 +1,51 @@
+import { BookingFormHelper } from "../../utils/BookingFormHelper.js";
+import { PageBuilder } from "../Builder.js";
+
+export class BookingFormPage extends PageBuilder {
+  initForm = () => {
+    const cancelForms = document.querySelectorAll("#data-booking .booking-card form");
+    const dialog = document.querySelector("#data-booking dialog");
+
+    // Init forms submission.
+    for (const form of cancelForms) {
+      form.addEventListener(
+        "submit",
+        (e) => this.#submitHandler(e),
+      );
+    }
+
+    // Init close event dialog modal.
+    dialog.querySelector("button[data-close]")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+  }
+
+  /**
+   * @param {Event} e 
+   */
+  #submitHandler = async (e) => {
+    e.preventDefault();
+
+    const formData = BookingFormHelper.setFormData(e.target);
+
+    const bookingId = e.target.dataset.bookingId;
+    const bookingStart = e.target.dataset.bookingStart;
+    const bookingEnd = e.target.dataset.bookingEnd;
+    const bookingCreatedAt = e.target.dataset.bookingCreatedAt;
+    
+    formData.append("bookingId", bookingId);
+    formData.append("bookingStart", bookingStart);
+    formData.append("bookingEnd", bookingEnd);
+    formData.append("bookingCreatedAt", bookingCreatedAt);
+    
+    const res = await fetch(e.target.action, {
+      method: "DELETE",
+      body: formData,
+    });
+
+    if (res.ok && res.status === 200) {
+      BookingFormHelper.displayDialogCancelledBooking(res);
+    }
+  }
+}

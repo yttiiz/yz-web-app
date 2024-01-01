@@ -7,15 +7,23 @@ import type { ReturnBookingAvailabilityType } from "./mod.ts";
 
 export class Handler {
   public static rateAverage(
-    reviewsDocument: ReviewsProductSchemaWithIDType,
+    ratesOrReviewsDocument: (
+      | ReviewsProductSchemaWithIDType
+      | number[]
+    ),
     rateCount = 0,
   ) {
-    const { reviews } = reviewsDocument;
     let rateSummary = 0;
+    const reviews = "_id" in ratesOrReviewsDocument
+     ? ratesOrReviewsDocument.reviews
+     : ratesOrReviewsDocument;
 
     for (const review of reviews) {
       rateCount++;
-      rateSummary += review.rate;
+
+      typeof review === "number"
+      ? (rateSummary += review)
+      : (rateSummary += review.rate);
     }
 
     return new Intl.NumberFormat("fr-FR", {
@@ -115,6 +123,12 @@ export class Handler {
         return booking.endingDate;
       }
     }
+  }
+
+  public static getDaysNumber(start: string, end: string) {
+    const DAY = 1000 * 60 * 60 * 24;
+
+    return Math.round((Handler.getTime(end) - Handler.getTime(start)) / DAY);
   }
 
   public static sortFromClosestToOlderBookings(bookings: BookingsType[]) {

@@ -5,20 +5,24 @@
   },
   "items": [
     {
-      "link": "#",
-      "text": "Item 1"
+      "link": "/booking",
+      "text": "Mes réservations",
+      "isRelatedToUser": true
     },
     {
       "link": "#",
-      "text": "Item 2"
+      "text": "Item 2",
+      "isRelatedToUser": false
     },
     {
       "link": "#",
-      "text": "Item 3"
+      "text": "Item 3",
+      "isRelatedToUser": false
     },
     {
       "link": "#",
-      "text": "Item 4"
+      "text": "Item 4",
+      "isRelatedToUser": false
     }
   ],
   "login": [

@@ -6,8 +6,10 @@ export type TemplateNameType =
 export type OrganismNameType =
   | "SectionAuthForm"
   | "SectionsProfilForm"
+  | "SectionsBooking"
   | "SectionsProduct"
-  | "ProductsHome"
+  | "SectionProductsHome"
+  | "BookingCard"
   | "ProductCard";
 
 export type MoleculeNameType =
@@ -17,11 +19,14 @@ export type MoleculeNameType =
   | "DeleteAccountForm"
   | "InputsForm"
   | "InputsGroupForm"
+  | "HeaderNavigation"
+  | "HeaderUserSession"
   | "TextAreaForm"
   | "Login"
   | "LogoutForm"
   | "ProductDetails"
   | "ProductFigure"
+  | "RateStars"
   | "Dialog"
   | "ReviewsDetails"
   | "FormReview"
@@ -65,11 +70,25 @@ export type ItemDataType = {
   className?: string;
 };
 
-export type InformativeContentAndButtonType = {
-  title: string;
-  paragraph: string;
+export type ItemDataTypeAndUserRelationship =
+  ItemDataType & {
+  isRelatedToUser: boolean;
+};
+
+export type ButtonType = {
   btnText: string;
   btnLink?: string;
+};
+
+export type InformativeContentAndButtonType = 
+  ButtonType & {
+  title: string;
+  paragraph: string;
+};
+
+export type FormAttributesType = {
+  action: string;
+  method: string;
 };
 
 export type ProductDescriptionType = {
@@ -116,7 +135,7 @@ export type HeadPageDataType = {
 
 export type HeaderDataType = {
   logo: ItemDataType;
-  items: ItemDataType[];
+  items: ItemDataTypeAndUserRelationship[];
   login: ItemDataType[];
 };
 
@@ -130,20 +149,33 @@ export type DialogDataType = {
   component?: string;
 };
 
-export type FormDataType = {
+export type FormDataType = FormAttributesType & {
   title: string;
-  action: string;
-  method: string;
   content: InputDataType[];
   changePhoto?: string;
 };
 
 export type DeleteAccountDataType = {
   deleteAccount: InformativeContentAndButtonType;
-  deleteModal: InformativeContentAndButtonType & {
-    action: string;
-    method: string;
-  };
+  deleteModal: InformativeContentAndButtonType &
+  FormAttributesType
+};
+
+export type CancelBookingFormType = 
+  FormAttributesType & 
+  Pick<ButtonType, "btnText">;
+
+export type BookingCardDataType = {
+  createdAtTitle: string;
+  periodTitle: string;
+  details: ProductDescriptionType;
+  amount: string;
+  cancelBookingForm: CancelBookingFormType;
+};
+
+export type BookingDataType = {
+  title: string;
+  card: BookingCardDataType;
 };
 
 export type ProductDataType = {

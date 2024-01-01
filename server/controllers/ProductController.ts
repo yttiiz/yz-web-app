@@ -143,6 +143,7 @@ export class ProductController extends DefaultController {
           userName,
           startingDate,
           endingDate,
+          createdAt: Date.now(),
         };
 
         const product = await this.getProductFromDB(id);

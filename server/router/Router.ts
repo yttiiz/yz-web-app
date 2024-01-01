@@ -10,6 +10,7 @@ import type { AppState } from "@utils";
 import {
   ApiController,
   AuthController,
+  BookingController,
   HomeController,
   ProductController,
   ProfilController,
@@ -37,6 +38,11 @@ new ProductController(
   router,
   Mongo.addNewItemIntoDB,
   Mongo.selectFromDB,
+);
+new BookingController(
+  router,
+  Mongo.connectionTo,
+  Mongo.removeItemFromDB,
 );
 new ApiController(
   router,

@@ -1,7 +1,13 @@
 import { FilesDataType, Validator } from "./mod.ts";
 
 export class Helper {
-  private static LongDateOpts: Intl.DateTimeFormatOptions = {
+  private static baseDateOpts: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  
+  private static longDateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -67,13 +73,15 @@ export class Helper {
 
   public static displayDate(
     date?: number | Date,
-    length: "long" | "short" = "long",
+    length: "base" | "long" | "short" = "long",
   ) {
     date = date ? date : new Date();
     return Intl
       .DateTimeFormat(
         "fr-FR",
-        length === "long" ? Helper.LongDateOpts : Helper.shortDateOpts,
+        length === "long" 
+          ? Helper.longDateOpts 
+          : (length === "short" ? Helper.shortDateOpts: Helper.baseDateOpts),
       )
       .format(date)
       .replace(",", " à");

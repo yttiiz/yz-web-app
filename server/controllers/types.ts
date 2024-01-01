@@ -23,7 +23,8 @@ export type IdsType =
   | "data-product"
   | "data-user-form"
   | "data-profil-form"
-  | "data-not-found";
+  | "data-not-found"
+  | "data-booking";
 
 // Router
 export type RouterAppType = oak.Router<AppState>;
@@ -34,6 +35,14 @@ export type DataResponseType =
   | string
   | UserSchemaWithIDType
   | Record<string, string | Record<string, string>>;
+
+// Session
+export type SessionType = {
+  get: (value: string) => string;
+  set: (value: string) => void;
+  flash: (key: string, value: string) => void;
+  has: (value: string) => boolean;
+};
 
 // Page
 export type ConfigPageType = {
@@ -57,7 +66,7 @@ export type ConfigMainHtmlType =
 // DB Generics
 export type GetCollectionType = (
   collection: string,
-) => Promise<Document | undefined>;
+) => Promise<Document | NotFoundMessageType>;
 
 export type InsertIntoDBType<T> = (
   data: T,
@@ -108,11 +117,14 @@ export type SelectProductFromDBType = SelectFromDBType<
 >;
 
 // Reviews & Bookings common types
-export type AddNewItemIntoDBType<T> = (
+export type HandleItemIntoDBType<T> = (
   id: ObjectId,
   data: T,
   collection: string,
 ) => Promise<boolean>;
+
+export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;
+export type RemoveItemFromDBType<T> = HandleItemIntoDBType<T>;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;

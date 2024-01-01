@@ -9,11 +9,11 @@ import type {
 } from "../mod.ts";
 import { ProductSchemaWithIDType } from "@mongo";
 
-export const ProductsHome: ComponentType<
+export const SectionProductsHome: ComponentType<
   OrganismNameType,
   (...args: any[]) => Promise<string>
 > = {
-  name: "ProductsHome",
+  name: "SectionProductsHome",
   html: async (products: Record<string, ProductSchemaWithIDType>) => {
     const {
       title,
