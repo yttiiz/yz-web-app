@@ -22,12 +22,12 @@ export const Footer: ComponentType<
   > = {
   name: "Footer",
   html: ({
-    data,
+    isConnexionFailed,
   }: SessionAndDataType
   ) => {
   return `<footer>
       <div class="container">
-        ${typeof data === "string"
+        ${isConnexionFailed
           ? ""
           :
           (

@@ -35,7 +35,7 @@ export class HomeController extends DefaultController {
             {
               id: "data-home",
               css: "home",
-              data: this.errorMsg + 500 + ".",
+              data: this.errorMsg,
             },
           );
 

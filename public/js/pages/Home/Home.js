@@ -61,8 +61,20 @@ export class HomePage extends PageBuilder {
    * @param {{ errorMsg: string }} message
    */
   renderError = ({ errorMsg }) => {
-    this.#root.querySelector(".container p")
-    .innerHTML += `<br /> ${errorMsg}`;
+    /** @type {[HTMLDivElement, HTMLParagraphElement]} */
+    const [
+      section,
+    ] = this.createHTMLElements("section");
+
+    section.innerHTML = `
+    <div class="container">
+      <div>
+        <h1>Connexion impossible</h1>
+        <p>${errorMsg}</p>
+      </div>
+    </div>`;
+
+    this.insertChildren(this.#root, section);
   };
 
   /**

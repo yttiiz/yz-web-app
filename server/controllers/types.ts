@@ -46,7 +46,7 @@ export type SessionType = {
 
 export type SessionAndDataType = {
   session: SessionType;
-  data: unknown;
+  isConnexionFailed: boolean;
 };
 
 // Page

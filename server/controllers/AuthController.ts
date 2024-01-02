@@ -2,6 +2,7 @@ import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import type {
+  GetCollectionType,
   InsertUserIntoDBType,
   PathAppType,
   RouterAppType,
@@ -12,15 +13,18 @@ import { Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private defaultImg;
+  private getCollection;
   private insertIntoDB;
   private selectFromDB;
 
   constructor(
     router: RouterAppType,
+    getCollection: GetCollectionType,
     insertIntoDB: InsertUserIntoDBType,
     selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
+    this.getCollection = getCollection;
     this.insertIntoDB = insertIntoDB;
     this.selectFromDB = selectFromDB;
     this.defaultImg = "/img/users/default.png";
@@ -53,7 +57,12 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      if (ctx.state.session) {
+      const users = await this.getCollection("users");
+
+      if ("message" in users || !ctx.state.session) {
+        this.response(ctx, "", 302, "/");
+
+      } else {
         const body = await this.createHtmlFile(
           ctx,
           {
@@ -63,9 +72,8 @@ export class AuthController extends DefaultController {
             path,
           },
         );
+
         this.response(ctx, body, 200);
-      } else {
-        this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
       }
     });
   }
@@ -142,7 +150,8 @@ export class AuthController extends DefaultController {
         }
       } else {
         if (user.message === "connexion failed") {
-          this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+          this.response(ctx, "", 302, "/");
+
         } else {
           await failedLogin(user.message);
           this.response(ctx, user, 200);

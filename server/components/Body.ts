@@ -40,7 +40,7 @@ export const Body: ComponentType = {
         </h4>
       </noscript>
       {{ application-content }}
-      <script type="module" src="./js/index.js"></script>
+      {{ application-script }}
     </body>
     </html>`,
 };

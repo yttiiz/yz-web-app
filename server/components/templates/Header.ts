@@ -21,16 +21,14 @@ export const Header: ComponentType<
   name: "Header",
   html: ({
     session,
-    data,
+    isConnexionFailed,
   }: SessionAndDataType
   ) => {
-    const isServerError = typeof data === "string";
-
     return `
     <header data-header="site">
       <div class="container">
         <div>
-          ${isServerError
+          ${isConnexionFailed
             ? ""
             :
             (
@@ -56,7 +54,7 @@ export const Header: ComponentType<
             </a>
           </div>
         </div>
-        ${isServerError
+        ${isConnexionFailed
           ? ""
           :
           (
