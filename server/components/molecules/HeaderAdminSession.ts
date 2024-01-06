@@ -1,18 +1,17 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import {
-LogoutUserForm,
+  LogoutAdminForm,
   type ComponentType,
   type MoleculeNameType,
-  Login,
 } from "../mod.ts";
 import { SessionType } from "@controllers";
 
-export const HeaderUserSession: ComponentType<
+export const HeaderAdminSession: ComponentType<
   MoleculeNameType,
   (...args: any[]) => string
 > = {
-  name: "HeaderUserSession",
+  name: "HeaderAdminSession",
   html: (session: SessionType) => {
     let firstname = "", photo = "", fullname = "";
 
@@ -24,18 +23,13 @@ export const HeaderUserSession: ComponentType<
 
     return `
     <div id="user-session">
-      ${!session
-        ? ""
-        : 
-        (
-          session.has("userFirstname")
-          ? (LogoutUserForm.html(photo, fullname)
+      ${session.has("userFirstname")
+          ? (LogoutAdminForm.html(photo, fullname)
             .replace(
               "{{ user-firstname }}",
               firstname,
             ))
-          : Login.html
-        ) 
+          : ""
       }
     </div>
     `

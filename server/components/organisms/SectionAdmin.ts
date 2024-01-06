@@ -23,7 +23,7 @@ export const SectionAdmin: ComponentType<
   (...args: any[]) => string
 > = {
   name: "SectionAdmin",
-  html: (content: string) => {
+  html: () => {
     return `
     <section>
       <div class="container">

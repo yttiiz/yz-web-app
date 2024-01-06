@@ -3,24 +3,24 @@
 import { OnOffSvg, UserSvg } from "../mod.ts";
 import type { ComponentType, MoleculeNameType } from "../mod.ts";
 
-export const LogoutForm: ComponentType<
+export const LogoutAdminForm: ComponentType<
   MoleculeNameType,
   (...arg: any[]) => string
 > = {
-  name: "LogoutForm",
+  name: "LogoutAdminForm",
   html: (
     userPhoto: string,
     userFullname: string,
   ) => {
     return `
     <div>
-      <form action="/logout" method="post">
+      <form action="/admin-logout" method="post">
         <button type="submit" title="déconnexion">
           ${OnOffSvg.html}
         </button>
       </form>
       <span>
-        Bonjour <a href=\"/profil\">{{ user-firstname }}</a>
+        Connecté en tant que <a href=\"/profil\">{{ user-firstname }}</a>
       </span>
       <span>
         <a href=\"/profil\">
