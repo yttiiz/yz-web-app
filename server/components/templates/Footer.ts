@@ -23,11 +23,12 @@ export const Footer: ComponentType<
   name: "Footer",
   html: ({
     isConnexionFailed,
+    isAdminInterface,
   }: SessionAndDataType
   ) => {
   return `<footer>
       <div class="container">
-        ${isConnexionFailed
+        ${isConnexionFailed || isAdminInterface
           ? ""
           :
           (

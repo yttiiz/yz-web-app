@@ -21,6 +21,7 @@ export type PathAppType =
 export type IdsType =
   | "data-home"
   | "data-product"
+  | "data-admin"
   | "data-user-form"
   | "data-profil-form"
   | "data-not-found"
@@ -47,6 +48,7 @@ export type SessionType = {
 export type SessionAndDataType = {
   session: SessionType;
   isConnexionFailed: boolean;
+  isAdminInterface: boolean;
 };
 
 // Page

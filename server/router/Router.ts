@@ -8,6 +8,7 @@ import {
 } from "@mongo";
 import type { AppState } from "@utils";
 import {
+  AdminController,
   ApiController,
   AuthController,
   BookingController,
@@ -49,4 +50,8 @@ new ApiController(
   router,
   Mongo.connectionTo,
   Mongo.selectFromDB<UserSchemaWithIDType>,
+);
+new AdminController(
+  router,
+  Mongo.connectionTo,
 );

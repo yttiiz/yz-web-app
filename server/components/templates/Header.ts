@@ -22,13 +22,14 @@ export const Header: ComponentType<
   html: ({
     session,
     isConnexionFailed,
+    isAdminInterface,
   }: SessionAndDataType
   ) => {
     return `
     <header data-header="site">
       <div class="container">
         <div>
-          ${isConnexionFailed
+          ${isConnexionFailed || isAdminInterface
             ? ""
             :
             (

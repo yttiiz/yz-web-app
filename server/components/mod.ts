@@ -15,6 +15,7 @@ export * from "./atoms/OnOffSvg.ts";
 export * from "./atoms/CircleSvg.ts";
 export * from "./organisms/SectionsProfilForm.ts";
 export * from "./organisms/SectionAuthForm.ts";
+export * from "./organisms/SectionAdmin.ts";
 export * from "./organisms/SectionsProduct.ts";
 export * from "./organisms/SectionsBooking.ts";
 export * from "./organisms/SectionProductsHome.ts";

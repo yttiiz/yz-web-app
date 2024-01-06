@@ -1,3 +1,4 @@
+export * from "./AdminController.ts";
 export * from "./AuthController.ts";
 export * from "./ApiController.ts";
 export * from "./BookingController.ts";

@@ -1,0 +1,92 @@
+#data-admin {
+    & section form,
+    & section form > div {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    & section form {
+      margin: 0 auto;
+      width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
+      border: var(--border-black-25-percent);
+      border-radius: var(--base-size);
+      overflow: hidden;
+    }
+    
+    & section form h3,
+    & section form > div {
+      padding: calc(var(--base-size) * 2);
+    }
+    
+    & section form h3 {
+      text-align: center;
+      border-bottom: var(--border-black-25-percent);
+    }
+
+    & section form > div {
+      gap: calc(var(--base-size) * 1.8);
+    }
+
+    & section form label {
+        position: relative;
+    }
+
+    & section form input {
+        height: calc(var(--base-size) * 3);
+    }
+
+    & section form div > input[type="submit"] {
+        align-self: end;
+        background: var(--primary-color);
+    }
+
+    & section form input[type="password"] {
+        padding-right: 4rem;
+    }
+    
+    & section form input[name="file-text"] {
+        padding-right: calc(var(--base-size) * 7.25);
+    }
+}
+
+#eye-password,
+#search-photo {
+    display: flex;
+    position: absolute;
+    right: 3%;
+}
+
+#eye-password {
+    bottom: clamp(15%, 1.5vw, 20%);
+
+    & > span {
+        cursor: pointer;
+    }
+
+    & > span.none {
+        display: none;
+    }
+
+    & > span svg {
+        fill: var(--primary-color);
+        width: 2rem;
+        height: auto;
+    }
+}
+
+#search-photo {
+    bottom: clamp(8%, 1.75vw, 12%);
+
+    & button {
+        padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
+        border-radius: var(--btn-border-radius);
+        font-size: var(--base-size);
+        font-weight: 400;
+        color: var(--light);
+        background: var(--secondary-color);
+    }
+
+    & input {
+        display: none;
+    }
+}

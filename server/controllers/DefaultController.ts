@@ -73,6 +73,7 @@ export class DefaultController {
     const appData = { 
       session: ctx.state.session,
       isConnexionFailed: this.isConnexionToDBFailed(data),
+      isAdminInterface: id.includes("admin"),
     };
 
     let [html, header, main, footer] = this.createComponents(
@@ -96,7 +97,7 @@ export class DefaultController {
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
 
     html = html.replace("{{ application-content }}", content);
-    html = this.setScript(html, data);
+    html = this.setScript(html, id, data);
 
     return html;
   }
@@ -108,9 +109,9 @@ export class DefaultController {
     const components = [];
 
     for (const arg of args) {
-      arg === "Header" || arg === "Footer"
-        ? components.push(layout[arg].html(appData))
-        : components.push(layout[arg].html);
+      arg === "Main"
+        ? components.push(layout[arg].html)
+        : components.push(layout[arg].html(appData));
     }
 
     return components;
@@ -118,13 +119,17 @@ export class DefaultController {
 
   private setScript(
     html: string,
+    id: string,
     data: unknown,
   ) {
     return html.replace(
       "{{ application-script }}",
       this.isConnexionToDBFailed(data)
         ? ""
-        : `<script type="module" src="./js/index.js"></script>`,
+        : (id.includes("admin")
+            ? `<script type="module" src="./js/admin/index.js"></script>`
+            : `<script type="module" src="./js/index.js"></script>`
+          ),
     );
   }
 
@@ -151,12 +156,14 @@ export class DefaultController {
     path,
     isUserConnected,
   }: ConfigMainHtmlType): Promise<string> {
+    const strToReplace = "{{ content-insertion }}";
+
     main = main.replace("{{ id }}", id);
 
     // Error rendrering.
     if (this.isConnexionToDBFailed(data)) {
       return main.replace(
-        "{{ content-insertion }}",
+        strToReplace,
         layout.SectionErrorHome.html(data),
       );
     } 
@@ -165,7 +172,7 @@ export class DefaultController {
       // Home rendering.
       case "data-home": {
         return main.replace(
-          "{{ content-insertion }}",
+          strToReplace,
           await layout.SectionProductsHome.html(data),
         );
       }
@@ -173,7 +180,7 @@ export class DefaultController {
       // Product rendering.
       case "data-product": {
         return main.replace(
-          "{{ content-insertion }}",
+          strToReplace,
           layout.SectionsProduct.html(
             data,
             isUserConnected,
@@ -184,7 +191,7 @@ export class DefaultController {
       // Booking rendering.
       case "data-booking": {
         return main.replace(
-          "{{ content-insertion }}",
+          strToReplace,
           layout.SectionsBooking.html(
             data,
           ),
@@ -194,15 +201,23 @@ export class DefaultController {
       // Profil form rendering.
       case "data-profil-form": {
         return main.replace(
-          "{{ content-insertion }}",
+          strToReplace,
           layout.SectionsProfilForm.html(),
+        );
+      }
+
+      // Admin rendering.
+      case "data-admin": {
+        return main.replace(
+          strToReplace,
+          layout.SectionAdmin.html(),
         );
       }
 
       // Not found rendering.
       case "data-not-found": {
         return main.replace(
-          "{{ content-insertion }}",
+          strToReplace,
           layout.NotFound.html,
         );
       }
@@ -211,12 +226,12 @@ export class DefaultController {
         // Auth form rendering.
         if (path) {
           return main.replace(
-            "{{ content-insertion }}",
+            strToReplace,
             await layout.SectionAuthForm.html(path),
           );
         }
     
-        return main.replace("{{ content-insertion }}", "");
+        return main.replace(strToReplace, "");
       }
     }
   }

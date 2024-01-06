@@ -7,14 +7,14 @@ import type {
   OrganismNameType,
   BookingDataType,
  } from "../mod.ts";
- import { BookingUserInfoType } from "@mongo";
+import { BookingUserInfoType } from "@mongo";
 
- const {
-  title,
-  card,
- }: BookingDataType = await Helper.convertJsonToObject(
-  "/server/data/booking/booking.json",
- );
+const {
+title,
+card,
+}: BookingDataType = await Helper.convertJsonToObject(
+"/server/data/booking/booking.json",
+);
 
 export const SectionsBooking: ComponentType<
  OrganismNameType,

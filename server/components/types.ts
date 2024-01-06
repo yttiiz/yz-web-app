@@ -5,6 +5,7 @@ export type TemplateNameType =
 
 export type OrganismNameType =
   | "SectionAuthForm"
+  | "SectionAdmin"
   | "SectionsProfilForm"
   | "SectionsBooking"
   | "SectionsProduct"
@@ -76,16 +77,20 @@ export type ItemDataTypeAndUserRelationship =
   isRelatedToUser: boolean;
 };
 
+export type TitleAndDescriptionType = {
+  title: string;
+  paragraph: string;
+};
+
 export type ButtonType = {
   btnText: string;
   btnLink?: string;
 };
 
-export type InformativeContentAndButtonType = 
-  ButtonType & {
-  title: string;
-  paragraph: string;
-};
+export type InformativeContentAndButtonType = (
+  ButtonType &
+  TitleAndDescriptionType
+);
 
 export type FormAttributesType = {
   action: string;
@@ -98,10 +103,7 @@ export type ProductDescriptionType = {
   rooms: string;
 };
 
-export type HomePageDataType = Pick<
-  InformativeContentAndButtonType,
-  "title" | "paragraph"
->;
+export type HomePageDataType = TitleAndDescriptionType;
 
 export type InputDataType = {
   type: string;
@@ -130,8 +132,8 @@ export type OpenGraphDataType = {
 
 export type HeadPageDataType = {
   title: string;
-  description: string;
-  openGraph: OpenGraphDataType;
+  description?: string;
+  openGraph?: OpenGraphDataType;
 };
 
 export type HeaderDataType = {
@@ -197,6 +199,12 @@ export type ProductDataType = {
     content: string;
   };
   reviewForm: FormDataType;
+};
+
+export type AdminDataType = {
+  home: TitleAndDescriptionType & {
+    form: FormDataType
+  };
 };
 
 export type NotFoundDataType = InformativeContentAndButtonType;

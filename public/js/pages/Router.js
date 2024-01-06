@@ -57,15 +57,6 @@ export class Router {
 
       //============[ BOOKING ]============//
       case this.host + "booking": {
-        const res = await this.#fetchData("user-profil");
-        
-        if (res.ok && res.status === 200) {
-          // TODO WIP implements booking page
-          const data = await res.json();
-
-          console.log(data)
-        }
-        
         this.#bookingForm.initForm();
         break;
       }
