@@ -9,6 +9,7 @@ export type OrganismNameType =
   | "SectionsBooking"
   | "SectionsProduct"
   | "SectionProductsHome"
+  | "SectionErrorHome"
   | "BookingCard"
   | "ProductCard";
 

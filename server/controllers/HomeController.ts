@@ -30,14 +30,21 @@ export class HomeController extends DefaultController {
 
       try {
         if ("message" in cursor && cursor["message"].includes("failed")) {
+          const body = await this.createHtmlFile(
+            ctx,
+            {
+              id: "data-home",
+              css: "home",
+              data: this.errorMsg,
+            },
+          );
+
           this.response(
             ctx,
-            JSON.stringify({
-              errorMsg: this.errorMsg,
-            }),
-            502,
+            body,
+            200,
           );
-          
+
         } else {
           await (cursor as FindCursorProductType)
             .map((document, key) => data[key + 1] = document);

@@ -9,16 +9,22 @@ import type {
   RouterContextAppType,
   ConfigMainHtmlType,
   DataResponseType,
+  SessionAndDataType,
   SessionType,
 } from "./mod.ts";
 
 export class DefaultController {
+  private ERROR_CODE = "Code erreur : 502";
+  protected MAX_SIZE = 10_000_000;
+  protected errorMsg = `Impossible de se connecter à la base de données. ${this.ERROR_CODE}`;
+  protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
+  private isConnexionToDBFailed = (data: unknown) => (
+    typeof data === "string" &&
+    data.includes(this.ERROR_CODE)
+  );
   public router;
   public helper;
-  protected MAX_SIZE = 10_000_000;
-  protected errorMsg = "Impossible de se connecter à la base de données. Code erreur : ";
-  protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
-
+  
   constructor(router?: RouterAppType) {
     router
       ? this.router = router
@@ -64,9 +70,13 @@ export class DefaultController {
       path,
     }: ConfigPageType,
   ) {
-    const isUserConnected: boolean = ctx.state.session.has("userFirstname");
+    const appData = { 
+      session: ctx.state.session,
+      isConnexionFailed: this.isConnexionToDBFailed(data),
+    };
+
     let [html, header, main, footer] = this.createComponents(
-      ctx.state.session,
+      appData,
       "Body",
       "Header",
       "Main",
@@ -75,27 +85,47 @@ export class DefaultController {
 
     html = this.setTitle(html, title);
     html = this.setCss(html, css);
-    main = await this.setMainHtml({ main, id, data, path, isUserConnected });
+    main = await this.setMainHtml({
+      main,
+      id,
+      data,
+      path,
+      isUserConnected: (ctx.state.session as SessionType).has("userId"),
+    });
 
     const content = "\n" + header + "\n" + main + "\n" + footer + "\n";
+
     html = html.replace("{{ application-content }}", content);
+    html = this.setScript(html, data);
 
     return html;
   }
 
   private createComponents(
-    session: SessionType,
+    appData: SessionAndDataType,
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
     const components = [];
 
     for (const arg of args) {
-      arg === "Header"
-        ? components.push(layout[arg].html(session))
+      arg === "Header" || arg === "Footer"
+        ? components.push(layout[arg].html(appData))
         : components.push(layout[arg].html);
     }
 
     return components;
+  }
+
+  private setScript(
+    html: string,
+    data: unknown,
+  ) {
+    return html.replace(
+      "{{ application-script }}",
+      this.isConnexionToDBFailed(data)
+        ? ""
+        : `<script type="module" src="./js/index.js"></script>`,
+    );
   }
 
   private setTitle(
@@ -122,6 +152,14 @@ export class DefaultController {
     isUserConnected,
   }: ConfigMainHtmlType): Promise<string> {
     main = main.replace("{{ id }}", id);
+
+    // Error rendrering.
+    if (this.isConnexionToDBFailed(data)) {
+      return main.replace(
+        "{{ content-insertion }}",
+        layout.SectionErrorHome.html(data),
+      );
+    } 
 
     switch(id) {
       // Home rendering.

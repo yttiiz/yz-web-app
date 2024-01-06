@@ -26,6 +26,7 @@ new HomeController(
 );
 new AuthController(
   router,
+  Mongo.connectionTo,
   Mongo.insertIntoDB<UserSchemaType>,
   Mongo.selectFromDB<UserSchemaWithIDType>,
 );

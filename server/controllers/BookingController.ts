@@ -48,13 +48,7 @@ export class BookingController extends DefaultController {
               ("message" in productsCursor && productsCursor["message"].includes("failed")) ||
               ("message" in reviewsCursor && reviewsCursor["message"].includes("failed"))
             ) {
-              this.response(
-                ctx,
-                JSON.stringify({
-                  errorMsg: this.errorMsg,
-                }),
-                502,
-              );
+              this.response(ctx, "", 302, "/");
 
             } else {
               const products = await (productsCursor as FindCursorProductType).toArray();
@@ -123,7 +117,7 @@ export class BookingController extends DefaultController {
           }
 
         } else {
-          this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
+          this.response(ctx, "", 302, "/");
         }
       },
     )

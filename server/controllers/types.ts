@@ -44,6 +44,11 @@ export type SessionType = {
   has: (value: string) => boolean;
 };
 
+export type SessionAndDataType = {
+  session: SessionType;
+  isConnexionFailed: boolean;
+};
+
 // Page
 export type ConfigPageType = {
   id: IdsType;

@@ -14,7 +14,7 @@ export const HeaderUserSession: ComponentType<
 > = {
   name: "HeaderUserSession",
   html: (session: SessionType) => {
-    let firstname = "", photo = "", fullname ="";
+    let firstname = "", photo = "", fullname = "";
 
     if (session && session.has("userFirstname")) {
       firstname = session.get("userFirstname");

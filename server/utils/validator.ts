@@ -144,8 +144,8 @@ export class Validator {
     const now = new Date();
     return {
       year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      day: now.getDate(),
+      month: now.getMonth() + 1 < 10 ? (`0${now.getMonth() + 1}`) : (now.getMonth() + 1),
+      day: now.getDate() < 10 ? (`0${now.getDate()}`) : (now.getDate()),
     };
   }
 }
