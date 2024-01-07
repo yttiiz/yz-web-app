@@ -1,34 +1,39 @@
 #data-admin {
-    & section[data-bg] {
+    & section[data-admin] {
         background: var(--light);
     }
 
     & section form,
     & section form > div {
-      display: grid;
-      grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr;
     }
 
     & section form {
-      margin: 0 auto;
-      width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
-      border: var(--border-black-25-percent);
-      border-radius: var(--base-size);
-      overflow: hidden;
+        margin: 0 auto;
+        width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
+        border: var(--border-black-25-percent);
+        border-radius: var(--base-size);
+        overflow: hidden;
     }
-    
+
     & section form h3,
     & section form > div {
-      padding: calc(var(--base-size) * 2);
+        padding: calc(var(--base-size) * 2);
     }
-    
+
+    & section form > span {
+        padding: calc(var(--base-size) * 2);
+        padding-top: 0;
+    }
+
     & section form h3 {
-      text-align: center;
-      border-bottom: var(--border-black-25-percent);
+        text-align: center;
+        border-bottom: var(--border-black-25-percent);
     }
 
     & section form > div {
-      gap: calc(var(--base-size) * 1.8);
+        gap: calc(var(--base-size) * 1.8);
     }
 
     & section form label {
@@ -47,14 +52,32 @@
     & section form input[type="password"] {
         padding-right: 4rem;
     }
-    
+
     & section form input[name="file-text"] {
         padding-right: calc(var(--base-size) * 7.25);
+    }
+
+    & section form > span {
+        font-weight: 500;
+        color: var(--danger);
+    }
+
+    & section form > span.none {
+        display: none;
     }
 }
 
 .admin-dashboard {
     display: grid;
+    gap: var(--base-size);
+
+    .card {
+        overflow: hidden;
+        background: var(--white);
+        border: var(--border-black-25-percent);
+        border-radius: var(--base-size);
+        padding: var(--base-size);
+    }
 }
 
 #eye-password,

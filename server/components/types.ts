@@ -13,6 +13,7 @@ export type OrganismNameType =
   | "SectionErrorHome"
   | "BookingCard"
   | "AdminDashboard"
+  | "DashboardCard"
   | "ProductCard";
 
 export type MoleculeNameType =
@@ -160,6 +161,18 @@ export type FormDataType = FormAttributesType & {
   title: string;
   content: InputDataType[];
   changePhoto?: string;
+};
+
+export type DashboardDetailsType = {
+  title: string;
+  className: string;
+}
+
+export type DashboardDataType = {
+  title: string;
+  users: DashboardDetailsType;
+  products: DashboardDetailsType;
+  bookings: DashboardDetailsType;
 };
 
 export type DeleteAccountDataType = {
