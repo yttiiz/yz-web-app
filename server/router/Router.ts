@@ -54,4 +54,5 @@ new ApiController(
 new AdminController(
   router,
   Mongo.connectionTo,
+  Mongo.selectFromDB,
 );

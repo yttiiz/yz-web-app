@@ -203,10 +203,4 @@ export type ProductDataType = {
   reviewForm: FormDataType;
 };
 
-export type AdminDataType = {
-  home: TitleAndDescriptionType & {
-    form: FormDataType
-  };
-};
-
 export type NotFoundDataType = InformativeContentAndButtonType;

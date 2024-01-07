@@ -1,6 +1,7 @@
 import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
+import { LoginController } from "./mod.ts";
 import type {
   GetCollectionType,
   InsertUserIntoDBType,
@@ -12,10 +13,11 @@ import type {
 import { Validator } from "@utils";
 
 export class AuthController extends DefaultController {
+  private login;
   private defaultImg;
   private getCollection;
   private insertIntoDB;
-  private selectFromDB;
+  public selectFromDB;
 
   constructor(
     router: RouterAppType,
@@ -27,6 +29,7 @@ export class AuthController extends DefaultController {
     this.getCollection = getCollection;
     this.insertIntoDB = insertIntoDB;
     this.selectFromDB = selectFromDB;
+    this.login = new LoginController(this);
     this.defaultImg = "/img/users/default.png";
     this.getLoginRoute();
     this.getRegisterRoute();
@@ -40,7 +43,7 @@ export class AuthController extends DefaultController {
   }
 
   private postLoginRoute() {
-    this.postRoute("/login", this.loginRouteHandler);
+    this.postRoute("/login", this.login.routeHandler);
   }
 
   private postLogoutRoute() {
@@ -84,84 +87,6 @@ export class AuthController extends DefaultController {
   ) {
     this.router?.post(path, handler);
   }
-
-  private loginRouteHandler = async <T extends PathAppType>(
-    ctx: RouterContextAppType<T>,
-  ) => {
-    const data = await ctx.request.body().value as oak.FormDataReader;
-    const dataModel = await this.helper.convertJsonToObject(
-      `/server/data/authentication${ctx.request.url.pathname}.json`,
-    );
-    const dataParsed = Validator.dataParser(await data.read(), dataModel);
-
-    if (!dataParsed.isOk) {
-      return this.response(
-        ctx,
-        { message: dataParsed.message },
-        200,
-      );
-    }
-
-    const { fields: { email, password } } = dataParsed.data;
-
-    const failedLogin = async (message: string) => {
-      const failedLoginAttempts =
-        (await ctx.state.session.get("failed-login-attempts") || 0) as number;
-      ctx.state.session.set("failed-login-attempts", failedLoginAttempts + 1);
-      ctx.state.session.flash("error", message);
-    };
-
-    try {
-      const user = await this.selectFromDB("users", email, "email");
-
-      if ("_id" in user) {
-        const isPasswordOk = await Auth.comparePassword(password, user.hash);
-
-        // Handle session and redirection.
-        if (isPasswordOk) {
-          ctx.state.session.set("userEmail", email);
-          ctx.state.session.set("userFirstname", user.firstname);
-          ctx.state.session.set("userPhoto", user.photo);
-          ctx.state.session.set(
-            "userFullname",
-            `${user.firstname} ${user.lastname}`,
-          );
-          ctx.state.session.set("userId", user._id);
-          ctx.state.session.set("failed-login-attempts", null);
-          ctx.state.session.flash(
-            "message",
-            this.sessionFlashMsg(email),
-          );
-
-          ctx.state.session.has("error")
-            ? ctx.state.session.set("error", null)
-            : null;
-
-          this.response(ctx, user, 302, "/");
-        } else {
-          await failedLogin("mot de passe incorrect");
-          this.response(
-            ctx,
-            {
-              message: "Veuillez réessayer, votre mot de passe est incorrect.",
-            },
-            200,
-          );
-        }
-      } else {
-        if (user.message === "connexion failed") {
-          this.response(ctx, "", 302, "/");
-
-        } else {
-          await failedLogin(user.message);
-          this.response(ctx, user, 200);
-        }
-      }
-    } catch (error) {
-      this.helper.writeLog(error);
-      this.response(ctx, { errorMsg: this.errorMsg }, 500);
-    }
-  };
 
   private logoutRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,

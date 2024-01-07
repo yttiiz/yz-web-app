@@ -16,6 +16,7 @@ export type PathAppType =
   | "/login"
   | "/logout"
   | "/profil"
+  | "/admin"
   | "/review-form";
 
 export type IdsType =

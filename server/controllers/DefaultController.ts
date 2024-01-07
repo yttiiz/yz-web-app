@@ -15,13 +15,15 @@ import type {
 
 export class DefaultController {
   private ERROR_CODE = "Code erreur : 502";
-  protected MAX_SIZE = 10_000_000;
-  protected errorMsg = `Impossible de se connecter à la base de données. ${this.ERROR_CODE}`;
-  protected sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
   private isConnexionToDBFailed = (data: unknown) => (
     typeof data === "string" &&
     data.includes(this.ERROR_CODE)
   );
+  
+  protected MAX_SIZE = 10_000_000;
+
+  public errorMsg = `Impossible de se connecter à la base de données. ${this.ERROR_CODE}`;
+  public sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
   public router;
   public helper;
   
@@ -32,7 +34,7 @@ export class DefaultController {
     this.helper = Helper;
   }
 
-  protected response<T extends PathAppType>(
+  public response<T extends PathAppType>(
     ctx: RouterContextAppType<T> | oak.Context,
     data: DataResponseType,
     status: number,

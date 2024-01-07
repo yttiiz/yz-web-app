@@ -1,20 +1,19 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
-import {
-  InputsForm,
-  type AdminDataType,
-  type ComponentType,
-  type OrganismNameType,
+import { InputsForm } from "../mod.ts";
+import type {
+  ComponentType,
+  OrganismNameType,
+  FormDataType,
 } from "../mod.ts";
 
 const {
-  home: {
     title,
-    paragraph,
-    form,
-  },
- }: AdminDataType = await Helper.convertJsonToObject(
+    action,
+    method,
+    content,
+ }: FormDataType = await Helper.convertJsonToObject(
   "/server/data/basics/admin.json",
  );
 
@@ -29,18 +28,17 @@ export const SectionAdmin: ComponentType<
       <div class="container">
         <div>
           <h1>${title}</h1>
-          <p>${paragraph}</p>
         </div>
         <div>
           <form
-            action="${form.action}"
-            method="${form.method}"
+            action="${action}"
+            method="${method}"
             type="multipart/form-data"
-            data-style="user-${form.action.replace("/", "")}"
+            data-style="user-${action.replace("/", "")}"
           >
-            <h3>${form.title}</h3>
+            <h3>Renseignez vos identifiants</h3>
             <div>
-              ${InputsForm.html(form.content, false)}
+              ${InputsForm.html(content, false)}
             </div>
           </form>
         </div>

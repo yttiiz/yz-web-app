@@ -1,12 +1,16 @@
-import type {
-  GetCollectionType,
-  RouterAppType,
-  RouterContextAppType,
-} from "./mod.ts";
 import { DefaultController } from "./DefaultController.ts";
+import {
+  LoginController,
+  type GetCollectionType,
+  type RouterAppType,
+  type RouterContextAppType,
+  type SelectUserFromDBType,
+} from "./mod.ts";
 
 export class AdminController extends DefaultController {
   private collection;
+  public selectFromDB;
+  private login;
   private contentTypeJon = {
     name: "Content-Type",
     value: "application/json",
@@ -19,10 +23,14 @@ export class AdminController extends DefaultController {
   constructor(
     router: RouterAppType,
     getCollection: GetCollectionType,
+    selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
     this.collection = getCollection;
+    this.selectFromDB = selectFromDB;
+    this.login = new LoginController(this);
     this.getAdmin();
+    this.postAdmin();
   }
 
   private getAdmin() {
@@ -44,6 +52,13 @@ export class AdminController extends DefaultController {
           200,
         );
       }
+    )
+  }
+
+  private postAdmin() {
+    this.router?.post(
+      "/admin",
+      this.login.routeHandler,
     )
   }
 }
