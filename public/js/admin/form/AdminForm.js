@@ -9,6 +9,14 @@ export class AdminForm {
       
     } else {  
       // Login interface
+      const dialog = document.querySelector("dialog");
+      
+      // Init close event dialog modal.
+      dialog.querySelector("button[data-close]")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+      
       document.querySelector("form")
       .addEventListener("submit", AdminFormHelper.loginHandler);
     }

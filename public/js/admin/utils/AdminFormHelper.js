@@ -18,8 +18,11 @@ export class AdminFormHelper extends DefaultFormHelper {
       const responseContent = await res.json();
       
       responseContent["message"] === "connected"
-      ? location.reload()
-      : AdminFormHelper.displayWrongPassword(responseContent["message"]);
+        ? location.reload()
+        : AdminFormHelper.displayWrongPassword(responseContent["message"]);
+
+    } else if (res.status === 401) {
+      AdminFormHelper.openDialogToUnauthorizedAccess();
     }
   };
 
@@ -27,8 +30,27 @@ export class AdminFormHelper extends DefaultFormHelper {
    * @param {string} message 
    */
   static displayWrongPassword = (message) => {
+    /** @type {HTMLSpanElement} */
     const span = document.querySelector("form > span");
+    
     span.textContent = message;
     span.classList.remove("none");
+  }
+
+  /**
+   * @param {HTMLDialogElement} dialog 
+   */
+  static openDialogToUnauthorizedAccess = (
+    dialog = document.querySelector("dialog"),
+  ) => {
+    AdminFormHelper.setUserDialogContent(
+      dialog,
+      {
+        title: "Accès non autorisé",
+        paragraph: "Vous n'avez pas les droits pour accéder à la plateforme d'administration.",
+      },
+    );
+
+    dialog.showModal();
   }
 }

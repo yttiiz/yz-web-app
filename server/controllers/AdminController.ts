@@ -1,6 +1,6 @@
 import { DefaultController } from "./DefaultController.ts";
 import {
-  LoginController,
+  LogController,
   type GetCollectionType,
   type RouterAppType,
   type RouterContextAppType,
@@ -10,7 +10,7 @@ import {
 export class AdminController extends DefaultController {
   private collection;
   public selectFromDB;
-  private login;
+  private log;
   private contentTypeJon = {
     name: "Content-Type",
     value: "application/json",
@@ -28,9 +28,10 @@ export class AdminController extends DefaultController {
     super(router);
     this.collection = getCollection;
     this.selectFromDB = selectFromDB;
-    this.login = new LoginController(this);
+    this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
+    this.postAdminLogout();
   }
 
   private getAdmin() {
@@ -58,7 +59,14 @@ export class AdminController extends DefaultController {
   private postAdmin() {
     this.router?.post(
       "/admin",
-      this.login.routeHandler,
+      this.log.loginHandler,
+    )
+  }
+
+  private postAdminLogout() {
+    this.router?.post(
+      "/admin-logout",
+      this.log.logoutHandler,
     )
   }
 }

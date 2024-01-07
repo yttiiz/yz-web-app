@@ -15,6 +15,7 @@ export type PathAppType =
   | "/register"
   | "/login"
   | "/logout"
+  | "/admin-logout"
   | "/profil"
   | "/admin"
   | "/review-form";

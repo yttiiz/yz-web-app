@@ -1,7 +1,7 @@
 import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
-import { LoginController } from "./mod.ts";
+import { LogController } from "./mod.ts";
 import type {
   GetCollectionType,
   InsertUserIntoDBType,
@@ -13,7 +13,7 @@ import type {
 import { Validator } from "@utils";
 
 export class AuthController extends DefaultController {
-  private login;
+  private log;
   private defaultImg;
   private getCollection;
   private insertIntoDB;
@@ -29,7 +29,7 @@ export class AuthController extends DefaultController {
     this.getCollection = getCollection;
     this.insertIntoDB = insertIntoDB;
     this.selectFromDB = selectFromDB;
-    this.login = new LoginController(this);
+    this.log = new LogController(this);
     this.defaultImg = "/img/users/default.png";
     this.getLoginRoute();
     this.getRegisterRoute();
@@ -43,11 +43,11 @@ export class AuthController extends DefaultController {
   }
 
   private postLoginRoute() {
-    this.postRoute("/login", this.login.routeHandler);
+    this.postRoute("/login", this.log.loginHandler);
   }
 
   private postLogoutRoute() {
-    this.postRoute("/logout", this.logoutRouteHandler);
+    this.postRoute("/logout", this.log.logoutHandler);
   }
 
   private getRegisterRoute() {
@@ -87,16 +87,6 @@ export class AuthController extends DefaultController {
   ) {
     this.router?.post(path, handler);
   }
-
-  private logoutRouteHandler = async <T extends PathAppType>(
-    ctx: RouterContextAppType<T>,
-  ) => {
-    await ctx.state.session.deleteSession();
-    const msg = {
-      message: "Utilisateur déconnecté",
-    };
-    this.response(ctx, msg, 302, "/");
-  };
 
   private registerRouteHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
