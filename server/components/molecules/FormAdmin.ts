@@ -35,6 +35,7 @@ export const FormAdmin: ComponentType<
         <div>
           ${InputsForm.html(content, false)}
         </div>
+        <span class="none"></span>
       </form>
     </div>
     `

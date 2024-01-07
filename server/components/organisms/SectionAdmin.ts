@@ -6,6 +6,7 @@ import type {
   ComponentType,
   OrganismNameType,
   FormDataType,
+  DashboardDataType,
 } from "../mod.ts";
 
 export const SectionAdmin: ComponentType<
@@ -14,7 +15,7 @@ export const SectionAdmin: ComponentType<
 > = {
   name: "SectionAdmin",
   html: async (isUserConnected: boolean) => {
-    const content: FormDataType | unknown = await Helper
+    const content: FormDataType | DashboardDataType = await Helper
       .convertJsonToObject(
         `/server/data/${
           isUserConnected
@@ -24,7 +25,7 @@ export const SectionAdmin: ComponentType<
       );
 
     return `
-    <section ${isUserConnected ? `data-bg` : ""}>
+    <section ${isUserConnected ? `data-admin="connected"` : ""}>
       <div class="container">
         ${isUserConnected
           ? AdminDashboard.html(content)

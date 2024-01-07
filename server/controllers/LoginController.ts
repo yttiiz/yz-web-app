@@ -77,7 +77,7 @@ export class LoginController {
             : null;
 
           isAdminRequest
-            ? this.default.response(ctx, "", 200)
+            ? this.default.response(ctx, { message: "connected" }, 200)
             : this.default.response(ctx, "", 302, "/");
 
         } else {
