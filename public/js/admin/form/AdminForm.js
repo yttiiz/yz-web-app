@@ -21,7 +21,8 @@ export class AdminForm {
     });
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
-      console.log(await res.json())
+      location.reload();
+      // TODO WIP handle response.
     }
   }
 }

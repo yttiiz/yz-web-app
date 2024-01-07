@@ -12,6 +12,7 @@ export type OrganismNameType =
   | "SectionProductsHome"
   | "SectionErrorHome"
   | "BookingCard"
+  | "AdminDashboard"
   | "ProductCard";
 
 export type MoleculeNameType =
@@ -34,6 +35,7 @@ export type MoleculeNameType =
   | "Dialog"
   | "ReviewsDetails"
   | "FormReview"
+  | "FormAdmin"
   | "Text"
   | "NotFound"
   | "PicturesSlider";

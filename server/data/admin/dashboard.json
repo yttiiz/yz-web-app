@@ -1,0 +1,12 @@
+{
+  "title": "Tableau de bord",
+  "users": {
+    "title": "Utilisateurs"
+  },
+  "products": {
+    "title": "Appartements"
+  },
+  "bookings": {
+    "title": "Réservations"
+  }
+}

@@ -212,7 +212,9 @@ export class DefaultController {
       case "data-admin": {
         return main.replace(
           strToReplace,
-          layout.SectionAdmin.html(),
+          await layout.SectionAdmin.html(
+            isUserConnected,
+          ),
         );
       }
 

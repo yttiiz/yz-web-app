@@ -21,13 +21,10 @@ export class LoginController {
     ctx: RouterContextAppType<T>,
   ) => {
     const isAdminRequest = ctx.request.url.pathname === "/admin";
-    const pathToFile = (
-      isAdminRequest ? "basics" : "authentication"
-    ) + ctx.request.url.pathname + ".json";
 
     const data = await ctx.request.body().value as oak.FormDataReader;
     const dataModel = await this.default.helper.convertJsonToObject(
-      `/server/data/${pathToFile}`,
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const dataParsed = Validator.dataParser(await data.read(), dataModel);
 
