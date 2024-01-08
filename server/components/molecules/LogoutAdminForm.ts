@@ -20,15 +20,15 @@ export const LogoutAdminForm: ComponentType<
         </button>
       </form>
       <span>
-        <a href=\"/admin-profil\">{{ user-firstname }}</a>
+        <button type="button">{{ user-firstname }}</button>
       </span>
       <span>
-        <a href=\"/admin-profil\">
+        <button type="button">
         ${userPhoto.includes("default")
           ? UserSvg.html
           : `<img src="${userPhoto}" alt="${userFullname}" />`
         }
-        </a>
+        </button>
       </span>
     </div>`
   },

@@ -270,13 +270,13 @@ header[data-header="site"] {
             width: calc(var(--base-size) * 1.5625);
         }
 
-        & > form button>svg {
+        & > form button > svg {
             width: 100%;
             height: auto;
             transition: opacity var(--smooth);
         }
 
-        & > form button>svg:hover {
+        & > form button > svg:hover {
             opacity: .7;
         }
 
@@ -296,17 +296,25 @@ header[data-header="site"] {
         fill: var(--light);
     }
 
-    & a {
+    & a,
+    & button[type="button"] {
         font-weight: 500;
         color: var(--secondary-color);
         transition: filter var(--smooth);
     }
 
-    & a:hover {
+    & button[type="button"] {
+        font-size: var(--base-size);
+        display: inline-block;
+    }
+
+    & a:hover,
+    & button[type="button"]:hover {
         filter: contrast(1.5);
     }
 
-    & a:not(.register):hover {
+    & a:not(.register):hover,
+    & button[type="button"]:hover {
         text-decoration: underline;
     }
 

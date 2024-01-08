@@ -41,8 +41,10 @@ export type DataResponseType =
 
 // Session
 export type SessionType = {
-  get: (value: string) => string;
-  set: (value: string) => void;
+  get: <T extends (string | "userId")>(value: T) => (
+    T extends "userId" ? ObjectId : string
+  );
+  set: (key: string, value: unknown) => void;
   flash: (key: string, value: string) => void;
   has: (value: string) => boolean;
 };

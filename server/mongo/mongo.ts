@@ -130,10 +130,10 @@ export class Mongo {
     id: ObjectId,
     collection: string,
   ) {
-    const users = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
-    if (users) {
-      return await users.deleteOne({ _id: id });
+    if (selectedCollection) {
+      return await selectedCollection.deleteOne({ _id: id });
     }
 
     return 0;

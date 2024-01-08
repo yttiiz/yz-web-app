@@ -1,8 +1,8 @@
 import { AnimationHelper } from "../../js/utils/AnimationHelper.js";
-import { AdminForm } from "./form/AdminForm.js";
+import { AdminPage } from "./page/AdminPage.js";
 
 // Animation
 new AnimationHelper();
 
 // Form handler
-new AdminForm().initForm();
+new AdminPage().initForm();

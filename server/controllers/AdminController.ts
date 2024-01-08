@@ -1,32 +1,25 @@
 import { DefaultController } from "./DefaultController.ts";
 import {
   LogController,
-  type GetCollectionType,
   type RouterAppType,
   type RouterContextAppType,
   type SelectUserFromDBType,
+  type GetCollectionType,
+  type SessionType,
 } from "./mod.ts";
 
 export class AdminController extends DefaultController {
-  private collection;
+  public collection;
   public selectFromDB;
   private log;
-  private contentTypeJon = {
-    name: "Content-Type",
-    value: "application/json",
-  };
-  private contentTypeHtml = {
-    name: "Content-Type",
-    value: "text/html; charset=UTF-8",
-  };
 
   constructor(
     router: RouterAppType,
-    getCollection: GetCollectionType,
+    collection: GetCollectionType,
     selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
-    this.collection = getCollection;
+    this.collection = collection;
     this.selectFromDB = selectFromDB;
     this.log = new LogController(this);
     this.getAdmin();
@@ -38,6 +31,21 @@ export class AdminController extends DefaultController {
     this.router?.get(
       "/admin",
       async (ctx: RouterContextAppType<"/admin">) => {
+        const users = await this.collection("users");
+
+        // If connexion to DB failed, redirect to home.
+        if ("message" in users || !ctx.state.session) {
+          return this.response(ctx, "", 302, "/");
+        }
+        
+        const userId = (ctx.state.session as SessionType).get("userId");
+        const user = await this.selectFromDB("users", userId);
+        
+        // If user is not an admin, redirect to home.
+        if ("_id" in user && user.role !== "admin") {
+          return this.response(ctx, "", 302, "/");
+        }
+
         const body = await this.createHtmlFile(
           ctx,
           {
@@ -53,20 +61,20 @@ export class AdminController extends DefaultController {
           200,
         );
       }
-    )
+    );
   }
 
   private postAdmin() {
     this.router?.post(
       "/admin",
       this.log.loginHandler,
-    )
+    );
   }
 
   private postAdminLogout() {
     this.router?.post(
       "/admin-logout",
       this.log.logoutHandler,
-    )
+    );
   }
 }

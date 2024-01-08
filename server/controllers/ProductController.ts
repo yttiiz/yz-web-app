@@ -2,14 +2,12 @@ import { oak, ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
+  AddNewItemIntoDBType,
   NotFoundMessageType,
   RouterAppType,
   RouterContextAppType,
-} from "./mod.ts";
-import {
-  AddNewItemIntoDBType,
   SelectFromDBType,
-} from "@/server/controllers/types.ts";
+} from "./mod.ts";
 import {
   BookingsProductSchemaWithIDType,
   BookingsType,

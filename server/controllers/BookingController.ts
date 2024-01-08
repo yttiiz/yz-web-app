@@ -5,6 +5,7 @@ import type {
   RouterAppType,
   RemoveItemFromDBType,
   RouterContextAppType,
+  SessionType,
 } from "./mod.ts";
 import { 
   type BookingsType,
@@ -36,7 +37,7 @@ export class BookingController extends DefaultController {
       async (ctx: RouterContextAppType<"/booking">) => {
         if (ctx.state.session && ctx.state.session.has("userId")) {
           const data: BookingUserInfoType[] = [];
-          const userId: ObjectId = ctx.state.session.get("userId");
+          const userId = (ctx.state.session as SessionType).get("userId");
           
           const bookingsCursor = await this.getCollection("bookings");
           const productsCursor = await this.getCollection("products");
@@ -138,8 +139,8 @@ export class BookingController extends DefaultController {
 
         const _id = new ObjectId(bookingId);
         const bookingToDelete = {
-          userId: (ctx.state.session.get("userId") as ObjectId).toString(),
-          userName: ctx.state.session.get("userFullname"),
+          userId: ((ctx.state.session as SessionType).get("userId")).toString(),
+          userName: (ctx.state.session as SessionType).get("userFullname"),
           startingDate: bookingStart,
           endingDate: bookingEnd,
           createdAt: +bookingCreatedAt,
