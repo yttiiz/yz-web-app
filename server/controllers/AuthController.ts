@@ -62,7 +62,7 @@ export class AuthController extends DefaultController {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
       const users = await this.getCollection("users");
 
-      if ("message" in users || !ctx.state.session) {
+      if ("message" in users) {
         this.response(ctx, "", 302, "/");
 
       } else {

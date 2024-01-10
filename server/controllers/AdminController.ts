@@ -34,7 +34,7 @@ export class AdminController extends DefaultController {
         const users = await this.collection("users");
 
         // If connexion to DB failed, redirect to home.
-        if ("message" in users || !ctx.state.session) {
+        if ("message" in users) {
           return this.response(ctx, "", 302, "/");
         }
         

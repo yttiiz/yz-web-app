@@ -51,9 +51,20 @@ export class UserFormHelper extends DefaultFormHelper {
    * @param {Response} response
    */
   static displayDialogProfilUpdatedDetails = async (response) => {
+    const id = "#data-profil-form";
     const status = response.status;
-    const { message } = await response.json();
-    const dialog = document.querySelector("#data-profil-form > dialog");
+    const { message, photo } = await response.json();
+    const dialog = document.querySelector(id + " > dialog");
+
+    if (photo) {
+      // Set img src to new photo's path. 
+      document.querySelector(id + " figure > img")
+      .src = photo;
+
+      // Hide user photo details div.
+      document.querySelector(".user-photo > div")
+      .classList.add("none");
+    }
 
     UserFormHelper.setProfilDialogContent(
       dialog,

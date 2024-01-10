@@ -139,12 +139,11 @@ export class Mongo {
     return 0;
   }
 
-  public static async setStore() {
+  public static async setStore(url: string) {
     try {
-      const db = await Mongo.client.connect(
-        Deno.env.get("DATABASE_URL") as string,
-      );
+      const db = await Mongo.client.connect(url);
       return new MongoStore(db, "session");
+
     } catch (error) {
       Helper.writeLog(error);
     }
@@ -156,6 +155,7 @@ export class Mongo {
         Deno.env.get("DATABASE_URL") as string,
       );
       return db.collection<T>(collection);
+      
     } catch (error) {
       Helper.writeLog(error);
     }

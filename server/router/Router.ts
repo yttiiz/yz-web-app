@@ -41,6 +41,7 @@ new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
   Mongo.deleteFromDB,
+  Mongo.selectFromDB<UserSchemaWithIDType>,
 );
 new ProductController(
   router,
