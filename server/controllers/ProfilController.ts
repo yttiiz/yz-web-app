@@ -164,7 +164,7 @@ export class ProfilController extends DefaultController {
           ctx,
           {
             message: this.messageToUser(
-              isUserDelete ? true : false,
+              isUserDelete,
               "compte",
               "supprimé",
             ),

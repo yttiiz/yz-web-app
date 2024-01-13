@@ -33,33 +33,38 @@ export class AdminController extends DefaultController {
       async (ctx: RouterContextAppType<"/admin">) => {
         const users = await this.collection("users");
 
-        // If connexion to DB failed, redirect to home.
-        if ("message" in users) {
-          return this.response(ctx, "", 302, "/");
-        }
-        
-        const userId = (ctx.state.session as SessionType).get("userId");
-        const user = await this.selectFromDB("users", userId);
-        
-        // If user is not an admin, redirect to home.
-        if ("_id" in user && user.role !== "admin") {
-          return this.response(ctx, "", 302, "/");
-        }
-
-        const body = await this.createHtmlFile(
-          ctx,
-          {
-            id: "data-admin",
-            css: "admin",
-            title: "connexion à l'administration"
+        try {
+          // If connexion to DB failed, redirect to home.
+          if ("message" in users) {
+            return this.response(ctx, "", 302, "/");
           }
-        );
+          
+          const userId = (ctx.state.session as SessionType).get("userId");
+          const user = await this.selectFromDB("users", userId);
+          
+          // If user is not an admin, redirect to home.
+          if ("_id" in user && user.role !== "admin") {
+            return this.response(ctx, "", 302, "/");
+          }
 
-        this.response(
-          ctx,
-          body,
-          200,
-        );
+          const body = await this.createHtmlFile(
+            ctx,
+            {
+              id: "data-admin",
+              css: "admin",
+              title: "connexion à l'administration"
+            }
+          );
+
+          this.response(
+            ctx,
+            body,
+            200,
+          );
+
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
       }
     );
   }

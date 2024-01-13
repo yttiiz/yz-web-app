@@ -274,10 +274,11 @@ header[data-header="site"] {
             width: 100%;
             height: auto;
             transition: opacity var(--smooth);
-        }
-
-        & > form button > svg:hover {
             opacity: .7;
+        }
+        
+        & > form button > svg:hover {
+            opacity: 1;
         }
 
         & > span {
@@ -305,7 +306,7 @@ header[data-header="site"] {
 
     & button[type="button"] {
         font-size: var(--base-size);
-        display: inline-block;
+        display: block;
     }
 
     & a:hover,

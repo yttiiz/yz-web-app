@@ -1,4 +1,4 @@
-const dynamicRoutes = new Map();
+const dynamicRoutes = new Map<string, string>();
 
 // Set routes.
 dynamicRoutes.set("product", "product/");

@@ -6,7 +6,17 @@ import type {
   SelectUserFromDBType,
   UserDataType,
 } from "./mod.ts";
-import type { FindCursorUserType, UserSchemaWithIDType } from "@mongo";
+import type {
+  FindCursorBookingsProductType,
+  FindCursorProductType,
+  FindCursorUserType,
+  UserSchemaWithIDType
+} from "@mongo";
+
+type FindCursorCollectionType =
+  | FindCursorUserType
+  | FindCursorProductType
+  | FindCursorBookingsProductType;
 
 export class ApiController {
   private router;
@@ -29,43 +39,21 @@ export class ApiController {
     this.selectFromDB = selectFromDB;
     this.helper = Helper;
     this.users();
+    this.products();
+    this.bookings();
     this.userProfil();
   }
 
   private users() {
-    this.router.get("/users", async (ctx: RouterContextAppType<"/users">) => {
-      const users: UserDataType = {};
-      const cursor = await this.collection("users");
+    this.getDataFromDB<FindCursorUserType>("users");
+  }
 
-      try {
-        if ("message" in cursor && cursor["message"].includes("failed")) {
-          this.response(
-            ctx,
-            JSON.stringify({
-              errorMsg: this.errorMsg,
-            }),
-            502,
-          );
+  private products() {
+    this.getDataFromDB<FindCursorProductType>("products");
+  }
 
-        } else {
-          await (cursor as FindCursorUserType)
-            .map((document, key) => users[key + 1] = document);
-
-          // Remove "_id" and "hash" properties from `users` object.
-          for (const key in users) {
-            for (const prop in users[key]) {
-              if (prop === "_id") delete users[key][prop];
-              if (prop === "hash") delete users[key][prop];
-            }
-          }
-
-          this.response(ctx, JSON.stringify(users), 200);
-          
-        }
-      } catch (error) {
-        this.writeErrorLogAndSetResponse(ctx, error);
-      }
-    });
+  private bookings() {
+    this.getDataFromDB<FindCursorBookingsProductType>("bookings");
   }
 
   private userProfil() {
@@ -103,6 +91,43 @@ export class ApiController {
         }
       },
     );
+  }
+
+  private getDataFromDB<T extends FindCursorCollectionType>(collection: string) {
+    const path = "/" + collection;
+
+    this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
+      const data: UserDataType = {};
+      const cursor = await this.collection(collection);
+
+      try {
+        if ("message" in cursor && cursor["message"].includes("failed")) {
+          this.response(
+            ctx,
+            JSON.stringify({
+              errorMsg: this.errorMsg,
+            }),
+            502,
+          );
+
+        } else {
+          await (cursor as T)
+            .map((document, key) => data[key + 1] = document);
+
+          // Remove "_id" and "hash" properties from `users` object.
+          for (const key in data) {
+            for (const prop in data[key]) {
+              if (prop === "_id" || prop === "hash") delete data[key][prop];
+            }
+          }
+
+          this.response(ctx, JSON.stringify(data), 200);
+          
+        }
+      } catch (error) {
+        this.writeErrorLogAndSetResponse(ctx, error);
+      }
+    });
   }
 
   private writeErrorLogAndSetResponse<T extends string>(
