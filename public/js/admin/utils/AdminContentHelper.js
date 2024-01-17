@@ -28,7 +28,7 @@ export class AdminContentHelper extends DefaultFormHelper {
    */
   static #setUsersCard = (users) => {
     const usersDetailsContainer = document.querySelector(".users-details");
-    const [userList] = AdminContentHelper.#builder.createHTMLElements("ul");
+    const [usersList, usersMainInfos] = AdminContentHelper.#builder.createHTMLElements("ul", "div");
     
     const getAge  = (date) => {
       return new Date(Date.now() - new Date(date).getTime())
@@ -49,63 +49,54 @@ export class AdminContentHelper extends DefaultFormHelper {
       
       // Set public part.
 
-      /** @type {[HTMLDivElement, HTMLDivElement, ...Types.UserCardDivDetails]} */
-      const [
-        userPublicPartInfo,
-        figure,
-        img,
-        firstname,
-        lastname,
-        job,
-        age
-      ] = AdminContentHelper.#builder.createHTMLElements(
-        "div", "figure","img", "p", "p", "p", "p",
-      );
-
-      img.src = users[key].photo;
-      img.alt = `photo de ${users[key].firstname} ${users[key].lastname}`;
-
-      firstname.innerHTML = `Prénom : <strong>${users[key].firstname}</strong>`;
-      lastname.innerHTML = `Nom : <strong>${users[key].lastname}</strong>`;
-      age.innerHTML = `Age : <strong>${getAge(users[key].birth)} ans</strong>`;
-      job.innerHTML = `Profession : <strong>${users[key].job}</strong>`;
-
-      AdminContentHelper.#builder.insertChildren(figure, img);
-      AdminContentHelper.#builder.insertChildren(userPublicPartInfo, firstname, lastname, job, age);
-      AdminContentHelper.#builder.insertChildren(userPublicPart, figure, userPublicPartInfo);
+      userPublicPart.innerHTML = `
+      <figure>
+        <img src="${users[key].photo}" alt="photo de ${users[key].firstname} ${users[key].lastname}" /> 
+      </figure>
+      <div>
+        <p>Prénom : <strong>${users[key].firstname}</strong></p>
+        <p>Nom : <strong>${users[key].lastname}</strong></p>
+        <p>Age : <strong>${getAge(users[key].birth)} ans</strong></p>
+        <p>Profession : <strong>${users[key].job}</strong></p>
+      </div>`;
 
       // Set private part.
 
-      const [
-        userPrivatePartInfo,
-        email,
-        role,
-        form,
-      ] = AdminContentHelper.#builder.createHTMLElements(
-        "div",
-        "p",
-        "p",
-        "form",
-      );
-
-      email.innerHTML = `Email : <strong>${users[key].email}</strong>`;
-      role.innerHTML = `Role : <strong>${users[key].role}</strong>`;
-      form.innerHTML = `<button type="submit">Supprimer</button>`;
-
-      form.setAttribute("action", "/delete");
-      form.setAttribute("method", "post");
-      AdminContentHelper.#builder.insertChildren(userPrivatePartInfo, email, role);
-      AdminContentHelper.#builder.insertChildren(userPrivatePart, userPrivatePartInfo, form);
+      userPrivatePart.innerHTML = `
+        <div>
+          <p>Id : <strong>${users[key]._id}</strong></p>
+          <p>Email : <strong>${users[key].email}</strong></p>
+          <p>Role : <strong>${users[key].role}</strong></p>
+        </div>
+        <form
+          action="/delete/${users[key]._id}"
+          method="post"
+        >
+          <button type="submit">Supprimer</button>
+        </form>`;
 
       // Insert main elements into root element.
 
       AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
-      AdminContentHelper.#builder.insertChildren(userList, userContainer);
+      AdminContentHelper.#builder.insertChildren(usersList, userContainer);
     }
+
+    const { usersLength, usersRoleLength } = ((users) => {
+      return {
+        usersLength: Object.keys(users).length,
+        usersRoleLength: Object.keys(users).filter((key) => (
+          users[key].role === "user"
+        )).length,
+      } 
+    })(users);
+
+    usersMainInfos.innerHTML = `
+    <p>Il y a ${usersLength} utilisateurs, dont ${usersRoleLength} avec le rôle <strong>user</strong>.</p>`;
 
     AdminContentHelper.#builder.insertChildren(
       usersDetailsContainer,
-      userList,
+      usersList,
+      usersMainInfos,
     );
   }
 

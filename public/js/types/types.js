@@ -4,6 +4,7 @@
 
 /**
  * @typedef {Object} User User model
+ * @property {string} _id
  * @property {string} firstname
  * @property {string} lastname
  * @property {string} email
@@ -33,6 +34,7 @@
 
 /**
  * @typedef {Object} Product Product model
+ * @property {string} _id
  * @property {string} name
  * @property {string} description
  * @property {Details} details
@@ -48,6 +50,7 @@
 
 /**
  * @typedef {Object} BookingsRegistred
+ * @property {string} _id
  * @property {string} userId
  * @property {string} userName
  * @property {string} startingDate

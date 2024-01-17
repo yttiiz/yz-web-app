@@ -84,7 +84,7 @@
     margin-top: var(--base-size);
     
     & > ul,
-    & > ul > li > div:first-of-type {
+    & > ul > li > div {
         gap: calc(var(--base-size) * 1.5);
     }
 
@@ -100,6 +100,7 @@
     }
 
     & li {
+        position: relative;
         overflow: hidden;
         border: .1rem solid rgb(var(--black-rvb) / .1);
         border-radius: var(--btn-border-radius);
@@ -150,6 +151,10 @@
 
     & strong {
         font-weight: 400;
+    }
+
+    & > div {
+        margin-top: inherit;
     }
 }
 
@@ -206,5 +211,18 @@
 @media screen and (max-width: 650px) {
     .users-details > ul > li {
         flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .users-details {
+        & > ul > li > div {
+            flex-direction: column;
+        }
+
+        & > ul > li div:first-of-type > div {
+            width: 100%;
+        }
     }
 }

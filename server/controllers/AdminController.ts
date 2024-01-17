@@ -39,20 +39,16 @@ export class AdminController extends DefaultController {
             return this.response(ctx, "", 302, "/");
           }
           
-          const userId = (ctx.state.session as SessionType).get("userId");
-          const user = await this.selectFromDB("users", userId);
-          
-          // If user is not an admin, redirect to home.
-          if ("_id" in user && user.role !== "admin") {
-            return this.response(ctx, "", 302, "/");
-          }
+          const isUserConnected = (ctx.state.session as SessionType).has("userId");
 
           const body = await this.createHtmlFile(
             ctx,
             {
               id: "data-admin",
               css: "admin",
-              title: "connexion à l'administration"
+              title: isUserConnected
+              ? "bienvenue sur la plateforme d'admin"
+              : "connexion à l'admin"
             }
           );
 

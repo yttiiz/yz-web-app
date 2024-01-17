@@ -117,7 +117,7 @@ export class ApiController {
           // Remove "_id" and "hash" properties from `users` object.
           for (const key in data) {
             for (const prop in data[key]) {
-              if (prop === "_id" || prop === "hash") delete data[key][prop];
+              if (prop === "hash") delete data[key][prop];
             }
           }
 

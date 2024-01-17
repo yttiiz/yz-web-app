@@ -74,8 +74,8 @@ export class LogController {
             this.default.sessionFlashMsg(email),
           );
 
-          session.has("error")
-            ? session.set("error", null)
+          session.get("error")
+            ? session.flash("error", null)
             : null;
 
           this.isAdmin

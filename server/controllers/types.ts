@@ -45,7 +45,7 @@ export type SessionType = {
     T extends "userId" ? ObjectId : string
   );
   set: (key: string, value: unknown) => void;
-  flash: (key: string, value: string) => void;
+  flash: (key: string, value: string | null) => void;
   has: (value: string) => boolean;
 };
 

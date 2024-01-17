@@ -5,4 +5,4 @@ import { AdminPage } from "./page/AdminPage.js";
 new AnimationHelper();
 
 // Form handler
-new AdminPage().initForm();
+new AdminPage().init();

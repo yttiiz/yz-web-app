@@ -3,7 +3,7 @@ import { AdminProfilHelper } from "../utils/AdminProfilHelper.js";
 import { AdminContentHelper } from "../utils/AdminContentHelper.js";
 
 export class AdminPage {
-  initForm = () => {
+  init = () => {
     const section = document.querySelector("section");
     const dialog = document.querySelector("dialog");
       
