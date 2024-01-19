@@ -80,7 +80,8 @@
     }
 }
 
-.users-details {
+.users-details,
+.products-details {
     margin-top: var(--base-size);
     
     & > ul,
@@ -94,13 +95,12 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    & li > div,
-    & li > div > div:not(:first-child) {
+    & > ul > li > div,
+    & > ul > li > div > div:not(:first-child) {
         display: flex;
     }
 
-    & li {
-        position: relative;
+    & > ul > li {
         overflow: hidden;
         border: .1rem solid rgb(var(--black-rvb) / .1);
         border-radius: var(--btn-border-radius);
@@ -120,41 +120,80 @@
 
         & > div:first-of-type > div p {
             line-height: 1.2;
-            display: -webkit-box;
             -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         & > div:last-of-type {
             justify-content: space-between;
+            align-items: flex-end;
             background: rgb(var(--black-rvb) / .025);
             border-top: .1rem solid rgb(var(--black-rvb) / .1);
+        }
+
+        & > div:last-of-type > div:last-of-type {
+            gap: calc(var(--base-size) * .75);
+            flex-direction: column;
+        }
+
+        & > div:last-of-type > div:first-of-type p {
+            -webkit-line-clamp: 3;
         }
 
         & > div:last-of-type button {
             font-size: var(--base-size);
             font-weight: 500;
+            color: var(--danger);
+            transition: filter var(--smooth);
+        }
+
+        & > div:last-of-type button[type="button"] {
             color: var(--white);
             padding: var(--btn-padding);
             border-radius: var(--btn-border-radius);
-            background: var(--danger);
+            background: var(--primary-color);
+        }
+
+        & > div:last-of-type button[type="button"]:hover {
+            filter: contrast(1.4);
+        }
+
+        & > div:last-of-type button[type="submit"]:hover {
+            text-decoration: underline;
         }
         
         & img {
             border-radius: 50%;
             width: calc(var(--base-size) * 6.25);
+            object-fit: cover;
             aspect-ratio: 1 / 1;
-            filter: sepia(1) contrast(1.2);
+        }
+
+        & p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     }
+
 
     & strong {
         font-weight: 400;
     }
 
+    & sup {
+        line-height: 0;
+    }
+
     & > div {
         margin-top: inherit;
+
+        & p {
+            font-size: calc(var(--base-size) * 1.25);
+        }
+
+        & strong {
+            color: var(--danger);
+        }
     }
 }
 
@@ -203,26 +242,41 @@
 /*=================================================| BREAKPOINTS |=================================================*/
 
 @media screen and (max-width: 1080px) {
-    .users-details > ul {
+    .users-details > ul,
+    .products-details > ul {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 650px) {
-    .users-details > ul > li {
+    .users-details > ul > li,
+    .products-details > ul > li {
         flex-direction: column;
     }
 }
 
 
 @media screen and (max-width: 500px) {
-    .users-details {
+    .users-details,
+    .products-details {
         & > ul > li > div {
             flex-direction: column;
         }
 
+        & > ul > li > div:last-of-type {
+            align-items: unset;
+        }
+
         & > ul > li div:first-of-type > div {
             width: 100%;
+        }
+
+        & > ul > li > div:last-of-type > div:last-of-type form {
+            align-self: center;   
+        }
+
+        & > ul > li img {
+            width: calc(var(--base-size) * 10);
         }
     }
 }
