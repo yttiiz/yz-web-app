@@ -196,7 +196,25 @@ export class AdminContentHelper extends DefaultFormHelper {
       );
     }
 
-    /** @type {Types.BookingsRegistred & { productName: string }[]} */
+    /**
+     * @param {string} startingDate 
+     * @param {string} endingDate 
+     */
+    const bookingState = (startingDate, endingDate) => {
+      const start = new Date(startingDate).getTime();
+      const end = new Date(endingDate).getTime();
+      const now = Date.now();
+
+      return end < now
+        ? "effectuée"
+        : (
+            start < now && end >= now
+             ? "en cours"
+             : "à venir"
+          );
+    }
+
+    /** @type {(Types.BookingsRegistred & { productName: string })[]} */
     const sortBookings = [];
 
     for (const key of Object.keys(bookings)) {
@@ -230,6 +248,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       <div>
         <p>Date de début : <strong>${AdminContentHelper.#formatDate(booking.startingDate)}</strong></p>
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
+        <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
       ${AdminContentHelper.#getEditOrDeletePart("test")}`;
 
