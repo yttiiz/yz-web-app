@@ -220,6 +220,7 @@ export class AdminContentHelper extends DefaultFormHelper {
     for (const key of Object.keys(bookings)) {
       for (const booking of bookings[key].bookings) {
         booking.productName = bookings[key].productName;
+        booking._id = bookings[key]._id;
         sortBookings.push(booking);
       }
     }
@@ -250,7 +251,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
         <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart("test")}`;
+      ${AdminContentHelper.#getEditOrDeletePart(booking._id)}`;
 
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
