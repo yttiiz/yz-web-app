@@ -28,5 +28,5 @@ export class AdminPage {
       document.querySelector("form")
       .addEventListener("submit", AdminFormHelper.loginHandler);
     }
-  };
+  }
 }

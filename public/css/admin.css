@@ -81,7 +81,8 @@
 }
 
 .users-details,
-.products-details {
+.products-details,
+.bookings-details {
     margin-top: var(--base-size);
     
     & > ul,
@@ -95,8 +96,13 @@
         grid-template-columns: 1fr 1fr;
     }
 
+    & > ul > li.admin {
+        background: var(--admin-color);
+    }
+
     & > ul > li > div,
-    & > ul > li > div > div:not(:first-child) {
+    & > ul > li > div:first-of-type > div,
+    & > ul > li > div:last-of-type > div:not(:first-of-type) {
         display: flex;
     }
 
@@ -243,14 +249,16 @@
 
 @media screen and (max-width: 1080px) {
     .users-details > ul,
-    .products-details > ul {
+    .products-details > ul,
+    .bookings-details > ul {
         grid-template-columns: 1fr;
     }
 }
 
 @media screen and (max-width: 650px) {
     .users-details > ul > li,
-    .products-details > ul > li {
+    .products-details > ul > li,
+    .bookings-details > ul > li {
         flex-direction: column;
     }
 }
@@ -258,7 +266,8 @@
 
 @media screen and (max-width: 500px) {
     .users-details,
-    .products-details {
+    .products-details,
+    .bookings-details {
         & > ul > li > div {
             flex-direction: column;
         }

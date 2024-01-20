@@ -11,7 +11,17 @@ export class AdminContentHelper extends DefaultFormHelper {
       maximumFractionDigits: 2,
       style: "currency",
       currency: "eur",
-    }).format(price);
+    }
+  ).format(price);
+
+  static #formatDate = (date) => new Intl.DateTimeFormat(
+    "fr-FR",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }
+  ).format(new Date(date));
 
   static initContent = async () => {
     // Retrieve all data from api.
@@ -29,7 +39,8 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     AdminContentHelper.#setUsersCard(users);
     AdminContentHelper.#setProductsCard(products);
-  };
+    AdminContentHelper.#setBookingsCard(bookings);
+  }
 
   /**
    * @param {Types.Users} users
@@ -45,6 +56,13 @@ export class AdminContentHelper extends DefaultFormHelper {
       return new Date(Date.now() - new Date(date).getTime())
         .getFullYear() - 1970;
     };
+
+    if ("message" in users) {
+      return AdminContentHelper.#displayErrorMessage(
+        detailsContainer,
+        dbInfos,
+      );
+    }
 
     for (const key in users) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
@@ -77,6 +95,10 @@ export class AdminContentHelper extends DefaultFormHelper {
         </div>
         ${AdminContentHelper.#getEditOrDeletePart(users[key]._id)}`;
 
+      users[key].role === "admin"
+        ? userContainer.classList.add("admin")
+        : null;
+      
       AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
     }
@@ -101,15 +123,21 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   /**
-   * 
    * @param {Types.Products} products 
    */
   static #setProductsCard = (products) => {
     const {
       detailsContainer,
       elementsList,
-      dbInfos
+      dbInfos,
     } = AdminContentHelper.#getCardMainElements("products");
+
+    if ("message" in products) {
+      return AdminContentHelper.#displayErrorMessage(
+        detailsContainer,
+        dbInfos,
+      );
+    }
 
     for (const key in products) {
       const [
@@ -152,6 +180,70 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   /**
+   * @param {Types.Bookings} bookings 
+   */
+  static #setBookingsCard = (bookings) => {
+    const {
+      detailsContainer,
+      elementsList,
+      dbInfos,
+    } = AdminContentHelper.#getCardMainElements("bookings");
+
+    if ("message" in bookings) {
+      return AdminContentHelper.#displayErrorMessage(
+        detailsContainer,
+        dbInfos,
+      );
+    }
+
+    /** @type {Types.BookingsRegistred & { productName: string }[]} */
+    const sortBookings = [];
+
+    for (const key of Object.keys(bookings)) {
+      for (const booking of bookings[key].bookings) {
+        booking.productName = bookings[key].productName;
+        sortBookings.push(booking);
+      }
+    }
+
+    sortBookings.sort((a, b) => a.createdAt - b.createdAt);
+
+    for (const booking of sortBookings) {
+      const [
+        productContainer,
+        productPublicPart,
+        productPrivatePart,
+      ] = AdminContentHelper.#builder.createHTMLElements(
+        "li",
+        "div",
+        "div",
+      );
+
+      productPublicPart.innerHTML = `
+      <div>
+        <p>Appartement : <strong>${booking.productName}</strong></p>
+        <p>Réservation passée le : <strong>${AdminContentHelper.#formatDate(booking.createdAt)}</strong></p>
+        <p>Par : <strong>${booking.userName}</strong></p>
+      </div>`;
+        
+      productPrivatePart.innerHTML = `
+      <div>
+        <p>Date de début : <strong>${AdminContentHelper.#formatDate(booking.startingDate)}</strong></p>
+        <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
+      </div>
+      ${AdminContentHelper.#getEditOrDeletePart("test")}`;
+
+      AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
+      AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
+    }
+
+    AdminContentHelper.#builder.insertChildren(
+      detailsContainer,
+      elementsList,
+    );
+  }
+
+  /**
    * @param {string} className
    * @returns {{ detailsContainer: HTMLDivElement, elementsList: HTMLUListElement, dbInfos: HTMLDivElement }}
    */
@@ -162,6 +254,18 @@ export class AdminContentHelper extends DefaultFormHelper {
       elementsList,
       dbInfos,
     };
+  }
+
+  /**
+   * @param {HTMLDivElement} root 
+   * @param {HTMLDivElement} children 
+   */
+  static #displayErrorMessage = (root, children) => {
+    children.textContent = "Les données sont indisponibles.";
+    AdminContentHelper.#builder.insertChildren(
+      root,
+      children,
+    );
   }
 
   /**
@@ -197,5 +301,5 @@ export class AdminContentHelper extends DefaultFormHelper {
     } catch (error) {
       // TODO implements logic here.
     }
-  };
+  }
 }
