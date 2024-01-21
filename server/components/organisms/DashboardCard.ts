@@ -20,6 +20,9 @@ export const DashboardCard: ComponentType<
       <div>
         <h3>${title}</h3>
         <div class="${className}"></div>
+        <button type="button" data-open="false">
+          <span></span>
+        </button>
       </div>`
   },
 };

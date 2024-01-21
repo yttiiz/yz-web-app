@@ -5,6 +5,7 @@ import * as Types from "../../types/types.js";
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
   static #builder = new PageBuilder;
+  
   static #formatPrice = (price) => new Intl.NumberFormat(
     "fr-FR",
     {
@@ -37,9 +38,13 @@ export class AdminContentHelper extends DefaultFormHelper {
       return allData;
     })("users", "products", "bookings");
 
+    // Set cards.
     AdminContentHelper.#setUsersCard(users);
     AdminContentHelper.#setProductsCard(products);
     AdminContentHelper.#setBookingsCard(bookings);
+    
+    // Set animation cards.
+    AdminContentHelper.#animCardExpansion();
   }
 
   /**
@@ -206,7 +211,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       const now = Date.now();
 
       return end < now
-        ? "effectuée"
+        ? "terminée"
         : (
             start < now && end >= now
              ? "en cours"
@@ -286,6 +291,61 @@ export class AdminContentHelper extends DefaultFormHelper {
       root,
       children,
     );
+  }
+
+  static #animCardExpansion = () => {
+    for (const button of document.querySelectorAll(".card button[data-open]")) {
+      button.addEventListener("click", (e) => {
+        const currentBtn = e.currentTarget;
+        const containerToAnimate = currentBtn.previousElementSibling;
+        /**
+         * @param {HTMLDivElement} container 
+         */
+        const getHeightToExpand = (container) => {
+          if (container.classList.contains("open")) {
+            container.style.maxHeight = 0;
+
+          } else {
+            const [elementsList, databaseInfo] = container.children;
+  
+            const {
+              height: elementsListHeight,
+              bottom: elementsListBottom,
+            } = elementsList.getBoundingClientRect();
+  
+            if (databaseInfo) {
+              const {
+                height: databaseInfoHeight,
+                bottom: databaseInfoBottom, 
+              } = databaseInfo.getBoundingClientRect();
+  
+              container.style.maxHeight = (
+                elementsListHeight + (
+                  databaseInfoBottom - elementsListBottom
+                ) + databaseInfoHeight) + "px";
+
+              } else {
+              container.style.maxHeight = elementsListHeight + "px";
+            }
+          }
+        };
+
+        // Animate button.
+        currentBtn.dataset.open === "false" 
+          ? currentBtn.dataset.open = "true"
+          : currentBtn.dataset.open = "false";
+        
+        // Animate content.
+        if (containerToAnimate.classList.contains("open")) {
+          getHeightToExpand(containerToAnimate);
+          containerToAnimate.classList.remove("open");
+
+        } else {
+          getHeightToExpand(containerToAnimate);
+          containerToAnimate.classList.add("open");
+        }
+      });
+    }
   }
 
   /**

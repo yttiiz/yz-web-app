@@ -77,13 +77,42 @@
         border: var(--border-black-25-percent);
         border-radius: var(--base-size);
         padding: calc(var(--base-size) * 1.5);
+
+        & > div {
+            position: relative;
+        }
+        
+        & > div > button {
+            width: calc(var(--base-size) * 1.5);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            padding: calc(var(--base-size) * .5);
+            position: absolute;
+            right: 0;
+            top: calc(var(--base-size) * .35);
+        }
+        
+        & > div > button span {
+            width: 100%;
+            aspect-ratio: inherit;
+            transform: rotateZ(45deg);
+            border-right: .1rem solid var(--dark);
+            border-bottom: .1rem solid var(--dark);
+            transition: transform var(--smooth);
+        }
+        
+        & > div > button[data-open="true"] span {
+            transform: rotateZ(225deg);
+        }
     }
 }
 
 .users-details,
 .products-details,
 .bookings-details {
-    margin-top: var(--base-size);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--smooth), margin-top var(--smooth);
     
     & > ul,
     & > ul > li > div {
@@ -201,6 +230,13 @@
             color: var(--danger);
         }
     }
+}
+
+
+.users-details.open,
+.products-details.open,
+.bookings-details.open {
+    margin-top: var(--base-size);
 }
 
 #eye-password,
