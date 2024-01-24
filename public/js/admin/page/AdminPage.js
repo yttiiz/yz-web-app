@@ -17,7 +17,7 @@ export class AdminPage {
       //==========| Dashboard interface |==========//
       
       // Init profil dialog modal.
-      const buttons = document.querySelectorAll("#user-session button[type=\"button\"]")
+      const buttons = document.querySelectorAll("#user-session button[type=\"button\"]");
       AdminProfilHelper.profilHandler(buttons);
 
       AdminContentHelper.initContent();

@@ -301,7 +301,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         /**
          * @param {HTMLDivElement} container 
          */
-        const getHeightToExpand = (container) => {
+        const stretchOrRetract = (container) => {
           if (container.classList.contains("open")) {
             container.style.maxHeight = 0;
 
@@ -337,11 +337,11 @@ export class AdminContentHelper extends DefaultFormHelper {
         
         // Animate content.
         if (containerToAnimate.classList.contains("open")) {
-          getHeightToExpand(containerToAnimate);
+          stretchOrRetract(containerToAnimate);
           containerToAnimate.classList.remove("open");
 
         } else {
-          getHeightToExpand(containerToAnimate);
+          stretchOrRetract(containerToAnimate);
           containerToAnimate.classList.add("open");
         }
       });

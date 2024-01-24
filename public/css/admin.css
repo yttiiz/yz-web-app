@@ -3,67 +3,95 @@
         background: var(--light);
     }
 
-    & section form[data-style],
-    & section form[data-style] > div {
-        display: grid;
-        grid-template-columns: 1fr;
+    & section {
+        & form[data-style],
+        & form[data-style] > div {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    
+        & form[data-style] {
+            margin: 0 auto;
+            width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
+            border: var(--border-black-25-percent);
+            border-radius: var(--base-size);
+            overflow: hidden;
+        }
+    
+        & form[data-style] h3,
+        & form[data-style] > div {
+            padding: calc(var(--base-size) * 2);
+        }
+    
+        & form[data-style] > span {
+            padding: calc(var(--base-size) * 2);
+            padding-top: 0;
+        }
+    
+        & form[data-style] h3 {
+            text-align: center;
+            border-bottom: var(--border-black-25-percent);
+        }
+    
+        & form[data-style] > div {
+            gap: calc(var(--base-size) * 1.8);
+        }
+    
+        & form[data-style] label {
+            position: relative;
+        }
+    
+        & form[data-style] input {
+            height: calc(var(--base-size) * 3);
+        }
+    
+        & form[data-style] div > input[type="submit"] {
+            align-self: end;
+            background: var(--primary-color);
+        }
+    
+        & form[data-style] input[type="password"] {
+            padding-right: 4rem;
+        }
+    
+        & form[data-style] input[name="file-text"] {
+            padding-right: calc(var(--base-size) * 7.25);
+        }
+    
+        & form[data-style] > span {
+            font-weight: 500;
+            color: var(--danger);
+        }
+    
+        & form[data-style] > span.none {
+            display: none;
+        }
     }
 
-    & section form[data-style] {
-        margin: 0 auto;
-        width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
-        border: var(--border-black-25-percent);
-        border-radius: var(--base-size);
-        overflow: hidden;
-    }
+    & dialog {
+        & form,
+        & form label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        & form {
+            gap: calc(var(--base-size) * 1.2);
+        }
 
-    & section form[data-style] h3,
-    & section form[data-style] > div {
-        padding: calc(var(--base-size) * 2);
-    }
+        & form label {
+            gap:  calc(var(--base-size) * .25);
+        }
 
-    & section form[data-style] > span {
-        padding: calc(var(--base-size) * 2);
-        padding-top: 0;
-    }
+        & form input:not([type="submit"]) {
+            border: var(--border-black-25-percent);
+            padding: 0 calc(var(--base-size) * .625);
+            height: calc(var(--base-size) * 2.75);
+        }
 
-    & section form[data-style] h3 {
-        text-align: center;
-        border-bottom: var(--border-black-25-percent);
-    }
-
-    & section form[data-style] > div {
-        gap: calc(var(--base-size) * 1.8);
-    }
-
-    & section form[data-style] label {
-        position: relative;
-    }
-
-    & section form[data-style] input {
-        height: calc(var(--base-size) * 3);
-    }
-
-    & section form[data-style] div > input[type="submit"] {
-        align-self: end;
-        background: var(--primary-color);
-    }
-
-    & section form[data-style] input[type="password"] {
-        padding-right: 4rem;
-    }
-
-    & section form[data-style] input[name="file-text"] {
-        padding-right: calc(var(--base-size) * 7.25);
-    }
-
-    & section form[data-style] > span {
-        font-weight: 500;
-        color: var(--danger);
-    }
-
-    & section form[data-style] > span.none {
-        display: none;
+        & form input[type="submit"] {
+            background: var(--primary-color);
+        }
     }
 }
 
@@ -247,7 +275,7 @@
 }
 
 #eye-password {
-    bottom: clamp(15%, 1.5vw, 20%);
+    bottom: 14%;
 
     & > span {
         cursor: pointer;

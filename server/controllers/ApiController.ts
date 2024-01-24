@@ -42,6 +42,7 @@ export class ApiController {
     this.products();
     this.bookings();
     this.userProfil();
+    this.getUserFormContent();
   }
 
   private users() {
@@ -91,6 +92,21 @@ export class ApiController {
         }
       },
     );
+  }
+
+  private getUserFormContent() {
+    this.router?.get(
+      "/user-form-content",
+      async (ctx: RouterContextAppType<"/user-form-content">) => {
+        try {
+          const content = await this.helper.convertJsonToObject("/server/data/profil/profil.json");
+          this.response(ctx, JSON.stringify(content), 200);
+        
+        } catch (error) {
+          this.writeErrorLogAndSetResponse(ctx, error);
+        }
+      }
+    )
   }
 
   private getDataFromDB<T extends FindCursorCollectionType>(collection: string) {

@@ -69,6 +69,27 @@
 
 /*=================================================| INTERFACE |=================================================*/
 
+/**
+ * @typedef {Object} FormInputType
+ * @property {string} type
+ * @property {string} [label]
+ * @property {string} [name]
+ * @property {string} [placeholder]
+ * @property {number} [maxLength]
+ * @property {number} [minLength]
+ * @property {string} [autocomplete]
+ * @property {string | number} [value]
+ */
+
+/**
+ * @typedef {Object} FormContentType
+ * @property {string} action
+ * @property {string} changePhoto
+ * @property {FormInputType[]} content
+ * @property {string} method
+ * @property {string} title
+ */
+
 /** @typedef {[HTMLImageElement, HTMLParagraphElement, HTMLParagraphElement, HTMLParagraphElement, HTMLParagraphElement]} UserCardDivDetails */
 
 export {};
