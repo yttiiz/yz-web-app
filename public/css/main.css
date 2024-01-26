@@ -38,6 +38,10 @@ html {
     font-size: 62.5%;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     font-size: var(--base-size);
     min-height: 100vh;
@@ -89,6 +93,7 @@ input[type="submit"] {
 
 button[data-type="call-to-action"],
 textarea,
+select,
 input {
     border-radius: var(--btn-border-radius);
     font-size: var(--base-size);

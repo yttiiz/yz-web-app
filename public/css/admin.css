@@ -69,10 +69,22 @@
     }
 
     & dialog {
+        overflow-y: auto;
+
         & form,
         & form label {
             display: flex;
             flex-direction: column;
+        }
+
+        & form figure {
+            height: calc(var(--base-size) * 8);
+        }
+
+        & form figure img {
+            height: 100%;
+            width: auto;
+            margin: auto;
         }
         
         & form {
@@ -83,10 +95,15 @@
             gap:  calc(var(--base-size) * .25);
         }
 
-        & form input:not([type="submit"]) {
+        & form input:not([type="submit"]),
+        & form select {
             border: var(--border-black-25-percent);
             padding: 0 calc(var(--base-size) * .625);
             height: calc(var(--base-size) * 2.75);
+        }
+
+        & form select {
+            background: none;
         }
 
         & form input[type="submit"] {
@@ -275,7 +292,7 @@
 }
 
 #eye-password {
-    bottom: 14%;
+    bottom: 16%;
 
     & > span {
         cursor: pointer;

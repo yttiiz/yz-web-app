@@ -4,6 +4,7 @@ import { handleShowPassword } from "../../utils/_commonFunctions.js";
 export class AdminProfilHelper {
   static #handleShowPassword = handleShowPassword;
   static #host = location.origin + "/";
+  static #roles = ["user", "admin"];
 
   /**
    * @param {NodeListOf<HTMLButtonElement>} buttons 
@@ -47,6 +48,12 @@ export class AdminProfilHelper {
       formElement.setAttribute("action", formContent.action);
       formElement.setAttribute("method", formContent.method);
       formElement.setAttribute("type", "multipart/form-data");
+
+      const figure = AdminProfilHelper.#createPicture(userData);
+      formElement.appendChild(figure);
+
+      const selectLabel = AdminProfilHelper.#createLabelSelectRole();
+      formElement.appendChild(selectLabel);
   
       for (const inputData of formContent.content) {
         const label = document.createElement("label");
@@ -92,6 +99,47 @@ export class AdminProfilHelper {
   };
 
   /**
+   * @param {Type.User} userData 
+   */
+  static #createPicture = (userData) => {
+    const {
+      figure,
+      img,
+    } = AdminProfilHelper.#createHTMLElements("img", "figure");
+    
+    img.src = userData.photo;
+    img.alt = `photo de ${userData.firstname} ${userData.lastname}`;
+
+    figure.appendChild(img);
+
+    return figure;
+  }
+
+  static #createLabelSelectRole = () => {
+    const {
+      label, 
+      select,
+    } = AdminProfilHelper.#createHTMLElements("label", "select");
+    
+    select.name = "roles";
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = ""; defaultOption.textContent = "Choisir...";
+    select.appendChild(defaultOption);
+
+    for (const role of AdminProfilHelper.#roles) {
+      const option = document.createElement("option");
+      option.value = role; option.textContent = role;
+      select.appendChild(option);
+    }
+
+    label.textContent = "Role ";
+    label.appendChild(select);
+
+    return label;
+  }
+
+  /**
    * @param {HTMLDivElement} input 
    * @param {Type.FormInputType} inputData 
    */
@@ -129,5 +177,19 @@ export class AdminProfilHelper {
     </span>`;
 
     return eyeIcon;
+  };
+
+  /**
+   * @param {string[]} args
+   */
+  static #createHTMLElements = (...args) => {
+    /** @type {Record<string, HTMLElement>} */
+    const elements = {};
+
+    for (const arg of args) {
+      elements[arg] = document.createElement(arg);
+    }
+
+    return elements;
   };
 }
