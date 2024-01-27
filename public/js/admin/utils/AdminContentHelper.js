@@ -294,9 +294,9 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   static #animCardExpansion = () => {
-    for (const button of document.querySelectorAll(".card button[data-open]")) {
-      button.addEventListener("click", (e) => {
-        const currentBtn = e.currentTarget;
+    for (const subtitle of document.querySelectorAll(".card h3")) {
+      subtitle.addEventListener("click", (e) => {
+        const currentBtn = e.currentTarget.parentNode.querySelector("button[data-open]");
         const containerToAnimate = currentBtn.previousElementSibling;
         /**
          * @param {HTMLDivElement} container 

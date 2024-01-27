@@ -27,6 +27,71 @@ const handleShowPassword = () => {
   }
 };
 
+/**
+ * @param {Event} e 
+ */
+const handleInputFile = (e) => {
+  /** @type {HTMLInputElement} */
+  let input;
+
+  /** @type {HTMLInputElement| HTMLDivElement} */
+  let showFileInfos;
+
+  /**
+   * @param {HTMLInputElement} input 
+   */
+  const createInputTypeFile = (input) => {
+    input = document.createElement("input");
+    input.type = "file";
+    input.name = "photo";
+    input.accept = ".png, .jpg, .webp, .jpeg";
+
+    return input;
+  };
+
+  /**
+   * @param {HTMLInputElement} input
+   * @param {HTMLInputElement| HTMLDivElement} showFileInfos
+   */
+  const handleFileContent = (input, showFileInfos) => {
+    input.addEventListener("change", (event) => {
+      if (event.currentTarget.files.length === 1) {
+        const { name, size } = event.currentTarget.files[0];
+        const sizeInKo = new Intl.NumberFormat("fr-FR", {
+          maximumFractionDigits: 2,
+        }).format(size / 1000);
+
+        if (showFileInfos instanceof HTMLDivElement) {
+          showFileInfos.innerHTML = `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
+
+          if (showFileInfos.classList.contains("none")) {
+            showFileInfos.classList.remove("none");
+            showFileInfos.classList.add("show-file");
+          }
+        } else {
+          showFileInfos.value = `${name} (taille: ${sizeInKo} ko)`;
+        }
+      }
+    });
+  };
+
+  // Check if it's Profil or Register form.
+  e.currentTarget.closest("form").action.includes("/profil")
+    ? showFileInfos = e.currentTarget.nextElementSibling
+    : showFileInfos = e.currentTarget.closest("div").previousElementSibling;
+  
+  if (e.currentTarget.parentNode.querySelector("input")) {
+    input = e.currentTarget.parentNode.querySelector("input");
+  } else {
+    input = createInputTypeFile(input);
+    e.currentTarget.closest("div").insertBefore(input, e.currentTarget);
+    handleFileContent(input, showFileInfos);
+  }
+
+  input.click();
+};
+
 export {
   handleShowPassword,
+  handleInputFile,
 };

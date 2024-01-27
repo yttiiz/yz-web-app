@@ -43,6 +43,7 @@
     
         & form[data-style] input {
             height: calc(var(--base-size) * 3);
+            width: 100%;
         }
     
         & form[data-style] div > input[type="submit"] {
@@ -72,7 +73,9 @@
         overflow-y: auto;
 
         & form,
-        & form label {
+        & form label,
+        & form > div,
+        & form > div > div {
             display: flex;
             flex-direction: column;
         }
@@ -81,18 +84,51 @@
             height: calc(var(--base-size) * 8);
         }
 
-        & form figure img {
-            height: 100%;
-            width: auto;
+        & form figure img,
+        & form > div button {
             margin: auto;
         }
+
+        & form > div input {
+            display: none;
+        }
+
+        & form > div > div.none {
+            display: none;
+        }
         
-        & form {
+        & form figure img {
+            width: auto;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        & form > div button {
+            display: inherit;
+            color: var(--white);
+            font-size: var(--base-size);
+            font-weight: 500;
+            padding: var(--btn-padding);
+            background: var(--secondary-color);
+            border-radius: var(--btn-border-radius);
+        }
+        
+        & form,
+        & form > div,
+        & form > div > div {
             gap: calc(var(--base-size) * 1.2);
+        }
+
+        & form > div {
+            justify-content: center;
         }
 
         & form label {
             gap:  calc(var(--base-size) * .25);
+        }
+
+        & form > div > div {
+            text-align: center;
         }
 
         & form input:not([type="submit"]),
@@ -126,7 +162,13 @@
         & > div {
             position: relative;
         }
-        
+
+        & > div h3 {
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+
         & > div > button {
             width: calc(var(--base-size) * 1.5);
             aspect-ratio: 1 / 1;

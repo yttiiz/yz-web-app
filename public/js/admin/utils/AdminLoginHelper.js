@@ -1,13 +1,15 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
+import { handleShowPassword } from "../../utils/_commonFunctions.js";
 
-export class AdminFormHelper extends DefaultFormHelper {
+export class AdminLoginHelper extends DefaultFormHelper {
+  static handleShowPassword = handleShowPassword;
   /**
    * @param {Event} e 
    */
   static loginHandler = async (e) => {
     e.preventDefault();
 
-    const formData = AdminFormHelper.setFormData(e.target);
+    const formData = AdminLoginHelper.setFormData(e.target);
 
     const res = await fetch(e.target.action, {
       method: "POST",
@@ -19,10 +21,10 @@ export class AdminFormHelper extends DefaultFormHelper {
       
       responseContent["message"] === "connected"
         ? location.reload()
-        : AdminFormHelper.displayWrongPassword(responseContent["message"]);
+        : AdminLoginHelper.displayWrongPassword(responseContent["message"]);
 
     } else if (res.status === 401) {
-      AdminFormHelper.openDialogToUnauthorizedAccess();
+      AdminLoginHelper.openDialogToUnauthorizedAccess();
     }
   };
 
@@ -43,7 +45,7 @@ export class AdminFormHelper extends DefaultFormHelper {
   static openDialogToUnauthorizedAccess = (
     dialog = document.querySelector("dialog"),
   ) => {
-    AdminFormHelper.setUserDialogContent(
+    AdminLoginHelper.setUserDialogContent(
       dialog,
       {
         title: "Accès non autorisé",

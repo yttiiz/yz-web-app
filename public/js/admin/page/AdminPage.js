@@ -1,4 +1,4 @@
-import { AdminFormHelper } from "../utils/AdminFormHelper.js";
+import { AdminLoginHelper } from "../utils/AdminLoginHelper.js";
 import { AdminProfilHelper } from "../utils/AdminProfilHelper.js";
 import { AdminContentHelper } from "../utils/AdminContentHelper.js";
 
@@ -19,14 +19,17 @@ export class AdminPage {
       // Init profil dialog modal.
       const buttons = document.querySelectorAll("#user-session button[type=\"button\"]");
       AdminProfilHelper.profilHandler(buttons);
-
+      
+      // Init content page.
       AdminContentHelper.initContent();
       
     } else {  
       //==========| Login interface |==========//
       
+      AdminLoginHelper.handleShowPassword();
+
       document.querySelector("form")
-      .addEventListener("submit", AdminFormHelper.loginHandler);
+      .addEventListener("submit", AdminLoginHelper.loginHandler);
     }
   }
 }

@@ -1,8 +1,9 @@
 import * as Type from "../../types/types.js";
-import { handleShowPassword } from "../../utils/_commonFunctions.js";
+import { handleShowPassword, handleInputFile } from "../../utils/_commonFunctions.js";
 
 export class AdminProfilHelper {
   static #handleShowPassword = handleShowPassword;
+  static #handleInputFile = handleInputFile;
   static #host = location.origin + "/";
   static #roles = ["user", "admin"];
 
@@ -49,7 +50,7 @@ export class AdminProfilHelper {
       formElement.setAttribute("method", formContent.method);
       formElement.setAttribute("type", "multipart/form-data");
 
-      const figure = AdminProfilHelper.#createPicture(userData);
+      const figure = AdminProfilHelper.#createChangePictureContainer(userData);
       formElement.appendChild(figure);
 
       const selectLabel = AdminProfilHelper.#createLabelSelectRole();
@@ -101,18 +102,34 @@ export class AdminProfilHelper {
   /**
    * @param {Type.User} userData 
    */
-  static #createPicture = (userData) => {
+  static #createChangePictureContainer = (userData) => {
+    const container = document.createElement("div");
     const {
+      div,
       figure,
       img,
-    } = AdminProfilHelper.#createHTMLElements("img", "figure");
+      button
+    } = AdminProfilHelper.#createHTMLElements("div", "figure", "img", "button");
     
+    const msgContainer = document.createElement("div");
+
+    // Set image.
     img.src = userData.photo;
     img.alt = `photo de ${userData.firstname} ${userData.lastname}`;
-
     figure.appendChild(img);
+    
+    // Set input
+    button.type = "button"; button.textContent = "Changer votre photo";
+    button.addEventListener("click", AdminProfilHelper.#handleInputFile);
+    msgContainer.classList.add("none");
+    
+    div.appendChild(button);
+    div.appendChild(msgContainer);
 
-    return figure;
+    container.appendChild(figure);
+    container.appendChild(div);
+    
+    return container;
   }
 
   static #createLabelSelectRole = () => {
