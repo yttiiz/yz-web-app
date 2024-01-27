@@ -5,12 +5,15 @@ export type TemplateNameType =
 
 export type OrganismNameType =
   | "SectionAuthForm"
+  | "SectionAdmin"
   | "SectionsProfilForm"
   | "SectionsBooking"
   | "SectionsProduct"
   | "SectionProductsHome"
   | "SectionErrorHome"
   | "BookingCard"
+  | "AdminDashboard"
+  | "DashboardCard"
   | "ProductCard";
 
 export type MoleculeNameType =
@@ -22,15 +25,18 @@ export type MoleculeNameType =
   | "InputsGroupForm"
   | "HeaderNavigation"
   | "HeaderUserSession"
+  | "HeaderAdminSession"
   | "TextAreaForm"
   | "Login"
-  | "LogoutForm"
+  | "LogoutUserForm"
+  | "LogoutAdminForm"
   | "ProductDetails"
   | "ProductFigure"
   | "RateStars"
   | "Dialog"
   | "ReviewsDetails"
   | "FormReview"
+  | "FormAdmin"
   | "Text"
   | "NotFound"
   | "PicturesSlider";
@@ -76,16 +82,20 @@ export type ItemDataTypeAndUserRelationship =
   isRelatedToUser: boolean;
 };
 
+export type TitleAndDescriptionType = {
+  title: string;
+  paragraph: string;
+};
+
 export type ButtonType = {
   btnText: string;
   btnLink?: string;
 };
 
-export type InformativeContentAndButtonType = 
-  ButtonType & {
-  title: string;
-  paragraph: string;
-};
+export type InformativeContentAndButtonType = (
+  ButtonType &
+  TitleAndDescriptionType
+);
 
 export type FormAttributesType = {
   action: string;
@@ -98,10 +108,7 @@ export type ProductDescriptionType = {
   rooms: string;
 };
 
-export type HomePageDataType = Pick<
-  InformativeContentAndButtonType,
-  "title" | "paragraph"
->;
+export type HomePageDataType = TitleAndDescriptionType;
 
 export type InputDataType = {
   type: string;
@@ -130,8 +137,8 @@ export type OpenGraphDataType = {
 
 export type HeadPageDataType = {
   title: string;
-  description: string;
-  openGraph: OpenGraphDataType;
+  description?: string;
+  openGraph?: OpenGraphDataType;
 };
 
 export type HeaderDataType = {
@@ -154,6 +161,18 @@ export type FormDataType = FormAttributesType & {
   title: string;
   content: InputDataType[];
   changePhoto?: string;
+};
+
+export type DashboardDetailsType = {
+  title: string;
+  className: string;
+}
+
+export type DashboardDataType = {
+  title: string;
+  users: DashboardDetailsType;
+  products: DashboardDetailsType;
+  bookings: DashboardDetailsType;
 };
 
 export type DeleteAccountDataType = {

@@ -130,21 +130,20 @@ export class Mongo {
     id: ObjectId,
     collection: string,
   ) {
-    const users = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
-    if (users) {
-      return await users.deleteOne({ _id: id });
+    if (selectedCollection) {
+      return await selectedCollection.deleteOne({ _id: id });
     }
 
     return 0;
   }
 
-  public static async setStore() {
+  public static async setStore(url: string) {
     try {
-      const db = await Mongo.client.connect(
-        Deno.env.get("DATABASE_URL") as string,
-      );
+      const db = await Mongo.client.connect(url);
       return new MongoStore(db, "session");
+
     } catch (error) {
       Helper.writeLog(error);
     }
@@ -156,6 +155,7 @@ export class Mongo {
         Deno.env.get("DATABASE_URL") as string,
       );
       return db.collection<T>(collection);
+      
     } catch (error) {
       Helper.writeLog(error);
     }

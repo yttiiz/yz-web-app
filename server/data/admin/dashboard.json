@@ -1,0 +1,15 @@
+{
+  "title": "Tableau de bord",
+  "users": {
+    "title": "Utilisateurs",
+    "className": "users-details"
+  },
+  "products": {
+    "title": "Appartements",
+    "className": "products-details"
+  },
+  "bookings": {
+    "title": "Réservations",
+    "className": "bookings-details"
+  }
+}

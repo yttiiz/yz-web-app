@@ -15,12 +15,15 @@ export type PathAppType =
   | "/register"
   | "/login"
   | "/logout"
+  | "/admin-logout"
   | "/profil"
+  | "/admin"
   | "/review-form";
 
 export type IdsType =
   | "data-home"
   | "data-product"
+  | "data-admin"
   | "data-user-form"
   | "data-profil-form"
   | "data-not-found"
@@ -38,15 +41,18 @@ export type DataResponseType =
 
 // Session
 export type SessionType = {
-  get: (value: string) => string;
-  set: (value: string) => void;
-  flash: (key: string, value: string) => void;
+  get: <T extends (string | "userId")>(value: T) => (
+    T extends "userId" ? ObjectId : string
+  );
+  set: (key: string, value: unknown) => void;
+  flash: (key: string, value: string | null) => void;
   has: (value: string) => boolean;
 };
 
 export type SessionAndDataType = {
   session: SessionType;
   isConnexionFailed: boolean;
+  isAdminInterface: boolean;
 };
 
 // Page

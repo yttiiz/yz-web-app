@@ -62,7 +62,7 @@ export class Helper {
   }
 
   public static formatPrice(price: number) {
-    return Intl
+    return new Intl
       .NumberFormat("fr-FR", {
         maximumFractionDigits: 2,
         style: "currency",
@@ -76,12 +76,12 @@ export class Helper {
     length: "base" | "long" | "short" = "long",
   ) {
     date = date ? date : new Date();
-    return Intl
+    return new Intl
       .DateTimeFormat(
         "fr-FR",
         length === "long" 
           ? Helper.longDateOpts 
-          : (length === "short" ? Helper.shortDateOpts: Helper.baseDateOpts),
+          : (length === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
       )
       .format(date)
       .replace(",", " à");

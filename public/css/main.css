@@ -4,6 +4,7 @@
     /*=====| Colors |===== */
     --primary-color: #335C67;
     --secondary-color: #E09F3E;
+    --admin-color: #ebffff;
     --vanilla: #FFF3B0;
     --danger: #9E2A2B;
     --dark: #1e1d1d;
@@ -35,6 +36,10 @@
 
 html {
     font-size: 62.5%;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -88,6 +93,7 @@ input[type="submit"] {
 
 button[data-type="call-to-action"],
 textarea,
+select,
 input {
     border-radius: var(--btn-border-radius);
     font-size: var(--base-size);
@@ -270,14 +276,15 @@ header[data-header="site"] {
             width: calc(var(--base-size) * 1.5625);
         }
 
-        & > form button>svg {
+        & > form button > svg {
             width: 100%;
             height: auto;
             transition: opacity var(--smooth);
-        }
-
-        & > form button>svg:hover {
             opacity: .7;
+        }
+        
+        & > form button > svg:hover {
+            opacity: 1;
         }
 
         & > span {
@@ -296,17 +303,25 @@ header[data-header="site"] {
         fill: var(--light);
     }
 
-    & a {
+    & a,
+    & button[type="button"] {
         font-weight: 500;
         color: var(--secondary-color);
         transition: filter var(--smooth);
     }
 
-    & a:hover {
+    & button[type="button"] {
+        font-size: var(--base-size);
+        display: block;
+    }
+
+    & a:hover,
+    & button[type="button"]:hover {
         filter: contrast(1.5);
     }
 
-    & a:not(.register):hover {
+    & a:not(.register):hover,
+    & button[type="button"]:hover {
         text-decoration: underline;
     }
 

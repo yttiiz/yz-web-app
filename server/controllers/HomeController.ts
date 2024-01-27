@@ -24,57 +24,60 @@ export class HomeController extends DefaultController {
   }
 
   private index() {
-    this.router?.get("/", async (ctx: RouterContextAppType<"/">) => {
-      const data: ProductsDataType = {};
-      const cursor = await this.getCollection("products");
+    this.router?.get(
+      "/",
+      async (ctx: RouterContextAppType<"/">) => {
+        const data: ProductsDataType = {};
+        const cursor = await this.getCollection("products");
 
-      try {
-        if ("message" in cursor && cursor["message"].includes("failed")) {
-          const body = await this.createHtmlFile(
-            ctx,
-            {
-              id: "data-home",
-              css: "home",
-              data: this.errorMsg,
-            },
-          );
-
-          this.response(
-            ctx,
-            body,
-            200,
-          );
-
-        } else {
-          await (cursor as FindCursorProductType)
-            .map((document, key) => data[key + 1] = document);
-
-          for await (const key of Object.keys(data)) {
-            const id = data[key as unknown as keyof typeof data]._id;
-            const reviews = await this.selectFromDB(
-              "reviews",
-              id.toString(),
-              "productId",
+        try {
+          if ("message" in cursor && cursor["message"].includes("failed")) {
+            const body = await this.createHtmlFile(
+              ctx,
+              {
+                id: "data-home",
+                css: "home",
+                data: this.errorMsg,
+              },
             );
 
-            if ("_id" in reviews) {
-              data[key as unknown as keyof typeof data].reviews = reviews;
-            }
-          }
+            this.response(
+              ctx,
+              body,
+              200,
+            );
 
-          const body = await this.createHtmlFile(
-            ctx,
-            {
-              id: "data-home",
-              css: "home",
-              data,
-            },
-          );
-          this.response(ctx, body, 200);
+          } else {
+            await (cursor as FindCursorProductType)
+              .map((document, key) => data[key + 1] = document);
+
+            for await (const key of Object.keys(data)) {
+              const id = data[key as unknown as keyof typeof data]._id;
+              const reviews = await this.selectFromDB(
+                "reviews",
+                id.toString(),
+                "productId",
+              );
+
+              if ("_id" in reviews) {
+                data[key as unknown as keyof typeof data].reviews = reviews;
+              }
+            }
+
+            const body = await this.createHtmlFile(
+              ctx,
+              {
+                id: "data-home",
+                css: "home",
+                data,
+              },
+            );
+            this.response(ctx, body, 200);
+          }
+        } catch (error) {
+          this.helper.writeLog(error);
         }
-      } catch (error) {
-        this.helper.writeLog(error);
-      }
-    });
+      },
+    );
   }
 }

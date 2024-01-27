@@ -1,3 +1,9 @@
+// TODO to be removed (reset "session" in BD)
+import { ObjectId, FindCursor } from "../dependencies/deps.ts";
+import { Http } from "@utils";
+import { RouterContextAppType } from "../controllers/types.ts";
+//
+
 import { oak } from "@deps";
 import {
   Mongo,
@@ -6,8 +12,9 @@ import {
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
-import type { AppState } from "@utils";
+import { AppState } from "@utils";
 import {
+  AdminController,
   ApiController,
   AuthController,
   BookingController,
@@ -34,6 +41,7 @@ new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
   Mongo.deleteFromDB,
+  Mongo.selectFromDB<UserSchemaWithIDType>,
 );
 new ProductController(
   router,
@@ -50,3 +58,50 @@ new ApiController(
   Mongo.connectionTo,
   Mongo.selectFromDB<UserSchemaWithIDType>,
 );
+new AdminController(
+  router,
+  Mongo.connectionTo,
+  Mongo.selectFromDB,
+);
+
+// TODO to be removed (reset "session" in BD)
+router.get(
+  "/reset",
+  async (ctx: RouterContextAppType<"/reset">) => {
+    const sessions = await Mongo.connectionTo("session");
+    type SessionDBType = {
+      _id: ObjectId;
+      id: string;
+      data: {
+        _flash: {
+          message?: string
+        }
+      }
+    };
+
+    if ("message" in sessions) {
+      return;
+    } else {
+      (sessions as FindCursor<SessionDBType>).map(
+        async (session) => {
+          const _id = session._id;
+          if (!session.data._flash.message) {
+
+            await Mongo.deleteFromDB(_id, "session");
+          }
+        }
+      )
+    }
+    
+    const url = new URL("/", Deno.env.get("APP_URL"));
+
+    new Http(ctx)
+    .setHeaders({
+      name: "Content-Type",
+      value: "application/json"
+
+    })
+    .redirect(url)
+    .setResponse(JSON.stringify({ message: "session clean"}), 200)
+  }
+)

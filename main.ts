@@ -18,13 +18,22 @@ const env = await load();
 Object.keys(env)
   .map((key) => Deno.env.set(key, env[key]));
 
-const { PORT, HOST: hostname } = Deno.env.toObject();
+const {
+  PORT,
+  HOST: hostname,
+  DATABASE_URL,
+  APP_SESSION_NAME,
+} = Deno.env.toObject();
 
 // Set session store.
-const store = await Mongo.setStore();
+const store = await Mongo.setStore(DATABASE_URL);
+const sessionOpts = {
+  expireAfterSeconds: 7 * 24 * 60 * 60,
+  sessionCookieName: APP_SESSION_NAME,
+};
 
 // Set Middlewares.
-app.use(Session.initMiddleware(store) as unknown as MiddlewareAppType);
+app.use(Session.initMiddleware(store, sessionOpts) as unknown as MiddlewareAppType);
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(notFoundMiddleware);

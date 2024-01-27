@@ -1,7 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { HeaderNavigation, HeaderUserSession, Logo } from "../mod.ts"
+import { 
+  HeaderNavigation,
+  HeaderAdminSession,
+  HeaderUserSession,
+  Logo
+} from "../mod.ts"
 import type { 
   ComponentType,
   HeaderDataType,
@@ -22,13 +27,14 @@ export const Header: ComponentType<
   html: ({
     session,
     isConnexionFailed,
+    isAdminInterface,
   }: SessionAndDataType
   ) => {
     return `
     <header data-header="site">
       <div class="container">
         <div>
-          ${isConnexionFailed
+          ${isConnexionFailed || isAdminInterface
             ? ""
             :
             (
@@ -60,7 +66,10 @@ export const Header: ComponentType<
           (
             `
             <div>
-              ${HeaderUserSession.html(session)}
+              ${isAdminInterface
+                ? HeaderAdminSession.html(session)
+                : HeaderUserSession.html(session)
+              }
             </div>
             `
           )

@@ -1,0 +1,414 @@
+#data-admin {
+    & section[data-admin] {
+        background: var(--light);
+    }
+
+    & section {
+        & form[data-style],
+        & form[data-style] > div {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    
+        & form[data-style] {
+            margin: 0 auto;
+            width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
+            border: var(--border-black-25-percent);
+            border-radius: var(--base-size);
+            overflow: hidden;
+        }
+    
+        & form[data-style] h3,
+        & form[data-style] > div {
+            padding: calc(var(--base-size) * 2);
+        }
+    
+        & form[data-style] > span {
+            padding: calc(var(--base-size) * 2);
+            padding-top: 0;
+        }
+    
+        & form[data-style] h3 {
+            text-align: center;
+            border-bottom: var(--border-black-25-percent);
+        }
+    
+        & form[data-style] > div {
+            gap: calc(var(--base-size) * 1.8);
+        }
+    
+        & form[data-style] label {
+            position: relative;
+        }
+    
+        & form[data-style] input {
+            height: calc(var(--base-size) * 3);
+            width: 100%;
+        }
+    
+        & form[data-style] div > input[type="submit"] {
+            align-self: end;
+            background: var(--primary-color);
+        }
+    
+        & form[data-style] input[type="password"] {
+            padding-right: 4rem;
+        }
+    
+        & form[data-style] input[name="file-text"] {
+            padding-right: calc(var(--base-size) * 7.25);
+        }
+    
+        & form[data-style] > span {
+            font-weight: 500;
+            color: var(--danger);
+        }
+    
+        & form[data-style] > span.none {
+            display: none;
+        }
+    }
+
+    & dialog {
+        overflow-y: auto;
+
+        & form,
+        & form label,
+        & form > div,
+        & form > div > div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        & form figure {
+            height: calc(var(--base-size) * 8);
+        }
+
+        & form figure img,
+        & form > div button {
+            margin: auto;
+        }
+
+        & form > div input {
+            display: none;
+        }
+
+        & form > div > div.none {
+            display: none;
+        }
+        
+        & form figure img {
+            width: auto;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        & form > div button {
+            display: inherit;
+            color: var(--white);
+            font-size: var(--base-size);
+            font-weight: 500;
+            padding: var(--btn-padding);
+            background: var(--secondary-color);
+            border-radius: var(--btn-border-radius);
+        }
+        
+        & form,
+        & form > div,
+        & form > div > div {
+            gap: calc(var(--base-size) * 1.2);
+        }
+
+        & form > div {
+            justify-content: center;
+        }
+
+        & form label {
+            gap:  calc(var(--base-size) * .25);
+        }
+
+        & form > div > div {
+            text-align: center;
+        }
+
+        & form input:not([type="submit"]),
+        & form select {
+            border: var(--border-black-25-percent);
+            padding: 0 calc(var(--base-size) * .625);
+            height: calc(var(--base-size) * 2.75);
+        }
+
+        & form select {
+            background: none;
+        }
+
+        & form input[type="submit"] {
+            background: var(--primary-color);
+        }
+    }
+}
+
+.admin-dashboard {
+    display: grid;
+    gap: calc(var(--base-size) * 1.5);
+
+    .card {
+        overflow: hidden;
+        background: var(--white);
+        border: var(--border-black-25-percent);
+        border-radius: var(--base-size);
+        padding: calc(var(--base-size) * 1.5);
+
+        & > div {
+            position: relative;
+        }
+
+        & > div h3 {
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        & > div > button {
+            width: calc(var(--base-size) * 1.5);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            padding: calc(var(--base-size) * .5);
+            position: absolute;
+            right: 0;
+            top: calc(var(--base-size) * .35);
+        }
+        
+        & > div > button span {
+            width: 100%;
+            aspect-ratio: inherit;
+            transform: rotateZ(45deg);
+            border-right: .1rem solid var(--dark);
+            border-bottom: .1rem solid var(--dark);
+            transition: transform var(--smooth);
+        }
+        
+        & > div > button[data-open="true"] span {
+            transform: rotateZ(225deg);
+        }
+    }
+}
+
+.users-details,
+.products-details,
+.bookings-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--smooth), margin-top var(--smooth);
+    
+    & > ul,
+    & > ul > li > div {
+        gap: calc(var(--base-size) * 1.5);
+    }
+
+    & > ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    & > ul > li.admin {
+        background: var(--admin-color);
+    }
+
+    & > ul > li > div,
+    & > ul > li > div:first-of-type > div,
+    & > ul > li > div:last-of-type > div:not(:first-of-type) {
+        display: flex;
+    }
+
+    & > ul > li {
+        overflow: hidden;
+        border: .1rem solid rgb(var(--black-rvb) / .1);
+        border-radius: var(--btn-border-radius);
+        
+        & > div {
+            padding: var(--base-size);
+        }
+        
+        & > div:first-of-type {
+            align-items: center;
+        }
+
+        & > div:first-of-type > div {
+            flex-direction: column;
+            gap: calc(var(--base-size) * .25);
+        }
+
+        & > div:first-of-type > div p {
+            line-height: 1.2;
+            -webkit-line-clamp: 1;
+        }
+
+        & > div:last-of-type {
+            justify-content: space-between;
+            align-items: flex-end;
+            background: rgb(var(--black-rvb) / .025);
+            border-top: .1rem solid rgb(var(--black-rvb) / .1);
+        }
+
+        & > div:last-of-type > div:last-of-type {
+            gap: calc(var(--base-size) * .75);
+            flex-direction: column;
+        }
+
+        & > div:last-of-type > div:first-of-type p {
+            -webkit-line-clamp: 3;
+        }
+
+        & > div:last-of-type button {
+            font-size: var(--base-size);
+            font-weight: 500;
+            color: var(--danger);
+            transition: filter var(--smooth);
+        }
+
+        & > div:last-of-type button[type="button"] {
+            color: var(--white);
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--primary-color);
+        }
+
+        & > div:last-of-type button[type="button"]:hover {
+            filter: contrast(1.4);
+        }
+
+        & > div:last-of-type button[type="submit"]:hover {
+            text-decoration: underline;
+        }
+        
+        & img {
+            border-radius: 50%;
+            width: calc(var(--base-size) * 6.25);
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+
+        & p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    }
+
+
+    & strong {
+        font-weight: 400;
+    }
+
+    & sup {
+        line-height: 0;
+    }
+
+    & > div {
+        margin-top: inherit;
+
+        & p {
+            font-size: calc(var(--base-size) * 1.25);
+        }
+
+        & strong {
+            color: var(--danger);
+        }
+    }
+}
+
+
+.users-details.open,
+.products-details.open,
+.bookings-details.open {
+    margin-top: var(--base-size);
+}
+
+#eye-password,
+#search-photo {
+    display: flex;
+    position: absolute;
+    right: 3%;
+}
+
+#eye-password {
+    bottom: 16%;
+
+    & > span {
+        cursor: pointer;
+    }
+
+    & > span.none {
+        display: none;
+    }
+
+    & > span svg {
+        fill: var(--primary-color);
+        width: 2rem;
+        height: auto;
+    }
+}
+
+#search-photo {
+    bottom: clamp(8%, 1.75vw, 12%);
+
+    & button {
+        padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
+        border-radius: var(--btn-border-radius);
+        font-size: var(--base-size);
+        font-weight: 400;
+        color: var(--light);
+        background: var(--secondary-color);
+    }
+
+    & input {
+        display: none;
+    }
+}
+
+/*=================================================| BREAKPOINTS |=================================================*/
+
+@media screen and (max-width: 1080px) {
+    .users-details > ul,
+    .products-details > ul,
+    .bookings-details > ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .users-details > ul > li,
+    .products-details > ul > li,
+    .bookings-details > ul > li {
+        flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .users-details,
+    .products-details,
+    .bookings-details {
+        & > ul > li > div {
+            flex-direction: column;
+        }
+
+        & > ul > li > div:last-of-type {
+            align-items: unset;
+        }
+
+        & > ul > li div:first-of-type > div {
+            width: 100%;
+        }
+
+        & > ul > li > div:last-of-type > div:last-of-type form {
+            align-self: center;   
+        }
+
+        & > ul > li img {
+            width: calc(var(--base-size) * 10);
+        }
+    }
+}

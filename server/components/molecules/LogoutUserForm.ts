@@ -3,15 +3,21 @@
 import { OnOffSvg, UserSvg } from "../mod.ts";
 import type { ComponentType, MoleculeNameType } from "../mod.ts";
 
-export const LogoutForm: ComponentType<
+export const LogoutUserForm: ComponentType<
   MoleculeNameType,
   (...arg: any[]) => string
 > = {
-  name: "LogoutForm",
+  name: "LogoutUserForm",
   html: (
     userPhoto: string,
     userFullname: string,
   ) => {
+    const greeting = (now = new Date().getHours()) => {
+      return (now > 18 || now < 6)
+       ? "Bonsoir"
+       : "Bonjour";
+    };
+
     return `
     <div>
       <form action="/logout" method="post">
@@ -20,7 +26,7 @@ export const LogoutForm: ComponentType<
         </button>
       </form>
       <span>
-        Bonjour <a href=\"/profil\">{{ user-firstname }}</a>
+        ${greeting()} <a href=\"/profil\">{{ user-firstname }}</a>
       </span>
       <span>
         <a href=\"/profil\">

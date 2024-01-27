@@ -8,6 +8,10 @@
         height: calc(var(--base-size) * 3);
     }
 
+    & section form input:not([type="submit"]) {
+        width: 100%;
+    }
+
     & section form > input[type="submit"] {
         align-self: end;
         background: var(--primary-color);
