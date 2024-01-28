@@ -1,4 +1,3 @@
-import { oak } from "@deps";
 import { FormDataType } from "@components";
 import { DataParserReturnType } from "./mod.ts";
 
@@ -57,7 +56,7 @@ export class Validator {
   }
 
   public static dataParser(
-    data: oak.FormDataBody,
+    formData: FormData,
     dataModel: FormDataType,
   ): DataParserReturnType {
     const UNAUTHORIZED_CHARACTER = /[^\w\s\-@.\u00C0-\u00FF]/g;
@@ -69,58 +68,55 @@ export class Validator {
 
     const isMsgSet = (message: string) => message.length !== messageLength;
 
-    // CHECK FIELDS
-    for (const prop in data.fields) {
-
-      // Check textarea field type.
-      if (
-        dataModel.content[key].type === "textarea" &&
-        data.fields[prop].search(UNAUTHORIZED_IN_TEXTAREA) !== -1
-      ) {
-        message += " des caractères non autorisés.";
-        isOk = false;
-
-        break;
-      }
+    for (const [prop, value] of formData) {
       
-      // Check not textarea field type.
-      if (
-        dataModel.content[key].type !== "textarea" &&
-        data.fields[prop].search(UNAUTHORIZED_CHARACTER) !== -1
-      ) {
-        message += isMsgSet(message)
-        ? ""
-        : " des caractères non autorisés.";
-        isOk = false;
+      if (typeof value === "string") {
+        
+        // Skip unnecessary formData property.
+        if (prop !== "file-text") continue;
+        
+        // Check textarea field type.
+        if (
+          dataModel.content[key].type === "textarea" &&
+          (value as string).search(UNAUTHORIZED_IN_TEXTAREA) !== -1
+        ) {
+          message += " des caractères non autorisés.";
+          isOk = false;
+          break;
+        }
+        
+        // Check other field type.
+        if (
+          dataModel.content[key].type !== "textarea" &&
+          (value as string).search(UNAUTHORIZED_CHARACTER) !== -1
+        ) {
+          message += isMsgSet(message)
+          ? ""
+          : " des caractères non autorisés.";
+          isOk = false;
+          break;
+        }
+  
+        // Check field content length.
+        if (
+          dataModel.content[key].maxLength &&
+          ((value as string).length > +(dataModel.content[key].maxLength!))
+        ) {
+          message += isMsgSet(message)
+            ? (message.replace(".", "") + " et en nombre trop importants.")
+            : " des caractères en nombre trop importants.";
+          isOk = false;
+  
+          break;
+        }
 
-        break;
-      }
-
-      // Check fields content length.
-      if (
-        dataModel.content[key].maxLength &&
-        (data.fields[prop].length > +(dataModel.content[key].maxLength!))
-      ) {
-        message += isMsgSet(message)
-          ? (message.replace(".", "") + " et en nombre trop importants.")
-          : " des caractères en nombre trop importants.";
-        isOk = false;
-
-        break;
-      }
-
-      key++;
-    }
-
-    //CHECK FILES
-    if (data.files) {
-      const [photoModel] = dataModel.content
-        .filter((item) => item.name === "photo");
-
-      let index = 0;
-
-      for (const file of data.files) {
-        const extFile = file.contentType.split("/").at(1) as string;
+      } else {
+        
+      //Check file type.
+        const [photoModel] = dataModel.content
+          .filter((item) => item.name === "photo");
+  
+        const extFile = value.type.split("/").at(1) as string;
 
         if (photoModel.accept && photoModel.accept.includes(extFile)) {
           isOk = true;
@@ -133,11 +129,21 @@ export class Validator {
           break;
         }
       }
-
-      index++;
+      
+      key++;
     }
 
-    return isOk ? { isOk, data } : { isOk, message };
+    if (isOk) {
+      const data: Record<string, FormDataEntryValue> = {};
+      
+      for (const [key, value] of formData) {
+        data[key] = value;
+      }
+
+      return { isOk, data };
+    }
+
+    return { isOk, message };
   }
 
   public static createDate() {

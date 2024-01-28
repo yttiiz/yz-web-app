@@ -1,4 +1,4 @@
-import { FilesDataType, Validator } from "./mod.ts";
+import { Validator } from "./mod.ts";
 
 export class Helper {
   private static baseDateOpts: Intl.DateTimeFormatOptions = {
@@ -45,18 +45,18 @@ export class Helper {
   }
 
   public static async writeUserPicFile(
-    files: FilesDataType,
+    file: File,
     firstname: string,
     lastname: string,
   ) {
     firstname = Validator.normalizeString(firstname);
     lastname = Validator.normalizeString(lastname);
-    const [file] = files;
-    const ext = file.contentType.split("/").at(1) as string;
+    
+    const ext = file.type.split("/").at(1) as string;
     const photo =
       `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
 
-    await Deno.writeFile(`public/${photo}`, file.content as Uint8Array);
+    await Deno.writeFile(`public/${photo}`, file.stream());
 
     return photo;
   }

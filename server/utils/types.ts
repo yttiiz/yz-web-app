@@ -1,4 +1,4 @@
-import { oak, Session } from "@deps";
+import { Session } from "@deps";
 import { BookingsType } from "@mongo";
 
 export type AppState = {
@@ -10,11 +10,9 @@ export type ContentHeadersType = {
   value: string;
 };
 
-export type FilesDataType = oak.FormDataFile[];
-
 export type DataParserReturnType =
   | { isOk: false; message: string }
-  | { isOk: true; data: oak.FormDataBody };
+  | { isOk: true; data: Record<string, FormDataEntryValue> };
 
 export type ReturnBookingAvailabilityType = {
   isAvailable: false;
@@ -22,3 +20,13 @@ export type ReturnBookingAvailabilityType = {
 } | {
   isAvailable: true;
 };
+
+export type FormDataAppType = {
+  lastname: string;
+  firstname: string;
+  email: string;
+  birth: string;
+  password: string;
+  job: string;
+  photo: File | undefined,
+}

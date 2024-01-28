@@ -2,8 +2,9 @@
 
 :root {
     /*=====| Colors |===== */
-    --primary-color: #335C67;
+    --primary-color: #001c69;
     --secondary-color: #E09F3E;
+    --tertiary-color: #0094C6;
     --admin-color: #ebffff;
     --vanilla: #FFF3B0;
     --danger: #9E2A2B;
@@ -445,7 +446,7 @@ section p[data-msg-infos="error"] {
 h1,
 h2 {
     font-weight: 500;
-    color: var(--primary-color);
+    color: var(--tertiary-color);
 }
 
 h1 {

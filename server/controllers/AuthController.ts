@@ -1,4 +1,3 @@
-import { oak } from "@deps";
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import { LogController } from "./mod.ts";
@@ -10,7 +9,7 @@ import type {
   RouterContextAppType,
   SelectUserFromDBType,
 } from "./mod.ts";
-import { Validator } from "@utils";
+import { FormDataAppType, Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private log;
@@ -94,11 +93,8 @@ export class AuthController extends DefaultController {
     const dataModel = await this.helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
-    const data = await ctx.request.body().value as oak.FormDataReader;
-    const dataParsed = Validator.dataParser(
-      await data.read({ maxSize: this.MAX_SIZE }),
-      dataModel,
-    );
+    const formData = await ctx.request.body.formData();
+    const dataParsed = Validator.dataParser(formData, dataModel);
 
     if (!dataParsed.isOk) {
       return this.response(
@@ -108,29 +104,27 @@ export class AuthController extends DefaultController {
       );
     }
 
-    let photo: string;
+    let picPath: string;
 
     const {
-      fields: {
-        lastname,
-        firstname,
-        email,
-        birth,
-        password,
-        job,
-      },
-      files,
-    } = dataParsed.data;
+      lastname,
+      firstname,
+      email,
+      birth,
+      password,
+      job,
+      photo,
+    } = dataParsed.data as FormDataAppType;
 
-    files
-      ? photo = await this.helper.writeUserPicFile(
-        files,
+    photo
+      ? picPath = await this.helper.writeUserPicFile(
+        photo,
         firstname,
         lastname,
       )
-      : photo = this.defaultImg;
+      : picPath = this.defaultImg;
 
-    const hash = await Auth.hashPassword(password);
+    const hash = await Auth.hashPassword(password as string);
 
     const userId = await this.insertIntoDB({
       firstname,
@@ -140,7 +134,7 @@ export class AuthController extends DefaultController {
       role: "user",
       job,
       hash,
-      photo,
+      photo: picPath,
     }, "users");
 
     userId === "connexion failed"

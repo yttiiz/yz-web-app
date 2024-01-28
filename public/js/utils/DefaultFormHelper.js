@@ -11,7 +11,7 @@ export class DefaultFormHelper {
       // Check for file (image) field or input named 'text-file'.
       if (
         (typeof value === "object" && value.size === 0) ||
-        key === "text-file"
+        key === "file-text"
       ) {
         formData.delete(key);
       }
