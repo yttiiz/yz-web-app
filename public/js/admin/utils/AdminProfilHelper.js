@@ -1,16 +1,22 @@
 import * as Type from "../../types/types.js";
-import { handleShowPassword, handleInputFile } from "../../utils/_commonFunctions.js";
+import {
+  handleShowPassword,
+  handleInputFile,
+  setFormData,
+} from "../../utils/_commonFunctions.js";
 
 export class AdminProfilHelper {
   static #handleShowPassword = handleShowPassword;
   static #handleInputFile = handleInputFile;
+  static #setFormData = setFormData;
   static #host = location.origin + "/";
   static #roles = ["user", "admin"];
 
   /**
+   * Fetchs `user` (admin) data & `form` content data from database. Then hydrates user dialog modal with them.
    * @param {NodeListOf<HTMLButtonElement>} buttons 
    */
-  static profilHandler = async (buttons) => {
+  static init = async (buttons) => {
     const userDataResponse = await fetch(AdminProfilHelper.#host + "user-profil")
     const formContentResponse = await fetch(AdminProfilHelper.#host + "user-form-content");
 
@@ -20,7 +26,7 @@ export class AdminProfilHelper {
       
       for (const button of buttons) {
         button.addEventListener("click", () => {
-          AdminProfilHelper.openDialogAdminProfil(
+          AdminProfilHelper.#displayDialogAdminProfil(
             { userData, formContent }
           );
         })
@@ -32,7 +38,7 @@ export class AdminProfilHelper {
    * @param {{ userData: Type.User; formContent: Type.FormContentType }}
    * @param {HTMLDialogElement} dialog 
    */
-  static openDialogAdminProfil = (
+  static #displayDialogAdminProfil = (
     {
       userData,
       formContent,
@@ -91,6 +97,8 @@ export class AdminProfilHelper {
         }
       }
   
+      formElement.addEventListener("submit", this.#handleForm);
+      
       dialog.querySelector("div").appendChild(formElement);
     }
 
@@ -166,6 +174,7 @@ export class AdminProfilHelper {
     inputData.name ? input.setAttribute("name", inputData.name) : null;
     inputData.maxLength ? input.setAttribute("maxLength", inputData.maxLength) : null;
     inputData.minLength ? input.setAttribute("minLength", inputData.minLength) : null;
+    inputData.autocomplete ? input.setAttribute("autocomplete", inputData.autocomplete) : null;
 
     return input;
   };
@@ -209,4 +218,31 @@ export class AdminProfilHelper {
 
     return elements;
   };
+
+  /**
+   * @param {Event} e 
+   */
+  static #handleForm = async (e) => {
+    e.preventDefault();
+
+    const formData = AdminProfilHelper.#setFormData(e.target);
+
+    const res = await fetch(e.target.action, {
+      method: "PUT",
+      body: formData,
+    });
+
+    AdminProfilHelper.#displayMessage(e.target, await res.json());
+  };
+
+  /**
+   * @param {HTMLFormElement} form 
+   * @param {{ message: string }} param 
+   */
+  static #displayMessage = (form, { message }) => {
+    form.closest("dialog")
+    .querySelector("p").textContent = message;
+    
+    form.parentNode.removeChild(form);
+  }
 }

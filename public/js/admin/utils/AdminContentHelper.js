@@ -24,7 +24,10 @@ export class AdminContentHelper extends DefaultFormHelper {
     }
   ).format(new Date(date));
 
-  static initContent = async () => {
+  /**
+   * Fetch `users`, `products` & `bookings` data from database. Then hydrates each `div` with class 'cards' to the corresponding data.
+   */
+  static init = async () => {
     // Retrieve all data from api.
     const [users, products, bookings] = await (async function (...args) {
       /** @type {[Types.Users, Types.Products]} */

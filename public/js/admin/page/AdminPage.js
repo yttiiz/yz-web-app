@@ -1,6 +1,8 @@
-import { AdminLoginHelper } from "../utils/AdminLoginHelper.js";
-import { AdminProfilHelper } from "../utils/AdminProfilHelper.js";
-import { AdminContentHelper } from "../utils/AdminContentHelper.js";
+import {
+  AdminLoginHelper,
+  AdminProfilHelper,
+  AdminContentHelper
+} from "../utils/mod.js";
 
 export class AdminPage {
   init = () => {
@@ -18,10 +20,10 @@ export class AdminPage {
       
       // Init profil dialog modal.
       const buttons = document.querySelectorAll("#user-session button[type=\"button\"]");
-      AdminProfilHelper.profilHandler(buttons);
+      AdminProfilHelper.init(buttons);
       
       // Init content page.
-      AdminContentHelper.initContent();
+      AdminContentHelper.init();
       
     } else {  
       //==========| Login interface |==========//

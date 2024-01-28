@@ -91,7 +91,43 @@ const handleInputFile = (e) => {
   input.click();
 };
 
+/**
+ * @param {HTMLFormElement} form
+ */
+const setFormData = (form) => {
+  const formData = new FormData(form);
+
+  for (const [key, value] of formData) {
+    // Check for file (image) field or input named 'text-file'.
+    if (
+      (typeof value === "object" && value.size === 0) ||
+      key === "file-text"
+    ) {
+      formData.delete(key);
+    }
+  }
+
+  return formData;
+};
+
+/**
+ * @param {NodeListOf<HTMLLabelElement>} labels
+ */
+const removeInputsValues = (labels) => {
+  for (let i = 0; i < labels.length - 1; i++) {
+    labels[i].querySelector("textarea")
+      ? labels[i].querySelector("textarea").value = ""
+      : null;
+
+    labels[i].querySelector("input")
+      ? labels[i].querySelector("input").value = ""
+      : null;
+  }
+};
+
 export {
   handleShowPassword,
   handleInputFile,
+  setFormData,
+  removeInputsValues,
 };
