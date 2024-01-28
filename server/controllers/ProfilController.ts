@@ -1,4 +1,4 @@
-import { oak, ObjectId } from "@deps";
+import { ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   DeleteFromDBType,
@@ -10,6 +10,7 @@ import type {
 import { Auth } from "@auth";
 import type { UserSchemaWithIDType, UserSchemaWithOptionalFieldsType } from "@mongo";
 import { SessionType } from "@/server/controllers/types.ts";
+import { FormDataAppType, Validator } from "@utils";
 
 export class ProfilController extends DefaultController {
   private updateToDB;
@@ -68,18 +69,47 @@ export class ProfilController extends DefaultController {
     this.router?.put(
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
-        let photo = "", isNewPhoto = true;
+        let picPath = "", isNewPhoto = true;
 
         const session: SessionType = ctx.state.session;
-        const data = await ctx.request.body().value as oak.FormDataReader;
-        const { fields, files } = await data.read({ maxSize: this.MAX_SIZE });
+        const dataModel = await this.helper.convertJsonToObject(
+          `/server/data/profil/profil.json`,
+        );
+
+        // Add file model.
+        dataModel.content.push({
+          type: "file",
+          name: "photo",
+          accept: ".png, .jpg, .webp, .jpeg"
+        });
+
+        const formData = await ctx.request.body.formData();
+        const dataParsed = Validator.dataParser(formData, dataModel);
+    
+        if (!dataParsed.isOk) {
+          return this.response(
+            ctx,
+            { message: dataParsed.message },
+            200,
+          );
+        }
+
+        const {
+          lastname,
+          firstname,
+          photo,
+        } = dataParsed.data as Pick<
+          FormDataAppType,
+          "lastname" | "firstname" | "photo"
+        >;
+        
         const userId = session.get("userId");
         
-        files
-          ? photo = await this.helper.writeUserPicFile(
-            files,
-            fields.firstname,
-            fields.lastname,
+        photo
+          ? picPath = await this.helper.writeUserPicFile(
+            photo,
+            firstname,
+            lastname,
           )
           : isNewPhoto = false;
         
@@ -93,8 +123,11 @@ export class ProfilController extends DefaultController {
           );
         }
 
-        const updatedData = await this.removeEmptyOrUnchangedFields(fields, user);
-        photo ? updatedData.photo = photo : null;
+        const updatedData = await this.removeEmptyOrUnchangedFields(
+          dataParsed.data,
+          user,
+          picPath,
+        );
 
         const isUserUpdate = await this.updateToDB(
           userId,
@@ -114,27 +147,28 @@ export class ProfilController extends DefaultController {
           }
 
           if (updatedData.lastname && !updatedData.firstname) {
-
             const oldFullname = session.get("userFullname");
             const newFullname = `${oldFullname.split(" ")[0]} ${updatedData.lastname}`;
 
             session.set("userFullname", newFullname);
           }
 
-          if (photo) {
-            session.set("userPhoto", photo);
+          if (picPath) {
+            session.set("userPhoto", picPath);
           }
 
-          session.set("userEmail", fields.email);
-          session.flash(
-            "message",
-            this.sessionFlashMsg(fields.email),
-          );
+          if (updatedData.email) {
+            session.set("userEmail", updatedData.email);
+            session.flash(
+              "message",
+              this.sessionFlashMsg(updatedData.email),
+            );
+          }
 
           this.response(
             ctx,
             { message: this.messageToUser(isUserUpdate),
-              photo,
+              picPath,
             },
             201,
           );
@@ -176,26 +210,40 @@ export class ProfilController extends DefaultController {
   }
 
   private async removeEmptyOrUnchangedFields(
-    fields: Record<string, string>,
+    data: Record<string, FormDataEntryValue>,
     user: UserSchemaWithIDType,
+    picPath: string | undefined,
   ) {
-    const trustData = Object.keys(fields)
-      .filter((key) => fields[key] !== "")
+
+    const trustData = Object.keys(data)
+      .filter((key) => data[key] !== "" || data[key] !== undefined)
       .reduce((acc, key) => {
-        if (user[key as keyof typeof user] !== fields[key]) {
-          key === "birth"
-            ? acc["birth"] = new Date(fields[key])
-            : acc[key as keyof Omit<typeof acc, "birth">] = fields[key];
-  
+
+        if (data[key] instanceof File) {
+          delete data[key];
+          
+          return acc;
+
+        } else {
+          if (user[key as keyof typeof user] !== data[key]) {
+            key === "birth"
+              ? acc["birth"] = new Date(data[key] as string)
+              : acc[key as keyof Omit<typeof acc, "birth">] = data[key] as string;
+    
+            return acc;
+          }
+
           return acc;
         }
-
-        return acc;
       }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
 
     if (trustData["password"]) {
       trustData["hash"] = await Auth.hashPassword(trustData["password"]);
       delete trustData["password"];
+    }
+
+    if (picPath) {
+      trustData["photo"] = picPath;
     }
 
     return trustData;

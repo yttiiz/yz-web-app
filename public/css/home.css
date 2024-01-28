@@ -78,7 +78,7 @@
         }
 
         & header > div strong {
-            color: var(--primary-color);
+            color: var(--tertiary-color);
             font-size: calc(var(--base-size) * 1.125);
             font-weight: 600;
         }

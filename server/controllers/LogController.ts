@@ -7,7 +7,6 @@ import {
   SessionType,
 } from "@controllers";
 import { Auth } from "@auth";
-import { oak } from "@deps";
 
 export class LogController {
   default;
@@ -23,12 +22,13 @@ export class LogController {
   public loginHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const session: SessionType = ctx.state.session; 
-    const data = await ctx.request.body().value as oak.FormDataReader;
     const dataModel = await this.default.helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
-    const dataParsed = Validator.dataParser(await data.read(), dataModel);
+    const session: SessionType = ctx.state.session; 
+    const formData = await ctx.request.body.formData();
+
+    const dataParsed = Validator.dataParser(formData, dataModel);
 
     if (!dataParsed.isOk) {
       return this.default.response(
@@ -38,8 +38,11 @@ export class LogController {
       );
     }
 
-    const { fields: { email, password } } = dataParsed.data;
-
+    const {
+      email,
+      password
+    } = dataParsed.data as Record<string, string>;
+    
     const failedLogin = async (message: string) => {
       const failedLoginAttempts =
         (await ctx.state.session.get("failed-login-attempts") || 0) as number;

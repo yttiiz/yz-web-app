@@ -1,4 +1,4 @@
-import { oak, ObjectId } from "@deps";
+import { ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
   GetCollectionType,
@@ -128,14 +128,19 @@ export class BookingController extends DefaultController {
     this.router?.delete(
       "/cancel-booking",
       async (ctx: RouterContextAppType<"/cancel-booking">) => {
-        const data = await ctx.request.body().value as oak.FormDataReader;
-        const { fields } = await data.read({ maxSize: this.MAX_SIZE });
+        const data = await ctx.request.body.formData();
+        const fields: Record<string, FormDataEntryValue> = {};
+
+        for (const [key, value] of data) {
+          fields[key] = value;
+        }
+
         const {
           bookingId,
           bookingStart,
           bookingEnd,
           bookingCreatedAt,
-        } = fields;
+        } = fields as Record<string, string>;
 
         const _id = new ObjectId(bookingId);
         const bookingToDelete = {

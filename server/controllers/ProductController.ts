@@ -1,4 +1,4 @@
-import { oak, ObjectId } from "@deps";
+import { ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
@@ -108,13 +108,13 @@ export class ProductController extends DefaultController {
     this.router?.post(
       "/booking",
       async (ctx: RouterContextAppType<"/booking">) => {
-        const data = await ctx.request.body().value as oak.FormDataReader;
+        const formData = await ctx.request.body.formData();
         const { booking } = await this.helper.convertJsonToObject(
           `/server/data/product/product.json`,
         ) as ProductDataType;
 
         const dataParsed = Validator.dataParser(
-          await data.read({ maxSize: this.MAX_SIZE }),
+          formData,
           booking,
         );
 
@@ -127,12 +127,10 @@ export class ProductController extends DefaultController {
         }
         
         const {
-          fields: {
-            "starting-date": startingDate,
-            "ending-date": endingDate,
-            id,
-          },
-        } = dataParsed.data;
+          "starting-date": startingDate,
+          "ending-date": endingDate,
+          id,
+        } = dataParsed.data as Record<string, string>;
 
         const { userId, userName } = await this.getUserInfo(ctx);
 
@@ -235,13 +233,13 @@ export class ProductController extends DefaultController {
     this.router?.post(
       "/review-form",
       async (ctx: RouterContextAppType<"/review-form">) => {
-        const data = await ctx.request.body().value as oak.FormDataReader;
+        const formData = await ctx.request.body.formData();
         const { reviewForm } = await this.helper.convertJsonToObject(
           `/server/data/product/product.json`,
         ) as ProductDataType;
 
         const dataParsed = Validator.dataParser(
-          await data.read({ maxSize: this.MAX_SIZE }),
+          formData,
           reviewForm,
         );
 
@@ -254,13 +252,11 @@ export class ProductController extends DefaultController {
         }
         
         const {
-          fields: {
             id,
             review,
             rate,
             className,
-          },
-        } = dataParsed.data;
+        } = dataParsed.data as Record<string, string>;
 
         const { userId, userName } = await this.getUserInfo(ctx);
 
