@@ -43,7 +43,7 @@ export class AdminProfilHelper {
       userData,
       formContent,
     },
-    dialog = document.querySelector("dialog"),
+    dialog = document.querySelector("dialog[data-profil]"),
   ) => {
 
     if (!dialog.querySelector("form")) {

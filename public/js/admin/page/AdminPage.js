@@ -7,22 +7,26 @@ import {
 export class AdminPage {
   init = () => {
     const section = document.querySelector("section");
-    const dialog = document.querySelector("dialog");
+    const dialogs = document.querySelectorAll("dialog");
       
-    // Init close event dialog modal.
-    dialog.querySelector("button[data-close]")
-    .addEventListener("click", () => {
-      dialog.close();
-    });
+    // Init close event dialog modals.
+    for (const dialog of dialogs) {
+      dialog.querySelector("button[data-close]")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+    }
     
     if (section.dataset.admin === "connected") {
       //==========| Dashboard interface |==========//
       
       // Init profil dialog modal.
-      const buttons = document.querySelectorAll("#user-session button[type=\"button\"]");
+      const buttons = document.querySelectorAll(
+        "#user-session button[type=\"button\"]",
+      );
       AdminProfilHelper.init(buttons);
       
-      // Init content page.
+      // Init content page & modal.
       AdminContentHelper.init();
       
     } else {  

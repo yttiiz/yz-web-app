@@ -1,10 +1,12 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
+import { handleCards } from "../../utils/_commonFunctions.js";
 import { PageBuilder } from "../../pages/Builder.js";
 import * as Types from "../../types/types.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
   static #builder = new PageBuilder;
+  static #handleCards = handleCards;
   
   static #formatPrice = (price) => new Intl.NumberFormat(
     "fr-FR",
@@ -107,6 +109,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         ? userContainer.classList.add("admin")
         : null;
       
+      AdminContentHelper.#handleCards(userPrivatePart, "users", users);
       AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
     }
@@ -177,6 +180,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       </div>
       ${AdminContentHelper.#getEditOrDeletePart(products[key]._id)}`;
 
+      AdminContentHelper.#handleCards(productPrivatePart, "products", products);
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
     }
@@ -237,23 +241,23 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     for (const booking of sortBookings) {
       const [
-        productContainer,
-        productPublicPart,
-        productPrivatePart,
+        bookingContainer,
+        bookingPublicPart,
+        bookingPrivatePart,
       ] = AdminContentHelper.#builder.createHTMLElements(
         "li",
         "div",
         "div",
       );
 
-      productPublicPart.innerHTML = `
+      bookingPublicPart.innerHTML = `
       <div>
         <p>Appartement : <strong>${booking.productName}</strong></p>
         <p>Réservation passée le : <strong>${AdminContentHelper.#formatDate(booking.createdAt)}</strong></p>
         <p>Par : <strong>${booking.userName}</strong></p>
       </div>`;
         
-      productPrivatePart.innerHTML = `
+      bookingPrivatePart.innerHTML = `
       <div>
         <p>Date de début : <strong>${AdminContentHelper.#formatDate(booking.startingDate)}</strong></p>
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
@@ -261,8 +265,9 @@ export class AdminContentHelper extends DefaultFormHelper {
       </div>
       ${AdminContentHelper.#getEditOrDeletePart(booking._id)}`;
 
-      AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
-      AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
+      AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
+      AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
+      AdminContentHelper.#builder.insertChildren(elementsList, bookingContainer);
     }
 
     AdminContentHelper.#builder.insertChildren(
@@ -357,12 +362,17 @@ export class AdminContentHelper extends DefaultFormHelper {
   static #getEditOrDeletePart = (id) => {
     return `
     <div>
-      <button type="button">Editer</button>
-      <form
-      action="/delete/${id}"
-      method="post"
+      <button
+        data-id=${id}
+        type="button"
       >
-      <button type="submit">Supprimer</button>
+        Editer
+      </button>
+      <form
+        action="/delete/${id}"
+        method="DELETE"
+      >
+        <button type="submit">Supprimer</button>
       </form>
     </div>
     `;

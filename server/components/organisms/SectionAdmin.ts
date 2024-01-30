@@ -33,6 +33,10 @@ export const SectionAdmin: ComponentType<
         }
       </div>
     </section>
-    ${Dialog.html({})}`;
+    ${Dialog.html({ dataset: "profil" })}
+    ${Dialog.html({ dataset: "users" })}
+    ${Dialog.html({ dataset: "products" })}
+    ${Dialog.html({ dataset: "bookings" })}
+    `;
   },
 };

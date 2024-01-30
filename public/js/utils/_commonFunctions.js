@@ -1,3 +1,5 @@
+import * as Types from "../types/types.js";
+
 /**
  * Switchs between `eye-open` and `eye-shut` svg.
  */
@@ -124,10 +126,74 @@ const removeInputsValues = (labels) => {
       : null;
   }
 };
+/**
+ * @param {Types.User} user 
+ */
+const insertUserData = (user) => {
+  // TODO implements logic
+}
+
+/**
+ * @param {Types.Product} product 
+ */
+const insertProductData = (product) => {
+  // TODO implements logic
+}
+
+/**
+ * @param {Types.BookingsRegistred & { productName: string }} booking 
+ */
+const insertBookingData = (booking) => {
+  // TODO implements logic
+}
+
+
+/**
+ * @param {HTMLDivElement} container 
+ * @param {string} dataType 
+ * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
+ */
+const handleCards = (
+  container,
+  dataType,
+  data,
+) => {
+  const [
+    editBtn,
+    deleteForm
+  ] = container.querySelector("div:last-of-type").children;
+
+  // Set listener to 'edit' button.
+  editBtn.addEventListener("click", (e) => {
+    const dialog = document.querySelector(`dialog[data-${dataType}]`);
+
+    // Set modal.
+    dialog.querySelector("h2").textContent = `Modification de contenu`;
+    dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+    
+    // Insert Data.
+    for (const key in data) {
+      if (dataType !== "bookings") {
+        if (data[key]._id === e.currentTarget.dataset.id) {
+          dataType === "users"
+            ? insertUserData(data[key])
+            : insertProductData(data[key]);
+          break;
+        }
+      } else {
+        insertBookingData(data)
+        break;
+      }
+    }
+
+    dialog.showModal();
+  });
+}
 
 export {
   handleShowPassword,
   handleInputFile,
   setFormData,
   removeInputsValues,
+  handleCards,
 };

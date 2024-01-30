@@ -154,6 +154,7 @@ export type FooterDataType = {
 };
 
 export type DialogDataType = {
+  dataset?: string;
   component?: string;
 };
 
