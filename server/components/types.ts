@@ -34,6 +34,7 @@ export type MoleculeNameType =
   | "ProductFigure"
   | "RateStars"
   | "Dialog"
+  | "DialogForm"
   | "ReviewsDetails"
   | "FormReview"
   | "FormAdmin"
@@ -121,7 +122,16 @@ export type InputDataType = {
   minLength?: string;
   accept?: string;
   autocomplete?: string;
+  items?: string[];
 };
+
+export type InputFormPropsType = {
+  content: InputDataType[];
+  isProfilInputs?: boolean;
+  date?: string;
+};
+
+export type InputGroupFormPropsType = Omit<InputFormPropsType, "date">;
 
 export type OpenGraphDataType = {
   title: string;

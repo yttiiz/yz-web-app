@@ -1,4 +1,8 @@
 #data-admin {
+    & form label:has(> div) {
+        position: relative;
+    }
+
     & section[data-admin] {
         background: var(--light);
     }
@@ -35,10 +39,6 @@
     
         & form[data-style] > div {
             gap: calc(var(--base-size) * 1.8);
-        }
-    
-        & form[data-style] label {
-            position: relative;
         }
     
         & form[data-style] input {

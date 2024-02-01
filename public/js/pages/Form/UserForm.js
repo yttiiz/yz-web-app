@@ -62,11 +62,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set inputs
     for (const input of userInfosInputs) {
-      if (input.type !== "password") {
-        input.type === "date"
-          ? input.value = data[input.name].split("T").at(0)
-          : input.value = data[input.name];
-      }
+      UserFormHelper.hydrateInputs(input, data);
     }
 
     // Set form submission

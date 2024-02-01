@@ -54,8 +54,8 @@ export const FormReview: ComponentType<
             method="${method}"
           >
             ${TextAreaForm.html(textArea)}
-            ${InputsGroupForm.html(inputs, false)}
-            ${InputsForm.html(submitBtn, false)}
+            ${InputsGroupForm.html({ content: inputs })}
+            ${InputsForm.html({ content: submitBtn })}
           </form>
         `
       )

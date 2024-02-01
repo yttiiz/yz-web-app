@@ -126,11 +126,44 @@ const removeInputsValues = (labels) => {
       : null;
   }
 };
+
+/**
+ * @param {HTMLInputElement | HTMLSelectElement} input 
+ * @param {Record<string, string>} input 
+ */
+const hydrateInputs = (element, data) => {
+  if (element.type !== "password") {
+    element.type === "date"
+      ? element.value = data[element.name].split("T").at(0)
+      : element.value = data[element.name];
+  }
+}
+
 /**
  * @param {Types.User} user 
+ * @param {HTMLDialogElement} dialog 
  */
-const insertUserData = (user) => {
-  // TODO implements logic
+const insertUserData = (user, dialog) => {
+  const labels = dialog.querySelector("form").querySelectorAll("label");
+
+  for (const label of labels) {
+    if (label.querySelector("input")) {
+      const input = label.querySelector("input");
+      hydrateInputs(input, user);
+    }
+
+    if (label.querySelector("select")) {
+      const select = label.querySelector("select");
+      
+      for (const opt of select.children) {
+
+        if (opt.value === user[select.name]) {
+          opt.setAttribute("selected", true);
+          break;
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -176,7 +209,7 @@ const handleCards = (
       if (dataType !== "bookings") {
         if (data[key]._id === e.currentTarget.dataset.id) {
           dataType === "users"
-            ? insertUserData(data[key])
+            ? insertUserData(data[key], dialog)
             : insertProductData(data[key]);
           break;
         }
@@ -193,6 +226,7 @@ const handleCards = (
 export {
   handleShowPassword,
   handleInputFile,
+  hydrateInputs,
   setFormData,
   removeInputsValues,
   handleCards,

@@ -76,7 +76,6 @@ export class AdminProfilHelper {
             const eyeContainer = AdminProfilHelper.#createEyePasswordIcon();
 
             label.textContent = inputData.label;
-            label.style.position = "relative";
             label.appendChild(input);
             label.appendChild(eyeContainer);
 

@@ -1,6 +1,6 @@
 #data-user-form,
 #data-profil-form {
-    & section form label {
+    & section form label:has(> div) {
         position: relative;
     }
 

@@ -1,0 +1,57 @@
+{
+  "action": "/profil",
+  "method": "PUT",
+  "content": [
+    {
+      "type": "select",
+      "label": "Role",
+      "name": "role",
+      "items": [
+        "user",
+        "admin"
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Prénom",
+      "placeholder": "prénom...",
+      "name": "firstname",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "text",
+      "label": "Nom",
+      "placeholder": "nom...",
+      "name": "lastname",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "text",
+      "label": "Profession",
+      "placeholder": "profession...",
+      "name": "job",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "email",
+      "label": "Email",
+      "placeholder": "email...",
+      "name": "email",
+      "minLength": 2,
+      "maxLength": 40,
+      "autocomplete": "email"
+    },
+    {
+      "type": "date",
+      "label": "Date de naissance",
+      "name": "birth"
+    },
+    {
+      "type": "submit",
+      "value": "Mettre à jour"
+    }
+  ]
+}
