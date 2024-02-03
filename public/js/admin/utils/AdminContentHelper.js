@@ -180,7 +180,38 @@ export class AdminContentHelper extends DefaultFormHelper {
       </div>
       ${AdminContentHelper.#getEditOrDeletePart(products[key]._id)}`;
 
-      AdminContentHelper.#handleCards(productPrivatePart, "products", products);
+      // Create a 'products' copy to set easier product form values.
+      const productsFormValues = Object.keys(products)
+      .reduce((obj, key) => {
+        obj[key] = {...products[key]};
+
+        for (const prop in products[key]) {
+          if (prop === "details") {
+            // Add 'details' [Object] props with appropriate key to the new object...
+            for (const detailsProp in products[key][prop]) {
+              const isFloat = (
+                typeof products[key][prop][detailsProp] === "number" &&
+                !Number.isInteger(products[key][prop][detailsProp])
+              );
+              
+              obj[key][detailsProp] = (
+                isFloat
+                 ? (`${products[key][prop][detailsProp]}`).replace(".", ",")
+                 : products[key][prop][detailsProp]
+              );
+            }
+
+            // ... then delete it.
+            delete obj[key][prop];
+
+          } else {
+            obj[key][prop] = products[key][prop]
+          }
+        }
+        return obj;
+      }, {})
+
+      AdminContentHelper.#handleCards(productPrivatePart, "products", productsFormValues);
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
     }

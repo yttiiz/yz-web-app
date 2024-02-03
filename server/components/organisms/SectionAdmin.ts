@@ -28,7 +28,7 @@ export const SectionAdmin: ComponentType<
       
       userFormContent = await Helper.convertJsonToObject("/server/data/admin/user-form.json");
       productFormContent = await Helper.convertJsonToObject("/server/data/admin/product-form.json");
-      bookingFormContent = await Helper.convertJsonToObject("/server/data/admin/product-form.json");
+      bookingFormContent = await Helper.convertJsonToObject("/server/data/admin/booking-form.json");
 
     } else {
       content = await Helper.convertJsonToObject("/server/data/authentication/admin.json");

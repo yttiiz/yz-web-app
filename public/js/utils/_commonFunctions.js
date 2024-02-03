@@ -132,7 +132,11 @@ const removeInputsValues = (labels) => {
  * @param {Record<string, string>} data 
  */
 const hydrateInput = (element, data) => {
-  if (element.type !== "password" && typeof data[element.name] === "string") {
+  const isValueStringOrNumber = (
+    typeof data[element.name] === "string" || typeof data[element.name] === "number"
+  );
+  
+  if (element.type !== "password" && isValueStringOrNumber) {
     element.type === "date"
       ? element.value = data[element.name].split("T").at(0)
       : element.value = data[element.name];
@@ -145,7 +149,7 @@ const hydrateInput = (element, data) => {
  */
 const hydrateSelect = (element, data) => {
   for (const option of element.children) {
-    if (option.value === data[element.name]) {
+    if (option.value == data[element.name]) {
       option.setAttribute("selected", true);
       break;
     }
@@ -153,26 +157,26 @@ const hydrateSelect = (element, data) => {
 }
 
 /**
- * @param {Types.User} user 
+ * @param {Types.User | Types.Product} user 
  * @param {HTMLDialogElement} dialog 
  */
-const insertData = (user, dialog) => {
+const insertData = (data, dialog) => {
   const labels = dialog.querySelector("form").querySelectorAll("label");
 
   for (const label of labels) {
     if (label.querySelector("input")) {
       const input = label.querySelector("input");
-      hydrateInput(input, user);
+      hydrateInput(input, data);
     }
 
     if (label.querySelector("textarea")) {
       const textarea = label.querySelector("textarea");
-      hydrateInput(textarea, user);
+      hydrateInput(textarea, data);
     }
 
     if (label.querySelector("select")) {
       const select = label.querySelector("select");
-      hydrateSelect(select, user);
+      hydrateSelect(select, data);
     }
   }
 }
