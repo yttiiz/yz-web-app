@@ -3,63 +3,88 @@
   "method": "PUT",
   "content": [
     {
+      "type": "text",
+      "label": "Nom",
+      "placeholder": "Nom...",
+      "name": "name",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
       "type": "select",
-      "label": "Role",
-      "name": "role",
+      "label": "Type",
+      "name": "product-type",
       "items": [
-        "user",
-        "admin"
+        "studio",
+        "F1",
+        "F2",
+        "F3"
       ]
     },
     {
-      "type": "radio",
-      "label": "oui",
-      "name": "delete-photo",
-      "value": "true"
+      "type": "text",
+      "label": "Superficie (en m2)",
+      "placeholder": "25...",
+      "name": "aera",
+      "minLength": 2,
+      "maxLength": 3
     },
     {
-      "type": "radio",
-      "label": "non",
-      "name": "delete-photo",
-      "value": "false"
+      "type": "select",
+      "label": "Pièces",
+      "name": "rooms",
+      "items": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "type": "text",
-      "label": "Prénom",
-      "placeholder": "prénom...",
-      "name": "firstname",
+      "label": "Prix",
+      "placeholder": "49,99 €...",
+      "name": "price",
+      "minLength": 2,
+      "maxLength": 5
+    },
+    {
+      "type": "textarea",
+      "label": "Description",
+      "placeholder": "Description...",
+      "name": "description",
+      "minLength": 2,
+      "maxLength": 250
+    },
+    {
+      "type": "text",
+      "label": "Vignette",
+      "placeholder": "Choissez votre image...",
+      "name": "thumbnail-file",
+      "accept": ".png, .jpg, .webp, .jpeg"
+    },
+    {
+      "type": "text",
+      "label": "Images de l'appartement",
+      "placeholder": "Choissez votre image...",
+      "name": "pictures-file",
+      "accept": ".png, .jpg, .webp, .jpeg"
+    },
+    {
+      "type": "text",
+      "label": "Id des avis ",
+      "name": "reviewId",
+      "disabled": true,
       "minLength": 2,
       "maxLength": 40
     },
     {
       "type": "text",
-      "label": "Nom",
-      "placeholder": "nom...",
-      "name": "lastname",
+      "label": "Id des réservations ",
+      "name": "bookingId",
+      "disabled": true,
       "minLength": 2,
       "maxLength": 40
-    },
-    {
-      "type": "text",
-      "label": "Profession",
-      "placeholder": "profession...",
-      "name": "job",
-      "minLength": 2,
-      "maxLength": 40
-    },
-    {
-      "type": "email",
-      "label": "Email",
-      "placeholder": "email...",
-      "name": "email",
-      "minLength": 2,
-      "maxLength": 40,
-      "autocomplete": "email"
-    },
-    {
-      "type": "date",
-      "label": "Date de naissance",
-      "name": "birth"
     },
     {
       "type": "submit",

@@ -3,6 +3,22 @@
   "method": "PUT",
   "content": [
     {
+      "type": "radio",
+      "label": "Supprimer la photo",
+      "items": [
+        {
+          "name": "deletePicture",
+          "value": "oui",
+          "required": true
+        },
+        {
+          "name": "deletePicture",
+          "value": "non",
+          "required": true
+        }
+      ]
+    },
+    {
       "type": "select",
       "label": "Role",
       "name": "role",

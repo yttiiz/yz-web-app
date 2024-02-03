@@ -1,10 +1,10 @@
 import { DefaultFormHelper } from "./DefaultFormHelper.js";
-import { handleInputFile, hydrateInputs } from "./_commonFunctions.js";
+import { handleInputFile, hydrateInput } from "./_commonFunctions.js";
 
 export class UserFormHelper extends DefaultFormHelper {
   static id = (id) => `#data-${id}-form`;
   static handleInputFile = handleInputFile;
-  static hydrateInputs = hydrateInputs;
+  static hydrateInput = hydrateInput;
 
   /**
    * @param {Response} response

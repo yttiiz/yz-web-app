@@ -111,18 +111,22 @@ export type ProductDescriptionType = {
 
 export type HomePageDataType = TitleAndDescriptionType;
 
-export type InputDataType = {
+export type CommonInputType = {
+  name?: string;
+  required?: string;
+  disabled?: string;
+  value?: string;
+};
+
+export type InputDataType = CommonInputType & {
   type: string;
   label?: string;
   placeholder?: string;
-  name?: string;
-  required?: string;
-  value?: string;
   maxLength?: string;
   minLength?: string;
   accept?: string;
   autocomplete?: string;
-  items?: string[];
+  items?: string[] | CommonInputType[];
 };
 
 export type InputFormPropsType = {

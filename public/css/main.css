@@ -94,9 +94,11 @@ input[type="submit"] {
 
 button[data-type="call-to-action"],
 textarea,
+fieldset,
 select,
 input {
     border-radius: var(--btn-border-radius);
+    border: var(--border-black-25-percent);
     font-size: var(--base-size);
 }
 

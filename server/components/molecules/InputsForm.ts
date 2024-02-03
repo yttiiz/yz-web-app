@@ -26,76 +26,116 @@ export const InputsForm: ComponentType<
       name,
       placeholder,
       required,
+      disabled,
       minLength,
       maxLength,
       value,
       autocomplete,
       items,
-    }) => type !== "submit" && name !== "photo"
-    ? (
-      `<label>
-        ${type !== "radio"
-          ? `<span>${label}</span>`
-          : ""
-        }
-        ${type === "select"
-        ? (
-          `<select
-            ${name ? ` name="${name}"` : ""}
-            ${required ? ` required` : ""}
-          >
-            <option value=\"\">Choisir...</option>
-            ${items ? (items.map(item => (
-              `<option value="${item}">${item}</option>`
-              )).join("")
-            ) : "<option value=\"\">choisir...</option>"}
-          </select>`
-          )
-        : (
-          `<input type="${type}"
-            ${name ? ` name="${name}"` : ""}
-            ${placeholder ? ` placeholder="${placeholder}"` : ""}
-            ${required ? ` required` : ""}
-            ${minLength ? ` minLength="${minLength}"` : ""}
-            ${maxLength ? ` maxLength="${maxLength}"` : ""}
-            ${value ? ` value="${value}"` : ""}
-            ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
-            ${type === "date"
-              ? Validator.minAndMaxDateParser(label as string, date)
-                : ""}
-          >
-          ${type === "password"
+    }) => { 
+      if (type !== "submit" && type !== "radio" && name !== "photo") {
+        return `
+          <label>
+            <span>${label}</span>
+            ${type === "select"
             ? (
-              `<div id="eye-password">
-                  <span>
-                    ${EyeShutSvg.html}
-                  </span>
-                  <span class="none">
-                    ${EyeOpenSvg.html}
-                  </span>
-                </div>`
+              // SELECT FIELD
+              `<select
+                ${name ? ` name="${name}"` : ""}
+                ${required ? ` required` : ""}
+                ${disabled ? ` disabled` : ""}
+              >
+                <option value=\"\">Choisir...</option>
+                ${items ? (items.map(item => (
+                  `<option value="${item}">${item}</option>`
+                  )).join("")
+                ) : "<option value=\"\">choisir...</option>"}
+              </select>`
               )
-            : ""}
-          ${type === "radio"
-            ? label : ""}
-          ${name === "file-text"
-            ? (
-                `<div id="search-photo">
-                  <button type="button">Rechercher</button>
+            // TEXT FIELDS
+            : (
+              type === "textarea"
+                ?
+                (
+                  `<textarea
+                    ${name ? ` name="${name}"` : ""}
+                    ${placeholder ? ` placeholder="${placeholder}"` : ""}
+                    ${required ? ` required` : ""}
+                    ${disabled ? ` disabled` : ""}
+                    ${minLength ? ` minLength="${minLength}"` : ""}
+                    ${maxLength ? ` maxLength="${maxLength}"` : ""}
+                    ${value ? ` value="${value}"` : ""}
+                  >
+                  </textarea>`
+                )
+                : 
+                (
+                  `<input type="${type}"
+                    ${name ? ` name="${name}"` : ""}
+                    ${placeholder ? ` placeholder="${placeholder}"` : ""}
+                    ${required ? ` required` : ""}
+                    ${disabled ? ` disabled` : ""}
+                    ${minLength ? ` minLength="${minLength}"` : ""}
+                    ${maxLength ? ` maxLength="${maxLength}"` : ""}
+                    ${value ? ` value="${value}"` : ""}
+                    ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
+                    ${type === "date"
+                      ? Validator.minAndMaxDateParser(label as string, date)
+                        : ""}
+                  >
+                  ${type === "password"
+                    ? (
+                      `<div id="eye-password">
+                          <span>
+                            ${EyeShutSvg.html}
+                          </span>
+                          <span class="none">
+                            ${EyeOpenSvg.html}
+                          </span>
+                        </div>`
+                      )
+                    : ""}
+                  ${name && name.includes("file") 
+                    ? (
+                        `<div id="search-photo">
+                          <button type="button">Rechercher</button>
+                        </div>`
+                      )
+                    : ""
+                  }`
+                )
+            )}
+          </label>`;
+
+      } else if (type === "radio") {
+        return `
+          <fieldset${items && items.length <= 3 ? "" : ` class="align-columns"`}>
+            <legend>${label}</legend>
+            ${items ? (items.map(item => {
+              return typeof item !== "string"
+              ? 
+                `<div>
+                  <input type ="${type}"
+                    ${item.name ? ` name="${item.name}"` : ""}
+                    ${item.required ? ` required` : ""}
+                    ${item.value ? ` value="${item.value}"` : ""}
+                  />
+                  ${item.value}
                 </div>`
-              )
-            : ""
-          }`
-        )}
-      </label>`
-      )
-    : isProfilInputs || name === "photo"
-    ? ""
-    : (
-      `<input type="${type}"
-        ${value ? ` value="${value}"` : ""}
-      >`
-    ))
-    .join("")
+              : null;
+            }).join("")
+            ) : null}
+        </fieldset>`
+
+      } else if (isProfilInputs || name === "photo") {
+        return "";
+        
+      } else {
+        return `
+        <input type="${type}"
+          ${value ? ` value="${value}"` : ""}
+        >`;
+      }
+  }).join("")
   }
 }

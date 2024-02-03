@@ -62,7 +62,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set inputs
     for (const input of userInfosInputs) {
-      UserFormHelper.hydrateInputs(input, data);
+      UserFormHelper.hydrateInput(input, data);
     }
 
     // Set form submission

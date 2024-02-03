@@ -128,11 +128,11 @@ const removeInputsValues = (labels) => {
 };
 
 /**
- * @param {HTMLInputElement | HTMLSelectElement} input 
- * @param {Record<string, string>} input 
+ * @param {HTMLInputElement} element 
+ * @param {Record<string, string>} data 
  */
-const hydrateInputs = (element, data) => {
-  if (element.type !== "password") {
+const hydrateInput = (element, data) => {
+  if (element.type !== "password" && typeof data[element.name] === "string") {
     element.type === "date"
       ? element.value = data[element.name].split("T").at(0)
       : element.value = data[element.name];
@@ -140,37 +140,41 @@ const hydrateInputs = (element, data) => {
 }
 
 /**
- * @param {Types.User} user 
- * @param {HTMLDialogElement} dialog 
+ * @param {HTMLSelectElement} element 
+ * @param {Record<string, string>} data 
  */
-const insertUserData = (user, dialog) => {
-  const labels = dialog.querySelector("form").querySelectorAll("label");
-
-  for (const label of labels) {
-    if (label.querySelector("input")) {
-      const input = label.querySelector("input");
-      hydrateInputs(input, user);
-    }
-
-    if (label.querySelector("select")) {
-      const select = label.querySelector("select");
-      
-      for (const opt of select.children) {
-
-        if (opt.value === user[select.name]) {
-          opt.setAttribute("selected", true);
-          break;
-        }
-      }
+const hydrateSelect = (element, data) => {
+  for (const option of element.children) {
+    if (option.value === data[element.name]) {
+      option.setAttribute("selected", true);
+      break;
     }
   }
 }
 
 /**
- * @param {Types.Product} product 
+ * @param {Types.User} user 
+ * @param {HTMLDialogElement} dialog 
  */
-const insertProductData = (product) => {
-  // TODO implements logic
+const insertData = (user, dialog) => {
+  const labels = dialog.querySelector("form").querySelectorAll("label");
+
+  for (const label of labels) {
+    if (label.querySelector("input")) {
+      const input = label.querySelector("input");
+      hydrateInput(input, user);
+    }
+
+    if (label.querySelector("textarea")) {
+      const textarea = label.querySelector("textarea");
+      hydrateInput(textarea, user);
+    }
+
+    if (label.querySelector("select")) {
+      const select = label.querySelector("select");
+      hydrateSelect(select, user);
+    }
+  }
 }
 
 /**
@@ -179,7 +183,6 @@ const insertProductData = (product) => {
 const insertBookingData = (booking) => {
   // TODO implements logic
 }
-
 
 /**
  * @param {HTMLDivElement} container 
@@ -208,9 +211,7 @@ const handleCards = (
     for (const key in data) {
       if (dataType !== "bookings") {
         if (data[key]._id === e.currentTarget.dataset.id) {
-          dataType === "users"
-            ? insertUserData(data[key], dialog)
-            : insertProductData(data[key]);
+            insertData(data[key], dialog)
           break;
         }
       } else {
@@ -226,7 +227,7 @@ const handleCards = (
 export {
   handleShowPassword,
   handleInputFile,
-  hydrateInputs,
+  hydrateInput,
   setFormData,
   removeInputsValues,
   handleCards,

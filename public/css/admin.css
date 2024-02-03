@@ -124,18 +124,58 @@
         }
 
         & form label {
-            gap:  calc(var(--base-size) * .25);
+            gap: calc(var(--base-size) * .25);
         }
 
         & form > div > div {
             text-align: center;
         }
 
-        & form input:not([type="submit"]),
+        & form input:not([type="submit"], [type="radio"]),
         & form select {
-            border: var(--border-black-25-percent);
             padding: 0 calc(var(--base-size) * .625);
             height: calc(var(--base-size) * 2.75);
+        }
+        
+        & form fieldset,
+        & form textarea {
+            padding: calc(var(--base-size) * .625);
+        }
+
+        & form fieldset {
+            position: relative;
+            display: flex;
+            margin-top: calc(var(--base-size) * 1.75);
+        }
+        
+        & form fieldset:not(.align-columns) {
+            gap: calc(var(--base-size) * 2);
+        }
+        
+        & form fieldset.align-columns {
+            gap: calc(var(--base-size) * .75);
+            flex-direction: column;
+        }
+
+        & form fieldset legend {
+            position: absolute;
+            top: calc(var(--base-size) * -1.75);
+            left: 0;
+        }
+
+        & form fieldset div,
+        & form fieldset div input[type="radio"] {
+            cursor: pointer;
+        }
+
+        & form fieldset div {
+            display: inherit;
+            align-items: center;
+            gap: calc(var(--base-size) * .5);
+        }
+
+        & form textarea {
+            height: calc(var(--base-size) * 10);
         }
 
         & form select {
@@ -144,6 +184,10 @@
 
         & form input[type="submit"] {
             background: var(--primary-color);
+        }
+
+        & form > span.none {
+            display: none;
         }
     }
 }
@@ -352,7 +396,7 @@
 }
 
 #search-photo {
-    bottom: clamp(8%, 1.75vw, 12%);
+    bottom: clamp(8%, 1.75vw, 10%);
 
     & button {
         padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
