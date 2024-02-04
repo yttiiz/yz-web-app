@@ -255,8 +255,7 @@
         }
     }
 
-    & dialog[data-products],
-    & dialog[data-bookings] {
+    & dialog[data-products] {
         width: var(--large-dialog-width);
 
         & form {
@@ -500,8 +499,7 @@
 }
 
 @media screen and (max-width: 850px) {
-    #data-admin dialog[data-products],
-    #data-admin dialog[data-bookings] {
+    #data-admin dialog[data-products] {
         & > div > form {
             grid-template-columns: 1fr;
         }
@@ -519,7 +517,6 @@
         flex-direction: column;
     }
 }
-
 
 @media screen and (max-width: 500px) {
     .users-details,

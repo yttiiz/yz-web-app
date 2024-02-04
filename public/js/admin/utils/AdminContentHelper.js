@@ -290,10 +290,12 @@ export class AdminContentHelper extends DefaultFormHelper {
         new Date(booking.endingDate).getTime() < Date.now()
       );
 
+      booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt);
+
       bookingPublicPart.innerHTML = `
       <div>
         <p>Appartement : <strong>${booking.productName}</strong></p>
-        <p>Réservation passée le : <strong>${AdminContentHelper.#formatDate(booking.createdAt)}</strong></p>
+        <p>Réservation passée le : <strong>${booking.createdAt}</strong></p>
         <p>Par : <strong>${booking.userName}</strong></p>
       </div>`;
         

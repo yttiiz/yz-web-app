@@ -72,7 +72,7 @@
     },
     {
       "type": "text",
-      "label": "Id des avis ",
+      "label": "Id des avis",
       "name": "reviewId",
       "disabled": true,
       "minLength": 2,
@@ -80,7 +80,7 @@
     },
     {
       "type": "text",
-      "label": "Id des réservations ",
+      "label": "Id des réservations",
       "name": "bookingId",
       "disabled": true,
       "minLength": 2,

@@ -201,15 +201,15 @@ const fillImgs = (data, dialog) => {
         const imgContainer = document.createElement("div");
         const { src, alt } = item;
   
-        imgContainer.innerHTML = `<img src="${src}" alt="${alt}" /><button><span></span><span></span></button>`;
+        imgContainer.innerHTML = `<img src="${src}" alt="${alt}" /><button title="supprimer"><span></span><span></span></button>`;
   
         figure.appendChild(imgContainer);
       }
     }
-}
+};
 
 /**
- * @param {Types.User | Types.Product} data 
+ * @param {Types.User | Types.Product | Types.BookingsRegistred & { productName: string }} data 
  * @param {HTMLDialogElement} dialog 
  * @param {(data: Types.Product, dialog: HTMLDialogElement) => void} [fillImgs] 
  */
@@ -237,13 +237,6 @@ const insertData = (data, dialog, fillImgs) => {
 };
 
 /**
- * @param {Types.BookingsRegistred & { productName: string }} booking 
- */
-const insertBookingData = (booking) => {
-  // TODO implements logic
-}
-
-/**
  * @param {HTMLDivElement} container 
  * @param {string} dataType 
  * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
@@ -261,25 +254,40 @@ const handleCards = (
   // Set listener to 'edit' button.
   editBtn.addEventListener("click", (e) => {
     const dialog = document.querySelector(`dialog[data-${dataType}]`);
+    let dataTitle = "";
 
-    // Set modal.
-    dialog.querySelector("h2").textContent = `Modification de contenu`;
-    dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
-    
     // Insert Data.
     for (const key in data) {
       if (dataType !== "bookings") {
         if (data[key]._id === e.currentTarget.dataset.id) {
-            dataType === "products"
-             ? insertData(data[key], dialog, fillImgs)
-             : insertData(data[key], dialog);
+          
+          switch(dataType) {
+            case "products": {
+              dataTitle = `de l'appartement ${data[key].name}`;
+              insertData(data[key], dialog, fillImgs);
+              break;
+            }
+            
+            case "users": {
+              dataTitle = `du profil de ${data[key].firstname} ${data[key].lastname}`;
+              insertData(data[key], dialog);
+              break;
+            }
+          }
+
           break;
         }
+        
       } else {
-        insertBookingData(data)
+        dataTitle = `de la réservation de ${data.userName}`;
+        insertData(data, dialog);
         break;
       }
     }
+
+    // Set modal.
+    dialog.querySelector("h2").textContent = `Modification ${dataTitle}`;
+    dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
 
     dialog.showModal();
   });

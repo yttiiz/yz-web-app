@@ -166,10 +166,11 @@ dialog {
 
     & > header {
         background: var(--light);
-        display: flex;
+        display: grid;
         justify-content: space-between;
         align-items: center;
         gap: var(--base-size);
+        grid-template: 100% / auto max-content;
 
         & > h2 {
             line-height: 1;

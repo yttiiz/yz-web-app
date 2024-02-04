@@ -55,7 +55,7 @@
  * @property {string} userName
  * @property {string} startingDate
  * @property {string} endingDate
- * @property {number} createdAt
+ * @property {number | string} createdAt
  */
 
 /**
