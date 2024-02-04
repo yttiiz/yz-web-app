@@ -70,39 +70,45 @@ export const InputsForm: ComponentType<
                 )
                 : 
                 (
-                  `<input type="${type}"
-                    ${name ? ` name="${name}"` : ""}
-                    ${placeholder ? ` placeholder="${placeholder}"` : ""}
-                    ${required ? ` required` : ""}
-                    ${disabled ? ` disabled` : ""}
-                    ${minLength ? ` minLength="${minLength}"` : ""}
-                    ${maxLength ? ` maxLength="${maxLength}"` : ""}
-                    ${value ? ` value="${value}"` : ""}
-                    ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
-                    ${type === "date"
-                      ? Validator.minAndMaxDateParser(label as string, date)
-                        : ""}
-                  >
-                  ${type === "password"
-                    ? (
-                      `<div id="eye-password">
-                          <span>
-                            ${EyeShutSvg.html}
-                          </span>
-                          <span class="none">
-                            ${EyeOpenSvg.html}
-                          </span>
-                        </div>`
-                      )
+                  `${type === "password" || (name && name.includes("file"))
+                    ? "<span>"
                     : ""}
-                  ${name && name.includes("file") 
-                    ? (
-                        `<div id="search-photo">
-                          <button type="button">Rechercher</button>
-                        </div>`
-                      )
-                    : ""
-                  }`
+                      <input type="${type}"
+                      ${name ? ` name="${name}"` : ""}
+                      ${placeholder ? ` placeholder="${placeholder}"` : ""}
+                      ${required ? ` required` : ""}
+                      ${disabled ? ` disabled` : ""}
+                      ${minLength ? ` minLength="${minLength}"` : ""}
+                      ${maxLength ? ` maxLength="${maxLength}"` : ""}
+                      ${value ? ` value="${value}"` : ""}
+                      ${autocomplete ? ` autocomplete="${autocomplete}"` : ""}
+                      ${type === "date"
+                        ? Validator.minAndMaxDateParser(label as string, date)
+                        : ""}
+                      >
+                      ${type === "password"
+                        ? (
+                          `<div id="eye-password">
+                              <span>
+                                ${EyeShutSvg.html}
+                              </span>
+                              <span class="none">
+                                ${EyeOpenSvg.html}
+                              </span>
+                            </div>`
+                          )
+                        : ""}
+                      ${name && name.includes("file") 
+                        ? (
+                            `<div id="search-photo">
+                              <button type="button">Rechercher</button>
+                            </div>`
+                          )
+                        : ""
+                      }
+                    ${type === "password" || (name && name.includes("file"))
+                    ? "</span>"
+                    : ""}`
                 )
             )}
           </label>`;

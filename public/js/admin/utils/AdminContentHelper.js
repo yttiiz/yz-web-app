@@ -143,6 +143,39 @@ export class AdminContentHelper extends DefaultFormHelper {
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("products");
 
+    const convert = (original) => {
+      return Object.keys(original)
+      .reduce((converted, key) => {
+        converted[key] = {...original[key]};
+
+        for (const prop in original[key]) {
+          if (prop === "details") {
+
+            // Add 'details' [Object] props with appropriate key to the new object...
+            for (const detailsProp in original[key][prop]) {
+              const isFloat = (
+                typeof original[key][prop][detailsProp] === "number" &&
+                !Number.isInteger(original[key][prop][detailsProp])
+              );
+              
+              converted[key][detailsProp] = (
+                isFloat
+                 ? (`${original[key][prop][detailsProp]}`).replace(".", ",")
+                 : original[key][prop][detailsProp]
+              );
+            }
+
+            // ... then delete it.
+            delete converted[key][prop];
+            
+          } else {
+            converted[key][prop] = original[key][prop]
+          }
+        }
+        return converted;
+      }, {});
+    };
+
     if ("message" in products) {
       return AdminContentHelper.#displayErrorMessage(
         detailsContainer,
@@ -181,35 +214,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       ${AdminContentHelper.#getEditOrDeletePart(products[key]._id)}`;
 
       // Create a 'products' copy to set easier product form values.
-      const productsFormValues = Object.keys(products)
-      .reduce((obj, key) => {
-        obj[key] = {...products[key]};
-
-        for (const prop in products[key]) {
-          if (prop === "details") {
-            // Add 'details' [Object] props with appropriate key to the new object...
-            for (const detailsProp in products[key][prop]) {
-              const isFloat = (
-                typeof products[key][prop][detailsProp] === "number" &&
-                !Number.isInteger(products[key][prop][detailsProp])
-              );
-              
-              obj[key][detailsProp] = (
-                isFloat
-                 ? (`${products[key][prop][detailsProp]}`).replace(".", ",")
-                 : products[key][prop][detailsProp]
-              );
-            }
-
-            // ... then delete it.
-            delete obj[key][prop];
-
-          } else {
-            obj[key][prop] = products[key][prop]
-          }
-        }
-        return obj;
-      }, {})
+      const productsFormValues = convert(products);
 
       AdminContentHelper.#handleCards(productPrivatePart, "products", productsFormValues);
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);

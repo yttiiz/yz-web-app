@@ -1,7 +1,8 @@
 import {
   AdminLoginHelper,
   AdminProfilHelper,
-  AdminContentHelper
+  AdminContentHelper,
+  insertPictureIn,
 } from "../utils/mod.js";
 
 export class AdminPage {
@@ -15,6 +16,10 @@ export class AdminPage {
       .addEventListener("click", () => {
         dialog.close();
       });
+
+      if (dialog.dataset.hasOwnProperty("products")) {
+        insertPictureIn(dialog);
+      }
     }
     
     if (section.dataset.admin === "connected") {

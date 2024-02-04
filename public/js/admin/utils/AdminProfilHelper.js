@@ -74,16 +74,19 @@ export class AdminProfilHelper {
           
           if (inputData.type === "password") {
             const eyeContainer = AdminProfilHelper.#createEyePasswordIcon();
+            const span = document.createElement("span");
 
-            label.textContent = inputData.label;
-            label.appendChild(input);
-            label.appendChild(eyeContainer);
+            label.innerHTML = `<span>${inputData.label}</span>`;
+            
+            span.appendChild(input);
+            span.appendChild(eyeContainer);
+            label.appendChild(span);
 
           } else {
             inputData.type === "date"
               ? input.setAttribute("value", userData[inputData.name].split("T")[0])
               : input.setAttribute("value", userData[inputData.name]);
-            label.textContent = inputData.label;
+            label.innerHTML = `<span>${inputData.label}</span>`;
             
             label.appendChild(input);
           }
@@ -145,7 +148,7 @@ export class AdminProfilHelper {
       select,
     } = AdminProfilHelper.#createHTMLElements("label", "select");
     
-    select.name = "roles";
+    select.name = "role";
 
     const defaultOption = document.createElement("option");
     defaultOption.value = ""; defaultOption.textContent = "Choisir...";
@@ -157,7 +160,7 @@ export class AdminProfilHelper {
       select.appendChild(option);
     }
 
-    label.textContent = "Role ";
+    label.innerHTML = `<span>Role</span>`;
     label.appendChild(select);
 
     return label;

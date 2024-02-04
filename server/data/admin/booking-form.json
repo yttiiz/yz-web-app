@@ -59,14 +59,14 @@
     {
       "type": "text",
       "label": "Vignette",
-      "placeholder": "Choissez votre image...",
+      "placeholder": "Changer l'image...",
       "name": "thumbnail-file",
       "accept": ".png, .jpg, .webp, .jpeg"
     },
     {
       "type": "text",
       "label": "Images de l'appartement",
-      "placeholder": "Choissez votre image...",
+      "placeholder": "Changer l'image...",
       "name": "pictures-file",
       "accept": ".png, .jpg, .webp, .jpeg"
     },

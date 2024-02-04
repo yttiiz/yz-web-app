@@ -1,12 +1,20 @@
 #data-admin {
-    & form label:has(> div) {
+    & form div.none {
+        display: none;
+    }
+
+    & form label span:has(> div) {
         position: relative;
+
+        & > input {
+            width: 100%;
+        }
     }
 
     & section[data-admin] {
         background: var(--light);
     }
-
+    
     & section {
         & form[data-style],
         & form[data-style] > div {
@@ -84,7 +92,7 @@
             height: calc(var(--base-size) * 8);
         }
 
-        & form figure img,
+        & form > div figure img,
         & form > div button {
             margin: auto;
         }
@@ -92,12 +100,8 @@
         & form > div input {
             display: none;
         }
-
-        & form > div > div.none {
-            display: none;
-        }
         
-        & form figure img {
+        & form > div figure img {
             width: auto;
             height: 100%;
             border-radius: 50%;
@@ -175,11 +179,36 @@
         }
 
         & form textarea {
-            height: calc(var(--base-size) * 10);
+            height: calc(var(--base-size) * 7);
         }
 
         & form select {
             background: none;
+        }
+
+        & form > label > img,
+        & form > label > figure {
+            margin-top: calc(var(--base-size) * .5);
+            width: 100%;
+        }
+
+        & form > label > img,
+        & form > label > figure > img {
+            object-fit: cover;
+            aspect-ratio: 16 / 9;
+            border-radius: var(--btn-border-radius);
+        }
+
+        /* TODO find css property to fixed 'figure width' */
+        & form > label > figure {
+            display: flex;
+            gap: calc(var(--base-size) * .5);
+            overflow-x: auto;
+        }
+
+        & form > label > figure > img {
+            width: auto;
+            height: 100%;
         }
 
         & form input[type="submit"] {
@@ -189,6 +218,20 @@
         & form > span.none {
             display: none;
         }
+    }
+
+    & dialog[data-products],
+    & dialog[data-bookings] {
+        width: var(--large-dialog-width);
+
+        & form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    & dialog[data-products] form input[type="submit"] {
+        grid-area: 6 / 1 / 7 / 3;
     }
 }
 
@@ -374,12 +417,12 @@
 #search-photo {
     display: flex;
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     right: 3%;
 }
 
 #eye-password {
-    bottom: 16%;
-
     & > span {
         cursor: pointer;
     }
@@ -396,8 +439,6 @@
 }
 
 #search-photo {
-    bottom: clamp(8%, 1.75vw, 10%);
-
     & button {
         padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
         border-radius: var(--btn-border-radius);
@@ -419,6 +460,20 @@
     .products-details > ul,
     .bookings-details > ul {
         grid-template-columns: 1fr;
+    }
+    
+}
+
+@media screen and (max-width: 850px) {
+    #data-admin dialog[data-products],
+    #data-admin dialog[data-bookings] {
+        & > div > form {
+            grid-template-columns: 1fr;
+        }
+
+        & > div > form input[type="submit"] {
+            grid-area: unset;
+        }
     }
 }
 

@@ -141,7 +141,7 @@ const hydrateInput = (element, data) => {
       ? element.value = data[element.name].split("T").at(0)
       : element.value = data[element.name];
   }
-}
+};
 
 /**
  * @param {HTMLSelectElement} element 
@@ -154,7 +154,26 @@ const hydrateSelect = (element, data) => {
       break;
     }
   }
-}
+};
+
+/**
+ * Insert an `img` element and a `picture` before each input related to pictures.
+ * @param {HTMLDialogElement} dialog 
+ */
+const insertPictureIn = (dialog) => {
+  const form = dialog.querySelector("form");
+  const inputThumbnail = form.querySelector("input[name=\"thumbnail-file\"]");
+  const inputPictures = form.querySelector("input[name=\"pictures-file\"]");
+  
+  const img = document.createElement("img");
+  img.setAttribute("data-name", "thumbnail");
+  
+  const figure = document.createElement("figure");
+  figure.setAttribute("data-name", "pictures");
+
+  inputThumbnail.closest("label").appendChild(img);
+  inputPictures.closest("label").appendChild(figure);
+};
 
 /**
  * @param {Types.User | Types.Product} user 
@@ -179,7 +198,34 @@ const insertData = (data, dialog) => {
       hydrateSelect(select, data);
     }
   }
-}
+
+  // Set images in Product dialog form.
+  if (dialog.querySelector("form > label > img")) {
+    const img = dialog.querySelector("form > label > img");
+    const { src, alt } = data[img.dataset.name];
+
+    img.src = src; img.alt = alt;
+  }
+
+  // Set pictures in Product dialog form.
+  if (dialog.querySelector("form > label > figure")) {
+    const figure = dialog.querySelector("form > label > figure");
+
+    if (figure.children) {
+      for (const child of figure.children) {
+        figure.removeChild(child)
+      }
+    }
+
+    for (const item of data[figure.dataset.name]) {
+      const img = document.createElement("img");
+      const { src, alt } = item;
+
+      img.src = src; img.alt = alt;
+      figure.appendChild(img);
+    }
+  }
+};
 
 /**
  * @param {Types.BookingsRegistred & { productName: string }} booking 
@@ -226,7 +272,7 @@ const handleCards = (
 
     dialog.showModal();
   });
-}
+};
 
 export {
   handleShowPassword,
@@ -235,4 +281,5 @@ export {
   setFormData,
   removeInputsValues,
   handleCards,
+  insertPictureIn,
 };
