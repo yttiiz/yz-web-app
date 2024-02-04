@@ -193,22 +193,57 @@
         }
 
         & form > label > img,
-        & form > label > figure > img {
+        & form > label > figure img {
             object-fit: cover;
             aspect-ratio: 16 / 9;
             border-radius: var(--btn-border-radius);
         }
 
-        /* TODO find css property to fixed 'figure width' */
         & form > label > figure {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: calc(var(--base-size) * .5);
-            overflow-x: auto;
         }
 
-        & form > label > figure > img {
-            width: auto;
-            height: 100%;
+        & form > label > figure > div,
+        & form > label > figure > div img {
+            width: 100%;
+        }
+
+        & form > label > figure > div {
+            position: relative;
+        }
+
+        & form > label > figure > div button {
+            position: absolute;
+            background: rgb(var(--black-rvb) / .5);
+            border-radius: 50%;
+            width: var(--base-size);
+            aspect-ratio: 1 / 1;
+            top: calc(var(--base-size) * .5);
+            right: calc(var(--base-size) * .5);
+            transition: background var(--smooth);
+        }
+
+        & form > label > figure > div button:hover {
+            background: rgb(var(--black-rvb) / 1);
+        }
+
+        & form > label > figure > div button span {
+            position: inherit;
+            left: 50%;
+            top: 50%;
+            background: var(--white);
+            height: .1rem;
+            width: 60%;
+        }
+
+        & form > label > figure > div button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        & form > label > figure > div button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
         }
 
         & form input[type="submit"] {

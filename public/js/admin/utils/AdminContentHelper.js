@@ -103,7 +103,7 @@ export class AdminContentHelper extends DefaultFormHelper {
           <p>Email : <strong>${users[key].email}</strong></p>
           <p>Role : <strong>${users[key].role}</strong></p>
         </div>
-        ${AdminContentHelper.#getEditOrDeletePart(users[key]._id)}`;
+        ${AdminContentHelper.#getEditOrDeletePart({ id: users[key]._id })}`;
 
       users[key].role === "admin"
         ? userContainer.classList.add("admin")
@@ -211,7 +211,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Prix : <strong>${AdminContentHelper.#formatPrice(products[key].details.price)}</strong></p>
         <p>Description : <strong>${products[key].description}</strong></p>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart(products[key]._id)}`;
+      ${AdminContentHelper.#getEditOrDeletePart({ id: products[key]._id })}`;
 
       // Create a 'products' copy to set easier product form values.
       const productsFormValues = convert(products);
@@ -286,6 +286,10 @@ export class AdminContentHelper extends DefaultFormHelper {
         "div",
       );
 
+      const isBookingInProgress = (
+        new Date(booking.endingDate).getTime() < Date.now()
+      );
+
       bookingPublicPart.innerHTML = `
       <div>
         <p>Appartement : <strong>${booking.productName}</strong></p>
@@ -299,7 +303,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
         <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart(booking._id)}`;
+      ${AdminContentHelper.#getEditOrDeletePart({ id: booking._id, removeEditBtn: isBookingInProgress })}`;
 
       AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
       AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
@@ -393,17 +397,23 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   /**
-   * @param {string} id 
+   * @param {{ id: string; removeEditBtn: boolean }}  
    */
-  static #getEditOrDeletePart = (id) => {
+  static #getEditOrDeletePart = ({ id, removeEditBtn = false }) => {
     return `
     <div>
-      <button
-        data-id=${id}
-        type="button"
-      >
-        Editer
-      </button>
+      ${removeEditBtn
+        ? ""
+        : 
+        (
+          `<button
+              data-id=${id}
+              type="button"
+            >
+              Editer
+            </button>`
+        )
+      }
       <form
         action="/delete/${id}"
         method="DELETE"

@@ -157,7 +157,7 @@ const hydrateSelect = (element, data) => {
 };
 
 /**
- * Insert an `img` element and a `picture` before each input related to pictures.
+ * Inserts an `img` element and a `figure` before each input related to pictures.
  * @param {HTMLDialogElement} dialog 
  */
 const insertPictureIn = (dialog) => {
@@ -176,10 +176,44 @@ const insertPictureIn = (dialog) => {
 };
 
 /**
- * @param {Types.User | Types.Product} user 
+ * Fills `img` in dialog.
+ * @param {Types.Product} data 
  * @param {HTMLDialogElement} dialog 
  */
-const insertData = (data, dialog) => {
+const fillImgs = (data, dialog) => {
+    // Set main image.
+    if (dialog.querySelector("form > label > img")) {
+      const img = dialog.querySelector("form > label > img");
+      const { src, alt } = data[img.dataset.name];
+  
+      img.src = src; img.alt = alt;
+    }
+  
+    // Set all figure images.
+    if (dialog.querySelector("form > label > figure")) {
+      const figure = dialog.querySelector("form > label > figure");
+  
+      if (figure.children.length > 0) {
+        figure.innerHTML = "";
+      }
+  
+      for (const item of data[figure.dataset.name]) {
+        const imgContainer = document.createElement("div");
+        const { src, alt } = item;
+  
+        imgContainer.innerHTML = `<img src="${src}" alt="${alt}" /><button><span></span><span></span></button>`;
+  
+        figure.appendChild(imgContainer);
+      }
+    }
+}
+
+/**
+ * @param {Types.User | Types.Product} data 
+ * @param {HTMLDialogElement} dialog 
+ * @param {(data: Types.Product, dialog: HTMLDialogElement) => void} [fillImgs] 
+ */
+const insertData = (data, dialog, fillImgs) => {
   const labels = dialog.querySelector("form").querySelectorAll("label");
 
   for (const label of labels) {
@@ -199,32 +233,7 @@ const insertData = (data, dialog) => {
     }
   }
 
-  // Set images in Product dialog form.
-  if (dialog.querySelector("form > label > img")) {
-    const img = dialog.querySelector("form > label > img");
-    const { src, alt } = data[img.dataset.name];
-
-    img.src = src; img.alt = alt;
-  }
-
-  // Set pictures in Product dialog form.
-  if (dialog.querySelector("form > label > figure")) {
-    const figure = dialog.querySelector("form > label > figure");
-
-    if (figure.children) {
-      for (const child of figure.children) {
-        figure.removeChild(child)
-      }
-    }
-
-    for (const item of data[figure.dataset.name]) {
-      const img = document.createElement("img");
-      const { src, alt } = item;
-
-      img.src = src; img.alt = alt;
-      figure.appendChild(img);
-    }
-  }
+  fillImgs ? fillImgs(data, dialog) : null;
 };
 
 /**
@@ -261,7 +270,9 @@ const handleCards = (
     for (const key in data) {
       if (dataType !== "bookings") {
         if (data[key]._id === e.currentTarget.dataset.id) {
-            insertData(data[key], dialog)
+            dataType === "products"
+             ? insertData(data[key], dialog, fillImgs)
+             : insertData(data[key], dialog);
           break;
         }
       } else {
