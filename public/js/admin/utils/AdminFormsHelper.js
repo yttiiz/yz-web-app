@@ -21,6 +21,7 @@ export class AdminFormsHelper {
     e.preventDefault();
 
     const formData = AdminFormsHelper.#setFormData(e.target);
+
     const res = await fetch(e.target.action, {
       method: "PUT",
       body: formData,

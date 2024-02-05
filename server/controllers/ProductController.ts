@@ -15,7 +15,7 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType,
 } from "@mongo";
-import { Handler, Helper, Validator } from "@utils";
+import { Handler, Validator } from "@utils";
 import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
@@ -174,11 +174,11 @@ export class ProductController extends DefaultController {
                   message:
                     "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
                   booking: {
-                    start: Helper.displayDate(
+                    start: this.helper.displayDate(
                       new Date(newBooking.startingDate),
                       "short",
                     ),
-                    end: Helper.displayDate(
+                    end: this.helper.displayDate(
                       new Date(newBooking.endingDate),
                       "short",
                     ),
@@ -202,11 +202,11 @@ export class ProductController extends DefaultController {
                 message:
                   "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
                 booking: {
-                  start: Helper.displayDate(
+                  start: this.helper.displayDate(
                     new Date(booking.startingDate),
                     "short",
                   ),
-                  end: Helper.displayDate(
+                  end: this.helper.displayDate(
                     new Date(booking.endingDate),
                     "short",
                   ),

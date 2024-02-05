@@ -17,7 +17,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set input file to change photo
     if (form.action.includes("/register")) {
-      form.querySelector("#search-photo button")
+      form.querySelector(".search-photo button")
       .addEventListener("click", UserFormHelper.handleInputFile);
     }
 

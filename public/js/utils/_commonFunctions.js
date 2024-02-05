@@ -31,8 +31,9 @@ const handleShowPassword = () => {
 
 /**
  * @param {Event} e 
+ * @param {string} [name]
  */
-const handleInputFile = (e) => {
+const handleInputFile = (e, name) => {
   /** @type {HTMLInputElement} */
   let input;
 
@@ -42,10 +43,10 @@ const handleInputFile = (e) => {
   /**
    * @param {HTMLInputElement} input 
    */
-  const createInputTypeFile = (input) => {
+  const createInputTypeFile = (input, fileName = "photo") => {
     input = document.createElement("input");
     input.type = "file";
-    input.name = "photo";
+    input.name = fileName;
     input.accept = ".png, .jpg, .webp, .jpeg";
 
     return input;
@@ -85,7 +86,7 @@ const handleInputFile = (e) => {
   if (e.currentTarget.parentNode.querySelector("input")) {
     input = e.currentTarget.parentNode.querySelector("input");
   } else {
-    input = createInputTypeFile(input);
+    input = name ? createInputTypeFile(input, name) : createInputTypeFile(input);
     e.currentTarget.closest("div").insertBefore(input, e.currentTarget);
     handleFileContent(input, showFileInfos);
   }
@@ -176,8 +177,10 @@ const insertPictureIn = (dialog) => {
   inputPictures.closest("label").appendChild(figure);
 
   // Add handle search picture listener to buttons.
-  for (const button of buttons) {
-    button.addEventListener("click", handleInputFile);
+  const names = ["thumbnail", "pictures"];
+  
+  for (let i = 0; i <= buttons.length - 1; i++) {
+    buttons[i].addEventListener("click", (e) => handleInputFile(e, names[i]));
   }
 };
 

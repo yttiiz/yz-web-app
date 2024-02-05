@@ -436,7 +436,6 @@
     }
 }
 
-
 .users-details.open,
 .products-details.open,
 .bookings-details.open {
@@ -444,7 +443,7 @@
 }
 
 #eye-password,
-#search-photo {
+.search-photo {
     display: flex;
     position: absolute;
     top: 50%;
@@ -468,7 +467,7 @@
     }
 }
 
-#search-photo {
+.search-photo {
     & button {
         padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
         border-radius: var(--btn-border-radius);

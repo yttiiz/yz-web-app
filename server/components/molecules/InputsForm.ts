@@ -100,7 +100,7 @@ export const InputsForm: ComponentType<
                         : ""}
                       ${name && name.includes("file") 
                         ? (
-                            `<div id="search-photo">
+                            `<div class="search-photo">
                               <button type="button">Rechercher</button>
                             </div>`
                           )

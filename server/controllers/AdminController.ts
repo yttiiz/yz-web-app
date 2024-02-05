@@ -13,12 +13,6 @@ import { ObjectId } from "@deps";
 import { FormDataAppType, Validator } from "@utils";
 import { FormDataType } from "@components";
 
-type UpdateUserMessageParameterType = {
-  isUpdate: boolean;
-  userName: string;
-  updateOrDeleteStr?: string;
-};
-
 export class AdminController extends DefaultController {
   public collection;
   public selectFromDB;
@@ -39,7 +33,8 @@ export class AdminController extends DefaultController {
     this.getAdmin();
     this.postAdmin();
     this.postAdminLogout();
-    this.putUser()
+    this.putUser();
+    this.putProduct();
   }
 
   private getAdmin() {
@@ -117,7 +112,7 @@ export class AdminController extends DefaultController {
               ctx,
               {
                 title: "Modification non effectuée",
-                message: dataParsed.message
+                message: dataParsed.message,
               },
               401,
             );
@@ -142,17 +137,16 @@ export class AdminController extends DefaultController {
           const isUpdate = await this.updateToDB(
             _id,
             dataParsed.data,
-            "users"
+            "users",
           );
 
           return this.response(
             ctx, 
             {
               title: "Modification utilisateur",
-              message: this.msgAboutUserToAdmin({
-                isUpdate,
-                userName: `${firstname} ${lastname}`,
-              }),
+              message: this.msgToAdmin`Le profil de ${
+                firstname + " " + lastname
+              } ${isUpdate} été`,
             },
             200,
           );
@@ -161,18 +155,92 @@ export class AdminController extends DefaultController {
           this.helper.writeLog(error);
         }
       },
-    )
+    );
   }
 
+  private putProduct() {
+    const productRoute = `/${dynamicRoutes.get("product")}:id`; // "/product/:id"
 
-  private msgAboutUserToAdmin = ({
-    isUpdate,
-    userName,
-    updateOrDeleteStr = "mis à jour",
-  }: UpdateUserMessageParameterType,
+    this.router?.put(
+      productRoute,
+      async (ctx: RouterContextAppType<typeof productRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/product-form.json",
+          ) as FormDataType;
+
+          // Add additionnal types to check.
+          const files = [{
+            "type": "file",
+            "name": "thumbnail",
+            "accept": ".png, .jpg, .webp, .jpeg",
+          },
+          {
+            "type": "file",
+            "name": "pictures",
+            "accept": ".png, .jpg, .webp, .jpeg",
+          }];
+
+          for (const file of files) {
+            dataModel.content.push(file);
+          }
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          const { name } = dataParsed.data as Record<string, string>;
+          
+          // TODO implements logic here.
+          console.log(dataParsed.data);
+
+          // const isUpdate = await this.updateToDB(
+          //   _id,
+          //   dataParsed.data,
+          //   "products",
+          // );
+          
+          return this.response(
+            ctx,
+            {
+              title: "Modification appartement",
+              message: this.msgToAdmin`L'appartement ${
+                name
+              } ${true} été`,
+            },
+            200,
+          );
+
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      },
+    );
+  }
+
+  private msgToAdmin = (
+    str: TemplateStringsArray,
+    name: string,
+    isUpdate: boolean,
+    updateOrDeleteStr?: string,
   ) => (
-    `Le profil de ${userName} ${
+    `${str[0]}${name}${str[1]}${
       isUpdate ? "a bien" : "n'a pas"
-    } été ${updateOrDeleteStr}.`
+    }${str[2]} ${
+      updateOrDeleteStr ? updateOrDeleteStr : "mis à jour"}.`
   );
 }

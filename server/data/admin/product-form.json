@@ -61,14 +61,16 @@
       "label": "Vignette de l'appartement",
       "placeholder": "Changer l'image...",
       "name": "thumbnail-file",
-      "accept": ".png, .jpg, .webp, .jpeg"
+      "minLength": 2,
+      "maxLength": 120
     },
     {
       "type": "text",
       "label": "Autres images de l'appartement",
       "placeholder": "Ajouter une image...",
       "name": "pictures-file",
-      "accept": ".png, .jpg, .webp, .jpeg"
+      "minLength": 2,
+      "maxLength": 120
     },
     {
       "type": "text",
