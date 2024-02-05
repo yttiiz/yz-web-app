@@ -7,25 +7,34 @@ import {
   type SelectUserFromDBType,
   type GetCollectionType,
   type SessionType,
+  type UpdateUserToDBType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
-import { Validator } from "@utils";
-import { UserDataType } from "@/server/controllers/types.ts";
+import { FormDataAppType, Validator } from "@utils";
 import { FormDataType } from "@components";
+
+type UpdateUserMessageParameterType = {
+  isUpdate: boolean;
+  userName: string;
+  updateOrDeleteStr?: string;
+};
 
 export class AdminController extends DefaultController {
   public collection;
   public selectFromDB;
+  private updateToDB;
   private log;
 
   constructor(
     router: RouterAppType,
     collection: GetCollectionType,
     selectFromDB: SelectUserFromDBType,
+    updateToDB: UpdateUserToDBType,
   ) {
     super(router);
     this.collection = collection;
     this.selectFromDB = selectFromDB;
+    this.updateToDB = updateToDB;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
@@ -103,17 +112,51 @@ export class AdminController extends DefaultController {
             dataModel,
           );
 
-          // TODO implements logic here.
-          
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message
+              },
+              401,
+            );
+          }
+
+          // Check to remove user photo.
+          if (dataParsed.data["deletePicture"] === "oui") {
+            dataParsed.data["photo"] = this.defaultImg;
+          }
+
+          // Remove 'delePicture' cause is unnecessary at this step.
+          delete dataParsed.data["deletePicture"];
+
+          const {
+            firstname,
+            lastname
+          } = dataParsed.data as Pick<
+            FormDataAppType,
+            "firstname" | "lastname"
+          >;
+
+          const isUpdate = await this.updateToDB(
+            _id,
+            dataParsed.data,
+            "users"
+          );
+
           return this.response(
             ctx, 
             {
               title: "Modification utilisateur",
-              message: "L'utilisateur a bien été mis à jour",
+              message: this.msgAboutUserToAdmin({
+                isUpdate,
+                userName: `${firstname} ${lastname}`,
+              }),
             },
             200,
           );
-          
+            
         } catch (error) {
           this.helper.writeLog(error);
         }
@@ -121,4 +164,15 @@ export class AdminController extends DefaultController {
     )
   }
 
+
+  private msgAboutUserToAdmin = ({
+    isUpdate,
+    userName,
+    updateOrDeleteStr = "mis à jour",
+  }: UpdateUserMessageParameterType,
+  ) => (
+    `Le profil de ${userName} ${
+      isUpdate ? "a bien" : "n'a pas"
+    } été ${updateOrDeleteStr}.`
+  );
 }

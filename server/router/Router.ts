@@ -62,6 +62,7 @@ new AdminController(
   router,
   Mongo.connectionTo,
   Mongo.selectFromDB,
+  Mongo.updateToDB,
 );
 
 // TODO to be removed (reset "session" in BD)
