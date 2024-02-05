@@ -164,7 +164,8 @@ const insertPictureIn = (dialog) => {
   const form = dialog.querySelector("form");
   const inputThumbnail = form.querySelector("input[name=\"thumbnail-file\"]");
   const inputPictures = form.querySelector("input[name=\"pictures-file\"]");
-  
+  const buttons = form.querySelectorAll("label button");
+
   const img = document.createElement("img");
   img.setAttribute("data-name", "thumbnail");
   
@@ -173,6 +174,11 @@ const insertPictureIn = (dialog) => {
 
   inputThumbnail.closest("label").appendChild(img);
   inputPictures.closest("label").appendChild(figure);
+
+  // Add handle search picture listener to buttons.
+  for (const button of buttons) {
+    button.addEventListener("click", handleInputFile);
+  }
 };
 
 /**
@@ -248,7 +254,7 @@ const handleCards = (
 ) => {
   const [
     editBtn,
-    deleteForm
+    deleteBtn
   ] = container.querySelector("div:last-of-type").children;
 
   // Set listener to 'edit' button.
