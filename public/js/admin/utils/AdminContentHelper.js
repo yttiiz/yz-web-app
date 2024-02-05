@@ -401,7 +401,10 @@ export class AdminContentHelper extends DefaultFormHelper {
   /**
    * @param {{ id: string; removeEditBtn: boolean }}  
    */
-  static #getEditOrDeletePart = ({ id, removeEditBtn = false }) => {
+  static #getEditOrDeletePart = ({
+    id,
+    removeEditBtn = false,
+  }) => {
     return `
     <div>
       ${removeEditBtn
@@ -409,6 +412,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         : 
         (
           `<button
+              data-action="edit"
               data-id=${id}
               type="button"
             >
@@ -416,12 +420,13 @@ export class AdminContentHelper extends DefaultFormHelper {
             </button>`
         )
       }
-      <form
-        action="/delete/${id}"
-        method="DELETE"
+      <button
+        data-action="delete"
+        data-id=${id}
+        type="button"
       >
-        <button type="submit">Supprimer</button>
-      </form>
+        Supprimer
+      </button>
     </div>
     `;
   }
