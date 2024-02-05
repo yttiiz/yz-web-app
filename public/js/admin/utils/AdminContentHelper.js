@@ -7,7 +7,7 @@ export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
   static #builder = new PageBuilder;
   static #handleCards = handleCards;
-  
+
   static #formatPrice = (price) => new Intl.NumberFormat(
     "fr-FR",
     {
@@ -437,10 +437,10 @@ export class AdminContentHelper extends DefaultFormHelper {
         return await res.json();
       }
 
-      return { message: "Something went wrong "};
+      return { message: "Something went wrong"};
       
     } catch (error) {
-      // TODO implements logic here.
+      return { message: "Something went wrong"};
     }
   }
 }

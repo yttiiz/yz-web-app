@@ -1,4 +1,5 @@
 import {
+  AdminFormsHelper,
   AdminLoginHelper,
   AdminProfilHelper,
   AdminContentHelper,
@@ -26,13 +27,12 @@ export class AdminPage {
       //==========| Dashboard interface |==========//
       
       // Init profil dialog modal.
-      const buttons = document.querySelectorAll(
+      AdminProfilHelper.init(document.querySelectorAll(
         "#user-session button[type=\"button\"]",
-      );
-      AdminProfilHelper.init(buttons);
+      ));
       
-      // Init content page & modal.
-      AdminContentHelper.init();
+      AdminContentHelper.init(); // Init content page & modal.
+      AdminFormsHelper.init(); // Handle forms submission.
       
     } else {  
       //==========| Login interface |==========//

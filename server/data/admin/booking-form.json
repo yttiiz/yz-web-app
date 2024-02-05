@@ -1,5 +1,5 @@
 {
-  "action": "/booking",
+  "action": "",
   "method": "PUT",
   "content": [
     {

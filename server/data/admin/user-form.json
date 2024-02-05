@@ -1,5 +1,5 @@
 {
-  "action": "/profil",
+  "action": "",
   "method": "PUT",
   "content": [
     {

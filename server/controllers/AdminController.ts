@@ -1,4 +1,5 @@
 import { DefaultController } from "./DefaultController.ts";
+import { dynamicRoutes } from "@dynamic-routes";
 import {
   LogController,
   type RouterAppType,
@@ -7,6 +8,10 @@ import {
   type GetCollectionType,
   type SessionType,
 } from "./mod.ts";
+import { ObjectId } from "@deps";
+import { Validator } from "@utils";
+import { UserDataType } from "@/server/controllers/types.ts";
+import { FormDataType } from "@components";
 
 export class AdminController extends DefaultController {
   public collection;
@@ -25,6 +30,7 @@ export class AdminController extends DefaultController {
     this.getAdmin();
     this.postAdmin();
     this.postAdminLogout();
+    this.putUser()
   }
 
   private getAdmin() {
@@ -78,4 +84,41 @@ export class AdminController extends DefaultController {
       this.log.logoutHandler,
     );
   }
+
+  private putUser() {
+    const userRoute = `/${dynamicRoutes.get("user")}:id`; // "/user/:id"
+    
+    this.router?.put(
+      userRoute,
+      async (ctx: RouterContextAppType<typeof userRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/user-form.json",
+          ) as FormDataType;
+          
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          // TODO implements logic here.
+          
+          return this.response(
+            ctx, 
+            {
+              title: "Modification utilisateur",
+              message: "L'utilisateur a bien été mis à jour",
+            },
+            200,
+          );
+          
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      },
+    )
+  }
+
 }

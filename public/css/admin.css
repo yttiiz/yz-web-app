@@ -249,10 +249,6 @@
         & form input[type="submit"] {
             background: var(--primary-color);
         }
-
-        & form > span.none {
-            display: none;
-        }
     }
 
     & dialog[data-products] {

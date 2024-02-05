@@ -215,7 +215,7 @@ const fillImgs = (data, dialog) => {
  */
 const insertData = (data, dialog, fillImgs) => {
   const labels = dialog.querySelector("form").querySelectorAll("label");
-
+  
   for (const label of labels) {
     if (label.querySelector("input")) {
       const input = label.querySelector("input");
@@ -254,6 +254,18 @@ const handleCards = (
   // Set listener to 'edit' button.
   editBtn.addEventListener("click", (e) => {
     const dialog = document.querySelector(`dialog[data-${dataType}]`);
+    /**
+     * Set `form` action to current data.
+     * @param {HTMLDialogElement} dialog 
+     * @param {string} route 
+     * @param {string} id 
+     */
+    const setFormAction = (dialog, route, id) => {
+      dialog.querySelector("form").action = (
+        `${location.origin}/${route}/${id}`
+      );
+    };
+
     let dataTitle = "";
 
     // Insert Data.
@@ -275,12 +287,16 @@ const handleCards = (
             }
           }
 
+          setFormAction(dialog, dataType.slice(0, -1), data[key]._id);
+          
           break;
         }
         
       } else {
+        
         dataTitle = `de la réservation de ${data.userName}`;
         insertData(data, dialog);
+        setFormAction(dialog, dataType.slice(0, -1), data._id);
         break;
       }
     }

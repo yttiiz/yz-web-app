@@ -49,6 +49,7 @@ export const SectionAdmin: ComponentType<
         ${Dialog.html({ dataset: "users", component: DialogForm.html(userFormContent) })}
         ${Dialog.html({ dataset: "products", component: DialogForm.html(productFormContent) })}
         ${Dialog.html({ dataset: "bookings", component: DialogForm.html(bookingFormContent) })}
+        ${Dialog.html({ dataset: "response" })}
         `) 
       : ""}
     `;

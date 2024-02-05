@@ -24,10 +24,9 @@ export const DialogForm: ComponentType<
       action="${action}"
       method="${method}"
       type="multipart/form-data"
-      data-style="user-${action.replace("/", "")}"
+      data-style="${action.replace("/", "")}"
     >
       ${InputsForm.html({ content })}
-      <span class="none"></span>
     </form>
     `
   },
