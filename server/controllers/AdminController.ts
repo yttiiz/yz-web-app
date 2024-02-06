@@ -41,15 +41,24 @@ export class AdminController extends DefaultController {
     this.router?.get(
       "/admin",
       async (ctx: RouterContextAppType<"/admin">) => {
-        const users = await this.collection("users");
-
         try {
-          // If connexion to DB failed, redirect to home.
+          const session: SessionType = ctx.state.session;
+          const isUserConnected = session.has("userId");
+          const userEmail = session.get("userEmail");
+          const user = await this.selectFromDB("users", userEmail, "email");
+          
+          if ("message" in user) {
+            return this.response(ctx, "", 302, "/");
+            
+          } else if (user.role !== "admin") {
+            return this.response(ctx, "", 302, "/");
+          }
+
+          const users = await this.collection("users");
+        
           if ("message" in users) {
             return this.response(ctx, "", 302, "/");
           }
-          
-          const isUserConnected = (ctx.state.session as SessionType).has("userId");
 
           const body = await this.createHtmlFile(
             ctx,
