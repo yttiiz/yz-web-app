@@ -175,14 +175,14 @@ export class ProductController extends DefaultController {
                   message:
                     "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
                   booking: {
-                    start: this.helper.displayDate(
-                      new Date(newBooking.startingDate),
-                      "short",
-                    ),
-                    end: this.helper.displayDate(
-                      new Date(newBooking.endingDate),
-                      "short",
-                    ),
+                    start: this.helper.displayDate({
+                      date: new Date(newBooking.startingDate),
+                      style: "short",
+                    }),
+                    end: this.helper.displayDate({
+                      date: new Date(newBooking.endingDate),
+                      style: "short",
+                    }),
                   },
                 },
                 200,
@@ -203,14 +203,14 @@ export class ProductController extends DefaultController {
                 message:
                   "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
                 booking: {
-                  start: this.helper.displayDate(
-                    new Date(booking.startingDate),
-                    "short",
-                  ),
-                  end: this.helper.displayDate(
-                    new Date(booking.endingDate),
-                    "short",
-                  ),
+                  start: this.helper.displayDate({
+                    date: new Date(booking.startingDate),
+                    style: "short",
+                  }),
+                  end: this.helper.displayDate({
+                    date: new Date(booking.endingDate),
+                    style: "short",
+                  }),
                 },
               },
               200,

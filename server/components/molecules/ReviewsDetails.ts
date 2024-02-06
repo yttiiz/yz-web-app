@@ -37,7 +37,7 @@ export const ReviewsDetails: ComponentType<
             </dt>
             <dd>
               <p>${comment}</p>
-              <p>écrit le ${Helper.displayDate(timestamp)}</p>
+              <p>écrit le ${Helper.displayDate({ date: timestamp })}</p>
               <div>
                 <span>
                   a noté : <strong>${rate}/${RateProductEnum.excellent}</strong>

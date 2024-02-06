@@ -272,7 +272,7 @@ export class AdminController extends DefaultController {
           let isPictureUpdate = true;
 
           if (pictures) {
-            const alt = `${name} - ${type}, le ${this.helper.displayDate()}`;
+            const alt = `${name} - ${type}, le ${this.helper.displayDate({ style: "base" })}`;
             const src = await this.helper.writePicFile(
               pictures,
               `${name}_${Math.round((Math.random() + 1) * 1000)}`,

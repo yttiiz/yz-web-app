@@ -1,5 +1,10 @@
 import { Validator } from "./mod.ts";
 
+type DisplayDateType = {
+  date?: number | Date;
+  style?: "base" | "long" | "short";
+};
+
 export class Helper {
   private static baseDateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -38,7 +43,7 @@ export class Helper {
     error: { message: string },
     encoder = new TextEncoder(),
   ) {
-    const errorMsg = `(${Helper.displayDate()}) ${error.message},\n`;
+    const errorMsg = `(${Helper.displayDate({})}) ${error.message},\n`;
     const content = encoder.encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
@@ -88,17 +93,18 @@ export class Helper {
       .format(price);
   }
 
-  public static displayDate(
-    date?: number | Date,
-    length: "base" | "long" | "short" = "long",
+  public static displayDate({
+    date,
+    style = "long",
+  }: DisplayDateType,
   ) {
     date = date ? date : new Date();
     return new Intl
       .DateTimeFormat(
         "fr-FR",
-        length === "long" 
+        style === "long" 
           ? Helper.longDateOpts 
-          : (length === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
+          : (style === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
       )
       .format(date)
       .replace(",", " à");
