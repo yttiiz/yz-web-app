@@ -101,15 +101,15 @@ const setFormData = (form) => {
   const formData = new FormData(form);
 
   for (const [key, value] of formData) {
-    // Check for file (image) field or input named 'text-file'.
+    // Check for file (image) field or input includes 'text'.
     if (
       (typeof value === "object" && value.size === 0) ||
-      key === "file-text"
+      key.includes("file") 
     ) {
       formData.delete(key);
     }
   }
-
+  
   return formData;
 };
 

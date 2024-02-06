@@ -51,14 +51,30 @@ export class Helper {
   ) {
     firstname = Validator.normalizeString(firstname);
     lastname = Validator.normalizeString(lastname);
-    
+
+    const fullName = `${firstname.toLowerCase()}_${lastname.toLowerCase()}`;
+    return await Helper.writePicture(file, fullName); 
+  }
+
+  public static async writePicFile(
+    file: File,
+    name: string,
+  ) {
+    name = Validator.normalizeString(name);
+
+    return await Helper.writePicture(file, name); 
+  }
+
+  private static async writePicture(
+    file: File,
+    name: string,
+  ) {
     const ext = file.type.split("/").at(1) as string;
-    const photo =
-      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+    const pic = `img/users/${name}.${ext}`;
 
-    await Deno.writeFile(`public/${photo}`, file.stream());
+    await Deno.writeFile(`public/${pic}`, file.stream());
 
-    return photo;
+    return pic;
   }
 
   public static formatPrice(price: number) {

@@ -127,6 +127,17 @@ export type SelectProductFromDBType = SelectFromDBType<
   ProductSchemaWithIDType | NotFoundMessageType
 >;
 
+export type ProductAdminFormDataType = {
+  name: string;
+  type: string;
+  area: string;
+  rooms: string;
+  price: string;
+  description: string;
+  thumbnail?: File;
+  pictures?: File;
+};
+
 // Reviews & Bookings common types
 export type HandleItemIntoDBType<T> = (
   id: ObjectId,

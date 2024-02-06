@@ -7,11 +7,18 @@ import {
   type SelectUserFromDBType,
   type GetCollectionType,
   type SessionType,
-  type UpdateUserToDBType,
+  type ProductAdminFormDataType,
+  type UpdateToDBType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { FormDataAppType, Validator } from "@utils";
 import { FormDataType } from "@components";
+import { ProductSchemaType } from "@/server/mongo/types.ts";
+import {
+  BookingsProductSchemaWithOptionalFieldsType,
+  ProductSchemaWithOptionalFieldsType,
+  UserSchemaWithOptionalFieldsType,
+} from "@mongo";
 
 export class AdminController extends DefaultController {
   public collection;
@@ -23,7 +30,11 @@ export class AdminController extends DefaultController {
     router: RouterAppType,
     collection: GetCollectionType,
     selectFromDB: SelectUserFromDBType,
-    updateToDB: UpdateUserToDBType,
+    updateToDB: UpdateToDBType<
+      | UserSchemaWithOptionalFieldsType
+      | ProductSchemaWithOptionalFieldsType
+      | BookingsProductSchemaWithOptionalFieldsType
+    >,
   ) {
     super(router);
     this.collection = collection;
@@ -180,7 +191,7 @@ export class AdminController extends DefaultController {
             "/server/data/admin/product-form.json",
           ) as FormDataType;
 
-          // Add additionnal types to check.
+          // Add additional types to check in 'dataModel'.
           const files = [{
             "type": "file",
             "name": "thumbnail",
@@ -212,24 +223,58 @@ export class AdminController extends DefaultController {
             );
           }
 
-          const { name } = dataParsed.data as Record<string, string>;
+          const {
+            name,
+            type,
+            area,
+            rooms,
+            price,
+            description,
+            thumbnail,
+            pictures,
+          } = dataParsed.data as ProductAdminFormDataType;
           
-          // TODO implements logic here.
-          console.log(dataParsed.data);
+          // Convert to object to 'Product' document. 
+          const document: Partial<
+            Omit<ProductSchemaType, "reviewId" | "bookingId">
+          > = {
+            name,
+            description,
+            details: {
+              rooms: +rooms,
+              area: +area,
+              price: this.convertToNumber(price),
+              type,
+            },
+          };
 
-          // const isUpdate = await this.updateToDB(
-          //   _id,
-          //   dataParsed.data,
-          //   "products",
-          // );
+          if (thumbnail) {
+            const alt = `image principale ${name}`;
+            const src = await this.helper.writePicFile(
+              thumbnail, 
+              alt.replaceAll(" ", '_'),
+            );
+
+            document["thumbnail"] = { src, alt };
+          }
+
+          if (pictures) {
+            // TODO implements logic here.
+          }
+
+          const isUpdate = await this.updateToDB(
+            _id,
+            document,
+            "products",
+          );
           
           return this.response(
             ctx,
             {
               title: "Modification appartement",
               message: this.msgToAdmin`L'appartement ${
-                name
-              } ${true} été`,
+                name as string
+              } ${isUpdate} été`,
             },
             200,
           );
@@ -240,6 +285,18 @@ export class AdminController extends DefaultController {
       },
     );
   }
+
+  private convertToNumber = (str: string) => {
+    return str.includes(",")
+      ? str.split(",")
+        .reduce((num, chunk, i) => {
+          i === 0
+            ? num += +chunk
+            : num += (+chunk / (Math.pow(10, chunk.length)));
+          return num;
+        }, 0)
+      : +str;
+  };
 
   private msgToAdmin = (
     str: TemplateStringsArray,
