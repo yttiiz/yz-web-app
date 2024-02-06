@@ -63,6 +63,7 @@ new AdminController(
   Mongo.connectionTo,
   Mongo.selectFromDB,
   Mongo.updateToDB,
+  Mongo.addNewItemIntoDB,
 );
 
 // TODO to be removed (reset "session" in BD)

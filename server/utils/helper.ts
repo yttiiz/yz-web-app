@@ -21,7 +21,7 @@ export class Helper {
     day: "numeric",
   };
 
-  private static WriteOpts: Deno.WriteFileOptions = {
+  private static writeOpts: Deno.WriteFileOptions = {
     append: true,
   };
 
@@ -41,7 +41,7 @@ export class Helper {
     const errorMsg = `(${Helper.displayDate()}) ${error.message},\n`;
     const content = encoder.encode(errorMsg);
 
-    await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
+    await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
   }
 
   public static async writeUserPicFile(
@@ -53,7 +53,7 @@ export class Helper {
     lastname = Validator.normalizeString(lastname);
 
     const fullName = `${firstname.toLowerCase()}_${lastname.toLowerCase()}`;
-    return await Helper.writePicture(file, fullName); 
+    return await Helper.writePicture(file, fullName, "users"); 
   }
 
   public static async writePicFile(
@@ -62,15 +62,16 @@ export class Helper {
   ) {
     name = Validator.normalizeString(name);
 
-    return await Helper.writePicture(file, name); 
+    return await Helper.writePicture(file, name, "products"); 
   }
 
   private static async writePicture(
     file: File,
     name: string,
+    dir: string,
   ) {
     const ext = file.type.split("/").at(1) as string;
-    const pic = `img/users/${name}.${ext}`;
+    const pic = `img/${dir}/${name}.${ext}`;
 
     await Deno.writeFile(`public/${pic}`, file.stream());
 

@@ -9,6 +9,7 @@ import {
   type SessionType,
   type ProductAdminFormDataType,
   type UpdateToDBType,
+  type AddNewItemIntoDBType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { FormDataAppType, Validator } from "@utils";
@@ -16,6 +17,7 @@ import { FormDataType } from "@components";
 import { ProductSchemaType } from "@/server/mongo/types.ts";
 import {
   BookingsProductSchemaWithOptionalFieldsType,
+  ImagesProductType,
   ProductSchemaWithOptionalFieldsType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
@@ -24,6 +26,7 @@ export class AdminController extends DefaultController {
   public collection;
   public selectFromDB;
   private updateToDB;
+  private addNewItemIntoDB;
   private log;
 
   constructor(
@@ -35,11 +38,13 @@ export class AdminController extends DefaultController {
       | ProductSchemaWithOptionalFieldsType
       | BookingsProductSchemaWithOptionalFieldsType
     >,
+    addNewItemIntoDB: AddNewItemIntoDBType<ImagesProductType>
   ) {
     super(router);
     this.collection = collection;
     this.selectFromDB = selectFromDB;
     this.updateToDB = updateToDB;
+    this.addNewItemIntoDB = addNewItemIntoDB;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
@@ -61,7 +66,7 @@ export class AdminController extends DefaultController {
           if ("message" in user) {
             return this.response(ctx, "", 302, "/");
             
-          } else if (user.role !== "admin") {
+          } else if (isUserConnected && user.role !== "admin") {
             return this.response(ctx, "", 302, "/");
           }
 
@@ -234,7 +239,7 @@ export class AdminController extends DefaultController {
             pictures,
           } = dataParsed.data as ProductAdminFormDataType;
           
-          // Convert to object to 'Product' document. 
+          // Convert object to 'Product' document. 
           const document: Partial<
             Omit<ProductSchemaType, "reviewId" | "bookingId">
           > = {
@@ -258,23 +263,36 @@ export class AdminController extends DefaultController {
             document["thumbnail"] = { src, alt };
           }
 
-          if (pictures) {
-            // TODO implements logic here.
-          }
-
           const isUpdate = await this.updateToDB(
             _id,
             document,
             "products",
           );
-          
+
+          let isPictureUpdate = true;
+
+          if (pictures) {
+            const alt = `${name} - ${type}, le ${this.helper.displayDate()}`;
+            const src = await this.helper.writePicFile(
+              pictures,
+              `${name}_${Math.round((Math.random() + 1) * 1000)}`,
+            );
+
+            isPictureUpdate = await this.addNewItemIntoDB(
+              _id,
+              { src, alt },
+              "products",
+              "pictures",
+            );
+          }
+
           return this.response(
             ctx,
             {
               title: "Modification appartement",
               message: this.msgToAdmin`L'appartement ${
                 name as string
-              } ${isUpdate} été`,
+              } ${isUpdate && isPictureUpdate} été`,
             },
             200,
           );
@@ -302,11 +320,11 @@ export class AdminController extends DefaultController {
     str: TemplateStringsArray,
     name: string,
     isUpdate: boolean,
-    updateOrDeleteStr?: string,
+    updateOrDeleteStr?: "delete" | "update",
   ) => (
     `${str[0]}${name}${str[1]}${
       isUpdate ? "a bien" : "n'a pas"
     }${str[2]} ${
-      updateOrDeleteStr ? updateOrDeleteStr : "mis à jour"}.`
+      updateOrDeleteStr ? "supprimé" : "mis à jour"}.`
   );
 }

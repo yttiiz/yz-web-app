@@ -143,6 +143,7 @@ export type HandleItemIntoDBType<T> = (
   id: ObjectId,
   data: T,
   collection: string,
+  key: string,
 ) => Promise<boolean>;
 
 export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;

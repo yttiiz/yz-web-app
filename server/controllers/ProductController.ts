@@ -163,6 +163,7 @@ export class ProductController extends DefaultController {
               _bookingId,
               newBooking,
               "bookings",
+              "bookings",
             );
 
             isInsertionOk
@@ -276,6 +277,7 @@ export class ProductController extends DefaultController {
           const isInsertionOk = await this.addNewItemIntoDB(
             _reviewId,
             newReview,
+            "reviews",
             "reviews",
           );
 

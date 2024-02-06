@@ -23,6 +23,7 @@ export class Mongo {
     id: ObjectId,
     data: T,
     collection: string,
+    key: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo(collection);
 
@@ -32,7 +33,7 @@ export class Mongo {
         modifiedCount,
       } = await selectedCollection.updateOne(
         { _id: id },
-        { $push: { [collection]: data } },
+        { $push: { [key]: data } },
       );
 
       return matchedCount + modifiedCount === 2;
@@ -45,6 +46,7 @@ export class Mongo {
     id: ObjectId,
     data: T,
     collection: string,
+    key: string,
   ) {
     const selectedCollection = await Mongo.clientConnectTo(collection);
 
@@ -54,7 +56,7 @@ export class Mongo {
         modifiedCount,
       } = await selectedCollection.updateOne(
         { _id: id },
-        { $pull: { [collection]: data } },
+        { $pull: { [key]: data } },
       );
 
       return matchedCount + modifiedCount === 2;

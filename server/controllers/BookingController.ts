@@ -155,6 +155,7 @@ export class BookingController extends DefaultController {
           _id,
           bookingToDelete,
           "bookings",
+          "bookings",
         );
 
         this.response(
