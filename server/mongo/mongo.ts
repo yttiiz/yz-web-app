@@ -1,6 +1,7 @@
 import { MongoClient, MongoStore, ObjectId } from "@deps";
 import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
+import { UpdateItemIntoDBParameterType } from "./types.ts";
 
 /**
  * The app MongoDB Manager.
@@ -25,21 +26,11 @@ export class Mongo {
     collection: string,
     key: string,
   ) {
-    const selectedCollection = await Mongo.clientConnectTo(collection);
-
-    if (selectedCollection) {
-      const {
-        matchedCount,
-        modifiedCount,
-      } = await selectedCollection.updateOne(
-        { _id: id },
-        { $push: { [key]: data } },
-      );
-
-      return matchedCount + modifiedCount === 2;
-    }
-    
-    return false;
+    return await Mongo.update({
+      collection,
+      filter: { _id: id },
+      update: { $push: { [key]: data } },
+    });
   }
 
   public static async removeItemFromDB<T>(
@@ -48,21 +39,27 @@ export class Mongo {
     collection: string,
     key: string,
   ) {
-    const selectedCollection = await Mongo.clientConnectTo(collection);
+    return await Mongo.update({
+      collection,
+      filter: { _id: id },
+      update: { $pull: { [key]: data } },
+    });
+  }
 
-    if (selectedCollection) {
-      const {
-        matchedCount,
-        modifiedCount,
-      } = await selectedCollection.updateOne(
-        { _id: id },
-        { $pull: { [key]: data } },
-      );
-
-      return matchedCount + modifiedCount === 2;
-    }
-
-    return false;
+  public static async updateItemIntoDB<T>({
+    data,
+    collection,
+    key,
+    itemKey,
+    itemValue,
+  }: UpdateItemIntoDBParameterType<T>
+  ) {
+    console.log(itemValue)
+    return await Mongo.update({
+      collection,
+      filter: { [`${key}.${itemKey}`]: itemValue },
+      update: { $set: { [`${key}.$`]: { ...data } } },
+    });
   }
 
   public static async updateToDB<T extends Document>(
@@ -70,21 +67,11 @@ export class Mongo {
     data: T,
     collection: string,
   ) {
-    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
-
-    if (selectedCollection) {
-      const {
-        matchedCount,
-        modifiedCount,
-      } = await selectedCollection.updateOne(
-        { _id: id },
-        { $set: { ...data } } as unknown as UpdateFilter<T>,
-      );
-
-      return matchedCount + modifiedCount === 2;
-    }
-    
-    return false;
+    return await Mongo.update({
+      collection,
+      filter: { _id: id },
+      update: { $set: { ...data } } as unknown as UpdateFilter<T>,
+    });
   }
 
   public static async insertIntoDB<T extends Document>(
@@ -149,6 +136,29 @@ export class Mongo {
     } catch (error) {
       Helper.writeLog(error);
     }
+  }
+
+  private static async update({
+    collection,
+    filter,
+    update,
+  }: {
+    collection: string;
+    filter: Filter<Document>;
+    update: UpdateFilter<Document>;
+  }) {
+    const selectedCollection = await Mongo.clientConnectTo(collection);
+
+    if (selectedCollection) {
+      const {
+        matchedCount,
+        modifiedCount,
+      } = await selectedCollection.updateOne(filter, update);
+
+      return matchedCount + modifiedCount === 2;
+    }
+
+    return false;
   }
 
   private static async clientConnectTo<T extends Document>(collection: string) {

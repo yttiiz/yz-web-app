@@ -17,14 +17,33 @@ export class AdminContentHelper extends DefaultFormHelper {
     }
   ).format(price);
 
-  static #formatDate = (date) => new Intl.DateTimeFormat(
-    "fr-FR",
-    {
+  /**
+   * @param {string} date 
+   * @param {"base" | "long"} opts 
+   * @returns 
+   */
+  static #formatDate = (date, opts = "base") => {
+    const baseOpts = {
       year: "numeric",
       month: "short",
       day: "numeric",
-    }
-  ).format(new Date(date));
+    };
+
+    const longOpts = {
+      ...baseOpts,
+      hour: "numeric",
+      minute: "numeric",
+    };
+
+    return opts === "base"
+     ? new Intl.DateTimeFormat(
+        "fr-FR", baseOpts,
+      ).format(new Date(date))
+    : new Intl.DateTimeFormat(
+        "fr-FR", longOpts,
+      ).format(new Date(date))
+      .replace(",", " à");
+  };
 
   /**
    * Fetch `users`, `products` & `bookings` data from database. Then hydrates each `div` with class 'cards' to the corresponding data.
@@ -260,7 +279,18 @@ export class AdminContentHelper extends DefaultFormHelper {
              ? "en cours"
              : "à venir"
           );
-    }
+    };
+
+    /**
+     * Inject dataset in booking dialog form field.
+     * @param {Types.BookingsRegistred} booking 
+     * @param {string} key 
+     */
+    const insetDatasetToFields = (booking, key) => {
+      document.querySelector("dialog[data-bookings] form")
+      .querySelector(`input[name="${key}"]`)
+      .dataset[key] = booking[key];
+    };
 
     /** @type {(Types.BookingsRegistred & { productName: string })[]} */
     const sortBookings = [];
@@ -286,11 +316,17 @@ export class AdminContentHelper extends DefaultFormHelper {
         "div",
       );
 
-      const isBookingInProgress = (
+      const isNotBookingInProgress = (
         new Date(booking.endingDate).getTime() < Date.now()
       );
 
-      booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt);
+      if (!isNotBookingInProgress) {
+        insetDatasetToFields(booking, "userId");
+        insetDatasetToFields(booking, "userName");
+        insetDatasetToFields(booking, "createdAt");
+      }
+
+      booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt, "long");
 
       bookingPublicPart.innerHTML = `
       <div>
@@ -305,7 +341,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
         <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart({ id: booking._id, removeEditBtn: isBookingInProgress })}`;
+      ${AdminContentHelper.#getEditOrDeletePart({ id: booking._id, removeEditBtn: isNotBookingInProgress })}`;
 
       AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
       AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);

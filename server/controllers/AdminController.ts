@@ -10,14 +10,16 @@ import {
   type ProductAdminFormDataType,
   type UpdateToDBType,
   type AddNewItemIntoDBType,
+  type UpdateItemIntoDBType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { FormDataAppType, Validator } from "@utils";
 import { FormDataType } from "@components";
-import { ProductSchemaType } from "@/server/mongo/types.ts";
 import {
   BookingsProductSchemaWithOptionalFieldsType,
+  BookingsType,
   ImagesProductType,
+  ProductSchemaType,
   ProductSchemaWithOptionalFieldsType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
@@ -27,6 +29,7 @@ export class AdminController extends DefaultController {
   public selectFromDB;
   private updateToDB;
   private addNewItemIntoDB;
+  private updateItemIntoDB;
   private log;
 
   constructor(
@@ -38,19 +41,22 @@ export class AdminController extends DefaultController {
       | ProductSchemaWithOptionalFieldsType
       | BookingsProductSchemaWithOptionalFieldsType
     >,
-    addNewItemIntoDB: AddNewItemIntoDBType<ImagesProductType>
+    addNewItemIntoDB: AddNewItemIntoDBType<ImagesProductType>,
+    updateItemIntoDB: UpdateItemIntoDBType<BookingsType>
   ) {
     super(router);
     this.collection = collection;
     this.selectFromDB = selectFromDB;
     this.updateToDB = updateToDB;
     this.addNewItemIntoDB = addNewItemIntoDB;
+    this.updateItemIntoDB = updateItemIntoDB;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
     this.postAdminLogout();
     this.putUser();
     this.putProduct();
+    this.putBooking();
   }
 
   private getAdmin() {
@@ -272,7 +278,7 @@ export class AdminController extends DefaultController {
           let isPictureUpdate = true;
 
           if (pictures) {
-            const alt = `${name} - ${type}, le ${this.helper.displayDate({ style: "base" })}`;
+            const alt = `${name} - ${type}, le ${this.helper.displayDate({ style: "normal" })}`;
             const src = await this.helper.writePicFile(
               pictures,
               `${name}_${Math.round((Math.random() + 1) * 1000)}`,
@@ -301,6 +307,65 @@ export class AdminController extends DefaultController {
           this.helper.writeLog(error);
         }
       },
+    );
+  }
+
+  putBooking() {
+    const bookingRoute = `/${dynamicRoutes.get("booking")}:id`; // "/booking/:id"
+
+    this.router?.put(
+      bookingRoute,
+      async (ctx: RouterContextAppType<typeof bookingRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/booking-form.json",
+          ) as FormDataType;
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          const data = dataParsed.data as unknown as BookingsType;
+          
+          // Even 'createdAt' is typed as number, it's a string.
+          const itemValue = +(data.createdAt);
+          data.createdAt = itemValue;
+
+          const isUpdate = await this.updateItemIntoDB({
+            data: data,
+            collection: "bookings",
+            key: "bookings",
+            itemKey: "createdAt",
+            itemValue,
+          });
+
+          return this.response(
+            ctx,
+            {
+              title: "Modification réservation",
+              message: this.msgToAdmin`La réservation de ${data.userName} ${isUpdate} été`,
+            },
+            200,
+          );
+          
+        } catch (error) {
+          this.helper.writeLog(error);
+        }        
+      }
     );
   }
 

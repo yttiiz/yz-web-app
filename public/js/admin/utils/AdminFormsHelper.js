@@ -21,6 +21,13 @@ export class AdminFormsHelper {
     e.preventDefault();
 
     const formData = AdminFormsHelper.#setFormData(e.target);
+    
+    if (e.target.action.includes("booking")) {
+      AdminFormsHelper.#convertBookingDatasetToFormDataField(
+        formData,
+        e.target,
+      );
+    }
 
     const res = await fetch(e.target.action, {
       method: "PUT",
@@ -29,6 +36,18 @@ export class AdminFormsHelper {
 
     AdminFormsHelper.#displayMessage(e.target, await res.json());
   }
+
+  /**
+   * @param {FormData} formData 
+   * @param {HTMLFormElement} form 
+   */
+  static #convertBookingDatasetToFormDataField = (formData, form) => {
+    for (const item of ["userId", "userName", "createdAt"]) {
+      formData.append(
+        item,
+        form.querySelector(`input[name="${item}"]`).dataset[item]);
+    }
+  };
   
   /**
    * @param {HTMLDialogElement} form

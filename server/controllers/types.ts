@@ -7,6 +7,7 @@ import type {
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
+  UpdateItemIntoDBParameterType,
 } from "@mongo";
 import { AppState } from "@utils";
 
@@ -148,6 +149,14 @@ export type HandleItemIntoDBType<T> = (
 
 export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;
 export type RemoveItemFromDBType<T> = HandleItemIntoDBType<T>;
+
+export type UpdateItemIntoDBType<T> = ({
+  data,
+  collection,
+  key,
+  itemKey,
+  itemValue,
+}: UpdateItemIntoDBParameterType<T>) => Promise<boolean>;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;

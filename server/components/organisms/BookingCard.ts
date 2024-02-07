@@ -52,11 +52,11 @@ StarSvg,
           <p>${
             Helper.displayDate({
               date: new Date(startingDate),
-              style: "base",
+              style: "normal",
             })} au ${
             Helper.displayDate({
               date: new Date(endingDate),
-              style: "base",
+              style: "normal",
           })}</p>
         </div>
       </header>

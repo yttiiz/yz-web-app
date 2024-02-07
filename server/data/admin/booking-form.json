@@ -22,9 +22,7 @@
       "type": "text",
       "label": "Date de réservation",
       "name": "createdAt",
-      "disabled": true,
-      "minLength": 2,
-      "maxLength": 40
+      "disabled": true
     },
     {
       "type": "date",

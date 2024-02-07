@@ -4,6 +4,15 @@ type SchemaWithID<T> = T & {
   _id: ObjectId;
 };
 
+// Mongo types
+export type UpdateItemIntoDBParameterType<T> = {
+  data: T;
+  collection: string;
+  key: string;
+  itemKey: string;
+  itemValue: string | number | boolean;
+};
+
 // Users types
 export type UserType = {
   firstname: string;

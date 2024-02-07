@@ -2,7 +2,7 @@ import { Validator } from "./mod.ts";
 
 type DisplayDateType = {
   date?: number | Date;
-  style?: "base" | "long" | "short";
+  style?: "normal" | "long" | "short";
 };
 
 export class Helper {
