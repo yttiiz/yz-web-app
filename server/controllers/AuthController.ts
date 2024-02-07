@@ -13,7 +13,6 @@ import { FormDataAppType, Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private log;
-  private defaultImg;
   private getCollection;
   private insertIntoDB;
   public selectFromDB;
@@ -29,7 +28,6 @@ export class AuthController extends DefaultController {
     this.insertIntoDB = insertIntoDB;
     this.selectFromDB = selectFromDB;
     this.log = new LogController(this);
-    this.defaultImg = "/img/users/default.png";
     this.getLoginRoute();
     this.getRegisterRoute();
     this.postLoginRoute();

@@ -1,11 +1,13 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
+import { handleCards } from "../../utils/_commonFunctions.js";
 import { PageBuilder } from "../../pages/Builder.js";
 import * as Types from "../../types/types.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
   static #builder = new PageBuilder;
-  
+  static #handleCards = handleCards;
+
   static #formatPrice = (price) => new Intl.NumberFormat(
     "fr-FR",
     {
@@ -15,16 +17,38 @@ export class AdminContentHelper extends DefaultFormHelper {
     }
   ).format(price);
 
-  static #formatDate = (date) => new Intl.DateTimeFormat(
-    "fr-FR",
-    {
+  /**
+   * @param {string} date 
+   * @param {"base" | "long"} opts 
+   * @returns 
+   */
+  static #formatDate = (date, opts = "base") => {
+    const baseOpts = {
       year: "numeric",
       month: "short",
       day: "numeric",
-    }
-  ).format(new Date(date));
+    };
 
-  static initContent = async () => {
+    const longOpts = {
+      ...baseOpts,
+      hour: "numeric",
+      minute: "numeric",
+    };
+
+    return opts === "base"
+     ? new Intl.DateTimeFormat(
+        "fr-FR", baseOpts,
+      ).format(new Date(date))
+    : new Intl.DateTimeFormat(
+        "fr-FR", longOpts,
+      ).format(new Date(date))
+      .replace(",", " à");
+  };
+
+  /**
+   * Fetch `users`, `products` & `bookings` data from database. Then hydrates each `div` with class 'cards' to the corresponding data.
+   */
+  static init = async () => {
     // Retrieve all data from api.
     const [users, products, bookings] = await (async function (...args) {
       /** @type {[Types.Users, Types.Products]} */
@@ -98,12 +122,13 @@ export class AdminContentHelper extends DefaultFormHelper {
           <p>Email : <strong>${users[key].email}</strong></p>
           <p>Role : <strong>${users[key].role}</strong></p>
         </div>
-        ${AdminContentHelper.#getEditOrDeletePart(users[key]._id)}`;
+        ${AdminContentHelper.#getEditOrDeletePart({ id: users[key]._id })}`;
 
       users[key].role === "admin"
         ? userContainer.classList.add("admin")
         : null;
       
+      AdminContentHelper.#handleCards(userPrivatePart, "users", users);
       AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
     }
@@ -136,6 +161,39 @@ export class AdminContentHelper extends DefaultFormHelper {
       elementsList,
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("products");
+
+    const convert = (original) => {
+      return Object.keys(original)
+      .reduce((converted, key) => {
+        converted[key] = {...original[key]};
+
+        for (const prop in original[key]) {
+          if (prop === "details") {
+
+            // Add 'details' [Object] props with appropriate key to the new object...
+            for (const detailsProp in original[key][prop]) {
+              const isFloat = (
+                typeof original[key][prop][detailsProp] === "number" &&
+                !Number.isInteger(original[key][prop][detailsProp])
+              );
+              
+              converted[key][detailsProp] = (
+                isFloat
+                 ? (`${original[key][prop][detailsProp]}`).replace(".", ",")
+                 : original[key][prop][detailsProp]
+              );
+            }
+
+            // ... then delete it.
+            delete converted[key][prop];
+            
+          } else {
+            converted[key][prop] = original[key][prop]
+          }
+        }
+        return converted;
+      }, {});
+    };
 
     if ("message" in products) {
       return AdminContentHelper.#displayErrorMessage(
@@ -172,8 +230,12 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Prix : <strong>${AdminContentHelper.#formatPrice(products[key].details.price)}</strong></p>
         <p>Description : <strong>${products[key].description}</strong></p>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart(products[key]._id)}`;
+      ${AdminContentHelper.#getEditOrDeletePart({ id: products[key]._id })}`;
 
+      // Create a 'products' copy to set easier product form values.
+      const productsFormValues = convert(products);
+
+      AdminContentHelper.#handleCards(productPrivatePart, "products", productsFormValues);
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
     }
@@ -217,7 +279,18 @@ export class AdminContentHelper extends DefaultFormHelper {
              ? "en cours"
              : "à venir"
           );
-    }
+    };
+
+    /**
+     * Inject dataset in booking dialog form field.
+     * @param {Types.BookingsRegistred} booking 
+     * @param {string} key 
+     */
+    const insetDatasetToFields = (booking, key) => {
+      document.querySelector("dialog[data-bookings] form")
+      .querySelector(`input[name="${key}"]`)
+      .dataset[key] = booking[key];
+    };
 
     /** @type {(Types.BookingsRegistred & { productName: string })[]} */
     const sortBookings = [];
@@ -234,32 +307,45 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     for (const booking of sortBookings) {
       const [
-        productContainer,
-        productPublicPart,
-        productPrivatePart,
+        bookingContainer,
+        bookingPublicPart,
+        bookingPrivatePart,
       ] = AdminContentHelper.#builder.createHTMLElements(
         "li",
         "div",
         "div",
       );
 
-      productPublicPart.innerHTML = `
+      const isNotBookingInProgress = (
+        new Date(booking.endingDate).getTime() < Date.now()
+      );
+
+      if (!isNotBookingInProgress) {
+        insetDatasetToFields(booking, "userId");
+        insetDatasetToFields(booking, "userName");
+        insetDatasetToFields(booking, "createdAt");
+      }
+
+      booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt, "long");
+
+      bookingPublicPart.innerHTML = `
       <div>
         <p>Appartement : <strong>${booking.productName}</strong></p>
-        <p>Réservation passée le : <strong>${AdminContentHelper.#formatDate(booking.createdAt)}</strong></p>
+        <p>Réservation passée le : <strong>${booking.createdAt}</strong></p>
         <p>Par : <strong>${booking.userName}</strong></p>
       </div>`;
         
-      productPrivatePart.innerHTML = `
+      bookingPrivatePart.innerHTML = `
       <div>
         <p>Date de début : <strong>${AdminContentHelper.#formatDate(booking.startingDate)}</strong></p>
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
         <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart(booking._id)}`;
+      ${AdminContentHelper.#getEditOrDeletePart({ id: booking._id, removeEditBtn: isNotBookingInProgress })}`;
 
-      AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
-      AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
+      AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
+      AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
+      AdminContentHelper.#builder.insertChildren(elementsList, bookingContainer);
     }
 
     AdminContentHelper.#builder.insertChildren(
@@ -349,18 +435,34 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   /**
-   * @param {string} id 
+   * @param {{ id: string; removeEditBtn: boolean }}  
    */
-  static #getEditOrDeletePart = (id) => {
+  static #getEditOrDeletePart = ({
+    id,
+    removeEditBtn = false,
+  }) => {
     return `
     <div>
-      <button type="button">Editer</button>
-      <form
-      action="/delete/${id}"
-      method="post"
+      ${removeEditBtn
+        ? ""
+        : 
+        (
+          `<button
+              data-action="edit"
+              data-id=${id}
+              type="button"
+            >
+              Editer
+            </button>`
+        )
+      }
+      <button
+        data-action="delete"
+        data-id=${id}
+        type="button"
       >
-      <button type="submit">Supprimer</button>
-      </form>
+        Supprimer
+      </button>
     </div>
     `;
   }
@@ -376,10 +478,10 @@ export class AdminContentHelper extends DefaultFormHelper {
         return await res.json();
       }
 
-      return { message: "Something went wrong "};
+      return { message: "Something went wrong"};
       
     } catch (error) {
-      // TODO implements logic here.
+      return { message: "Something went wrong"};
     }
   }
 }

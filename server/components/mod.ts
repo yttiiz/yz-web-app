@@ -27,6 +27,7 @@ export * from "./organisms/ProductCard.ts";
 export * from "./molecules/BookingDetails.ts";
 export * from "./molecules/ProductDetails.ts";
 export * from "./molecules/Dialog.ts";
+export * from "./molecules/DialogForm.ts";
 export * from "./molecules/ProductFigure.ts";
 export * from "./molecules/RateStars.ts";
 export * from "./molecules/ReviewsDetails.ts";

@@ -1,27 +1,38 @@
-import { AdminLoginHelper } from "../utils/AdminLoginHelper.js";
-import { AdminProfilHelper } from "../utils/AdminProfilHelper.js";
-import { AdminContentHelper } from "../utils/AdminContentHelper.js";
+import {
+  AdminFormsHelper,
+  AdminLoginHelper,
+  AdminProfilHelper,
+  AdminContentHelper,
+  insertPictureIn,
+} from "../utils/mod.js";
 
 export class AdminPage {
   init = () => {
     const section = document.querySelector("section");
-    const dialog = document.querySelector("dialog");
+    const dialogs = document.querySelectorAll("dialog");
       
-    // Init close event dialog modal.
-    dialog.querySelector("button[data-close]")
-    .addEventListener("click", () => {
-      dialog.close();
-    });
+    // Init close event dialog modals.
+    for (const dialog of dialogs) {
+      dialog.querySelector("button[data-close]")
+      .addEventListener("click", () => {
+        dialog.close();
+      });
+
+      if (dialog.dataset.hasOwnProperty("products")) {
+        insertPictureIn(dialog);
+      }
+    }
     
     if (section.dataset.admin === "connected") {
       //==========| Dashboard interface |==========//
       
       // Init profil dialog modal.
-      const buttons = document.querySelectorAll("#user-session button[type=\"button\"]");
-      AdminProfilHelper.profilHandler(buttons);
+      AdminProfilHelper.init(document.querySelectorAll(
+        "#user-session button[type=\"button\"]",
+      ));
       
-      // Init content page.
-      AdminContentHelper.initContent();
+      AdminContentHelper.init(); // Init content page & modal.
+      AdminFormsHelper.init(); // Handle forms submission.
       
     } else {  
       //==========| Login interface |==========//

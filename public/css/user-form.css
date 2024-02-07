@@ -1,7 +1,11 @@
 #data-user-form,
 #data-profil-form {
-    & section form label {
+    & section form label span:has(> div) {
         position: relative;
+
+        & > input {
+            width: 100%;
+        }
     }
 
     & section form input {
@@ -164,15 +168,15 @@
 }
 
 #eye-password,
-#search-photo {
+.search-photo {
     display: flex;
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     right: 3%;
 }
 
 #eye-password {
-    bottom: clamp(15%, 1.5vw, 20%);
-
     & > span {
         cursor: pointer;
     }
@@ -188,9 +192,7 @@
     }
 }
 
-#search-photo {
-    bottom: clamp(8%, 1.75vw, 12%);
-
+.search-photo {
     & button {
         padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
         border-radius: var(--btn-border-radius);

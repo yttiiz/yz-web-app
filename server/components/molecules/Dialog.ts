@@ -12,10 +12,11 @@ export const Dialog: ComponentType<
 > = {
   name: "Dialog",
   html: ({
+      dataset,
       component,
     }: DialogDataType) => {
     return `
-    <dialog>
+    <dialog${dataset ? ` data-${dataset}` : ""}>
       <header>
         <h2></h2>
         <button data-close>

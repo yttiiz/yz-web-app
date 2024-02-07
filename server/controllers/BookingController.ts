@@ -151,9 +151,10 @@ export class BookingController extends DefaultController {
           createdAt: +bookingCreatedAt,
         };
 
-        const isUserDelete = await this.removeItemFromDB(
+        const isBookingDelete = await this.removeItemFromDB(
           _id,
           bookingToDelete,
+          "bookings",
           "bookings",
         );
 
@@ -161,7 +162,7 @@ export class BookingController extends DefaultController {
           ctx,
           {
             message: `Votre réservation ${
-              isUserDelete
+              isBookingDelete
                 ? "a bien été"
                 : "n'a pas pu être"
             } annulée`,

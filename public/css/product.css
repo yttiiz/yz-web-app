@@ -227,7 +227,6 @@
             width: 50%;
             height: calc(var(--base-size) * 10);
             padding: var(--base-size);
-            border: var(--border-black-25-percent);
         }
 
         & .review-form input[type="submit"] {

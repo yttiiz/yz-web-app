@@ -45,19 +45,19 @@ StarSvg,
       <header>
         <div>
           <h4>${createdAtTitle}</h4>
-          <p>${Helper.displayDate(createdAt)}</p>
+          <p>${Helper.displayDate({ date: createdAt })}</p>
         </div>
         <div>
           <h4>${periodTitle}</h4>
           <p>${
-            Helper.displayDate(
-              new Date(startingDate),
-              "base",
-            )} au ${
-            Helper.displayDate(
-              new Date(endingDate),
-              "base",
-          )}</p>
+            Helper.displayDate({
+              date: new Date(startingDate),
+              style: "normal",
+            })} au ${
+            Helper.displayDate({
+              date: new Date(endingDate),
+              style: "normal",
+          })}</p>
         </div>
       </header>
       <div class="card-content">

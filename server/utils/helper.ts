@@ -1,5 +1,10 @@
 import { Validator } from "./mod.ts";
 
+type DisplayDateType = {
+  date?: number | Date;
+  style?: "normal" | "long" | "short";
+};
+
 export class Helper {
   private static baseDateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -21,7 +26,7 @@ export class Helper {
     day: "numeric",
   };
 
-  private static WriteOpts: Deno.WriteFileOptions = {
+  private static writeOpts: Deno.WriteFileOptions = {
     append: true,
   };
 
@@ -38,10 +43,10 @@ export class Helper {
     error: { message: string },
     encoder = new TextEncoder(),
   ) {
-    const errorMsg = `(${Helper.displayDate()}) ${error.message},\n`;
+    const errorMsg = `(${Helper.displayDate({})}) ${error.message},\n`;
     const content = encoder.encode(errorMsg);
 
-    await Deno.writeFile("server/log/log.txt", content, Helper.WriteOpts);
+    await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
   }
 
   public static async writeUserPicFile(
@@ -51,14 +56,31 @@ export class Helper {
   ) {
     firstname = Validator.normalizeString(firstname);
     lastname = Validator.normalizeString(lastname);
-    
+
+    const fullName = `${firstname.toLowerCase()}_${lastname.toLowerCase()}`;
+    return await Helper.writePicture(file, fullName, "users"); 
+  }
+
+  public static async writePicFile(
+    file: File,
+    name: string,
+  ) {
+    name = Validator.normalizeString(name);
+
+    return await Helper.writePicture(file, name, "products"); 
+  }
+
+  private static async writePicture(
+    file: File,
+    name: string,
+    dir: string,
+  ) {
     const ext = file.type.split("/").at(1) as string;
-    const photo =
-      `img/users/${firstname.toLowerCase()}_${lastname.toLowerCase()}.${ext}`;
+    const pic = `img/${dir}/${name}.${ext}`;
 
-    await Deno.writeFile(`public/${photo}`, file.stream());
+    await Deno.writeFile(`public/${pic}`, file.stream());
 
-    return photo;
+    return pic;
   }
 
   public static formatPrice(price: number) {
@@ -71,17 +93,18 @@ export class Helper {
       .format(price);
   }
 
-  public static displayDate(
-    date?: number | Date,
-    length: "base" | "long" | "short" = "long",
+  public static displayDate({
+    date,
+    style = "long",
+  }: DisplayDateType,
   ) {
     date = date ? date : new Date();
     return new Intl
       .DateTimeFormat(
         "fr-FR",
-        length === "long" 
+        style === "long" 
           ? Helper.longDateOpts 
-          : (length === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
+          : (style === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
       )
       .format(date)
       .replace(",", " à");

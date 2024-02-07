@@ -25,7 +25,7 @@ export const BookingForm: ComponentType<
         data-style="booking"
         data-user-connected="${isUserConnected}"
       >
-        ${InputsForm.html(form.content, false, date)}
+        ${InputsForm.html({ content: form.content, date })}
       </form>
     </div>
     `

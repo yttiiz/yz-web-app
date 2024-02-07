@@ -1,4 +1,5 @@
 import { DefaultController } from "./DefaultController.ts";
+import { dynamicRoutes } from "@dynamic-routes";
 import {
   LogController,
   type RouterAppType,
@@ -6,40 +7,80 @@ import {
   type SelectUserFromDBType,
   type GetCollectionType,
   type SessionType,
+  type ProductAdminFormDataType,
+  type UpdateToDBType,
+  type AddNewItemIntoDBType,
+  type UpdateItemIntoDBType,
 } from "./mod.ts";
+import { ObjectId } from "@deps";
+import { FormDataAppType, Validator } from "@utils";
+import { FormDataType } from "@components";
+import {
+  BookingsProductSchemaWithOptionalFieldsType,
+  BookingsType,
+  ImagesProductType,
+  ProductSchemaType,
+  ProductSchemaWithOptionalFieldsType,
+  UserSchemaWithOptionalFieldsType,
+} from "@mongo";
 
 export class AdminController extends DefaultController {
   public collection;
   public selectFromDB;
+  private updateToDB;
+  private addNewItemIntoDB;
+  private updateItemIntoDB;
   private log;
 
   constructor(
     router: RouterAppType,
     collection: GetCollectionType,
     selectFromDB: SelectUserFromDBType,
+    updateToDB: UpdateToDBType<
+      | UserSchemaWithOptionalFieldsType
+      | ProductSchemaWithOptionalFieldsType
+      | BookingsProductSchemaWithOptionalFieldsType
+    >,
+    addNewItemIntoDB: AddNewItemIntoDBType<ImagesProductType>,
+    updateItemIntoDB: UpdateItemIntoDBType<BookingsType>
   ) {
     super(router);
     this.collection = collection;
     this.selectFromDB = selectFromDB;
+    this.updateToDB = updateToDB;
+    this.addNewItemIntoDB = addNewItemIntoDB;
+    this.updateItemIntoDB = updateItemIntoDB;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
     this.postAdminLogout();
+    this.putUser();
+    this.putProduct();
+    this.putBooking();
   }
 
   private getAdmin() {
     this.router?.get(
       "/admin",
       async (ctx: RouterContextAppType<"/admin">) => {
-        const users = await this.collection("users");
-
         try {
-          // If connexion to DB failed, redirect to home.
+          const session: SessionType = ctx.state.session;
+          const isUserConnected = session.has("userId");
+          const userEmail = session.get("userEmail");
+          const user = await this.selectFromDB("users", userEmail, "email");
+          
+          if ("message" in user) {
+            return this.response(ctx, "", 302, "/");
+            
+          } else if (isUserConnected && user.role !== "admin") {
+            return this.response(ctx, "", 302, "/");
+          }
+
+          const users = await this.collection("users");
+        
           if ("message" in users) {
             return this.response(ctx, "", 302, "/");
           }
-          
-          const isUserConnected = (ctx.state.session as SessionType).has("userId");
 
           const body = await this.createHtmlFile(
             ctx,
@@ -78,4 +119,277 @@ export class AdminController extends DefaultController {
       this.log.logoutHandler,
     );
   }
+
+  private putUser() {
+    const userRoute = `/${dynamicRoutes.get("user")}:id`; // "/user/:id"
+    
+    this.router?.put(
+      userRoute,
+      async (ctx: RouterContextAppType<typeof userRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/user-form.json",
+          ) as FormDataType;
+          
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          // Check to remove user photo.
+          if (dataParsed.data["deletePicture"] === "oui") {
+            dataParsed.data["photo"] = this.defaultImg;
+          }
+
+          // Remove 'delePicture' cause is unnecessary at this step.
+          delete dataParsed.data["deletePicture"];
+
+          const {
+            firstname,
+            lastname
+          } = dataParsed.data as Pick<
+            FormDataAppType,
+            "firstname" | "lastname"
+          >;
+
+          const isUpdate = await this.updateToDB(
+            _id,
+            dataParsed.data,
+            "users",
+          );
+
+          return this.response(
+            ctx, 
+            {
+              title: "Modification utilisateur",
+              message: this.msgToAdmin`Le profil de ${
+                firstname + " " + lastname
+              } ${isUpdate} été`,
+            },
+            200,
+          );
+            
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      },
+    );
+  }
+
+  private putProduct() {
+    const productRoute = `/${dynamicRoutes.get("product")}:id`; // "/product/:id"
+
+    this.router?.put(
+      productRoute,
+      async (ctx: RouterContextAppType<typeof productRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/product-form.json",
+          ) as FormDataType;
+
+          // Add additional types to check in 'dataModel'.
+          const files = [{
+            "type": "file",
+            "name": "thumbnail",
+            "accept": ".png, .jpg, .webp, .jpeg",
+          },
+          {
+            "type": "file",
+            "name": "pictures",
+            "accept": ".png, .jpg, .webp, .jpeg",
+          }];
+
+          for (const file of files) {
+            dataModel.content.push(file);
+          }
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          const {
+            name,
+            type,
+            area,
+            rooms,
+            price,
+            description,
+            thumbnail,
+            pictures,
+          } = dataParsed.data as ProductAdminFormDataType;
+          
+          // Convert object to 'Product' document. 
+          const document: Partial<
+            Omit<ProductSchemaType, "reviewId" | "bookingId">
+          > = {
+            name,
+            description,
+            details: {
+              rooms: +rooms,
+              area: +area,
+              price: this.convertToNumber(price),
+              type,
+            },
+          };
+
+          if (thumbnail) {
+            const alt = `image principale ${name}`;
+            const src = await this.helper.writePicFile(
+              thumbnail, 
+              alt.replaceAll(" ", '_'),
+            );
+
+            document["thumbnail"] = { src, alt };
+          }
+
+          const isUpdate = await this.updateToDB(
+            _id,
+            document,
+            "products",
+          );
+
+          let isPictureUpdate = true;
+
+          if (pictures) {
+            const alt = `${name} - ${type}, le ${this.helper.displayDate({ style: "normal" })}`;
+            const src = await this.helper.writePicFile(
+              pictures,
+              `${name}_${Math.round((Math.random() + 1) * 1000)}`,
+            );
+
+            isPictureUpdate = await this.addNewItemIntoDB(
+              _id,
+              { src, alt },
+              "products",
+              "pictures",
+            );
+          }
+
+          return this.response(
+            ctx,
+            {
+              title: "Modification appartement",
+              message: this.msgToAdmin`L'appartement ${
+                name as string
+              } ${isUpdate && isPictureUpdate} été`,
+            },
+            200,
+          );
+
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      },
+    );
+  }
+
+  putBooking() {
+    const bookingRoute = `/${dynamicRoutes.get("booking")}:id`; // "/booking/:id"
+
+    this.router?.put(
+      bookingRoute,
+      async (ctx: RouterContextAppType<typeof bookingRoute>) => {
+        try {
+          const _id = new ObjectId(ctx.params.id);
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/booking-form.json",
+          ) as FormDataType;
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Modification non effectuée",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          const data = dataParsed.data as unknown as BookingsType;
+          
+          // Even 'createdAt' is typed as number, it's a string.
+          const itemValue = +(data.createdAt);
+          data.createdAt = itemValue;
+
+          const isUpdate = await this.updateItemIntoDB({
+            data: data,
+            collection: "bookings",
+            key: "bookings",
+            itemKey: "createdAt",
+            itemValue,
+          });
+
+          return this.response(
+            ctx,
+            {
+              title: "Modification réservation",
+              message: this.msgToAdmin`La réservation de ${data.userName} ${isUpdate} été`,
+            },
+            200,
+          );
+          
+        } catch (error) {
+          this.helper.writeLog(error);
+        }        
+      }
+    );
+  }
+
+  private convertToNumber = (str: string) => {
+    return str.includes(",")
+      ? str.split(",")
+        .reduce((num, chunk, i) => {
+          i === 0
+            ? num += +chunk
+            : num += (+chunk / (Math.pow(10, chunk.length)));
+          return num;
+        }, 0)
+      : +str;
+  };
+
+  private msgToAdmin = (
+    str: TemplateStringsArray,
+    name: string,
+    isUpdate: boolean,
+    updateOrDeleteStr?: "delete" | "update",
+  ) => (
+    `${str[0]}${name}${str[1]}${
+      isUpdate ? "a bien" : "n'a pas"
+    }${str[2]} ${
+      updateOrDeleteStr ? "supprimé" : "mis à jour"}.`
+  );
 }

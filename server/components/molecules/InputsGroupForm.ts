@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 import type {
   ComponentType,
-  InputDataType,
+  InputGroupFormPropsType,
   MoleculeNameType
 } from "../mod.ts";
 
@@ -17,9 +17,10 @@ export const InputsGroupForm: ComponentType<
   (...args: any[]) => string
 > = {
   name: "InputsGroupForm",
-  html: (
-    content: InputDataType[],
-    isProfilInputs: true | false = true
+  html: ({
+    content,
+    isProfilInputs = false,
+  }: InputGroupFormPropsType,
   ) => {
     return `<div>
     ${content

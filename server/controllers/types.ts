@@ -7,6 +7,7 @@ import type {
   UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
+  UpdateItemIntoDBParameterType,
 } from "@mongo";
 import { AppState } from "@utils";
 
@@ -127,15 +128,35 @@ export type SelectProductFromDBType = SelectFromDBType<
   ProductSchemaWithIDType | NotFoundMessageType
 >;
 
+export type ProductAdminFormDataType = {
+  name: string;
+  type: string;
+  area: string;
+  rooms: string;
+  price: string;
+  description: string;
+  thumbnail?: File;
+  pictures?: File;
+};
+
 // Reviews & Bookings common types
 export type HandleItemIntoDBType<T> = (
   id: ObjectId,
   data: T,
   collection: string,
+  key: string,
 ) => Promise<boolean>;
 
 export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;
 export type RemoveItemFromDBType<T> = HandleItemIntoDBType<T>;
+
+export type UpdateItemIntoDBType<T> = ({
+  data,
+  collection,
+  key,
+  itemKey,
+  itemValue,
+}: UpdateItemIntoDBParameterType<T>) => Promise<boolean>;
 
 // Reviews in DB
 export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;

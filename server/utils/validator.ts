@@ -114,7 +114,10 @@ export class Validator {
         
       //Check file type.
         const [photoModel] = dataModel.content
-          .filter((item) => item.name === "photo");
+          .filter((item) => (
+            item.name === "photo" || item.name === "thumbnail" || item.name === "pictures"
+            )
+          );
   
         const extFile = value.type.split("/").at(1) as string;
 

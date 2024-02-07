@@ -27,7 +27,8 @@
     --btn-padding: calc(var(--base-size) * .625) calc(var(--base-size) * .875);
     --burger-height: calc(var(--base-size) * 1.5);
     --container-width: clamp(30rem, 90%, 96rem);
-    --dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 31.25));
+    --basic-dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 31.25));
+    --large-dialog-width: clamp(30rem, 90%, calc(var(--base-size) * 56.25));
 
     /*=====| Transitions |===== */
     --smooth: .3s ease;
@@ -94,9 +95,11 @@ input[type="submit"] {
 
 button[data-type="call-to-action"],
 textarea,
+fieldset,
 select,
 input {
     border-radius: var(--btn-border-radius);
+    border: var(--border-black-25-percent);
     font-size: var(--base-size);
 }
 
@@ -144,7 +147,7 @@ noscript {
 /*=================================================| DIALOG |=================================================*/
 
 dialog {
-    width: var(--dialog-width);
+    width: var(--basic-dialog-width);
     height: max-content;
     position: fixed;
     left: 50%;
@@ -163,10 +166,11 @@ dialog {
 
     & > header {
         background: var(--light);
-        display: flex;
+        display: grid;
         justify-content: space-between;
         align-items: center;
         gap: var(--base-size);
+        grid-template: 100% / auto max-content;
 
         & > h2 {
             line-height: 1;

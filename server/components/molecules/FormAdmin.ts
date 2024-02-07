@@ -33,7 +33,7 @@ export const FormAdmin: ComponentType<
       >
         <h3>Renseignez vos identifiants</h3>
         <div>
-          ${InputsForm.html(content, false)}
+          ${InputsForm.html({ content })}
         </div>
         <span class="none"></span>
       </form>

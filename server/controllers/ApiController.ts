@@ -130,7 +130,7 @@ export class ApiController {
           await (cursor as T)
             .map((document, key) => data[key + 1] = document);
 
-          // Remove "_id" and "hash" properties from `users` object.
+          // Remove "hash" property from `users` object.
           for (const key in data) {
             for (const prop in data[key]) {
               if (prop === "hash") delete data[key][prop];

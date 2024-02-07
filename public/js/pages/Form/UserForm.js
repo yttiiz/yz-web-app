@@ -17,7 +17,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set input file to change photo
     if (form.action.includes("/register")) {
-      form.querySelector("#search-photo button")
+      form.querySelector(".search-photo button")
       .addEventListener("click", UserFormHelper.handleInputFile);
     }
 
@@ -62,11 +62,7 @@ export class UserFormPage extends PageBuilder {
 
     // Set inputs
     for (const input of userInfosInputs) {
-      if (input.type !== "password") {
-        input.type === "date"
-          ? input.value = data[input.name].split("T").at(0)
-          : input.value = data[input.name];
-      }
+      UserFormHelper.hydrateInput(input, data);
     }
 
     // Set form submission

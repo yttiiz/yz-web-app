@@ -1,8 +1,20 @@
 #data-admin {
+    & form div.none {
+        display: none;
+    }
+
+    & form label span:has(> div) {
+        position: relative;
+
+        & > input {
+            width: 100%;
+        }
+    }
+
     & section[data-admin] {
         background: var(--light);
     }
-
+    
     & section {
         & form[data-style],
         & form[data-style] > div {
@@ -35,10 +47,6 @@
     
         & form[data-style] > div {
             gap: calc(var(--base-size) * 1.8);
-        }
-    
-        & form[data-style] label {
-            position: relative;
         }
     
         & form[data-style] input {
@@ -84,7 +92,7 @@
             height: calc(var(--base-size) * 8);
         }
 
-        & form figure img,
+        & form > div figure img,
         & form > div button {
             margin: auto;
         }
@@ -92,12 +100,8 @@
         & form > div input {
             display: none;
         }
-
-        & form > div > div.none {
-            display: none;
-        }
         
-        & form figure img {
+        & form > div figure img {
             width: auto;
             height: 100%;
             border-radius: 50%;
@@ -124,27 +128,140 @@
         }
 
         & form label {
-            gap:  calc(var(--base-size) * .25);
+            gap: calc(var(--base-size) * .25);
         }
 
         & form > div > div {
             text-align: center;
         }
 
-        & form input:not([type="submit"]),
+        & form input:not([type="submit"], [type="radio"]),
         & form select {
-            border: var(--border-black-25-percent);
             padding: 0 calc(var(--base-size) * .625);
             height: calc(var(--base-size) * 2.75);
+        }
+        
+        & form fieldset,
+        & form textarea {
+            padding: calc(var(--base-size) * .625);
+        }
+
+        & form fieldset {
+            position: relative;
+            display: flex;
+            margin-top: calc(var(--base-size) * 1.75);
+        }
+        
+        & form fieldset:not(.align-columns) {
+            gap: calc(var(--base-size) * 2);
+        }
+        
+        & form fieldset.align-columns {
+            gap: calc(var(--base-size) * .75);
+            flex-direction: column;
+        }
+
+        & form fieldset legend {
+            position: absolute;
+            top: calc(var(--base-size) * -1.75);
+            left: 0;
+        }
+
+        & form fieldset div,
+        & form fieldset div input[type="radio"] {
+            cursor: pointer;
+        }
+
+        & form fieldset div {
+            display: inherit;
+            align-items: center;
+            gap: calc(var(--base-size) * .5);
+        }
+
+        & form textarea {
+            height: calc(var(--base-size) * 7);
         }
 
         & form select {
             background: none;
         }
 
+        & form > label > img,
+        & form > label > figure {
+            margin-top: calc(var(--base-size) * .5);
+            width: 100%;
+        }
+
+        & form > label > img,
+        & form > label > figure img {
+            object-fit: cover;
+            aspect-ratio: 16 / 9;
+            border-radius: var(--btn-border-radius);
+        }
+
+        & form > label > figure {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: calc(var(--base-size) * .5);
+        }
+
+        & form > label > figure > div,
+        & form > label > figure > div img {
+            width: 100%;
+        }
+
+        & form > label > figure > div {
+            position: relative;
+        }
+
+        & form > label > figure > div button {
+            position: absolute;
+            background: rgb(var(--black-rvb) / .5);
+            border-radius: 50%;
+            width: var(--base-size);
+            aspect-ratio: 1 / 1;
+            top: calc(var(--base-size) * .5);
+            right: calc(var(--base-size) * .5);
+            transition: background var(--smooth);
+        }
+
+        & form > label > figure > div button:hover {
+            background: rgb(var(--black-rvb) / 1);
+        }
+
+        & form > label > figure > div button span {
+            position: inherit;
+            left: 50%;
+            top: 50%;
+            background: var(--white);
+            height: .1rem;
+            width: 60%;
+        }
+
+        & form > label > figure > div button span:nth-child(1) {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        & form > label > figure > div button span:nth-child(2) {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
         & form input[type="submit"] {
             background: var(--primary-color);
         }
+    }
+
+    & dialog[data-products] {
+        width: var(--large-dialog-width);
+
+        & form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    & dialog[data-products] form input[type="submit"] {
+        grid-area: 6 / 1 / 7 / 3;
     }
 }
 
@@ -268,7 +385,7 @@
             transition: filter var(--smooth);
         }
 
-        & > div:last-of-type button[type="button"] {
+        & > div:last-of-type button[data-action="edit"] {
             color: var(--white);
             padding: var(--btn-padding);
             border-radius: var(--btn-border-radius);
@@ -319,7 +436,6 @@
     }
 }
 
-
 .users-details.open,
 .products-details.open,
 .bookings-details.open {
@@ -327,15 +443,15 @@
 }
 
 #eye-password,
-#search-photo {
+.search-photo {
     display: flex;
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     right: 3%;
 }
 
 #eye-password {
-    bottom: 16%;
-
     & > span {
         cursor: pointer;
     }
@@ -351,9 +467,7 @@
     }
 }
 
-#search-photo {
-    bottom: clamp(8%, 1.75vw, 12%);
-
+.search-photo {
     & button {
         padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
         border-radius: var(--btn-border-radius);
@@ -376,6 +490,19 @@
     .bookings-details > ul {
         grid-template-columns: 1fr;
     }
+    
+}
+
+@media screen and (max-width: 850px) {
+    #data-admin dialog[data-products] {
+        & > div > form {
+            grid-template-columns: 1fr;
+        }
+
+        & > div > form input[type="submit"] {
+            grid-area: unset;
+        }
+    }
 }
 
 @media screen and (max-width: 650px) {
@@ -385,7 +512,6 @@
         flex-direction: column;
     }
 }
-
 
 @media screen and (max-width: 500px) {
     .users-details,

@@ -1,7 +1,12 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
-import { AdminDashboard, Dialog, FormAdmin } from "../mod.ts";
+import {
+  AdminDashboard,
+  Dialog,
+  DialogForm,
+  FormAdmin,
+} from "../mod.ts";
 import type {
   ComponentType,
   OrganismNameType,
@@ -15,14 +20,19 @@ export const SectionAdmin: ComponentType<
 > = {
   name: "SectionAdmin",
   html: async (isUserConnected: boolean) => {
-    const content: FormDataType | DashboardDataType = await Helper
-      .convertJsonToObject(
-        `/server/data/${
-          isUserConnected
-            ? "admin/dashboard"
-            : "authentication/admin"
-        }.json`,
-      );
+    let content: FormDataType | DashboardDataType;
+    let userFormContent: any, productFormContent: any, bookingFormContent: any;
+
+    if (isUserConnected) {
+      content = await Helper.convertJsonToObject("/server/data/admin/dashboard.json");
+      
+      userFormContent = await Helper.convertJsonToObject("/server/data/admin/user-form.json");
+      productFormContent = await Helper.convertJsonToObject("/server/data/admin/product-form.json");
+      bookingFormContent = await Helper.convertJsonToObject("/server/data/admin/booking-form.json");
+
+    } else {
+      content = await Helper.convertJsonToObject("/server/data/authentication/admin.json");
+    }
 
     return `
     <section ${isUserConnected ? `data-admin="connected"` : ""}>
@@ -33,6 +43,15 @@ export const SectionAdmin: ComponentType<
         }
       </div>
     </section>
-    ${Dialog.html({})}`;
+    ${Dialog.html({ dataset: "profil" })}
+    ${isUserConnected
+      ? (`
+        ${Dialog.html({ dataset: "users", component: DialogForm.html(userFormContent) })}
+        ${Dialog.html({ dataset: "products", component: DialogForm.html(productFormContent) })}
+        ${Dialog.html({ dataset: "bookings", component: DialogForm.html(bookingFormContent) })}
+        ${Dialog.html({ dataset: "response" })}
+        `) 
+      : ""}
+    `;
   },
 };

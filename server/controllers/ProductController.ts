@@ -15,7 +15,7 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType,
 } from "@mongo";
-import { Handler, Helper, Validator } from "@utils";
+import { Handler, Validator } from "@utils";
 import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
@@ -163,6 +163,7 @@ export class ProductController extends DefaultController {
               _bookingId,
               newBooking,
               "bookings",
+              "bookings",
             );
 
             isInsertionOk
@@ -174,14 +175,14 @@ export class ProductController extends DefaultController {
                   message:
                     "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
                   booking: {
-                    start: Helper.displayDate(
-                      new Date(newBooking.startingDate),
-                      "short",
-                    ),
-                    end: Helper.displayDate(
-                      new Date(newBooking.endingDate),
-                      "short",
-                    ),
+                    start: this.helper.displayDate({
+                      date: new Date(newBooking.startingDate),
+                      style: "short",
+                    }),
+                    end: this.helper.displayDate({
+                      date: new Date(newBooking.endingDate),
+                      style: "short",
+                    }),
                   },
                 },
                 200,
@@ -202,14 +203,14 @@ export class ProductController extends DefaultController {
                 message:
                   "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
                 booking: {
-                  start: Helper.displayDate(
-                    new Date(booking.startingDate),
-                    "short",
-                  ),
-                  end: Helper.displayDate(
-                    new Date(booking.endingDate),
-                    "short",
-                  ),
+                  start: this.helper.displayDate({
+                    date: new Date(booking.startingDate),
+                    style: "short",
+                  }),
+                  end: this.helper.displayDate({
+                    date: new Date(booking.endingDate),
+                    style: "short",
+                  }),
                 },
               },
               200,
@@ -276,6 +277,7 @@ export class ProductController extends DefaultController {
           const isInsertionOk = await this.addNewItemIntoDB(
             _reviewId,
             newReview,
+            "reviews",
             "reviews",
           );
 

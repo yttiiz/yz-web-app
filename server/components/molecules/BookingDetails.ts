@@ -38,10 +38,10 @@ export const BookingDetails: ComponentType<
         ${
           isAvailable
           ? "disponible"
-          : `disponible à partir du ${Helper.displayDate(
-            endingDate,
-            "short"
-          )}`
+          : `disponible à partir du ${Helper.displayDate({
+            date: endingDate,
+            style: "short"
+          })}`
         }
         </strong>
       </span>

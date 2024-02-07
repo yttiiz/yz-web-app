@@ -57,7 +57,7 @@ export const SectionsProfilForm: ComponentType<
               <div class="none"></div>
             </div>
             <div class="user-infos">
-              ${InputsForm.html(content)}
+              ${InputsForm.html({ content, isProfilInputs: true })}
             </div>
           </div>
           <input
