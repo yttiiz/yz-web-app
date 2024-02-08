@@ -4,52 +4,28 @@ import {
   LogController,
   type RouterAppType,
   type RouterContextAppType,
-  type SelectUserFromDBType,
-  type GetCollectionType,
   type SessionType,
   type ProductAdminFormDataType,
-  type UpdateToDBType,
-  type AddNewItemIntoDBType,
-  type UpdateItemIntoDBType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
-import { FormDataAppType, Validator } from "@utils";
+import { Validator } from "@utils";
 import { FormDataType } from "@components";
 import {
-  BookingsProductSchemaWithOptionalFieldsType,
-  BookingsType,
-  ImagesProductType,
-  ProductSchemaType,
-  ProductSchemaWithOptionalFieldsType,
-  UserSchemaWithOptionalFieldsType,
+  type BookingsType,
+  Mongo,
+  type ProductSchemaType,
+  type UserSchemaWithOptionalFieldsType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
-  public collection;
-  public selectFromDB;
-  private updateToDB;
-  private addNewItemIntoDB;
-  private updateItemIntoDB;
+  public mongo;
   private log;
 
   constructor(
     router: RouterAppType,
-    collection: GetCollectionType,
-    selectFromDB: SelectUserFromDBType,
-    updateToDB: UpdateToDBType<
-      | UserSchemaWithOptionalFieldsType
-      | ProductSchemaWithOptionalFieldsType
-      | BookingsProductSchemaWithOptionalFieldsType
-    >,
-    addNewItemIntoDB: AddNewItemIntoDBType<ImagesProductType>,
-    updateItemIntoDB: UpdateItemIntoDBType<BookingsType>
   ) {
     super(router);
-    this.collection = collection;
-    this.selectFromDB = selectFromDB;
-    this.updateToDB = updateToDB;
-    this.addNewItemIntoDB = addNewItemIntoDB;
-    this.updateItemIntoDB = updateItemIntoDB;
+    this.mongo = Mongo;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();
@@ -67,7 +43,7 @@ export class AdminController extends DefaultController {
           const session: SessionType = ctx.state.session;
           const isUserConnected = session.has("userId");
           const userEmail = session.get("userEmail");
-          const user = await this.selectFromDB("users", userEmail, "email");
+          const user = await this.mongo.selectFromDB("users", userEmail, "email");
           
           if ("message" in user) {
             return this.response(ctx, "", 302, "/");
@@ -76,7 +52,7 @@ export class AdminController extends DefaultController {
             return this.response(ctx, "", 302, "/");
           }
 
-          const users = await this.collection("users");
+          const users = await this.mongo.connectionTo("users");
         
           if ("message" in users) {
             return this.response(ctx, "", 302, "/");
@@ -157,17 +133,15 @@ export class AdminController extends DefaultController {
           // Remove 'delePicture' cause is unnecessary at this step.
           delete dataParsed.data["deletePicture"];
 
+          const data: UserSchemaWithOptionalFieldsType = { ...dataParsed.data };
           const {
             firstname,
             lastname
-          } = dataParsed.data as Pick<
-            FormDataAppType,
-            "firstname" | "lastname"
-          >;
+          } = data;
 
-          const isUpdate = await this.updateToDB(
+          const isUpdate = await this.mongo.updateToDB(
             _id,
-            dataParsed.data,
+            data,
             "users",
           );
 
@@ -269,7 +243,7 @@ export class AdminController extends DefaultController {
             document["thumbnail"] = { src, alt };
           }
 
-          const isUpdate = await this.updateToDB(
+          const isUpdate = await this.mongo.updateToDB(
             _id,
             document,
             "products",
@@ -284,7 +258,7 @@ export class AdminController extends DefaultController {
               `${name}_${Math.round((Math.random() + 1) * 1000)}`,
             );
 
-            isPictureUpdate = await this.addNewItemIntoDB(
+            isPictureUpdate = await this.mongo.addNewItemIntoDB(
               _id,
               { src, alt },
               "products",
@@ -317,7 +291,6 @@ export class AdminController extends DefaultController {
       bookingRoute,
       async (ctx: RouterContextAppType<typeof bookingRoute>) => {
         try {
-          const _id = new ObjectId(ctx.params.id);
           const formData = await ctx.request.body.formData();
           const dataModel = await this.helper.convertJsonToObject(
             "/server/data/admin/booking-form.json",
@@ -345,7 +318,7 @@ export class AdminController extends DefaultController {
           const itemValue = +(data.createdAt);
           data.createdAt = itemValue;
 
-          const isUpdate = await this.updateItemIntoDB({
+          const isUpdate = await this.mongo.updateItemIntoDB({
             data: data,
             collection: "bookings",
             key: "bookings",

@@ -23,7 +23,7 @@ export class AdminFormsHelper {
     const formData = AdminFormsHelper.#setFormData(e.target);
     
     if (e.target.action.includes("booking")) {
-      AdminFormsHelper.#convertBookingDatasetToFormDataField(
+      AdminFormsHelper.#convertBookingDatasetsToFormDataField(
         formData,
         e.target,
       );
@@ -41,11 +41,12 @@ export class AdminFormsHelper {
    * @param {FormData} formData 
    * @param {HTMLFormElement} form 
    */
-  static #convertBookingDatasetToFormDataField = (formData, form) => {
+  static #convertBookingDatasetsToFormDataField = (formData, form) => {
     for (const item of ["userId", "userName", "createdAt"]) {
       formData.append(
         item,
-        form.querySelector(`input[name="${item}"]`).dataset[item]);
+        form.querySelector(`input[name="${item}"]`).dataset[item],
+      );
     }
   };
   

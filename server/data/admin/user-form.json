@@ -32,6 +32,7 @@
       "label": "Prénom",
       "placeholder": "prénom...",
       "name": "firstname",
+      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -40,6 +41,7 @@
       "label": "Nom",
       "placeholder": "nom...",
       "name": "lastname",
+      "required": true,
       "minLength": 2,
       "maxLength": 40
     },

@@ -58,14 +58,7 @@ new ApiController(
   Mongo.connectionTo,
   Mongo.selectFromDB<UserSchemaWithIDType>,
 );
-new AdminController(
-  router,
-  Mongo.connectionTo,
-  Mongo.selectFromDB,
-  Mongo.updateToDB,
-  Mongo.addNewItemIntoDB,
-  Mongo.updateItemIntoDB,
-);
+new AdminController(router);
 
 // TODO to be removed (reset "session" in BD)
 router.get(
