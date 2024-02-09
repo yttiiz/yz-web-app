@@ -11,7 +11,12 @@ The application configuration is define in the `deno.json` file. It's the ID car
 
 
 ## How does it works ?
-First of all, you have to create a `.env` file, to set your **environnement variables**. Check the `.env.example` file to identify the necessary keys you have to set :
+First of all, you have to install a **_MongoDB_** tool on your machine.
+* You can download [_MongoDB compass_](https://www.mongodb.com/try/download/compass), a **user friendly tool** to handle interaction with the database. 
+* If you prefer command line tools, you can download the [_MongoDB Shell_](https://www.mongodb.com/try/download/shell) or the [_Atlas CLI_](https://www.mongodb.com/try/download/atlascli).
+
+
+After your DB configuration, you have to create a `.env` file, to set your **environnement variables**. Check the `.env.example` file to identify the necessary keys you have to set :
 
 ```
 APP_ENV="local"
