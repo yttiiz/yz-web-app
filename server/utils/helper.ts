@@ -1,4 +1,6 @@
 import { Validator } from "./mod.ts";
+import { Auth } from "@auth";
+import type { UserSchemaWithIDType, UserSchemaWithOptionalFieldsType } from "@mongo";
 
 type DisplayDateType = {
   date?: number | Date;
@@ -108,5 +110,46 @@ export class Helper {
       )
       .format(date)
       .replace(",", " à");
+  }
+
+  public static async removeEmptyOrUnchangedFields(
+    data: Record<string, FormDataEntryValue>,
+    user: UserSchemaWithIDType,
+    picPath?: string,
+  ) {
+
+    const trustData = Object.keys(data)
+      .filter((key) => data[key] !== "" || data[key] !== undefined)
+      .reduce((acc, key) => {
+
+        if (data[key] instanceof File) {
+          delete data[key];
+          
+          return acc;
+
+        } else {
+          if (user[key as keyof typeof user] !== data[key]) {
+            key === "birth"
+              ? acc["birth"] = new Date(data[key] as string)
+              : acc[key as keyof Omit<typeof acc, "birth">] = data[key] as string;
+    
+            return acc;
+          }
+
+          return acc;
+        }
+      }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
+
+    if (trustData["password"]) {
+      trustData["hash"] = await Auth.hashPassword(trustData["password"]);
+    }
+
+    delete trustData["password"];
+
+    if (picPath) {
+      trustData["photo"] = picPath;
+    }
+
+    return trustData;
   }
 }

@@ -4,3 +4,6 @@ deno.lock
 server/log/*
 public/img/*
 server/data/fixtures
+
+#Do not ignore this file.
+!public/img/favicon.svg

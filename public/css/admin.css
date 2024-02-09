@@ -80,7 +80,23 @@
     & dialog {
         overflow-y: auto;
 
-        & form,
+        & form[data-type] {
+            padding-top: var(--base-size);
+            display: flex;
+            gap: var(--base-size);
+            border-top: var(--border-black-25-percent);
+        }
+
+        & form[data-type] > button {
+            font-size: var(--base-size);
+            font-weight: 400;
+        }
+
+        & form[data-type] > input[type="submit"] {
+            background: var(--danger);
+        }
+
+        & form:not([data-type]),
         & form label,
         & form > div,
         & form > div > div {
@@ -248,6 +264,14 @@
 
         & form input[type="submit"] {
             background: var(--primary-color);
+        }
+
+        & p.none,
+        & fieldset.none,
+        & form[data-type].none,
+        & form[data-type] > input.none,
+        & .show-message-to-user.none {
+            display: none;
         }
     }
 

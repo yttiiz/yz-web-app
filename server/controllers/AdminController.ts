@@ -6,6 +6,8 @@ import {
   type RouterContextAppType,
   type SessionType,
   type ProductAdminFormDataType,
+  DeleteItemParameterType,
+  NotFoundMessageType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { Validator } from "@utils";
@@ -15,6 +17,7 @@ import {
   Mongo,
   type ProductSchemaType,
   type UserSchemaWithOptionalFieldsType,
+  UserSchemaWithIDType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
@@ -33,6 +36,9 @@ export class AdminController extends DefaultController {
     this.putUser();
     this.putProduct();
     this.putBooking();
+    this.deleteUser();
+    this.deleteProduct();
+    this.deleteBooking();
   }
 
   private getAdmin() {
@@ -133,12 +139,24 @@ export class AdminController extends DefaultController {
           // Remove 'delePicture' cause is unnecessary at this step.
           delete dataParsed.data["deletePicture"];
 
-          const data: UserSchemaWithOptionalFieldsType = { ...dataParsed.data };
-          const {
-            firstname,
-            lastname
-          } = data;
+          const user: UserSchemaWithIDType | NotFoundMessageType = await this.mongo.selectFromDB("users", _id);
+          
+          if (!('_id' in user)) {
+            return this.response(
+              ctx,
+              { 
+                title: "Erreur serveur",
+                message: "Le serveur ne répond pas. Veuillez réessayer ultérieurement !" },
+              200,
+            );
+          }
 
+          const updatedData = await this.helper.removeEmptyOrUnchangedFields(
+            dataParsed.data,
+            user,
+          );
+
+          const data: UserSchemaWithOptionalFieldsType = { ...updatedData };
           const isUpdate = await this.mongo.updateToDB(
             _id,
             data,
@@ -150,7 +168,7 @@ export class AdminController extends DefaultController {
             {
               title: "Modification utilisateur",
               message: this.msgToAdmin`Le profil de ${
-                firstname + " " + lastname
+                user.firstname + " " + user.lastname
               } ${isUpdate} été`,
             },
             200,
@@ -284,7 +302,7 @@ export class AdminController extends DefaultController {
     );
   }
 
-  putBooking() {
+  private putBooking() {
     const bookingRoute = `/${dynamicRoutes.get("booking")}:id`; // "/booking/:id"
 
     this.router?.put(
@@ -340,6 +358,78 @@ export class AdminController extends DefaultController {
         }        
       }
     );
+  }
+
+  private deleteUser() {
+    this.router?.delete(
+      "/user",
+      async (ctx: RouterContextAppType<"/user">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "users",
+          identifier: "L'utilisateur",
+        })
+      },
+    );
+  }
+
+  private deleteProduct() {
+    this.router?.delete(
+      "/product",
+      async (ctx: RouterContextAppType<"/product">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "products",
+          identifier: "L'appartement",
+        })
+      },
+    );
+  }
+
+  private deleteBooking() {
+    this.router?.delete(
+      "/booking",
+      async (ctx: RouterContextAppType<"/booking">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "bookings",
+          identifier: "La réservation de",
+        })
+      },
+    );
+  }
+
+  private async deleteItem<T extends string>({
+    ctx,
+    collection,
+    identifier,
+  }: DeleteItemParameterType<T>,
+  ) {
+        let itemName = "";
+        const formData = await ctx.request.body.formData();
+
+        if ((formData.get("itemName") as string).includes("_")) {
+          itemName = (
+            formData.get("itemName") as string
+          ).split("_").join(" ");
+        }
+
+        const result = await this.mongo.deleteFromDB(
+          new ObjectId(formData.get("id") as string), 
+          collection,
+        );
+
+        const isUserDelete = result === 1;
+
+        return this.response(
+          ctx,
+          {
+            message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
+              isUserDelete
+            } été${"delete"}`,
+          },
+          200,
+        );
   }
 
   private convertToNumber = (str: string) => {

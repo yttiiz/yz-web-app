@@ -3,6 +3,7 @@
 import { Helper } from "@utils";
 import {
   AdminDashboard,
+  DeleteForm,
   Dialog,
   DialogForm,
   FormAdmin,
@@ -50,6 +51,7 @@ export const SectionAdmin: ComponentType<
         ${Dialog.html({ dataset: "products", component: DialogForm.html(productFormContent) })}
         ${Dialog.html({ dataset: "bookings", component: DialogForm.html(bookingFormContent) })}
         ${Dialog.html({ dataset: "response" })}
+        ${Dialog.html({ dataset: "delete", component: DeleteForm.html })}
         `) 
       : ""}
     `;

@@ -20,6 +20,7 @@ export type MoleculeNameType =
   | "BookingForm"
   | "BookingDetails"
   | "DeleteAccount"
+  | "DeleteForm"
   | "DeleteAccountForm"
   | "InputsForm"
   | "InputsGroupForm"
