@@ -32,7 +32,7 @@ export class AdminFormsHelper {
       ? "DELETE"
       : "PUT";
 
-    if (e.target.action.includes("booking")) {
+    if (e.target.action.includes("booking") && !isDeleteForm) {
       AdminFormsHelper.#convertBookingDatasetsToFormDataField(
         formData,
         e.target,

@@ -351,7 +351,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       </div>
       ${AdminContentHelper.#getEditOrDeletePart(
         { id: booking._id,
-          itemName: booking.userName,
+          itemName: booking.userName.split(" ").join("_"),
           dataType: "booking",
           removeEditBtn: isNotBookingInProgress,
       })}`;

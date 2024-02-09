@@ -102,6 +102,11 @@ export type DeleteFromDBType = (
   collection: string,
 ) => Promise<number>;
 
+export type DeleteItemParameterType<T extends string> = {
+  ctx: RouterContextAppType<T>,
+  collection: string;
+  identifier: string;
+}
 export type NotFoundMessageType = { message: string };
 
 // Users in DB

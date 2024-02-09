@@ -6,6 +6,7 @@ import {
   type RouterContextAppType,
   type SessionType,
   type ProductAdminFormDataType,
+  DeleteItemParameterType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { Validator } from "@utils";
@@ -34,6 +35,8 @@ export class AdminController extends DefaultController {
     this.putProduct();
     this.putBooking();
     this.deleteUser();
+    this.deleteProduct();
+    this.deleteBooking();
   }
 
   private getAdmin() {
@@ -347,28 +350,72 @@ export class AdminController extends DefaultController {
     this.router?.delete(
       "/user",
       async (ctx: RouterContextAppType<"/user">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "users",
+          identifier: "L'utilisateur",
+        })
+      },
+    );
+  }
+
+  private deleteProduct() {
+    this.router?.delete(
+      "/product",
+      async (ctx: RouterContextAppType<"/product">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "products",
+          identifier: "L'appartement",
+        })
+      },
+    );
+  }
+
+  private deleteBooking() {
+    this.router?.delete(
+      "/booking",
+      async (ctx: RouterContextAppType<"/booking">) => {
+        return await this.deleteItem({
+          ctx,
+          collection: "bookings",
+          identifier: "La réservation de",
+        })
+      },
+    );
+  }
+
+  private async deleteItem<T extends string>({
+    ctx,
+    collection,
+    identifier,
+  }: DeleteItemParameterType<T>,
+  ) {
+        let itemName = "";
         const formData = await ctx.request.body.formData();
-        const userName = (
-          formData.get("itemName") as string
-        ).split("_").join(" ");
+
+        if ((formData.get("itemName") as string).includes("_")) {
+          itemName = (
+            formData.get("itemName") as string
+          ).split("_").join(" ");
+        }
 
         const result = await this.mongo.deleteFromDB(
           new ObjectId(formData.get("id") as string), 
-          "users"
+          collection,
         );
+
         const isUserDelete = result === 1;
 
         return this.response(
           ctx,
           {
-            message: this.msgToAdmin`L'utilisateur ${userName} ${
+            message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
               isUserDelete
             } été${"delete"}`,
           },
           200,
         );
-      },
-    );
   }
 
   private convertToNumber = (str: string) => {
