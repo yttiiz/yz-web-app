@@ -1,4 +1,4 @@
-# ![favicon](./public/favicon.svg) Deno application
+# ![favicon](./public/favicon.svg) Yz web application
 This application is designed as a **craft-app**. The idea here, is to experiment the `deno` ecosystem, using a non conventional architecture.
 
 ### Specifications
@@ -18,6 +18,7 @@ APP_ENV="local"
 PORT=3000
 HOST=127.0.0.1
 APP_URL="http://127.0.0.1:3000"
+APP_SESSION_NAME="your_session_name"
 DATABASE_URL="your/database/url"
 ```
 Then, you can start working with the applicatiton by running this command :
@@ -32,8 +33,9 @@ It run the server with the flags `--allow-write` `--allow-read` `--allow-net`, w
 * `main.ts` creates the **oak.Application** with the **_MongoDB_** _Session_ middleware, the router routes and the static files middleware.
 * After been created, the router, is injected into every **controllers**.
 * The **default controller** manage the html rendering and the implementation of the responses (based on a [http](./server/utils/http.ts) instance). The others controllers, except the ApiController, inherit from its `prototype`.
+* The **html** rendering is made by the **components** which is basically returns large html `string`. They are organize in different folders, inspired by the **Atomic Design** methodology.
 * The mongo folder implements a **static class** to manage the connexion with the DB.
-* The application **static text contents** is driven by the json files in the [data](./server/data/) folder.
+* The **static text contents** of the application is driven by the json files in the [data](./server/data/) folder.
 
 ### Client side :
 * The basics **css**, **img**, **js** folders, request by the client on every route.
