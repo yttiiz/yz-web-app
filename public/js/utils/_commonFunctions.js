@@ -246,23 +246,16 @@ const insertData = (data, dialog, fillImgs) => {
 };
 
 /**
- * @param {HTMLDivElement} container 
+ * @param {Event} e 
  * @param {string} dataType 
  * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
  */
-const handleCards = (
-  container,
+const editButtonHandler = (
+  e,
   dataType,
   data,
 ) => {
-  const [
-    editBtn,
-    deleteBtn
-  ] = container.querySelector("div:last-of-type").children;
-
-  // Set listener to 'edit' button.
-  editBtn.addEventListener("click", (e) => {
-    const dialog = document.querySelector(`dialog[data-${dataType}]`);
+  const dialog = document.querySelector(`dialog[data-${dataType}]`);
     /**
      * Set `form` action to current data.
      * @param {HTMLDialogElement} dialog 
@@ -315,7 +308,80 @@ const handleCards = (
     dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
 
     dialog.showModal();
-  });
+};
+
+/**
+ * @param {Event} e 
+ * @param {string} dataType
+ */
+const deleteButtonHandler = (e) => {
+  const dataType = e.currentTarget.dataset.type;
+  const dialog = document.querySelector(`dialog[data-delete]`);
+  const form = dialog.querySelector("form");
+
+  // If modal has already been used.
+  if (form.classList.contains("none")) {
+    form.classList.remove("none");
+    form.previousElementSibling.remove("none");
+    form.nextElementSibling.classList.add("none");
+  }
+
+  // Set delete form.
+  form.action = "/" + dataType;
+  form.dataset.id = e.currentTarget.dataset.id;
+  form.dataset.itemName = e.currentTarget.dataset.itemName;
+
+  // Set modal text.
+  dialog.querySelector("h2").textContent = setText("h2", dataType);
+  dialog.querySelector("p").textContent = setText("p", dataType);
+
+  dialog.showModal();
+};
+
+/**
+ * @param {"h2" | "p"} tag 
+ * @param {string} dataType 
+ */
+const setText = (tag, dataType) => {
+  switch(dataType) {
+    case "user":
+      dataType = "l'utilisateur";
+      break;
+    case "product":
+      dataType = "l'appartement";
+      break;
+    default:
+      dataType = "la réservation"
+  }
+
+  return tag === "h2"
+    ? `Suppression de ${dataType}`
+    : `Etes-vous vraiment sûr de vouloir supprimer ${dataType}.`
+};
+
+/**
+ * @param {HTMLDivElement} container 
+ * @param {string} dataType 
+ * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
+ */
+const handleCards = (
+  container,
+  dataType,
+  data,
+) => {
+  const [
+    editOrDeleteBtn,
+    deleteBtn
+  ] = container.querySelector("div:last-of-type").children;
+  
+  // Bookings cards can have only a 'delete' button (if its ending date is over).
+  if (deleteBtn) {
+    editOrDeleteBtn.addEventListener("click", (e) => editButtonHandler(e, dataType, data));
+    deleteBtn?.addEventListener("click", (e) => deleteButtonHandler(e))
+    
+  } else {
+    editOrDeleteBtn.addEventListener("click", (e) => deleteButtonHandler(e));
+  }
 };
 
 export {

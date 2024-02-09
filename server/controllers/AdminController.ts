@@ -33,6 +33,7 @@ export class AdminController extends DefaultController {
     this.putUser();
     this.putProduct();
     this.putBooking();
+    this.deleteUser();
   }
 
   private getAdmin() {
@@ -284,7 +285,7 @@ export class AdminController extends DefaultController {
     );
   }
 
-  putBooking() {
+  private putBooking() {
     const bookingRoute = `/${dynamicRoutes.get("booking")}:id`; // "/booking/:id"
 
     this.router?.put(
@@ -339,6 +340,34 @@ export class AdminController extends DefaultController {
           this.helper.writeLog(error);
         }        
       }
+    );
+  }
+
+  private deleteUser() {
+    this.router?.delete(
+      "/user",
+      async (ctx: RouterContextAppType<"/user">) => {
+        const formData = await ctx.request.body.formData();
+        const userName = (
+          formData.get("itemName") as string
+        ).split("_").join(" ");
+
+        const result = await this.mongo.deleteFromDB(
+          new ObjectId(formData.get("id") as string), 
+          "users"
+        );
+        const isUserDelete = result === 1;
+
+        return this.response(
+          ctx,
+          {
+            message: this.msgToAdmin`L'utilisateur ${userName} ${
+              isUserDelete
+            } été${"delete"}`,
+          },
+          200,
+        );
+      },
     );
   }
 

@@ -20,8 +20,18 @@ export class AdminFormsHelper {
   static #handleForm = async (e) => {
     e.preventDefault();
 
+    const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty("delete");
     const formData = AdminFormsHelper.#setFormData(e.target);
-    
+
+    if (isDeleteForm) {
+      formData.set("id", e.target.dataset.id);
+      formData.set("itemName", e.target.dataset.itemName);
+    }
+
+    const method = isDeleteForm
+      ? "DELETE"
+      : "PUT";
+
     if (e.target.action.includes("booking")) {
       AdminFormsHelper.#convertBookingDatasetsToFormDataField(
         formData,
@@ -30,11 +40,13 @@ export class AdminFormsHelper {
     }
 
     const res = await fetch(e.target.action, {
-      method: "PUT",
+      method,
       body: formData,
     });
 
-    AdminFormsHelper.#displayMessage(e.target, await res.json());
+    isDeleteForm
+    ? AdminFormsHelper.#displayDeleteMessage(e.target, await res.json())
+    : AdminFormsHelper.#displayMessage(e.target, await res.json());
   }
 
   /**
@@ -62,5 +74,20 @@ export class AdminFormsHelper {
     
     form.closest("dialog").close();
     responseDialog.showModal();
+  }
+
+  /**
+   * @param {HTMLDialogElement} form
+   * @param {{ message: string }}  
+   */
+  static #displayDeleteMessage = (form, { message }) => {
+    const spanResponse = form.nextElementSibling;
+    const paragraph = form.previousElementSibling;
+    
+    spanResponse.textContent = message;
+
+    form.classList.add("none");
+    paragraph.classList.add("none");
+    spanResponse.classList.remove("none");
   }
 }

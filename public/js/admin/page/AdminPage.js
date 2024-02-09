@@ -10,13 +10,15 @@ export class AdminPage {
   init = () => {
     const section = document.querySelector("section");
     const dialogs = document.querySelectorAll("dialog");
-      
+    
+    const start = Date.now();
     // Init close event dialog modals.
     for (const dialog of dialogs) {
-      dialog.querySelector("button[data-close]")
-      .addEventListener("click", () => {
-        dialog.close();
-      });
+      for (const button of dialog.querySelectorAll("button[data-close]")) {
+        button.addEventListener("click", () => {
+          dialog.close();
+      })
+    };
 
       if (dialog.dataset.hasOwnProperty("products")) {
         insertPictureIn(dialog);

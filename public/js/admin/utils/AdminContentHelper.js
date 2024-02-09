@@ -122,7 +122,11 @@ export class AdminContentHelper extends DefaultFormHelper {
           <p>Email : <strong>${users[key].email}</strong></p>
           <p>Role : <strong>${users[key].role}</strong></p>
         </div>
-        ${AdminContentHelper.#getEditOrDeletePart({ id: users[key]._id })}`;
+        ${AdminContentHelper.#getEditOrDeletePart({
+          id: users[key]._id,
+          itemName: `${users[key].firstname}_${users[key].lastname}`,
+          dataType: "user",
+        })}`;
 
       users[key].role === "admin"
         ? userContainer.classList.add("admin")
@@ -230,7 +234,11 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Prix : <strong>${AdminContentHelper.#formatPrice(products[key].details.price)}</strong></p>
         <p>Description : <strong>${products[key].description}</strong></p>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart({ id: products[key]._id })}`;
+      ${AdminContentHelper.#getEditOrDeletePart({
+        id: products[key]._id,
+        itemName: products[key].name,
+        dataType: "product",
+      })}`;
 
       // Create a 'products' copy to set easier product form values.
       const productsFormValues = convert(products);
@@ -341,7 +349,12 @@ export class AdminContentHelper extends DefaultFormHelper {
         <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
         <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart({ id: booking._id, removeEditBtn: isNotBookingInProgress })}`;
+      ${AdminContentHelper.#getEditOrDeletePart(
+        { id: booking._id,
+          itemName: booking.userName,
+          dataType: "booking",
+          removeEditBtn: isNotBookingInProgress,
+      })}`;
 
       AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
       AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
@@ -435,10 +448,12 @@ export class AdminContentHelper extends DefaultFormHelper {
   }
 
   /**
-   * @param {{ id: string; removeEditBtn: boolean }}  
+   * @param {{ id: string; dataType: string; userName: string; removeEditBtn: boolean }}  
    */
   static #getEditOrDeletePart = ({
     id,
+    dataType,
+    itemName,
     removeEditBtn = false,
   }) => {
     return `
@@ -459,6 +474,8 @@ export class AdminContentHelper extends DefaultFormHelper {
       <button
         data-action="delete"
         data-id=${id}
+        data-item-name=${itemName}
+        data-type=${dataType}
         type="button"
       >
         Supprimer
