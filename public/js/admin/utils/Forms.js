@@ -1,6 +1,6 @@
 import { setFormData } from "../../utils/_commonFunctions.js";
 
-export class AdminFormsHelper {
+export class Forms {
   static #setFormData = setFormData;
 
   static init = () => {
@@ -8,7 +8,7 @@ export class AdminFormsHelper {
       
       if (!dialog.dataset.hasOwnProperty("profil") && !dialog.dataset.hasOwnProperty("response")) {
         dialog.querySelector("form")
-        .addEventListener("submit", AdminFormsHelper.#handleForm);
+        .addEventListener("submit", Forms.#handleForm);
       }
 
     }
@@ -21,7 +21,7 @@ export class AdminFormsHelper {
     e.preventDefault();
 
     const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty("delete");
-    const formData = AdminFormsHelper.#setFormData(e.target);
+    const formData = Forms.#setFormData(e.target);
 
     if (isDeleteForm) {
       formData.set("id", e.target.dataset.id);
@@ -33,7 +33,7 @@ export class AdminFormsHelper {
       : "PUT";
 
     if (e.target.action.includes("booking") && !isDeleteForm) {
-      AdminFormsHelper.#convertBookingDatasetsToFormDataField(
+      Forms.#convertBookingDatasetsToFormDataField(
         formData,
         e.target,
       );
@@ -45,8 +45,8 @@ export class AdminFormsHelper {
     });
 
     isDeleteForm
-    ? AdminFormsHelper.#displayDeleteMessage(e.target, await res.json())
-    : AdminFormsHelper.#displayMessage(e.target, await res.json());
+      ? Forms.#displayDeleteMessage(e.target, await res.json())
+      : Forms.#displayMessage(e.target, await res.json());
   }
 
   /**

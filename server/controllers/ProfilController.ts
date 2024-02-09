@@ -7,8 +7,6 @@ import type {
   SelectUserFromDBType,
   UpdateUserToDBType,
 } from "./mod.ts";
-import { Auth } from "@auth";
-import type { UserSchemaWithIDType, UserSchemaWithOptionalFieldsType } from "@mongo";
 import { SessionType } from "@/server/controllers/types.ts";
 import { FormDataAppType, Validator } from "@utils";
 
@@ -123,7 +121,7 @@ export class ProfilController extends DefaultController {
           );
         }
 
-        const updatedData = await this.removeEmptyOrUnchangedFields(
+        const updatedData = await this.helper.removeEmptyOrUnchangedFields(
           dataParsed.data,
           user,
           picPath,
@@ -207,46 +205,6 @@ export class ProfilController extends DefaultController {
         );
       },
     );
-  }
-
-  private async removeEmptyOrUnchangedFields(
-    data: Record<string, FormDataEntryValue>,
-    user: UserSchemaWithIDType,
-    picPath: string | undefined,
-  ) {
-
-    const trustData = Object.keys(data)
-      .filter((key) => data[key] !== "" || data[key] !== undefined)
-      .reduce((acc, key) => {
-
-        if (data[key] instanceof File) {
-          delete data[key];
-          
-          return acc;
-
-        } else {
-          if (user[key as keyof typeof user] !== data[key]) {
-            key === "birth"
-              ? acc["birth"] = new Date(data[key] as string)
-              : acc[key as keyof Omit<typeof acc, "birth">] = data[key] as string;
-    
-            return acc;
-          }
-
-          return acc;
-        }
-      }, {} as UserSchemaWithOptionalFieldsType & { password?: string });
-
-    if (trustData["password"]) {
-      trustData["hash"] = await Auth.hashPassword(trustData["password"]);
-      delete trustData["password"];
-    }
-
-    if (picPath) {
-      trustData["photo"] = picPath;
-    }
-
-    return trustData;
   }
 
   private messageToUser = (

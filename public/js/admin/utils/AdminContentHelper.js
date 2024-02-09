@@ -1,12 +1,11 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
-import { handleCards } from "../../utils/_commonFunctions.js";
 import { PageBuilder } from "../../pages/Builder.js";
+import { FormBuilder } from "./FormBuilder.js";
 import * as Types from "../../types/types.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
   static #builder = new PageBuilder;
-  static #handleCards = handleCards;
 
   static #formatPrice = (price) => new Intl.NumberFormat(
     "fr-FR",
@@ -132,22 +131,22 @@ export class AdminContentHelper extends DefaultFormHelper {
         ? userContainer.classList.add("admin")
         : null;
       
-      AdminContentHelper.#handleCards(userPrivatePart, "users", users);
+      FormBuilder.handleCards(userPrivatePart, "users", users);
       AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
     }
 
-    const { usersCount, usersRoleCount } = ((users) => {
+    const { usersCount, adminRoleCount } = ((users) => {
       return {
         usersCount: Object.keys(users).length,
-        usersRoleCount: Object.keys(users).filter((key) => (
-          users[key].role === "user"
+        adminRoleCount: Object.keys(users).filter((key) => (
+          users[key].role === "admin"
         )).length,
       } 
     })(users);
 
     dbInfos.innerHTML = `
-    <p>Il y a <strong>${usersCount} utilisateurs</strong>, dont <strong>${usersRoleCount}</strong> avec le rôle <strong>user</strong>.</p>`;
+    <p>Il y a <strong>${usersCount} utilisateurs</strong>, dont <strong>${adminRoleCount}</strong> avec le rôle <strong>admin</strong>.</p>`;
 
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
@@ -243,7 +242,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       // Create a 'products' copy to set easier product form values.
       const productsFormValues = convert(products);
 
-      AdminContentHelper.#handleCards(productPrivatePart, "products", productsFormValues);
+FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
     }
@@ -356,7 +355,7 @@ export class AdminContentHelper extends DefaultFormHelper {
           removeEditBtn: isNotBookingInProgress,
       })}`;
 
-      AdminContentHelper.#handleCards(bookingPrivatePart, "bookings", booking);
+      FormBuilder.handleCards(bookingPrivatePart, "bookings", booking);
       AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
       AdminContentHelper.#builder.insertChildren(elementsList, bookingContainer);
     }
@@ -491,11 +490,9 @@ export class AdminContentHelper extends DefaultFormHelper {
     try {
       const res = await fetch(AdminContentHelper.#host + path);
 
-      if (res.ok) {
-        return await res.json();
-      }
-
-      return { message: "Something went wrong"};
+      return res.ok
+       ? await res.json()
+       : { message: "Something went wrong"}; 
       
     } catch (error) {
       return { message: "Something went wrong"};

@@ -1,5 +1,3 @@
-import * as Types from "../types/types.js";
-
 /**
  * Switchs between `eye-open` and `eye-shut` svg.
  */
@@ -101,11 +99,14 @@ const setFormData = (form) => {
   const formData = new FormData(form);
 
   for (const [key, value] of formData) {
-    // Check for file (image) field or input includes 'text'.
-    if (
-      (typeof value === "object" && value.size === 0) ||
-      key.includes("file") 
-    ) {
+    
+    const isItemToBeDeleted = (
+      value === "" || // Empty field.
+      (typeof value === "object" && value.size === 0) || // Empty file (image) field type.
+      key.includes("file") // Field type text with file name.
+    );
+
+    if (isItemToBeDeleted) {
       formData.delete(key);
     }
   }
@@ -157,239 +158,11 @@ const hydrateSelect = (element, data) => {
   }
 };
 
-/**
- * Inserts an `img` element and a `figure` before each input related to pictures.
- * @param {HTMLDialogElement} dialog 
- */
-const insertPictureIn = (dialog) => {
-  const form = dialog.querySelector("form");
-  const inputThumbnail = form.querySelector("input[name=\"thumbnail-file\"]");
-  const inputPictures = form.querySelector("input[name=\"pictures-file\"]");
-  const buttons = form.querySelectorAll("label button");
-
-  const img = document.createElement("img");
-  img.setAttribute("data-name", "thumbnail");
-  
-  const figure = document.createElement("figure");
-  figure.setAttribute("data-name", "pictures");
-
-  inputThumbnail.closest("label").appendChild(img);
-  inputPictures.closest("label").appendChild(figure);
-
-  // Add handle search picture listener to buttons.
-  const names = ["thumbnail", "pictures"];
-  
-  for (let i = 0; i <= buttons.length - 1; i++) {
-    buttons[i].addEventListener("click", (e) => handleInputFile(e, names[i]));
-  }
-};
-
-/**
- * Fills `img` in dialog.
- * @param {Types.Product} data 
- * @param {HTMLDialogElement} dialog 
- */
-const fillImgs = (data, dialog) => {
-    // Set main image.
-    if (dialog.querySelector("form > label > img")) {
-      const img = dialog.querySelector("form > label > img");
-      const { src, alt } = data[img.dataset.name];
-  
-      img.src = src; img.alt = alt;
-    }
-  
-    // Set all figure images.
-    if (dialog.querySelector("form > label > figure")) {
-      const figure = dialog.querySelector("form > label > figure");
-  
-      if (figure.children.length > 0) {
-        figure.innerHTML = "";
-      }
-  
-      for (const item of data[figure.dataset.name]) {
-        const imgContainer = document.createElement("div");
-        const { src, alt } = item;
-  
-        imgContainer.innerHTML = `<img src="${src}" alt="${alt}" /><button title="supprimer"><span></span><span></span></button>`;
-  
-        figure.appendChild(imgContainer);
-      }
-    }
-};
-
-/**
- * @param {Types.User | Types.Product | Types.BookingsRegistred & { productName: string }} data 
- * @param {HTMLDialogElement} dialog 
- * @param {(data: Types.Product, dialog: HTMLDialogElement) => void} [fillImgs] 
- */
-const insertData = (data, dialog, fillImgs) => {
-  const labels = dialog.querySelector("form").querySelectorAll("label");
-  
-  for (const label of labels) {
-    if (label.querySelector("input")) {
-      const input = label.querySelector("input");
-      hydrateInput(input, data);
-    }
-
-    if (label.querySelector("textarea")) {
-      const textarea = label.querySelector("textarea");
-      hydrateInput(textarea, data);
-    }
-
-    if (label.querySelector("select")) {
-      const select = label.querySelector("select");
-      hydrateSelect(select, data);
-    }
-  }
-
-  fillImgs ? fillImgs(data, dialog) : null;
-};
-
-/**
- * @param {Event} e 
- * @param {string} dataType 
- * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
- */
-const editButtonHandler = (
-  e,
-  dataType,
-  data,
-) => {
-  const dialog = document.querySelector(`dialog[data-${dataType}]`);
-    /**
-     * Set `form` action to current data.
-     * @param {HTMLDialogElement} dialog 
-     * @param {string} route 
-     * @param {string} id 
-     */
-    const setFormAction = (dialog, route, id) => {
-      dialog.querySelector("form").action = (
-        `${location.origin}/${route}/${id}`
-      );
-    };
-
-    let dataTitle = "";
-
-    // Insert Data.
-    for (const key in data) {
-      if (dataType !== "bookings") {
-        if (data[key]._id === e.currentTarget.dataset.id) {
-          
-          switch(dataType) {
-            case "products": {
-              dataTitle = `de l'appartement ${data[key].name}`;
-              insertData(data[key], dialog, fillImgs);
-              break;
-            }
-            
-            case "users": {
-              dataTitle = `du profil de ${data[key].firstname} ${data[key].lastname}`;
-              insertData(data[key], dialog);
-              break;
-            }
-          }
-
-          setFormAction(dialog, dataType.slice(0, -1), data[key]._id);
-          
-          break;
-        }
-        
-      } else {
-        
-        dataTitle = `de la réservation de ${data.userName}`;
-        insertData(data, dialog);
-        setFormAction(dialog, dataType.slice(0, -1), data._id);
-        break;
-      }
-    }
-
-    // Set modal.
-    dialog.querySelector("h2").textContent = `Modification ${dataTitle}`;
-    dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
-
-    dialog.showModal();
-};
-
-/**
- * @param {Event} e 
- * @param {string} dataType
- */
-const deleteButtonHandler = (e) => {
-  const dataType = e.currentTarget.dataset.type;
-  const dialog = document.querySelector(`dialog[data-delete]`);
-  const form = dialog.querySelector("form");
-
-  // If modal has already been used.
-  if (form.classList.contains("none")) {
-    form.classList.remove("none");
-    form.previousElementSibling.remove("none");
-    form.nextElementSibling.classList.add("none");
-  }
-
-  // Set delete form.
-  form.action = "/" + dataType;
-  form.dataset.id = e.currentTarget.dataset.id;
-  form.dataset.itemName = e.currentTarget.dataset.itemName;
-
-  // Set modal text.
-  dialog.querySelector("h2").textContent = setText("h2", dataType);
-  dialog.querySelector("p").textContent = setText("p", dataType);
-
-  dialog.showModal();
-};
-
-/**
- * @param {"h2" | "p"} tag 
- * @param {string} dataType 
- */
-const setText = (tag, dataType) => {
-  switch(dataType) {
-    case "user":
-      dataType = "l'utilisateur";
-      break;
-    case "product":
-      dataType = "l'appartement";
-      break;
-    default:
-      dataType = "la réservation"
-  }
-
-  return tag === "h2"
-    ? `Suppression de ${dataType}`
-    : `Etes-vous vraiment sûr de vouloir supprimer ${dataType}.`
-};
-
-/**
- * @param {HTMLDivElement} container 
- * @param {string} dataType 
- * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
- */
-const handleCards = (
-  container,
-  dataType,
-  data,
-) => {
-  const [
-    editOrDeleteBtn,
-    deleteBtn
-  ] = container.querySelector("div:last-of-type").children;
-  
-  // Bookings cards can have only a 'delete' button (if its ending date is over).
-  if (deleteBtn) {
-    editOrDeleteBtn.addEventListener("click", (e) => editButtonHandler(e, dataType, data));
-    deleteBtn?.addEventListener("click", (e) => deleteButtonHandler(e))
-    
-  } else {
-    editOrDeleteBtn.addEventListener("click", (e) => deleteButtonHandler(e));
-  }
-};
-
 export {
   handleShowPassword,
   handleInputFile,
   hydrateInput,
+  hydrateSelect,
   setFormData,
   removeInputsValues,
-  handleCards,
-  insertPictureIn,
 };

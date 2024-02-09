@@ -1,9 +1,9 @@
 import {
-  AdminFormsHelper,
+  Forms,
   AdminLoginHelper,
   AdminProfilHelper,
   AdminContentHelper,
-  insertPictureIn,
+  FormBuilder,
 } from "../utils/mod.js";
 
 export class AdminPage {
@@ -11,7 +11,6 @@ export class AdminPage {
     const section = document.querySelector("section");
     const dialogs = document.querySelectorAll("dialog");
     
-    const start = Date.now();
     // Init close event dialog modals.
     for (const dialog of dialogs) {
       for (const button of dialog.querySelectorAll("button[data-close]")) {
@@ -21,24 +20,20 @@ export class AdminPage {
     };
 
       if (dialog.dataset.hasOwnProperty("products")) {
-        insertPictureIn(dialog);
+        FormBuilder.insertPictureIn(dialog);
       }
     }
     
     if (section.dataset.admin === "connected") {
-      //==========| Dashboard interface |==========//
-      
       // Init profil dialog modal.
       AdminProfilHelper.init(document.querySelectorAll(
         "#user-session button[type=\"button\"]",
       ));
       
       AdminContentHelper.init(); // Init content page & modal.
-      AdminFormsHelper.init(); // Handle forms submission.
+      Forms.init(); // Handle forms submission.
       
     } else {  
-      //==========| Login interface |==========//
-      
       AdminLoginHelper.handleShowPassword();
 
       document.querySelector("form")

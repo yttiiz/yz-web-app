@@ -267,6 +267,7 @@
         }
 
         & p.none,
+        & fieldset.none,
         & form[data-type].none,
         & form[data-type] > input.none,
         & .show-message-to-user.none {

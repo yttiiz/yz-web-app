@@ -7,6 +7,7 @@ import {
   type SessionType,
   type ProductAdminFormDataType,
   DeleteItemParameterType,
+  NotFoundMessageType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { Validator } from "@utils";
@@ -16,6 +17,7 @@ import {
   Mongo,
   type ProductSchemaType,
   type UserSchemaWithOptionalFieldsType,
+  UserSchemaWithIDType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
@@ -137,12 +139,24 @@ export class AdminController extends DefaultController {
           // Remove 'delePicture' cause is unnecessary at this step.
           delete dataParsed.data["deletePicture"];
 
-          const data: UserSchemaWithOptionalFieldsType = { ...dataParsed.data };
-          const {
-            firstname,
-            lastname
-          } = data;
+          const user: UserSchemaWithIDType | NotFoundMessageType = await this.mongo.selectFromDB("users", _id);
+          
+          if (!('_id' in user)) {
+            return this.response(
+              ctx,
+              { 
+                title: "Erreur serveur",
+                message: "Le serveur ne répond pas. Veuillez réessayer ultérieurement !" },
+              200,
+            );
+          }
 
+          const updatedData = await this.helper.removeEmptyOrUnchangedFields(
+            dataParsed.data,
+            user,
+          );
+
+          const data: UserSchemaWithOptionalFieldsType = { ...updatedData };
           const isUpdate = await this.mongo.updateToDB(
             _id,
             data,
@@ -154,7 +168,7 @@ export class AdminController extends DefaultController {
             {
               title: "Modification utilisateur",
               message: this.msgToAdmin`Le profil de ${
-                firstname + " " + lastname
+                user.firstname + " " + user.lastname
               } ${isUpdate} été`,
             },
             200,
