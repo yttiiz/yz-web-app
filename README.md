@@ -4,7 +4,7 @@ This application is designed as a **craft-app**. The idea here, is to experiment
 ### Specifications
 * **Language** : [Typescript](https://www.typescriptlang.org/) | [Javascript](https://tc39.es/ecma262/)
 * **Runtime** : [deno](https://deno.com/)
-* **Framework** : [oak](https://deno.land/x/oak@v12.6.1)
+* **Framework** : [oak](https://deno.land/x/oak)
 * **Database** : [mongodb](https://www.mongodb.com/)
 
 The application configuration is define in the `deno.json` file. It's the ID card of the project, where alias to the main folders, compiler options and dependencies import are set.

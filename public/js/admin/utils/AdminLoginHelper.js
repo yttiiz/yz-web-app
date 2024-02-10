@@ -45,6 +45,13 @@ export class AdminLoginHelper extends DefaultFormHelper {
   static openDialogToUnauthorizedAccess = (
     dialog = document.querySelector("dialog"),
   ) => {
+    const span = document.querySelector("form > span");
+
+    if (!span.classList.contains("none")) {
+      span.textContent = "";
+      span.classList.add("none");
+    }
+
     AdminLoginHelper.setUserDialogContent(
       dialog,
       {
