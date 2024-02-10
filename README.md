@@ -1,5 +1,5 @@
 # ![favicon](./public/img/favicon.svg) Yz web application
-This application is designed as a **craft-app**. The idea here, is to experiment the `deno` ecosystem, using a non conventional architecture.
+This application is designed as a **craft-app**. The idea here, is to experiment the `deno` ecosystem.
 
 ### Specifications
 * **Language** : [Typescript](https://www.typescriptlang.org/) | [Javascript](https://tc39.es/ecma262/)
@@ -38,7 +38,7 @@ It run the server with the flags `--allow-write` `--allow-read` `--allow-net`, w
 * `main.ts` creates the **oak.Application** with the **_MongoDB_** _Session_ middleware, the router routes and the static files middleware.
 * After been created, the router, is injected into every **controllers**.
 * The **default controller** manage the html rendering and the implementation of the responses (based on a [http](./server/utils/http.ts) instance). The others controllers, except the ApiController, inherit from its `prototype`.
-* The **html** rendering is made by the **components** which is basically returns large html `string`. They are organize in different folders, inspired by the **Atomic Design** methodology.
+* The **html** rendering is made by the **components** which basically returns large html `string`. They are organize in different folders, inspired by the **Atomic Design** methodology.
 * The mongo folder implements a **static class** to manage the connexion with the DB.
 * The **static text contents** of the application is driven by the json files in the [data](./server/data/) folder.
 

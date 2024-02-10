@@ -10,9 +10,18 @@
       "isRelatedToUser": true
     },
     {
-      "link": "#",
-      "text": "Item 2",
-      "isRelatedToUser": false
+      "name": "Appartements",
+      "isRelatedToUser": false,
+      "relatedItems": [
+        {
+          "link": "/test",
+          "text": "Marc"
+        },
+        {
+          "link": "/test",
+          "text": "Jacqueline"
+        }
+      ]
     },
     {
       "link": "#",

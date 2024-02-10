@@ -174,30 +174,55 @@ export class AnimationHelper {
       nav.classList.toggle("none");
     };
 
-    /** @param {Event} e **/
+    /**
+     * @param {Event} e
+     */
+    const submenuHandler = (e) => {
+      e.currentTarget.querySelector("div").classList.toggle("up");
+    }
+
+    /**
+     * @param {Event} e
+     */
     const burgerHandler = (e) => {
       const lines = e.currentTarget.querySelectorAll("button > span");
       const nav = e.currentTarget.querySelector("nav");
 
+      const isNavVisible = !nav.classList.contains("none");
+      const isNotASpan = e.target.nodeName !== "SPAN";
+      const isNotTheBurger = (
+        !e.target.id === "burger" ||
+        !(e.target.type === "button")
+      );
+      
+      if (isNavVisible && isNotTheBurger && isNotASpan) return;
       toggleElementClasslist(lines, nav);
     };
 
-    /** @param {Event} e **/
+    /**
+     * @param {Event} e
+     */
     const windowHandler = (e) => {
       const lines = document.querySelectorAll("#burger > button > span");
       const nav = document.querySelector("#burger > nav");
-
+      
       if (e.target.closest("#burger")) {
         return;
+        
       } else if (!nav.classList.contains("none")) {
         toggleElementClasslist(lines, nav);
       }
     };
 
     if (document.querySelector("#burger")) {
-      document.querySelector("#burger")
-        .addEventListener("click", burgerHandler);
-      // deno-lint-ignore no-window-prefix
+      const burger = document.querySelector("#burger");
+      const submenus = burger.querySelectorAll("nav > ul > li > div");
+
+      for (const submenu of submenus) {
+        submenu.addEventListener("click", submenuHandler);
+      }
+      
+      burger.addEventListener("click", burgerHandler);
       window.addEventListener("click", windowHandler);
     }
   };

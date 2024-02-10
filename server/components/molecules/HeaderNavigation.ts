@@ -22,12 +22,33 @@ export const HeaderNavigation: ComponentType<
         !isUserConnected && item.isRelatedToUser
           ? ""
           :
-          ( 
-          `<li>
-            <a href="${item.link}">
-              ${item.text}
-            </a>
-          </li>`
+          ("relatedItems" in item
+             ?
+             (
+              `<li>
+                <div>
+                  ${item.name}
+                  <div class="arrow"></div>
+                </div>
+                <ul class="none">
+                  ${item.relatedItems.map((subItem) => (
+                    `<li>
+                      <a href="${subItem.link}">
+                        ${subItem.text}
+                      </a>
+                    </li>`
+                  )).join("")}
+                </ul>
+              </li>`
+             )
+            :
+            (
+              `<li>
+                <a href="${item.link}">
+                  ${item.text}
+                </a>
+              </li>`
+            )
           )
         )).join("")}
       </ul>
