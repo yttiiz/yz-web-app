@@ -86,7 +86,7 @@
 
         & ul,
         & dl,
-        & .reviews > p {
+        & #reviews > p {
             width: 50%;
         }
 
@@ -122,52 +122,52 @@
 
         /*=====| reviews |=====*/
 
-        & .reviews dt {
+        & #reviews dt {
             font-weight: 600;
             margin-bottom: calc(var(--base-size) * .5);
         }
 
-        & .reviews dd {
+        & #reviews dd {
             padding-left: calc(var(--base-size) * .5);
         }
-        & .reviews dd:not(:last-of-type) {
+        & #reviews dd:not(:last-of-type) {
             margin-bottom: calc(var(--base-size) * 2);
         }
 
-        & .reviews dd p:first-of-type {
+        & #reviews dd p:first-of-type {
             font-weight: 400;
         }
 
-        & .reviews dd p:last-of-type {
+        & #reviews dd p:last-of-type {
             margin-bottom: calc(var(--base-size) * .25);
         }
 
-        & .reviews dd div,
-        & .reviews ul {
+        & #reviews dd div,
+        & #reviews ul {
             gap: calc(var(--base-size) * .5);
         }
 
-        & .reviews dd div {
+        & #reviews dd div {
             display: flex;
         }
 
-        & .reviews ul {
+        & #reviews ul {
             width: max-content;
             list-style: none;
             display: flex;
         }
 
-        & .reviews li {
+        & #reviews li {
             width: calc(var(--base-size) * 1.5);
         }
 
-        & .reviews li svg {
+        & #reviews li svg {
             fill:rgb(var(--black-rvb) / .15);
             width: 100%;
             height: auto;
         }
 
-        & .reviews li.ranking svg {
+        & #reviews li.ranking svg {
             fill: var(--secondary-color);
         }
 
@@ -340,7 +340,7 @@
             
             & ul,
             & dl,
-            & .reviews > p {
+            & #reviews > p {
                 width: 100%;
             }
 

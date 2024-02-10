@@ -79,7 +79,7 @@ export const SectionsProduct: ComponentType<
                 description.title,
               )}
             </div>
-            <div class="reviews">
+            <div id="reviews">
               ${ReviewsDetails.html(
                 reviews,
                 reviewsAndRate.title,

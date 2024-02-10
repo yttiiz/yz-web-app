@@ -53,13 +53,13 @@ export const ProductCard: ComponentType<
             <p>${product.description}</p>
             <div>
               <div class="social-btns">
-                <button
-                  type="button"
-                  data-button="${product.reviews ? Handler.rateAverage(product.reviews) : "0.0"}"
+                <a
+                  href="/product/${product._id.toString()}#reviews"
+                  data-link="${product.reviews ? Handler.rateAverage(product.reviews) : "0.0"}"
                   title="notez-le !"
                 >
                   ${StarSvg.html}
-                </button>
+                </a>
                 <button
                   type="button"
                   title="partagez-le !"
