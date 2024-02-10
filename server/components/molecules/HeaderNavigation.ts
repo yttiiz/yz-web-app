@@ -2,6 +2,7 @@
 // deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
+  ItemDataType,
   ItemDataTypeAndUserRelationship,
   MoleculeNameType,
 } from "../mod.ts";
@@ -14,6 +15,7 @@ export const HeaderNavigation: ComponentType<
   html: (
     isUserConnected: boolean,
     items: ItemDataTypeAndUserRelationship[],
+    data: ItemDataType[],
   ) => {
     return `
     <nav class="none">
@@ -31,7 +33,7 @@ export const HeaderNavigation: ComponentType<
                   <div class="arrow"></div>
                 </div>
                 <ul class="none">
-                  ${item.relatedItems.map((subItem) => (
+                  ${data.map((subItem) => (
                     `<li>
                       <a href="${subItem.link}">
                         ${subItem.text}

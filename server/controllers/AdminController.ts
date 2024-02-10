@@ -14,21 +14,18 @@ import { Validator } from "@utils";
 import { FormDataType } from "@components";
 import {
   type BookingsType,
-  Mongo,
   type ProductSchemaType,
   type UserSchemaWithOptionalFieldsType,
   UserSchemaWithIDType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
-  public mongo;
   private log;
 
   constructor(
     router: RouterAppType,
   ) {
     super(router);
-    this.mongo = Mongo;
     this.log = new LogController(this);
     this.getAdmin();
     this.postAdmin();

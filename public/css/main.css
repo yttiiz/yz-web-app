@@ -424,8 +424,16 @@ header[data-header="site"] {
         transform: rotateZ(180deg);
     }
 
+    & > nav > ul > li > ul {
+        background: rgb(var(--black-rvb) / .05);
+    }
+
     & > nav > ul > li > ul.none {
         display: none;
+    }
+
+    & > nav > ul > li > ul a {
+        padding-left: calc(var(--base-size) * 2);
     }
 }
 

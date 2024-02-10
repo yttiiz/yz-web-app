@@ -10,6 +10,7 @@ import {
 import type { 
   ComponentType,
   HeaderDataType,
+  ItemDataType,
   TemplateNameType,
 } from "../mod.ts";
 import { SessionAndDataType } from "@controllers";
@@ -28,7 +29,10 @@ export const Header: ComponentType<
     session,
     isConnexionFailed,
     isAdminInterface,
-  }: SessionAndDataType
+    data,
+  }: SessionAndDataType & {
+    data: ItemDataType[];
+  }
   ) => {
     return `
     <header data-header="site">
@@ -48,6 +52,7 @@ export const Header: ComponentType<
                 ${HeaderNavigation.html(
                   session.has("userFirstname"),
                   items,
+                  data,
                 )}
               </div>
               `

@@ -179,6 +179,7 @@ export class AnimationHelper {
      */
     const submenuHandler = (e) => {
       e.currentTarget.querySelector("div").classList.toggle("up");
+      e.currentTarget.nextElementSibling.classList.toggle("none");
     }
 
     /**
