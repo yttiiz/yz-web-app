@@ -37,7 +37,7 @@ export class Mongo {
     id: ObjectId,
     data: T,
     collection: string,
-    key: string,
+    key: string | number,
   ) {
     return await Mongo.update({
       collection,

@@ -19,7 +19,7 @@ export class AdminPage {
       })
     };
 
-      if (dialog.dataset.hasOwnProperty("products")) {
+      if ("products" in dialog.dataset) {
         FormBuilder.insertPictureIn(dialog);
       }
     }

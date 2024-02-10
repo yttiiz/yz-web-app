@@ -2,6 +2,7 @@ deno.lock
 .env
 .vscode
 server/log/*
+server/backup/*
 public/img/*
 server/data/fixtures
 

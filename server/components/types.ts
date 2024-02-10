@@ -79,8 +79,13 @@ export type ItemDataType = {
   className?: string;
 };
 
+export type SubMenuDataType = {
+  name: string;
+  relatedItems: ItemDataType[];
+};
+
 export type ItemDataTypeAndUserRelationship =
-  ItemDataType & {
+  (ItemDataType | SubMenuDataType) & {
   isRelatedToUser: boolean;
 };
 

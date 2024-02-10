@@ -333,6 +333,7 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
         insetDatasetToFields(booking, "createdAt");
       }
 
+      const createdAtTimestamp = booking["createdAt"];
       booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt, "long");
 
       bookingPublicPart.innerHTML = `
@@ -351,6 +352,7 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       ${AdminContentHelper.#getEditOrDeletePart(
         { id: booking._id,
           itemName: booking.userName.split(" ").join("_"),
+          itemDetails: `userId:${booking.userId};startingDate:${booking.startingDate};endingDate:${booking.endingDate};createdAt:${createdAtTimestamp}`,
           dataType: "booking",
           removeEditBtn: isNotBookingInProgress,
       })}`;
@@ -447,12 +449,19 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
   }
 
   /**
-   * @param {{ id: string; dataType: string; userName: string; removeEditBtn: boolean }}  
+   * @param {{
+   * id: string;
+   * dataType: string;
+   * itemName: string;
+   * itemDetails: string;
+   * removeEditBtn: boolean
+   * }}  
    */
   static #getEditOrDeletePart = ({
     id,
     dataType,
     itemName,
+    itemDetails,
     removeEditBtn = false,
   }) => {
     return `
@@ -463,7 +472,7 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
         (
           `<button
               data-action="edit"
-              data-id=${id}
+              data-id="${id}"
               type="button"
             >
               Editer
@@ -472,9 +481,10 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       }
       <button
         data-action="delete"
-        data-id=${id}
-        data-item-name=${itemName}
-        data-type=${dataType}
+        data-id="${id}"
+        data-item-name="${itemName}"
+        data-type="${dataType}"
+        ${itemDetails ? `data-item-details="${itemDetails}"` : ""}
         type="button"
       >
         Supprimer

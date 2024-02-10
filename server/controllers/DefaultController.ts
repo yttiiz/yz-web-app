@@ -2,6 +2,7 @@
 import { oak } from "@deps";
 import * as layout from "@components";
 import { Helper, Http } from "@utils";
+import { FindCursorProductType, Mongo } from "@mongo";
 import type {
   PathAppType,
   ConfigPageType,
@@ -27,12 +28,14 @@ export class DefaultController {
   public sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
   public router;
   public helper;
+  public mongo;
   
   constructor(router?: RouterAppType) {
     router
       ? this.router = router
       : null;
     this.helper = Helper;
+    this.mongo = Mongo;
   }
 
   public response<T extends PathAppType>(
@@ -79,7 +82,7 @@ export class DefaultController {
       isAdminInterface: id.includes("admin"),
     };
 
-    let [html, header, main, footer] = this.createComponents(
+    let [html, header, main, footer] = await this.createComponents(
       appData,
       "Body",
       "Header",
@@ -105,7 +108,7 @@ export class DefaultController {
     return html;
   }
 
-  private createComponents(
+  private async createComponents(
     appData: SessionAndDataType,
     ...args: (layout.TemplateNameType | "Body")[]
   ) {
@@ -114,11 +117,36 @@ export class DefaultController {
     for (const arg of args) {
       arg === "Main"
         ? components.push(layout[arg].html)
-        : components.push(layout[arg].html(appData));
+        :
+        (
+          arg === "Header"
+            ? components.push(layout[arg].html({ ...appData, data: await this.getHeaderData() }))
+            : components.push(layout[arg].html(appData))
+        );
     }
 
     return components;
   }
+
+  private async getHeaderData() {
+    try {
+      const headerItems: { link: string; text: string }[] = [];
+      const cursor = await this.mongo.connectionTo("products");
+      
+      await (cursor as FindCursorProductType)
+        .map((document) => {
+          headerItems.push({
+            link: "/product/" + document._id.toString(),
+            text: document.name,
+          });
+        });
+        
+      return headerItems;
+
+    } catch (error) {
+      this.helper.writeLog(error);
+    }
+  };
 
   private setScript(
     html: string,
