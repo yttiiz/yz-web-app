@@ -12,16 +12,7 @@
     {
       "name": "Appartements",
       "isRelatedToUser": false,
-      "relatedItems": [
-        {
-          "link": "/test",
-          "text": "Marc"
-        },
-        {
-          "link": "/test",
-          "text": "Jacqueline"
-        }
-      ]
+      "relatedItems": []
     },
     {
       "link": "#",

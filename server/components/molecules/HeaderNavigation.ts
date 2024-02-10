@@ -36,7 +36,7 @@ export const HeaderNavigation: ComponentType<
                   ${data.map((subItem) => (
                     `<li>
                       <a href="${subItem.link}">
-                        ${subItem.text}
+                        Aka ${subItem.text}
                       </a>
                     </li>`
                   )).join("")}

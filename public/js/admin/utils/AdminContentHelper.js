@@ -352,7 +352,7 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       ${AdminContentHelper.#getEditOrDeletePart(
         { id: booking._id,
           itemName: booking.userName.split(" ").join("_"),
-          itemDetails: `userId:${booking._id};startingDate:${booking.startingDate};endingDate:${booking.endingDate};createdAt:${createdAtTimestamp}`,
+          itemDetails: `userId:${booking.userId};startingDate:${booking.startingDate};endingDate:${booking.endingDate};createdAt:${createdAtTimestamp}`,
           dataType: "booking",
           removeEditBtn: isNotBookingInProgress,
       })}`;

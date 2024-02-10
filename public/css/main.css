@@ -362,7 +362,6 @@ header[data-header="site"] {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--light);
     }
 
     & > nav {
@@ -387,6 +386,17 @@ header[data-header="site"] {
 
     & > nav ul {
         list-style: none;
+    }
+
+    & > nav::before,
+    & > nav > ul {
+        background: var(--light);
+    }
+
+    & > nav > ul {
+        overflow: hidden;
+        border-radius: var(--btn-border-radius);
+        border: .1rem solid rgb(var(--black-rvb) / .1);
     }
 
     & > nav > ul li:not(:last-child) {
@@ -433,7 +443,20 @@ header[data-header="site"] {
     }
 
     & > nav > ul > li > ul a {
+        position: relative;
         padding-left: calc(var(--base-size) * 2);
+    }
+
+    & > nav > ul > li > ul a:before {
+        content: "";
+        position: absolute;
+        height: 50%;
+        width: calc(var(--base-size) * .1875);
+        border-radius: calc(var(--base-size) * .09375);
+        top: 50%;
+        left: calc(var(--base-size) * 1.25);
+        transform: translateY(-50%);
+        background: var(--secondary-color);
     }
 }
 
