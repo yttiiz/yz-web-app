@@ -209,20 +209,27 @@
             gap: calc(var(--base-size) * .825);
         }
 
+        & .social-btns a {
+            text-align: center;
+            font-size: calc(var(--base-size) * .85);
+        }
+
+        & .social-btns a,
         & .social-btns button {
             width: calc(var(--base-size) * 1.5);
         }
 
-        & .social-btns button::after,
+        & .social-btns a::after,
         & .show-product {
             font-weight: 600;
         }
-
-        & .social-btns button::after {
-            content: attr(data-button);
+        
+        & .social-btns a::after {
+            content: attr(data-link);
             display: block;
         }
 
+        & .social-btns a > svg,
         & .social-btns button > svg {
             width: 100%;
             height: auto;
@@ -230,7 +237,8 @@
             transition: transform var(--smooth);
         }
 
-        & .social-btns button > svg:hover {
+        & .social-btns a:hover > svg,
+        & .social-btns button:hover > svg {
             transform: scale(1.2);
         }
 
