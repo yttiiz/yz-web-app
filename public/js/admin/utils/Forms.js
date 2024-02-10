@@ -23,21 +23,21 @@ export class Forms {
     const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty("delete");
     const formData = Forms.#setFormData(e.target);
 
-    if (isDeleteForm) {
-      formData.set("id", e.target.dataset.id);
-      formData.set("itemName", e.target.dataset.itemName);
+    if (e.target.action.includes("booking")) {
+      isDeleteForm
+        ? Forms.#insertDatasetsInFormDataFromDeleteBtn(
+          formData,
+          e.target,
+        )
+        : Forms.#insertDatasetsInFormDataFromEditBtn(
+          formData,
+          e.target,
+        );
     }
 
     const method = isDeleteForm
       ? "DELETE"
       : "PUT";
-
-    if (e.target.action.includes("booking") && !isDeleteForm) {
-      Forms.#convertBookingDatasetsToFormDataField(
-        formData,
-        e.target,
-      );
-    }
 
     const res = await fetch(e.target.action, {
       method,
@@ -53,12 +53,44 @@ export class Forms {
    * @param {FormData} formData 
    * @param {HTMLFormElement} form 
    */
-  static #convertBookingDatasetsToFormDataField = (formData, form) => {
+  static #insertDatasetsInFormDataFromEditBtn = (formData, form) => {
     for (const item of ["userId", "userName", "createdAt"]) {
       formData.append(
         item,
         form.querySelector(`input[name="${item}"]`).dataset[item],
       );
+    }
+  };
+
+  /**
+   * @param {FormData} formData 
+   * @param {HTMLFormElement} form 
+   */
+  static #insertDatasetsInFormDataFromDeleteBtn = (formData, form) => {
+    /**
+     * @param {string} item 
+     */
+    const recoverData = (item) => {
+      form.dataset[item].split(";")
+      .map((details) => {
+        const [name, value] = details.split(":");
+        formData.append(
+          name,
+          value,
+        );
+      })
+    }
+
+    for (const item of ["id", "itemName", "itemDetails"]) {
+      if (item === "itemDetails") {
+        recoverData(item);
+        continue;
+      }
+
+      formData.append(
+        item,
+        form.dataset[item],
+      )
     }
   };
   

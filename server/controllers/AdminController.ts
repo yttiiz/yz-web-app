@@ -334,7 +334,7 @@ export class AdminController extends DefaultController {
           data.createdAt = itemValue;
 
           const isUpdate = await this.mongo.updateItemIntoDB({
-            data: data,
+            data,
             collection: "bookings",
             key: "bookings",
             itemKey: "createdAt",
@@ -402,31 +402,60 @@ export class AdminController extends DefaultController {
     identifier,
   }: DeleteItemParameterType<T>,
   ) {
-        let itemName = "";
-        const formData = await ctx.request.body.formData();
+    let itemName = "";
+    const formData = await ctx.request.body.formData();
 
-        if ((formData.get("itemName") as string).includes("_")) {
-          itemName = (
-            formData.get("itemName") as string
-          ).split("_").join(" ");
-        }
+    // Set item name
+    (formData.get("itemName") as string).includes("_") 
+      ? itemName = (
+        formData.get("itemName") as string
+      ).split("_").join(" ")
+      : itemName = formData.get("itemName") as string;
+    
+    if (collection === "bookings" || collection === "reviews") {
+      const bookingToDelete = {
+        userId: formData.get("userId"),
+        userName: itemName,
+        startingDate: formData.get("startingDate"),
+        endingDate: formData.get("endingDate"),
+        createdAt: +(formData.get("createdAt") as string),
+      };
+      
+      const isItemDelete = await this.mongo.removeItemFromDB(
+        new ObjectId(formData.get("id") as string), 
+        bookingToDelete,
+        collection,
+        collection,
+      );
 
-        const result = await this.mongo.deleteFromDB(
-          new ObjectId(formData.get("id") as string), 
-          collection,
-        );
+      return this.response(
+        ctx,
+        {
+          message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
+            isItemDelete
+          } été${"delete"}`,
+        },
+        200,
+      );
 
-        const isUserDelete = result === 1;
+    } else {
+      const result = await this.mongo.deleteFromDB(
+        new ObjectId(formData.get("id") as string), 
+        collection,
+      );
 
-        return this.response(
-          ctx,
-          {
-            message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
-              isUserDelete
-            } été${"delete"}`,
-          },
-          200,
-        );
+      const isItemDelete = result === 1;
+
+      return this.response(
+        ctx,
+        {
+          message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
+            isItemDelete
+          } été${"delete"}`,
+        },
+        200,
+      );
+    }
   }
 
   private convertToNumber = (str: string) => {

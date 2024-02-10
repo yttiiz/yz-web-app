@@ -229,7 +229,7 @@ export class FormBuilder {
     // If modal has already been used.
     if (form.classList.contains("none")) {
       form.classList.remove("none");
-      form.previousElementSibling.remove("none");
+      form.previousElementSibling.classList.remove("none");
       form.nextElementSibling.classList.add("none");
     }
 
@@ -237,6 +237,10 @@ export class FormBuilder {
     form.action = "/" + dataType;
     form.dataset.id = e.currentTarget.dataset.id;
     form.dataset.itemName = e.currentTarget.dataset.itemName;
+
+    if (dataType === "booking") {
+      form.dataset.itemDetails = e.currentTarget.dataset.itemDetails;
+    }
 
     // Set modal text.
     dialog.querySelector("h2").textContent = FormBuilder.#setText("h2", dataType);
