@@ -7,8 +7,6 @@ import { RouterContextAppType } from "../controllers/types.ts";
 import { oak } from "@deps";
 import {
   Mongo,
-  ReviewsProductSchemaWithIDType,
-  UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
@@ -26,11 +24,7 @@ import {
 export const router = new oak.Router<AppState>();
 
 // Creating all 'Routes' controllers.
-new HomeController(
-  router,
-  Mongo.connectionTo,
-  Mongo.selectFromDB<ReviewsProductSchemaWithIDType>,
-);
+new HomeController(router);
 new AuthController(router);
 new ProfilController(
   router,

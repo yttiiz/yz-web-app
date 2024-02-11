@@ -1,25 +1,20 @@
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  GetCollectionType,
   ProductsDataType,
   RouterAppType,
   RouterContextAppType,
-  SelectReviewFromDBType,
 } from "./mod.ts";
-import type { FindCursorProductType } from "@mongo";
+import type {
+  ReviewsProductSchemaWithIDType,
+  FindCursorProductType
+} from "@mongo";
 
 export class HomeController extends DefaultController {
-  private getCollection;
-  private selectFromDB;
 
   constructor(
     router: RouterAppType,
-    getCollection: GetCollectionType,
-    selectFromDB: SelectReviewFromDBType,
   ) {
     super(router);
-    this.getCollection = getCollection;
-    this.selectFromDB = selectFromDB;
     this.index();
   }
 
@@ -28,7 +23,7 @@ export class HomeController extends DefaultController {
       "/",
       async (ctx: RouterContextAppType<"/">) => {
         const data: ProductsDataType = {};
-        const cursor = await this.getCollection("products");
+        const cursor = await this.mongo.connectionTo("products");
 
         try {
           if ("message" in cursor && cursor["message"].includes("failed")) {
@@ -53,7 +48,7 @@ export class HomeController extends DefaultController {
 
             for await (const key of Object.keys(data)) {
               const id = data[key as unknown as keyof typeof data]._id;
-              const reviews = await this.selectFromDB(
+              const reviews = await this.mongo.selectFromDB<ReviewsProductSchemaWithIDType>(
                 "reviews",
                 id.toString(),
                 "productId",
