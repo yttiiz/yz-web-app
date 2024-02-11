@@ -20,7 +20,8 @@
     "oak-session": "https://deno.land/x/oak_sessions/mod.ts",
     "mongoose": "https://deno.land/x/mongo@v0.31.2/mod.ts",
     "mongo-find": "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts",
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "nodemailer": "npm:nodemailer"
   },
   "lock": false,
   "tasks": {

@@ -29,4 +29,17 @@ export type FormDataAppType = {
   password: string;
   job: string;
   photo: File | undefined,
+};
+
+export type CredentialsType = {
+  email: string;
+  username: string;
+  password: string;
+};
+
+export type SendParameterType = {
+  to: string;
+  subject: string;
+  content: string;
+  html: string;
 }

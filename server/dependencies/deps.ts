@@ -16,6 +16,7 @@ import {
 import { FindCursor } from "mongo-find";
 import { decode, encode } from "encode";
 import * as bcrypt from "bcrypt";
+import * as nodemailer from "nodemailer";
 
 export {
   bcrypt,
@@ -32,6 +33,7 @@ export {
   oak,
   ObjectId,
   Session,
+  nodemailer,
 };
 
 export type { Document, Filter, UpdateFilter };

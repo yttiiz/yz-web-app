@@ -3,6 +3,7 @@ deno.lock
 .vscode
 server/log/*
 server/backup/*
+server/data/credentials/*
 public/img/*
 server/data/fixtures
 

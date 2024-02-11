@@ -15,7 +15,7 @@ import {
   ReviewsProductSchemaWithIDType,
   ReviewsType,
 } from "@mongo";
-import { Handler, Validator } from "@utils";
+import { Handler, Mailer, Validator } from "@utils";
 import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
@@ -165,6 +165,20 @@ export class ProductController extends DefaultController {
               "bookings",
               "bookings",
             );
+
+            if (isInsertionOk) {
+              try {
+                // TODO improve email content
+                await Mailer.send({
+                  to: ctx.state.session.get("userEmail"),
+                  subject: "Réservation validée",
+                  content: "Félicitations.\nNous avons bien enregistré votre réservation...",
+                  html: `<h1>Félicitations</h1><p>Nous avons bien enregistré votre réservation...</p>`
+                });
+              } catch (error) {
+                this.helper.writeLog(error);
+              }
+            }
 
             isInsertionOk
               ? this.response(

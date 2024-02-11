@@ -29,6 +29,7 @@ export class Helper {
   };
 
   private static writeOpts: Deno.WriteFileOptions = {
+    create: true,
     append: true,
   };
 
@@ -43,12 +44,21 @@ export class Helper {
 
   public static async writeLog(
     error: { message: string },
-    encoder = new TextEncoder(),
   ) {
     const errorMsg = `(${Helper.displayDate({})}) ${error.message},\n`;
-    const content = encoder.encode(errorMsg);
+    const content = new TextEncoder().encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
+  }
+
+  public static async writeEmailLog(
+    message: string,
+  ) {
+    await Deno.writeFile(
+      "server/log/email.txt", 
+      new TextEncoder().encode(`${message},\n`),
+      Helper.writeOpts,
+    );
   }
 
   public static async writeUserPicFile(
