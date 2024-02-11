@@ -43,9 +43,9 @@ export class Helper {
   }
 
   public static async writeLog(
-    error: { message: string },
+    { message }: { message: string },
   ) {
-    const errorMsg = `(${Helper.displayDate({})}) ${error.message},\n`;
+    const errorMsg = `(${Helper.displayDate({})}) ${message},\n`;
     const content = new TextEncoder().encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);

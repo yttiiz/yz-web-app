@@ -650,12 +650,11 @@ footer {
     #data-user-form section form[data-style="user-register"] > div {
         grid-template-columns: 1fr;
     }
+
 }
 
 @media screen and (max-width: 550px) {
-    #logo {
-        > a span {
-            display: none;
-        }
+    #user-session > div > span:first-of-type {
+        display: none;
     }
 }
