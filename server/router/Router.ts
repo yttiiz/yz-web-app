@@ -8,7 +8,6 @@ import { oak } from "@deps";
 import {
   Mongo,
   UserSchemaWithIDType,
-  UserSchemaWithOptionalFieldsType,
 } from "@mongo";
 import { AppState } from "@utils";
 import {
@@ -27,11 +26,7 @@ export const router = new oak.Router<AppState>();
 new HomeController(router);
 new AuthController(router);
 new ProfilController(router);
-new ProductController(
-  router,
-  Mongo.addNewItemIntoDB,
-  Mongo.selectFromDB,
-);
+new ProductController(router);
 new BookingController(
   router,
   Mongo.connectionTo,

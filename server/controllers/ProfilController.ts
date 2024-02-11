@@ -10,9 +10,7 @@ import { UserSchemaWithIDType } from "@mongo";
 
 export class ProfilController extends DefaultController {
 
-  constructor(
-    router: RouterAppType,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
     this.getProfil();
     this.putProfil();

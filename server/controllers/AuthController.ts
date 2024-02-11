@@ -11,9 +11,7 @@ import { FormDataAppType, Validator } from "@utils";
 export class AuthController extends DefaultController {
   private log;
 
-  constructor(
-    router: RouterAppType,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
     this.log = new LogController(this);
     this.getLoginRoute();

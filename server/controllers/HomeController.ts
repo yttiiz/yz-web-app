@@ -11,9 +11,7 @@ import type {
 
 export class HomeController extends DefaultController {
 
-  constructor(
-    router: RouterAppType,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
     this.index();
   }

@@ -1,40 +1,23 @@
-import { ObjectId } from "@deps";
+import { Document, ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
 import {
-  AddNewItemIntoDBType,
   RouterAppType,
   RouterContextAppType,
-  SelectFromDBType,
 } from "./mod.ts";
 import {
   BookingsProductSchemaWithIDType,
-  BookingsType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
-  ReviewsType,
   NotFoundMessageType,
 } from "@mongo";
 import { Handler, Mailer, Validator } from "@utils";
 import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
-  private addNewItemIntoDB;
-  private selectFromDB;
 
-  constructor(
-    router: RouterAppType,
-    addNewItemIntoDB: AddNewItemIntoDBType<BookingsType | ReviewsType>,
-    selectFromDB: SelectFromDBType<
-      | ProductSchemaWithIDType
-      | BookingsProductSchemaWithIDType
-      | ReviewsProductSchemaWithIDType
-      | NotFoundMessageType
-    >,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
-    this.addNewItemIntoDB = addNewItemIntoDB;
-    this.selectFromDB = selectFromDB;
     this.getProduct();
     this.postBooking();
     this.postReview();
@@ -48,21 +31,21 @@ export class ProductController extends DefaultController {
       async (ctx: RouterContextAppType<typeof productRoute>) => {
         try {
           const _id = new ObjectId(ctx.params.id);
-          const getFromDB = async (db: string) =>
-            await this.selectFromDB(
+          const getFromDB = async <T extends Document>(db: string) =>
+            await this.mongo.selectFromDB<T>(
               db,
               ctx.params.id,
               "productId",
             );
 
-          const product = await this.selectFromDB("products", _id);
-          const reviews = await getFromDB("reviews");
-          const bookings = await getFromDB("bookings");
+          const product = await this.mongo.selectFromDB<ProductSchemaWithIDType>("products", _id);
+          const reviews = await getFromDB<ReviewsProductSchemaWithIDType>("reviews");
+          const bookings = await getFromDB<BookingsProductSchemaWithIDType>("bookings");
 
           if ("_id" in product && "_id" in reviews && "_id" in bookings) {
             const actualOrFutureBookings = Handler
               .getProductPresentOrNextBookings(
-                (bookings as BookingsProductSchemaWithIDType).bookings,
+                bookings.bookings,
               );
 
             const body = await this.createHtmlFile(ctx, {
@@ -73,9 +56,11 @@ export class ProductController extends DefaultController {
                 reviews,
                 actualOrFutureBookings,
               },
-              title: "Aka " + (product as ProductSchemaWithIDType).name,
+              title: "Aka " + product.name,
             });
+
             this.response(ctx, body, 200);
+
           } else {
             const body = await this.createHtmlFile(
               ctx,
@@ -142,8 +127,8 @@ export class ProductController extends DefaultController {
           createdAt: Date.now(),
         };
 
-        const product = await this.getProductFromDB(id);
-        const bookings = await this.selectFromDB(
+        const product = await this.getProductFromDB<ProductSchemaWithIDType>(id);
+        const bookings = await this.mongo.selectFromDB<BookingsProductSchemaWithIDType>(
           "bookings",
           id,
           "productId",
@@ -152,14 +137,14 @@ export class ProductController extends DefaultController {
         if ("_id" in product && "_id" in bookings) {
           const bookingsAvailability = Handler.compareBookings(
             newBooking,
-            bookings as BookingsProductSchemaWithIDType,
+            bookings,
           );
 
           if (bookingsAvailability.isAvailable) {
-            const { bookingId } = product as ProductSchemaWithIDType;
+            const { bookingId } = product;
             const _bookingId = new ObjectId(bookingId);
 
-            const isInsertionOk = await this.addNewItemIntoDB(
+            const isInsertionOk = await this.mongo.addNewItemIntoDB(
               _bookingId,
               newBooking,
               "bookings",
@@ -201,15 +186,11 @@ export class ProductController extends DefaultController {
                 },
                 200,
               )
-              : this.response(
-                ctx,
-                {
-                  message: "mince",
-                },
-                503,
-              );
+              : this.response(ctx, "", 503);
+
           } else {
             const { booking } = bookingsAvailability;
+            
             this.response(
               ctx,
               {
@@ -283,12 +264,12 @@ export class ProductController extends DefaultController {
           timestamp: Date.now(),
         };
 
-        const product = await this.getProductFromDB(id);
+        const product = await this.getProductFromDB<ProductSchemaWithIDType>(id);
 
         if ("_id" in product) {
-          const { reviewId } = product as ProductSchemaWithIDType;
+          const { reviewId } = product;
           const _reviewId = new ObjectId(reviewId);
-          const isInsertionOk = await this.addNewItemIntoDB(
+          const isInsertionOk = await this.mongo.addNewItemIntoDB(
             _reviewId,
             newReview,
             "reviews",
@@ -333,8 +314,8 @@ export class ProductController extends DefaultController {
     };
   }
 
-  private async getProductFromDB(id: string) {
+  private async getProductFromDB<T extends Document>(id: string) {
     const _id = new ObjectId(id);
-    return await this.selectFromDB("products", _id);
+    return await this.mongo.selectFromDB<T>("products", _id);
   }
 }

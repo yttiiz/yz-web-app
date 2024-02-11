@@ -12,9 +12,7 @@ export class LogController {
   default;
   isAdmin;
 
-  constructor(
-    defaultController: AuthController | AdminController,
-  ) {
+  constructor(defaultController: AuthController | AdminController) {
     this.default = defaultController;
     this.isAdmin = this.default instanceof AdminController;
   };

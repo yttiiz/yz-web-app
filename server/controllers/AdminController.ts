@@ -6,25 +6,23 @@ import {
   type RouterContextAppType,
   type SessionType,
   type ProductAdminFormDataType,
-  DeleteItemParameterType,
-  NotFoundMessageType,
+  type DeleteItemParameterType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { Validator } from "@utils";
 import { FormDataType } from "@components";
-import {
-  type BookingsType,
-  type ProductSchemaType,
-  type UserSchemaWithOptionalFieldsType,
+import type {
+  BookingsType,
+  ProductSchemaType,
+  UserSchemaWithOptionalFieldsType,
+  NotFoundMessageType,
   UserSchemaWithIDType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
   private log;
 
-  constructor(
-    router: RouterAppType,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
     this.log = new LogController(this);
     this.getAdmin();
