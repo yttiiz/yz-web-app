@@ -2,7 +2,7 @@
 import { oak } from "@deps";
 import * as layout from "@components";
 import { Helper, Http } from "@utils";
-import { FindCursorProductType, Mongo } from "@mongo";
+import { Mongo, ProductSchemaWithIDType } from "@mongo";
 import type {
   PathAppType,
   ConfigPageType,
@@ -129,22 +129,29 @@ export class DefaultController {
   }
 
   private async getHeaderData() {
+    const defaultLinks = [{ link: "/", text: "Accueil" }];
+
     try {
       const headerItems: { link: string; text: string }[] = [];
-      const cursor = await this.mongo.connectionTo("products");
+      const cursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
       
-      await (cursor as FindCursorProductType)
-        .map((document) => {
-          headerItems.push({
-            link: "/product/" + document._id.toString(),
-            text: document.name,
+      if (!("message" in cursor)) {
+        await cursor
+          .map((document) => {
+            headerItems.push({
+              link: "/product/" + document._id.toString(),
+              text: document.name,
+            });
           });
-        });
-        
-      return headerItems;
+          
+        return headerItems;
+      }
 
+      return defaultLinks;
+      
     } catch (error) {
       this.helper.writeLog(error);
+      return defaultLinks;
     }
   };
 

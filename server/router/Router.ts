@@ -27,17 +27,13 @@ new HomeController(router);
 new AuthController(router);
 new ProfilController(router);
 new ProductController(router);
-new BookingController(
-  router,
-  Mongo.connectionTo,
-  Mongo.removeItemFromDB,
-);
+new BookingController(router);
+new AdminController(router);
 new ApiController(
   router,
   Mongo.connectionTo,
   Mongo.selectFromDB<UserSchemaWithIDType>,
 );
-new AdminController(router);
 
 // TODO to be removed (reset "session" in BD)
 router.get(

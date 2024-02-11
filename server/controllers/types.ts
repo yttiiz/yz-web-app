@@ -1,4 +1,4 @@
-import { oak, ObjectId } from "@deps";
+import { Document, oak, ObjectId } from "@deps";
 import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
@@ -78,9 +78,9 @@ export type ConfigMainHtmlType =
   };
 
 // DB Generics
-export type GetCollectionType = (
+export type GetCollectionType<T extends Document = Document> = (
   collection: string,
-) => CollectionType;
+) => CollectionType<T>;
 
 export type InsertIntoDBType<T> = (
   data: T,

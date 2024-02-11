@@ -13,7 +13,7 @@ export type UpdateItemIntoDBParameterType<T> = {
   itemValue: string | number | boolean;
 };
 
-export type CollectionType = Promise<FindCursor<Document> | NotFoundMessageType>;
+export type CollectionType<T extends Document> = Promise<FindCursor<T> | NotFoundMessageType>;
 export type SelectFromDBType<T> = Promise<T | NotFoundMessageType>;
 
 export type NotFoundMessageType = { message: string };

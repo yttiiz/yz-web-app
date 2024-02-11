@@ -14,8 +14,8 @@ export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
 
-  public static async connectionTo(collection: string): CollectionType {
-    const selectedCollection = await Mongo.clientConnectTo(collection);
+  public static async connectionTo<T extends Document = Document>(collection: string): CollectionType<T> {
+    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
       return selectedCollection?.find();
@@ -58,7 +58,6 @@ export class Mongo {
     itemValue,
   }: UpdateItemIntoDBParameterType<T>
   ) {
-    console.log(itemValue)
     return await Mongo.update({
       collection,
       filter: { [`${key}.${itemKey}`]: itemValue },

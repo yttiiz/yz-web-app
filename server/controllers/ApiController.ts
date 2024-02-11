@@ -7,16 +7,8 @@ import type {
   UserDataType,
 } from "./mod.ts";
 import type {
-  FindCursorBookingsProductType,
-  FindCursorProductType,
-  FindCursorUserType,
   UserSchemaWithIDType
 } from "@mongo";
-
-type FindCursorCollectionType =
-  | FindCursorUserType
-  | FindCursorProductType
-  | FindCursorBookingsProductType;
 
 export class ApiController {
   private router;
@@ -46,15 +38,15 @@ export class ApiController {
   }
 
   private users() {
-    this.getDataFromDB<FindCursorUserType>("users");
+    this.getDataFromDB("users");
   }
 
   private products() {
-    this.getDataFromDB<FindCursorProductType>("products");
+    this.getDataFromDB("products");
   }
 
   private bookings() {
-    this.getDataFromDB<FindCursorBookingsProductType>("bookings");
+    this.getDataFromDB("bookings");
   }
 
   private userProfil() {
@@ -109,7 +101,7 @@ export class ApiController {
     )
   }
 
-  private getDataFromDB<T extends FindCursorCollectionType>(collection: string) {
+  private getDataFromDB(collection: string) {
     const path = "/" + collection;
 
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
@@ -117,7 +109,7 @@ export class ApiController {
       const cursor = await this.collection(collection);
 
       try {
-        if ("message" in cursor && cursor["message"].includes("failed")) {
+        if ("message" in cursor) {
           this.response(
             ctx,
             JSON.stringify({
@@ -127,7 +119,7 @@ export class ApiController {
           );
 
         } else {
-          await (cursor as T)
+          await cursor
             .map((document, key) => data[key + 1] = document);
 
           // Remove "hash" property from `users` object.

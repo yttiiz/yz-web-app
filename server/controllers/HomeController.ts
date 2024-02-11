@@ -6,7 +6,7 @@ import type {
 } from "./mod.ts";
 import type {
   ReviewsProductSchemaWithIDType,
-  FindCursorProductType
+  ProductSchemaWithIDType
 } from "@mongo";
 
 export class HomeController extends DefaultController {
@@ -21,27 +21,27 @@ export class HomeController extends DefaultController {
       "/",
       async (ctx: RouterContextAppType<"/">) => {
         const data: ProductsDataType = {};
-        const cursor = await this.mongo.connectionTo("products");
+        const cursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
 
         try {
-          if ("message" in cursor && cursor["message"].includes("failed")) {
-            const body = await this.createHtmlFile(
-              ctx,
-              {
-                id: "data-home",
-                css: "home",
-                data: this.errorMsg,
-              },
-            );
-
-            this.response(
-              ctx,
-              body,
-              200,
-            );
+          if ("message" in cursor) {
+              const body = await this.createHtmlFile(
+                ctx,
+                {
+                  id: "data-home",
+                  css: "home",
+                  data: this.errorMsg,
+                },
+              );
+  
+              this.response(
+                ctx,
+                body,
+                200,
+              );
 
           } else {
-            await (cursor as FindCursorProductType)
+            await cursor
               .map((document, key) => data[key + 1] = document);
 
             for await (const key of Object.keys(data)) {

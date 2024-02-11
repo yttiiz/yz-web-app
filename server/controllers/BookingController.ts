@@ -1,32 +1,24 @@
 import { ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  GetCollectionType,
   RouterAppType,
-  RemoveItemFromDBType,
   RouterContextAppType,
   SessionType,
 } from "./mod.ts";
-import { 
-  type BookingsType,
-  type BookingUserInfoType,
-  type FindCursorBookingsProductType,
-  type FindCursorProductType,
-  type FindCursorReviewProductType,
+import type { 
+  ProductSchemaWithIDType,
+  BookingUserInfoType,
+  FindCursorBookingsProductType,
+  FindCursorProductType,
+  FindCursorReviewProductType,
+  ReviewsProductSchemaWithIDType,
+  BookingsProductSchemaWithIDType,
 } from "@mongo";
 
 export class BookingController extends DefaultController {
-  private getCollection;
-  private removeItemFromDB;
 
-  constructor(
-    router: RouterAppType,
-    getCollection: GetCollectionType,
-    removeItemFromDB: RemoveItemFromDBType<BookingsType>,
-  ) {
+  constructor(router: RouterAppType) {
     super(router);
-    this.getCollection = getCollection;
-    this.removeItemFromDB = removeItemFromDB
     this.getBooking();
     this.deleteBooking();
   }
@@ -39,9 +31,9 @@ export class BookingController extends DefaultController {
           const data: BookingUserInfoType[] = [];
           const userId = (ctx.state.session as SessionType).get("userId");
           
-          const bookingsCursor = await this.getCollection("bookings");
-          const productsCursor = await this.getCollection("products");
-          const reviewsCursor = await this.getCollection("reviews");
+          const bookingsCursor = await this.mongo.connectionTo<BookingsProductSchemaWithIDType>("bookings");
+          const productsCursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
+          const reviewsCursor = await this.mongo.connectionTo<ReviewsProductSchemaWithIDType>("reviews");
 
           try {
             if (
@@ -151,7 +143,7 @@ export class BookingController extends DefaultController {
           createdAt: +bookingCreatedAt,
         };
 
-        const isBookingDelete = await this.removeItemFromDB(
+        const isBookingDelete = await this.mongo.removeItemFromDB(
           _id,
           bookingToDelete,
           "bookings",
