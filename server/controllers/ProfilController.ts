@@ -1,30 +1,19 @@
 import { ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
 import type {
-  DeleteFromDBType,
   RouterAppType,
   RouterContextAppType,
-  SelectUserFromDBType,
-  UpdateUserToDBType,
 } from "./mod.ts";
 import { SessionType } from "@/server/controllers/types.ts";
 import { FormDataAppType, Validator } from "@utils";
+import { UserSchemaWithIDType } from "@mongo";
 
 export class ProfilController extends DefaultController {
-  private updateToDB;
-  private deleteFromDB;
-  private selectFromDB;
 
   constructor(
     router: RouterAppType,
-    updateToDB: UpdateUserToDBType,
-    deleteFromDB: DeleteFromDBType,
-    selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
-    this.updateToDB = updateToDB;
-    this.deleteFromDB = deleteFromDB;
-    this.selectFromDB = selectFromDB;
     this.getProfil();
     this.putProfil();
     this.deleteProfil();
@@ -111,7 +100,7 @@ export class ProfilController extends DefaultController {
           )
           : isNewPhoto = false;
         
-        const user = await this.selectFromDB("users", userId);
+        const user = await this.mongo.selectFromDB<UserSchemaWithIDType>("users", userId);
 
         if (!('_id' in user)) {
           return this.response(
@@ -127,7 +116,7 @@ export class ProfilController extends DefaultController {
           picPath,
         );
 
-        const isUserUpdate = await this.updateToDB(
+        const isUserUpdate = await this.mongo.updateToDB(
           userId,
           updatedData,
           "users",
@@ -187,7 +176,7 @@ export class ProfilController extends DefaultController {
       "/profil",
       async (ctx: RouterContextAppType<"/profil">) => {
         const userId = await ctx.state.session.get("userId") as ObjectId;
-        const result = await this.deleteFromDB(userId, "users");
+        const result = await this.mongo.deleteFromDB(userId, "users");
         const isUserDelete = result === 1;
 
         if (isUserDelete) await ctx.state.session.deleteSession();

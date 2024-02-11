@@ -1,4 +1,4 @@
-import { Document, FindCursor, oak, ObjectId } from "@deps";
+import { oak, ObjectId } from "@deps";
 import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
@@ -8,6 +8,8 @@ import type {
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
   UpdateItemIntoDBParameterType,
+  CollectionType,
+  NotFoundMessageType,
 } from "@mongo";
 import { AppState } from "@utils";
 
@@ -78,7 +80,7 @@ export type ConfigMainHtmlType =
 // DB Generics
 export type GetCollectionType = (
   collection: string,
-) => Promise<FindCursor<Document> | NotFoundMessageType>;
+) => CollectionType;
 
 export type InsertIntoDBType<T> = (
   data: T,
@@ -107,8 +109,6 @@ export type DeleteItemParameterType<T extends string> = {
   collection: string;
   identifier: string;
 };
-
-export type NotFoundMessageType = { message: string };
 
 // Users in DB
 export type UserDataType = Record<

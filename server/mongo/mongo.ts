@@ -3,7 +3,7 @@ import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
 import { 
   UpdateItemIntoDBParameterType,
-  GetCollectionType,
+  CollectionType,
   SelectFromDBType,
 } from "./types.ts";
 
@@ -14,7 +14,7 @@ export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
 
-  public static async connectionTo(collection: string): GetCollectionType {
+  public static async connectionTo(collection: string): CollectionType {
     const selectedCollection = await Mongo.clientConnectTo(collection);
 
     if (selectedCollection) {
