@@ -1,5 +1,5 @@
 {
-  "title": "Renseigner vos informations pour vous enregistrer",
+  "title": "Enregistrer votre compte",
   "action": "/register",
   "method": "POST",
   "content": [

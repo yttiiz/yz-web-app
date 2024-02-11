@@ -10,13 +10,13 @@ export class UserFormHelper extends DefaultFormHelper {
    * @param {Response} response
    */
   static displayDialogRegisterDetails = async (response) => {
-    const { message } = await response.json();
+    const { message, title } = await response.json();
     const dialog = document.querySelector("#data-user-form > dialog");
 
     UserFormHelper.setUserDialogContent(
       dialog,
       {
-        title: message.includes("suspects") ? "Avertissement" : "Bienvenue",
+        title,
         paragraph: message,
       },
     );
@@ -27,13 +27,15 @@ export class UserFormHelper extends DefaultFormHelper {
   /**
    * @param {Response} response
    */
-  static showLoginDetails = async (response) => {
+  static showLoginError = async (response) => {
     const { message } = await response.json();
+    const span = document.querySelector("form > span");
 
-    UserFormHelper.#paragraphToShowInfo({
-      msg: message,
-      dataSet: "error",
-    }, "user");
+    span.textContent = message;
+    
+    if (span.classList.contains("none")) {
+      span.classList.remove("none");
+    }
   };
 
   static displayDialogToDeleteAccount = () => {

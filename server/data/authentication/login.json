@@ -1,5 +1,5 @@
 {
-  "title": "Renseigner vos informations pour vous connecter",
+  "title": "Connexion à votre compte",
   "action": "/login",
   "method": "POST",
   "content": [

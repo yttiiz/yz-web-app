@@ -34,12 +34,7 @@
         & form[data-style] > div {
             padding: calc(var(--base-size) * 2);
         }
-    
-        & form[data-style] > span {
-            padding: calc(var(--base-size) * 2);
-            padding-top: 0;
-        }
-    
+
         & form[data-style] h3 {
             text-align: center;
             border-bottom: var(--border-black-25-percent);
@@ -68,6 +63,8 @@
         }
     
         & form[data-style] > span {
+            padding: calc(var(--base-size) * 2);
+            padding-top: 0;
             font-weight: 500;
             color: var(--danger);
         }

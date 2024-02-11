@@ -107,7 +107,7 @@ export class UserFormPage extends PageBuilder {
       } else {
         switch (e.target.action) {
           case location.origin + "/login":
-            UserFormHelper.showLoginDetails(res);
+            UserFormHelper.showLoginError(res);
             break;
 
           case location.origin + "/register":
