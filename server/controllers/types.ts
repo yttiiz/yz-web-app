@@ -1,13 +1,9 @@
 import { Document, oak, ObjectId } from "@deps";
 import type {
-  ProductSchemaType,
   ProductSchemaWithIDType,
-  ReviewsProductSchemaType,
   ReviewsProductSchemaWithIDType,
-  UserSchemaType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
-  UpdateItemIntoDBParameterType,
   CollectionType,
   NotFoundMessageType,
 } from "@mongo";
@@ -116,22 +112,14 @@ export type UserDataType = Record<
   & UserSchemaWithOptionalFieldsType
   & { _id?: ObjectId }
 >;
-export type InsertUserIntoDBType = InsertIntoDBType<UserSchemaType>;
 export type SelectUserFromDBType = SelectFromDBType<
   UserSchemaWithIDType | NotFoundMessageType
->;
-export type UpdateUserToDBType = UpdateToDBType<
-  UserSchemaWithOptionalFieldsType
 >;
 
 // Products in DB
 export type ProductsDataType = Record<
   number,
   ProductSchemaWithIDType & { reviews?: ReviewsProductSchemaWithIDType }
->;
-export type InsertProductsDBType = InsertIntoDBType<ProductSchemaType>;
-export type SelectProductFromDBType = SelectFromDBType<
-  ProductSchemaWithIDType | NotFoundMessageType
 >;
 
 export type ProductAdminFormDataType = {
@@ -144,28 +132,3 @@ export type ProductAdminFormDataType = {
   thumbnail?: File;
   pictures?: File;
 };
-
-// Reviews & Bookings common types
-export type HandleItemIntoDBType<T> = (
-  id: ObjectId,
-  data: T,
-  collection: string,
-  key: string,
-) => Promise<boolean>;
-
-export type AddNewItemIntoDBType<T> = HandleItemIntoDBType<T>;
-export type RemoveItemFromDBType<T> = HandleItemIntoDBType<T>;
-
-export type UpdateItemIntoDBType<T> = ({
-  data,
-  collection,
-  key,
-  itemKey,
-  itemValue,
-}: UpdateItemIntoDBParameterType<T>) => Promise<boolean>;
-
-// Reviews in DB
-export type InsertReviewIntoDBType = InsertIntoDBType<ReviewsProductSchemaType>;
-export type SelectReviewFromDBType = SelectFromDBType<
-  ReviewsProductSchemaWithIDType | NotFoundMessageType
->;
