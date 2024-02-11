@@ -1,4 +1,4 @@
-import { Collection, FindCursor, ObjectId } from "@deps";
+import { Collection, Document, FindCursor, ObjectId } from "@deps";
 
 type SchemaWithID<T> = T & {
   _id: ObjectId;
@@ -12,6 +12,11 @@ export type UpdateItemIntoDBParameterType<T> = {
   itemKey: string;
   itemValue: string | number | boolean;
 };
+
+export type GetCollectionType = Promise<FindCursor<Document> | NotFoundMessageType>;
+export type SelectFromDBType<T> = Promise<T | NotFoundMessageType>;
+
+export type NotFoundMessageType = { message: string };
 
 // Users types
 export type UserType = {

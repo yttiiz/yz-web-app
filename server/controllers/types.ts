@@ -1,4 +1,4 @@
-import { Document, oak, ObjectId } from "@deps";
+import { Document, FindCursor, oak, ObjectId } from "@deps";
 import type {
   ProductSchemaType,
   ProductSchemaWithIDType,
@@ -78,7 +78,7 @@ export type ConfigMainHtmlType =
 // DB Generics
 export type GetCollectionType = (
   collection: string,
-) => Promise<Document | NotFoundMessageType>;
+) => Promise<FindCursor<Document> | NotFoundMessageType>;
 
 export type InsertIntoDBType<T> = (
   data: T,

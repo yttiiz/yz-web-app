@@ -53,7 +53,7 @@ export class LogController {
     try {
       const user = this.isAdmin
       ? await (this.default as AdminController).mongo.selectFromDB("users", email, "email")
-      : await (this.default as AuthController).selectFromDB("users", email, "email");
+      : await (this.default as AuthController).mongo.selectFromDB("users", email, "email");
 
       if ("_id" in user) {
         // Handle admin.

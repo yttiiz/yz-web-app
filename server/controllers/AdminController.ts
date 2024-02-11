@@ -28,7 +28,7 @@ export class AdminController extends DefaultController {
     super(router);
     this.log = new LogController(this);
     this.getAdmin();
-    this.postAdmin();
+    this.postAdminLogin();
     this.postAdminLogout();
     this.putUser();
     this.putProduct();
@@ -85,7 +85,7 @@ export class AdminController extends DefaultController {
     );
   }
 
-  private postAdmin() {
+  private postAdminLogin() {
     this.router?.post(
       "/admin",
       this.log.loginHandler,

@@ -1,7 +1,11 @@
 import { MongoClient, MongoStore, ObjectId } from "@deps";
 import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
-import { UpdateItemIntoDBParameterType } from "./types.ts";
+import { 
+  UpdateItemIntoDBParameterType,
+  GetCollectionType,
+  SelectFromDBType,
+} from "./types.ts";
 
 /**
  * The app MongoDB Manager.
@@ -10,7 +14,7 @@ export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
 
-  public static async connectionTo(collection: string) {
+  public static async connectionTo(collection: string): GetCollectionType {
     const selectedCollection = await Mongo.clientConnectTo(collection);
 
     if (selectedCollection) {
@@ -92,7 +96,7 @@ export class Mongo {
     collection: string,
     identifier?: string | ObjectId,
     key?: string,
-  ) {
+  ): SelectFromDBType<T> {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
     const filter = typeof identifier === "string"
       ? { [key as string]: identifier } as unknown as Filter<T>

@@ -2,31 +2,19 @@ import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
 import { LogController } from "./mod.ts";
 import type {
-  GetCollectionType,
-  InsertUserIntoDBType,
   PathAppType,
   RouterAppType,
   RouterContextAppType,
-  SelectUserFromDBType,
 } from "./mod.ts";
 import { FormDataAppType, Validator } from "@utils";
 
 export class AuthController extends DefaultController {
   private log;
-  private getCollection;
-  private insertIntoDB;
-  public selectFromDB;
 
   constructor(
     router: RouterAppType,
-    getCollection: GetCollectionType,
-    insertIntoDB: InsertUserIntoDBType,
-    selectFromDB: SelectUserFromDBType,
   ) {
     super(router);
-    this.getCollection = getCollection;
-    this.insertIntoDB = insertIntoDB;
-    this.selectFromDB = selectFromDB;
     this.log = new LogController(this);
     this.getLoginRoute();
     this.getRegisterRoute();
@@ -57,7 +45,7 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      const users = await this.getCollection("users");
+      const users = await this.mongo.connectionTo("users");
 
       if ("message" in users) {
         this.response(ctx, "", 302, "/");
@@ -124,7 +112,7 @@ export class AuthController extends DefaultController {
 
     const hash = await Auth.hashPassword(password as string);
 
-    const userId = await this.insertIntoDB({
+    const userId = await this.mongo.insertIntoDB({
       firstname,
       lastname,
       email,

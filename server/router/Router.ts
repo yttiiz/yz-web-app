@@ -31,12 +31,7 @@ new HomeController(
   Mongo.connectionTo,
   Mongo.selectFromDB<ReviewsProductSchemaWithIDType>,
 );
-new AuthController(
-  router,
-  Mongo.connectionTo,
-  Mongo.insertIntoDB<UserSchemaType>,
-  Mongo.selectFromDB<UserSchemaWithIDType>,
-);
+new AuthController(router);
 new ProfilController(
   router,
   Mongo.updateToDB<UserSchemaWithOptionalFieldsType>,
