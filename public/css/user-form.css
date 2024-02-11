@@ -16,7 +16,7 @@
         width: 100%;
     }
 
-    & section form > input[type="submit"] {
+    & section form input[type="submit"] {
         align-self: end;
         background: var(--primary-color);
     }
@@ -31,16 +31,48 @@
 }
 
 #data-user-form {
+    & form {
+        border: var(--border-black-25-percent);
+        border-radius: var(--base-size);
+    }
+
     & form[data-style="user-login"] {
         margin: 0 auto;
         width: clamp(calc(var(--base-size) * 18.75), 100%, calc(var(--base-size) * 25));
-        padding: calc(var(--base-size) * 2);
-        border: var(--border-black-25-percent);
-        border-radius: var(--base-size);
+    }
+
+    & form,
+    & form > div {
+        display: grid;
         grid-template-columns: 1fr;
     }
 
-    & form[data-style="user-login"] + p {
+    & form h3,
+    & form > div {
+        padding: calc(var(--base-size) * 2);
+    }
+        
+    & form h3 {
+        text-align: center;
+        border-bottom: var(--border-black-25-percent);
+    }
+
+    & form > div {
+        gap: calc(var(--base-size) * 1.8);
+    }
+
+    & form > span {
+        padding: calc(var(--base-size) * 2);
+        padding-top: 0;
+        font-weight: 500;
+        color: var(--danger);
+    }
+
+    & form > span.none {
+        display: none;
+    }
+
+    & form + p {
         text-align: center;
     }
 }

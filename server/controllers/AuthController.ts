@@ -97,7 +97,7 @@ export class AuthController extends DefaultController {
     if (!dataParsed.isOk) {
       return this.response(
         ctx,
-        { message: dataParsed.message },
+        { title : "Avertissement", message: dataParsed.message },
         200,
       );
     }
@@ -140,6 +140,7 @@ export class AuthController extends DefaultController {
       : this.response(
         ctx,
         {
+          title: "Bienvenue " + firstname,
           message:
             `${firstname} ${lastname}, votre profil a été créé avec succès.`,
         },

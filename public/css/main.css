@@ -540,7 +540,7 @@ h4 {
 }
 
 #data-home section .container > ul,
-#data-user-form section form {
+#data-user-form section form[data-style="user-register"] > div {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -548,7 +548,7 @@ h4 {
 main .container,
 #data-home section .container > ul,
 #data-home section .container > ul > li,
-#data-user-form section form {
+#data-user-form section form > div {
     gap: calc(var(--base-size) * 1.8);
 }
 
@@ -646,7 +646,8 @@ footer {
 
 @media screen and (max-width: 750px) {
     #data-home section .container > ul,
-    #data-user-form section form {
+    #data-user-form section form,
+    #data-user-form section form[data-style="user-register"] > div {
         grid-template-columns: 1fr;
     }
 }
