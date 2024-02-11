@@ -73,7 +73,7 @@ export class Validator {
       if (typeof value === "string") {
         
         // Skip unnecessary formData property.
-        if (prop !== "file-text") continue;
+        if (prop.includes("file")) continue;
         
         // Check textarea field type.
         if (
