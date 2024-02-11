@@ -10,35 +10,37 @@ export class AnimationHelper {
   }
 
   handleProductSlider(sliderClassName) {
-    const sliderContainer = document.querySelector(sliderClassName);
-    const slider = sliderContainer.querySelector("figure");
-    const sliderLength = slider.children.length;
-    let index = 0;
-
-    /**
-     * @param {Event} e
-     */
-    const handleMotion = (e) => {
-      const container = e.currentTarget;
-      const width = container.clientWidth;
-      const { x } = container.getBoundingClientRect();
-
-      const isRightClick = (e.clientX - x) >= (width / 2);
-
-      if (isRightClick) {
-        if (index >= (sliderLength - 1)) return;
-
-        index++;
-        this.#moveSlider(slider, sliderLength, index);
-      } else {
-        if (index <= 0) return;
-
-        index--;
-        this.#moveSlider(slider, sliderLength, index);
-      }
-    };
-
-    sliderContainer.addEventListener("click", handleMotion);
+    if (document.querySelector(sliderClassName)) {
+      const sliderContainer = document.querySelector(sliderClassName);
+      const slider = sliderContainer.querySelector("figure");
+      const sliderLength = slider.children.length;
+      let index = 0;
+  
+      /**
+       * @param {Event} e
+       */
+      const handleMotion = (e) => {
+        const container = e.currentTarget;
+        const width = container.clientWidth;
+        const { x } = container.getBoundingClientRect();
+  
+        const isRightClick = (e.clientX - x) >= (width / 2);
+  
+        if (isRightClick) {
+          if (index >= (sliderLength - 1)) return;
+  
+          index++;
+          this.#moveSlider(slider, sliderLength, index);
+        } else {
+          if (index <= 0) return;
+  
+          index--;
+          this.#moveSlider(slider, sliderLength, index);
+        }
+      };
+  
+      sliderContainer.addEventListener("click", handleMotion);
+    }
   }
 
   /**
