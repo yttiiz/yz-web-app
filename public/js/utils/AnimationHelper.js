@@ -7,6 +7,10 @@ export class AnimationHelper {
     this.#handleShowPassword = handleShowPassword;
     this.#handleBurger();
     this.#handleShowPassword();
+   
+    if (document.querySelector("button[data-modal]")) {
+      this.#handleModalOnMobileDevice();
+    }
   }
 
   handleProductSlider(sliderClassName) {
@@ -229,6 +233,17 @@ export class AnimationHelper {
       window.addEventListener("click", windowHandler);
     }
   };
+
+  #handleModalOnMobileDevice = () => {
+    const btn = document.querySelector("button[data-modal]");
+    const modal = btn.nextElementSibling;
+
+    modal.querySelector("h2").textContent = "Espace de connexion";
+    modal.querySelector("p").textContent = "Connectez-vous ou inscrivez-vous !";
+
+    btn.addEventListener("click", () => modal.showModal());
+    modal.querySelector("header button").addEventListener("click", () => modal.close());
+  }
 
   /**
    * @param {HTMLDivElement} slider

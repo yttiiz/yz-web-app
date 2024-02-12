@@ -292,6 +292,10 @@ header[data-header="site"] {
             opacity: 1;
         }
 
+        & > form button > svg path {
+            fill: var(--light);
+        }
+
         & > span {
             color: var(--light);
         }
@@ -302,10 +306,6 @@ header[data-header="site"] {
         height: auto;
         border-radius: 50%;
         border: .2rem solid rgb(var(--white-rvb) / .25);
-    }
-
-    & svg path {
-        fill: var(--light);
     }
 
     & a,
@@ -335,6 +335,28 @@ header[data-header="site"] {
         background: var(--secondary-color);
         color: var(--primary-color);
         border-radius: var(--btn-border-radius);
+    }
+
+    & .login-mobile {
+        display: none;
+        width: calc(var(--base-size) * 1.5625);
+
+        & svg {
+            width: 100%;
+            height: auto;
+        }
+
+        & svg path {
+            fill: var(--secondary-color);
+        }
+
+        & dialog a:first-of-type {
+            color: var(--light);
+        }
+
+        & dialog a:last-of-type {
+            color: var(--dark)
+        }
     }
 }
 
@@ -650,11 +672,20 @@ footer {
     #data-user-form section form[data-style="user-register"] > div {
         grid-template-columns: 1fr;
     }
-
 }
 
 @media screen and (max-width: 550px) {
-    #user-session > div > span:first-of-type {
-        display: none;
+    #user-session {
+        & > div > span:first-of-type {
+            display: none;
+        }
+
+        & .login {
+            display: none;
+        }
+
+        & .login-mobile {
+            display: unset;
+        }
     }
 }

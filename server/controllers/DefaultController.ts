@@ -198,7 +198,7 @@ export class DefaultController {
 
     main = main.replace("{{ id }}", id);
 
-    // Error rendrering.
+    // Error rendering.
     if (this.isConnexionToDBFailed(data)) {
       return main.replace(
         strToReplace,

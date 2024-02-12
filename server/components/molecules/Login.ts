@@ -1,9 +1,12 @@
 import { Helper } from "@utils";
-import type {
-  ComponentType,
-  HeaderDataType,
-  MoleculeNameType,
+import {
+UserSvg,
+  type ComponentType,
+  type HeaderDataType,
+  type MoleculeNameType,
+  LoginRegister,
 } from "../mod.ts";
+import { Dialog } from "@/server/components/molecules/Dialog.ts";
 
 const {
   login,
@@ -26,5 +29,11 @@ export const Login: ComponentType<MoleculeNameType> = {
     ))
       .join("")
   }
+  </div>
+  <div class="login-mobile">
+    <button type="button" data-modal="connexion">
+      ${UserSvg.html}
+    </button>
+    ${Dialog.html({ component: LoginRegister.html })}
   </div>`,
 };
