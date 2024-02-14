@@ -239,7 +239,7 @@ export class AnimationHelper {
     const modal = btn.nextElementSibling;
 
     modal.querySelector("h2").textContent = "Espace de connexion";
-    modal.querySelector("p").textContent = "Connectez-vous ou inscrivez-vous !";
+    modal.querySelector("p").textContent = "Connectez-vous à votre compte ou créez-en un !";
 
     btn.addEventListener("click", () => modal.showModal());
     modal.querySelector("header button").addEventListener("click", () => modal.close());

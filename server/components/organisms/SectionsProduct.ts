@@ -83,7 +83,9 @@ export const SectionsProduct: ComponentType<
               ${ReviewsDetails.html(
                 reviews,
                 reviewsAndRate.title,
-                reviewsAndRate.empty,
+                reviewsAndRate.empty + (
+                  isUserConnected ? "." : ", en vous connectant."
+                ),
               )}
             </div>
             <div class="review-form">
