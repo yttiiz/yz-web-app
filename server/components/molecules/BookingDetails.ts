@@ -7,8 +7,8 @@ import { BookingsType, DetailsProductType } from "@mongo";
 import { Handler, Helper } from "@utils";
 
 type ParameterType = {
-  details: DetailsProductType,
-  lastBooking: BookingsType,
+  details: DetailsProductType;
+  lastBooking: BookingsType;
 };
 
 export const BookingDetails: ComponentType<

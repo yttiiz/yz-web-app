@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
 import { 
@@ -22,7 +21,9 @@ const {
 
 export const Header: ComponentType<
   TemplateNameType,
-  (...args: any[]) => string
+  (arg: SessionAndDataType & {
+    data: ItemDataType[];
+  }) => string
 > = {
   name: "Header",
   html: ({
@@ -49,11 +50,11 @@ export const Header: ComponentType<
                   <span></span>
                   <span></span>
                 </button>
-                ${HeaderNavigation.html(
-                  session.has("userFirstname"),
+                ${HeaderNavigation.html({
+                  isUserConnected: session.has("userFirstname"),
                   items,
                   data,
-                )}
+                })}
               </div>
               `
             )

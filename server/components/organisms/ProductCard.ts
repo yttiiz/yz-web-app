@@ -44,10 +44,10 @@ export const ProductCard: ComponentType<
             </div>
           </header>
           ${
-            PicturesSlider.html(
-              product._id.toString(),
-              product.pictures,
-            )
+            PicturesSlider.html({
+              id: product._id.toString(),
+              pictures: product.pictures,
+            })
           }
           <div>
             <p>${product.description}</p>

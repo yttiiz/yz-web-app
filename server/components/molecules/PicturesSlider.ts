@@ -1,17 +1,23 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   MoleculeNameType,
 } from "../mod.ts";
 import { ImagesProductType } from "@mongo";
 
+type ParameterType = {
+  id: string;
+  pictures: ImagesProductType[];
+}
 export const PicturesSlider: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "PicturesSlider",
-  html: (id: string, pictures: ImagesProductType[]) => (
+  html: ({
+    id,
+    pictures,
+  }: ParameterType) => (
     `
     <div data-slider-length="${pictures.length}">
       <a

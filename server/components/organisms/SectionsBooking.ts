@@ -35,10 +35,10 @@ export const SectionsBooking: ComponentType<
               ${bookingsUserInfo.map(
                 bookingUserInfo => (
                   `<li>
-                    ${BookingCard.html(
+                    ${BookingCard.html({
                       card,
-                      bookingUserInfo,
-                    )}
+                      userInfo: bookingUserInfo,
+                    })}
                   </li>`
                 )
               ).join("")}

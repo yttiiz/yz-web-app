@@ -7,8 +7,8 @@ import { FormDataType, InputsForm } from "../mod.ts";
 
 type ParameterType = {
   form: FormDataType,
-  isUserConnected: boolean,
-  date?: string,
+  isUserConnected: boolean;
+  date?: string;
 };
 
 export const BookingForm: ComponentType<

@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   ItemDataType,
@@ -7,16 +6,22 @@ import type {
   MoleculeNameType,
 } from "../mod.ts";
 
+type ParameterType = {
+  isUserConnected: boolean;
+  items: ItemDataTypeAndUserRelationship[];
+  data: ItemDataType[];
+};
+
 export const HeaderNavigation: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "HeaderNavigation",
-  html: (
-    isUserConnected: boolean,
-    items: ItemDataTypeAndUserRelationship[],
-    data: ItemDataType[],
-  ) => {
+  html: ({
+    isUserConnected,
+    items,
+    data,
+  }: ParameterType) => {
     return `
     <nav class="none">
       <ul>

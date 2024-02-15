@@ -30,8 +30,8 @@ const {
 );
 
 type ParameterType = {
-  data: ProductFullDataType,
-  isUserConnected: boolean
+  data: ProductFullDataType;
+  isUserConnected: boolean;
 };
 
 export const SectionsProduct: ComponentType<

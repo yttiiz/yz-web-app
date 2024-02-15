@@ -8,9 +8,9 @@ import {
 import { RateProductEnum, ReviewsProductSchemaWithIDType } from "@mongo";
 
 type ParameterType = {
-  reviews: ReviewsProductSchemaWithIDType,
-  reviewsTitle: string,
-  reviewsEmpty: string,
+  reviews: ReviewsProductSchemaWithIDType;
+  reviewsTitle: string;
+  reviewsEmpty: string;
 };
 
 export const ReviewsDetails: ComponentType<

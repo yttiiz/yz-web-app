@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import type {
   ComponentType,
@@ -14,7 +13,7 @@ const handleLabel = (label: string, index: number) => {
 
 export const InputsGroupForm: ComponentType<
   MoleculeNameType, 
-  (...args: any[]) => string
+  (arg: InputGroupFormPropsType) => string
 > = {
   name: "InputsGroupForm",
   html: ({

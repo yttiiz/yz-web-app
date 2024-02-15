@@ -7,9 +7,9 @@ import {
 import { ProductSchemaWithIDType } from "@mongo";
 
 type ParameterType = {
-  product: ProductSchemaWithIDType,
-  legend: string,
-  rate: string
+  product: ProductSchemaWithIDType;
+  legend: string;
+  rate: string;
 };
 
 export const ProductFigure: ComponentType<

@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
 import type {
@@ -18,7 +17,7 @@ const {
 
 export const Footer: ComponentType<
   TemplateNameType,
-  (...args: any[]) => string
+  (arg: SessionAndDataType) => string
   > = {
   name: "Footer",
   html: ({

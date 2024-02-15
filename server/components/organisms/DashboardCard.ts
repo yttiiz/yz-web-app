@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   DashboardDetailsType,
@@ -8,7 +7,7 @@ import type {
 
 export const DashboardCard: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  (arg: DashboardDetailsType) => string
 > = {
   name: "DashboardCard",
   html: ({

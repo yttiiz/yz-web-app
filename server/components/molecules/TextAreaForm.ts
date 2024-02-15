@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import type {
   ComponentType,
@@ -8,7 +7,7 @@ import type {
 
 export const TextAreaForm: ComponentType<
   MoleculeNameType, 
-  (...args: any[]) => string
+  (arg: InputDataType) => string
 > = {
   name: "TextAreaForm",
   html: ({ 

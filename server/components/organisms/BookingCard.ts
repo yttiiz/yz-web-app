@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Handler, Helper } from "@utils";
 import {
@@ -9,37 +8,43 @@ StarSvg,
  } from "../mod.ts";
  import { BookingUserInfoType } from "@mongo";
 
+type ParameterType = {
+  card: BookingCardDataType;
+  userInfo: BookingUserInfoType;
+};
+
  export const BookingCard: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "BookingCard",
   html: ({
-    createdAtTitle,
-    periodTitle,
-    details: {
-      type,
-      area,
-      rooms,
+    card: {
+      createdAtTitle,
+      periodTitle,
+      details: {
+        type,
+        area,
+        rooms,
+      },
+      amount,
+      cancelBookingForm: {
+        action,
+        method,
+        btnText,
+      }
     },
-    amount,
-    cancelBookingForm: {
-      action,
-      method,
-      btnText,
-    }
-  }: BookingCardDataType,
-  {
-    bookingId,
-    productName,
-    startingDate,
-    endingDate,
-    details,
-    thumbnail,
-    rates,
-    createdAt,
-  }: BookingUserInfoType,
-  ) => {
+    userInfo: {
+      bookingId,
+      productName,
+      startingDate,
+      endingDate,
+      details,
+      thumbnail,
+      rates,
+      createdAt,
+    },
+  }) => {
     return `
     <div class="booking-card">
       <header>
