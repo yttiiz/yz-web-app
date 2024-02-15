@@ -31,15 +31,26 @@ export type FormDataAppType = {
   photo: File | undefined,
 };
 
-export type CredentialsType = {
+export type CredentialsDataType = {
   email: string;
   username: string;
   password: string;
 };
 
+export type ClientMailType = "outlook" | "hostinger";
+
+export type CredentialsType = Record<
+  ClientMailType,
+  CredentialsDataType
+>;
+
 export type SendParameterType = {
   to: string;
-  subject: string;
-  content: string;
-  html: string;
-}
+  receiver: string;
+};
+
+export type MailConfigType = {
+  host: string;
+  port: number;
+  secure: boolean;
+};

@@ -153,12 +153,9 @@ export class ProductController extends DefaultController {
 
             if (isInsertionOk) {
               try {
-                // TODO improve email content
                 await Mailer.send({
                   to: ctx.state.session.get("userEmail"),
-                  subject: "Réservation validée",
-                  content: "Félicitations.\nNous avons bien enregistré votre réservation...",
-                  html: `<h1>Félicitations</h1><p>Nous avons bien enregistré votre réservation...</p>`
+                  receiver: ctx.state.session.get("userFullname"),
                 });
               } catch (error) {
                 this.helper.writeLog(error);
