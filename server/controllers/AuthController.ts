@@ -47,7 +47,6 @@ export class AuthController extends DefaultController {
 
       if ("message" in users) {
         this.response(ctx, "", 302, "/");
-
       } else {
         const body = await this.createHtmlFile(
           ctx,
@@ -83,7 +82,7 @@ export class AuthController extends DefaultController {
     if (!dataParsed.isOk) {
       return this.response(
         ctx,
-        { title : "Avertissement", message: dataParsed.message },
+        { title: "Avertissement", message: dataParsed.message },
         200,
       );
     }

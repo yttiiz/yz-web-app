@@ -5,18 +5,17 @@ import type {
   RouterContextAppType,
   SessionType,
 } from "./mod.ts";
-import type { 
-  ProductSchemaWithIDType,
+import type {
+  BookingsProductSchemaWithIDType,
   BookingUserInfoType,
   FindCursorBookingsProductType,
   FindCursorProductType,
   FindCursorReviewProductType,
+  ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
-  BookingsProductSchemaWithIDType,
 } from "@mongo";
 
 export class BookingController extends DefaultController {
-
   constructor(router: RouterAppType) {
     super(router);
     this.getBooking();
@@ -30,41 +29,52 @@ export class BookingController extends DefaultController {
         if (ctx.state.session && ctx.state.session.has("userId")) {
           const data: BookingUserInfoType[] = [];
           const userId = (ctx.state.session as SessionType).get("userId");
-          
-          const bookingsCursor = await this.mongo.connectionTo<BookingsProductSchemaWithIDType>("bookings");
-          const productsCursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
-          const reviewsCursor = await this.mongo.connectionTo<ReviewsProductSchemaWithIDType>("reviews");
+
+          const bookingsCursor = await this.mongo.connectionTo<
+            BookingsProductSchemaWithIDType
+          >("bookings");
+          const productsCursor = await this.mongo.connectionTo<
+            ProductSchemaWithIDType
+          >("products");
+          const reviewsCursor = await this.mongo.connectionTo<
+            ReviewsProductSchemaWithIDType
+          >("reviews");
 
           try {
             if (
-              ("message" in bookingsCursor && bookingsCursor["message"].includes("failed")) ||
-              ("message" in productsCursor && productsCursor["message"].includes("failed")) ||
-              ("message" in reviewsCursor && reviewsCursor["message"].includes("failed"))
+              ("message" in bookingsCursor &&
+                bookingsCursor["message"].includes("failed")) ||
+              ("message" in productsCursor &&
+                productsCursor["message"].includes("failed")) ||
+              ("message" in reviewsCursor &&
+                reviewsCursor["message"].includes("failed"))
             ) {
               this.response(ctx, "", 302, "/");
-
             } else {
-              const products = await (productsCursor as FindCursorProductType).toArray();
-              const reviews = await (reviewsCursor as FindCursorReviewProductType).toArray();
-              
+              const products = await (productsCursor as FindCursorProductType)
+                .toArray();
+              const reviews =
+                await (reviewsCursor as FindCursorReviewProductType).toArray();
+
               // Get bookings related to user.
-              for await (const document of (bookingsCursor as FindCursorBookingsProductType)) {
+              for await (
+                const document
+                  of (bookingsCursor as FindCursorBookingsProductType)
+              ) {
                 for (const booking of document.bookings) {
-
                   if (booking.userId === userId.toString()) {
-
                     // Get product details related to current booking.
-                    const details = products.find(product => (
+                    const details = products.find((product) => (
                       document.productId === product._id.toString()
-                      ))?.details;
+                    ))?.details;
 
                     // Get product thumbnail related to current booking.
-                    const thumbnail = products.find(product => (
+                    const thumbnail = products.find((product) => (
                       document.productId === product._id.toString()
-                      ))?.thumbnail;
-                      
+                    ))?.thumbnail;
+
                     // Get product rates related to current booking.
-                    const rates = reviews.find(review => (
+                    const rates = reviews.find((review) => (
                       document.productId === review.productId
                     ))?.reviews.reduce((acc, review) => {
                       acc.push(review.rate);
@@ -89,7 +99,8 @@ export class BookingController extends DefaultController {
               }
 
               data.sort((a, b) => (
-                new Date(a.startingDate).getTime() - new Date(b.startingDate).getTime()
+                new Date(a.startingDate).getTime() -
+                new Date(b.startingDate).getTime()
               ));
 
               const body = await this.createHtmlFile(
@@ -101,19 +112,17 @@ export class BookingController extends DefaultController {
                   data,
                 },
               );
-      
+
               this.response(ctx, body, 200);
             }
-            
           } catch (error) {
             this.helper.writeLog(error);
           }
-
         } else {
           this.response(ctx, "", 302, "/");
         }
       },
-    )
+    );
   }
 
   deleteBooking() {
@@ -154,9 +163,7 @@ export class BookingController extends DefaultController {
           ctx,
           {
             message: `Votre réservation ${
-              isBookingDelete
-                ? "a bien été"
-                : "n'a pas pu être"
+              isBookingDelete ? "a bien été" : "n'a pas pu être"
             } annulée`,
           },
           200,

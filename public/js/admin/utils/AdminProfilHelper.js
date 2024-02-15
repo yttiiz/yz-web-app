@@ -1,7 +1,7 @@
 import * as Type from "../../types/types.js";
 import {
-  handleShowPassword,
   handleInputFile,
+  handleShowPassword,
   setFormData,
 } from "../../utils/_commonFunctions.js";
 
@@ -14,29 +14,33 @@ export class AdminProfilHelper {
 
   /**
    * Fetchs `user` (admin) data & `form` content data from database. Then hydrates user dialog modal with them.
-   * @param {NodeListOf<HTMLButtonElement>} buttons 
+   * @param {NodeListOf<HTMLButtonElement>} buttons
    */
   static init = async (buttons) => {
-    const userDataResponse = await fetch(AdminProfilHelper.#host + "user-profil")
-    const formContentResponse = await fetch(AdminProfilHelper.#host + "user-form-content");
+    const userDataResponse = await fetch(
+      AdminProfilHelper.#host + "user-profil",
+    );
+    const formContentResponse = await fetch(
+      AdminProfilHelper.#host + "user-form-content",
+    );
 
     if (userDataResponse.ok && formContentResponse.ok) {
       const userData = await userDataResponse.json();
       const formContent = await formContentResponse.json();
-      
+
       for (const button of buttons) {
         button.addEventListener("click", () => {
           AdminProfilHelper.#displayDialogAdminProfil(
-            { userData, formContent }
+            { userData, formContent },
           );
-        })
+        });
       }
     }
   };
 
   /**
    * @param {{ userData: Type.User; formContent: Type.FormContentType }}
-   * @param {HTMLDialogElement} dialog 
+   * @param {HTMLDialogElement} dialog
    */
   static #displayDialogAdminProfil = (
     {
@@ -45,13 +49,12 @@ export class AdminProfilHelper {
     },
     dialog = document.querySelector("dialog[data-profil]"),
   ) => {
-
     if (!dialog.querySelector("form")) {
       const formElement = document.createElement("form");
-  
+
       dialog.querySelector("h2").textContent = "Profil administrateur";
       dialog.querySelector("p").innerHTML = `<b>${formContent.title}</b>`;
-  
+
       formElement.setAttribute("action", formContent.action);
       formElement.setAttribute("method", formContent.method);
       formElement.setAttribute("type", "multipart/form-data");
@@ -61,46 +64,47 @@ export class AdminProfilHelper {
 
       const selectLabel = AdminProfilHelper.#createLabelSelectRole();
       formElement.appendChild(selectLabel);
-  
+
       for (const inputData of formContent.content) {
         const label = document.createElement("label");
         const input = AdminProfilHelper.#createInput(
           document.createElement("input"),
           inputData,
         );
-  
+
         if (inputData.type !== "submit") {
           // Insert user values.
-          
+
           if (inputData.type === "password") {
             const eyeContainer = AdminProfilHelper.#createEyePasswordIcon();
             const span = document.createElement("span");
 
             label.innerHTML = `<span>${inputData.label}</span>`;
-            
+
             span.appendChild(input);
             span.appendChild(eyeContainer);
             label.appendChild(span);
-
           } else {
             inputData.type === "date"
-              ? input.setAttribute("value", userData[inputData.name].split("T")[0])
+              ? input.setAttribute(
+                "value",
+                userData[inputData.name].split("T")[0],
+              )
               : input.setAttribute("value", userData[inputData.name]);
             label.innerHTML = `<span>${inputData.label}</span>`;
-            
+
             label.appendChild(input);
           }
 
           formElement.appendChild(label);
-  
         } else {
           input.setAttribute("value", inputData.value);
           formElement.appendChild(input);
         }
       }
-  
+
       formElement.addEventListener("submit", this.#handleForm);
-      
+
       dialog.querySelector("div").appendChild(formElement);
     }
 
@@ -110,7 +114,7 @@ export class AdminProfilHelper {
   };
 
   /**
-   * @param {Type.User} userData 
+   * @param {Type.User} userData
    */
   static #createChangePictureContainer = (userData) => {
     const container = document.createElement("div");
@@ -118,45 +122,48 @@ export class AdminProfilHelper {
       div,
       figure,
       img,
-      button
+      button,
     } = AdminProfilHelper.#createHTMLElements("div", "figure", "img", "button");
-    
+
     const msgContainer = document.createElement("div");
 
     // Set image.
     img.src = userData.photo;
     img.alt = `photo de ${userData.firstname} ${userData.lastname}`;
     figure.appendChild(img);
-    
+
     // Set input
-    button.type = "button"; button.textContent = "Changer votre photo";
+    button.type = "button";
+    button.textContent = "Changer votre photo";
     button.addEventListener("click", AdminProfilHelper.#handleInputFile);
     msgContainer.classList.add("none");
-    
+
     div.appendChild(button);
     div.appendChild(msgContainer);
 
     container.appendChild(figure);
     container.appendChild(div);
-    
+
     return container;
-  }
+  };
 
   static #createLabelSelectRole = () => {
     const {
-      label, 
+      label,
       select,
     } = AdminProfilHelper.#createHTMLElements("label", "select");
-    
+
     select.name = "role";
 
     const defaultOption = document.createElement("option");
-    defaultOption.value = ""; defaultOption.textContent = "Choisir...";
+    defaultOption.value = "";
+    defaultOption.textContent = "Choisir...";
     select.appendChild(defaultOption);
 
     for (const role of AdminProfilHelper.#roles) {
       const option = document.createElement("option");
-      option.value = role; option.textContent = role;
+      option.value = role;
+      option.textContent = role;
       select.appendChild(option);
     }
 
@@ -164,19 +171,27 @@ export class AdminProfilHelper {
     label.appendChild(select);
 
     return label;
-  }
+  };
 
   /**
-   * @param {HTMLDivElement} input 
-   * @param {Type.FormInputType} inputData 
+   * @param {HTMLDivElement} input
+   * @param {Type.FormInputType} inputData
    */
   static #createInput = (input, inputData) => {
     input.setAttribute("type", inputData.type);
-    inputData.placeholder ? input.setAttribute("placeholder", inputData.placeholder) : null;
+    inputData.placeholder
+      ? input.setAttribute("placeholder", inputData.placeholder)
+      : null;
     inputData.name ? input.setAttribute("name", inputData.name) : null;
-    inputData.maxLength ? input.setAttribute("maxLength", inputData.maxLength) : null;
-    inputData.minLength ? input.setAttribute("minLength", inputData.minLength) : null;
-    inputData.autocomplete ? input.setAttribute("autocomplete", inputData.autocomplete) : null;
+    inputData.maxLength
+      ? input.setAttribute("maxLength", inputData.maxLength)
+      : null;
+    inputData.minLength
+      ? input.setAttribute("minLength", inputData.minLength)
+      : null;
+    inputData.autocomplete
+      ? input.setAttribute("autocomplete", inputData.autocomplete)
+      : null;
 
     return input;
   };
@@ -222,7 +237,7 @@ export class AdminProfilHelper {
   };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   static #handleForm = async (e) => {
     e.preventDefault();
@@ -238,13 +253,13 @@ export class AdminProfilHelper {
   };
 
   /**
-   * @param {HTMLFormElement} form 
-   * @param {{ message: string }} param 
+   * @param {HTMLFormElement} form
+   * @param {{ message: string }} param
    */
   static #displayMessage = (form, { message }) => {
     form.closest("dialog")
-    .querySelector("p").textContent = message;
-    
+      .querySelector("p").textContent = message;
+
     form.parentNode.removeChild(form);
-  }
+  };
 }

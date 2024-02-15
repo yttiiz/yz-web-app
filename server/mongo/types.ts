@@ -13,7 +13,9 @@ export type UpdateItemIntoDBParameterType<T> = {
   itemValue: string | number | boolean;
 };
 
-export type CollectionType<T extends Document> = Promise<FindCursor<T> | NotFoundMessageType>;
+export type CollectionType<T extends Document> = Promise<
+  FindCursor<T> | NotFoundMessageType
+>;
 export type SelectFromDBType<T> = Promise<T | NotFoundMessageType>;
 
 export type NotFoundMessageType = { message: string };
@@ -107,7 +109,9 @@ export type ReviewsProductSchemaWithOptionalFieldsType = Partial<
   ReviewsProductSchemaType
 >;
 
-export type FindCursorReviewProductType = FindCursor<ReviewsProductSchemaWithIDType>;
+export type FindCursorReviewProductType = FindCursor<
+  ReviewsProductSchemaWithIDType
+>;
 
 //Bookings types
 export type BookingDateType = {
@@ -121,15 +125,15 @@ export type BookingsType = BookingDateType & {
   userName: string;
 };
 
-export type BookingUserInfoType = (
-  ProductBindingFieldsType &
-  BookingDateType & {
+export type BookingUserInfoType =
+  & ProductBindingFieldsType
+  & BookingDateType
+  & {
     bookingId: string;
-    details: DetailsProductType
+    details: DetailsProductType;
     thumbnail: ImagesProductType;
     rates: number[];
-  }
-);
+  };
 
 export type BookingsProductSchemaType = ProductBindingFieldsType & {
   bookings: BookingsType[];
@@ -142,7 +146,9 @@ export type BookingsProductSchemaWithOptionalFieldsType = Partial<
   ReviewsProductSchemaType
 >;
 
-export type FindCursorBookingsProductType = FindCursor<BookingsProductSchemaWithIDType>;
+export type FindCursorBookingsProductType = FindCursor<
+  BookingsProductSchemaWithIDType
+>;
 
 // Product & Reviews type
 export type ProductFullDataType = {

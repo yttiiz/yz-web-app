@@ -5,21 +5,22 @@ import * as Types from "../../types/types.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
-  static #builder = new PageBuilder;
+  static #builder = new PageBuilder();
 
-  static #formatPrice = (price) => new Intl.NumberFormat(
-    "fr-FR",
-    {
-      maximumFractionDigits: 2,
-      style: "currency",
-      currency: "eur",
-    }
-  ).format(price);
+  static #formatPrice = (price) =>
+    new Intl.NumberFormat(
+      "fr-FR",
+      {
+        maximumFractionDigits: 2,
+        style: "currency",
+        currency: "eur",
+      },
+    ).format(price);
 
   /**
-   * @param {string} date 
-   * @param {"base" | "long"} opts 
-   * @returns 
+   * @param {string} date
+   * @param {"base" | "long"} opts
+   * @returns
    */
   static #formatDate = (date, opts = "base") => {
     const baseOpts = {
@@ -35,13 +36,15 @@ export class AdminContentHelper extends DefaultFormHelper {
     };
 
     return opts === "base"
-     ? new Intl.DateTimeFormat(
-        "fr-FR", baseOpts,
+      ? new Intl.DateTimeFormat(
+        "fr-FR",
+        baseOpts,
       ).format(new Date(date))
-    : new Intl.DateTimeFormat(
-        "fr-FR", longOpts,
+      : new Intl.DateTimeFormat(
+        "fr-FR",
+        longOpts,
       ).format(new Date(date))
-      .replace(",", " à");
+        .replace(",", " à");
   };
 
   /**
@@ -65,10 +68,10 @@ export class AdminContentHelper extends DefaultFormHelper {
     AdminContentHelper.#setUsersCard(users);
     AdminContentHelper.#setProductsCard(products);
     AdminContentHelper.#setBookingsCard(bookings);
-    
+
     // Set animation cards.
     AdminContentHelper.#animCardExpansion();
-  }
+  };
 
   /**
    * @param {Types.Users} users
@@ -77,10 +80,10 @@ export class AdminContentHelper extends DefaultFormHelper {
     const {
       detailsContainer,
       elementsList,
-      dbInfos
+      dbInfos,
     } = AdminContentHelper.#getCardMainElements("users");
-    
-    const getAge  = (date) => {
+
+    const getAge = (date) => {
       return new Date(Date.now() - new Date(date).getTime())
         .getFullYear() - 1970;
     };
@@ -103,10 +106,12 @@ export class AdminContentHelper extends DefaultFormHelper {
         "div",
         "div",
       );
-      
+
       userPublicPart.innerHTML = `
       <figure>
-        <img src="${users[key].photo}" alt="photo de ${users[key].firstname} ${users[key].lastname}" /> 
+        <img src="${users[key].photo}" alt="photo de ${users[key].firstname} ${
+        users[key].lastname
+      }" /> 
       </figure>
       <div>
         <p>Prénom : <strong>${users[key].firstname}</strong></p>
@@ -121,18 +126,22 @@ export class AdminContentHelper extends DefaultFormHelper {
           <p>Email : <strong>${users[key].email}</strong></p>
           <p>Role : <strong>${users[key].role}</strong></p>
         </div>
-        ${AdminContentHelper.#getEditOrDeletePart({
+        ${
+        AdminContentHelper.#getEditOrDeletePart({
           id: users[key]._id,
           itemName: `${users[key].firstname}_${users[key].lastname}`,
           dataType: "user",
-        })}`;
+        })
+      }`;
 
-      users[key].role === "admin"
-        ? userContainer.classList.add("admin")
-        : null;
-      
+      users[key].role === "admin" ? userContainer.classList.add("admin") : null;
+
       FormBuilder.handleCards(userPrivatePart, "users", users);
-      AdminContentHelper.#builder.insertChildren(userContainer, userPublicPart, userPrivatePart);
+      AdminContentHelper.#builder.insertChildren(
+        userContainer,
+        userPublicPart,
+        userPrivatePart,
+      );
       AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
     }
 
@@ -142,7 +151,7 @@ export class AdminContentHelper extends DefaultFormHelper {
         adminRoleCount: Object.keys(users).filter((key) => (
           users[key].role === "admin"
         )).length,
-      } 
+      };
     })(users);
 
     dbInfos.innerHTML = `
@@ -153,10 +162,10 @@ export class AdminContentHelper extends DefaultFormHelper {
       elementsList,
       dbInfos,
     );
-  }
+  };
 
   /**
-   * @param {Types.Products} products 
+   * @param {Types.Products} products
    */
   static #setProductsCard = (products) => {
     const {
@@ -167,35 +176,30 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     const convert = (original) => {
       return Object.keys(original)
-      .reduce((converted, key) => {
-        converted[key] = {...original[key]};
+        .reduce((converted, key) => {
+          converted[key] = { ...original[key] };
 
-        for (const prop in original[key]) {
-          if (prop === "details") {
+          for (const prop in original[key]) {
+            if (prop === "details") {
+              // Add 'details' [Object] props with appropriate key to the new object...
+              for (const detailsProp in original[key][prop]) {
+                const isFloat =
+                  typeof original[key][prop][detailsProp] === "number" &&
+                  !Number.isInteger(original[key][prop][detailsProp]);
 
-            // Add 'details' [Object] props with appropriate key to the new object...
-            for (const detailsProp in original[key][prop]) {
-              const isFloat = (
-                typeof original[key][prop][detailsProp] === "number" &&
-                !Number.isInteger(original[key][prop][detailsProp])
-              );
-              
-              converted[key][detailsProp] = (
-                isFloat
-                 ? (`${original[key][prop][detailsProp]}`).replace(".", ",")
-                 : original[key][prop][detailsProp]
-              );
+                converted[key][detailsProp] = isFloat
+                  ? (`${original[key][prop][detailsProp]}`).replace(".", ",")
+                  : original[key][prop][detailsProp];
+              }
+
+              // ... then delete it.
+              delete converted[key][prop];
+            } else {
+              converted[key][prop] = original[key][prop];
             }
-
-            // ... then delete it.
-            delete converted[key][prop];
-            
-          } else {
-            converted[key][prop] = original[key][prop]
           }
-        }
-        return converted;
-      }, {});
+          return converted;
+        }, {});
     };
 
     if ("message" in products) {
@@ -218,43 +222,62 @@ export class AdminContentHelper extends DefaultFormHelper {
 
       productPublicPart.innerHTML = `
       <figure>
-        <img src="${products[key].thumbnail.src}" alt="${products[key].thumbnail.alt}" />
+        <img src="${products[key].thumbnail.src}" alt="${
+        products[key].thumbnail.alt
+      }" />
       </figure>
       <div>
         <p>Nom : <strong>${products[key].name}</strong></p>
         <p>Type : <strong>${products[key].details.type}</strong></p>
-        <p>Superficie : <strong>${products[key].details.area} m<sup>2<sup></strong></p>
+        <p>Superficie : <strong>${
+        products[key].details.area
+      } m<sup>2<sup></strong></p>
         <p>Pièces : <strong>${products[key].details.rooms}</strong></p>
       </div>`;
 
       productPrivatePart.innerHTML = `
       <div>
         <p>Id : <strong>${products[key]._id}</strong></p>
-        <p>Prix : <strong>${AdminContentHelper.#formatPrice(products[key].details.price)}</strong></p>
+        <p>Prix : <strong>${
+        AdminContentHelper.#formatPrice(products[key].details.price)
+      }</strong></p>
         <p>Description : <strong>${products[key].description}</strong></p>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart({
-        id: products[key]._id,
-        itemName: products[key].name,
-        dataType: "product",
-      })}`;
+      ${
+        AdminContentHelper.#getEditOrDeletePart({
+          id: products[key]._id,
+          itemName: products[key].name,
+          dataType: "product",
+        })
+      }`;
 
       // Create a 'products' copy to set easier product form values.
       const productsFormValues = convert(products);
 
-FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
-      AdminContentHelper.#builder.insertChildren(productContainer, productPublicPart, productPrivatePart);
-      AdminContentHelper.#builder.insertChildren(elementsList, productContainer);
+      FormBuilder.handleCards(
+        productPrivatePart,
+        "products",
+        productsFormValues,
+      );
+      AdminContentHelper.#builder.insertChildren(
+        productContainer,
+        productPublicPart,
+        productPrivatePart,
+      );
+      AdminContentHelper.#builder.insertChildren(
+        elementsList,
+        productContainer,
+      );
     }
 
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
       elementsList,
     );
-  }
+  };
 
   /**
-   * @param {Types.Bookings} bookings 
+   * @param {Types.Bookings} bookings
    */
   static #setBookingsCard = (bookings) => {
     const {
@@ -271,32 +294,28 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
     }
 
     /**
-     * @param {string} startingDate 
-     * @param {string} endingDate 
+     * @param {string} startingDate
+     * @param {string} endingDate
      */
     const bookingState = (startingDate, endingDate) => {
       const start = new Date(startingDate).getTime();
       const end = new Date(endingDate).getTime();
       const now = Date.now();
 
-      return end < now
-        ? "terminée"
-        : (
-            start < now && end >= now
-             ? "en cours"
-             : "à venir"
-          );
+      return end < now ? "terminée" : (
+        start < now && end >= now ? "en cours" : "à venir"
+      );
     };
 
     /**
      * Inject dataset in booking dialog form field.
-     * @param {Types.BookingsRegistred} booking 
-     * @param {string} key 
+     * @param {Types.BookingsRegistred} booking
+     * @param {string} key
      */
     const insetDatasetToFields = (booking, key) => {
       document.querySelector("dialog[data-bookings] form")
-      .querySelector(`input[name="${key}"]`)
-      .dataset[key] = booking[key];
+        .querySelector(`input[name="${key}"]`)
+        .dataset[key] = booking[key];
     };
 
     /** @type {(Types.BookingsRegistred & { productName: string })[]} */
@@ -323,9 +342,8 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
         "div",
       );
 
-      const isNotBookingInProgress = (
-        new Date(booking.endingDate).getTime() < Date.now()
-      );
+      const isNotBookingInProgress =
+        new Date(booking.endingDate).getTime() < Date.now();
 
       if (!isNotBookingInProgress) {
         insetDatasetToFields(booking, "userId");
@@ -334,7 +352,10 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       }
 
       const createdAtTimestamp = booking["createdAt"];
-      booking["createdAt"] = AdminContentHelper.#formatDate(booking.createdAt, "long");
+      booking["createdAt"] = AdminContentHelper.#formatDate(
+        booking.createdAt,
+        "long",
+      );
 
       bookingPublicPart.innerHTML = `
       <div>
@@ -342,48 +363,67 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
         <p>Réservation passée le : <strong>${booking.createdAt}</strong></p>
         <p>Par : <strong>${booking.userName}</strong></p>
       </div>`;
-        
+
       bookingPrivatePart.innerHTML = `
       <div>
-        <p>Date de début : <strong>${AdminContentHelper.#formatDate(booking.startingDate)}</strong></p>
-        <p>Date de fin : <strong>${AdminContentHelper.#formatDate(booking.endingDate)}</strong></p>
-        <p>Etat : <strong>${bookingState(booking.startingDate, booking.endingDate)}</strong></>
+        <p>Date de début : <strong>${
+        AdminContentHelper.#formatDate(booking.startingDate)
+      }</strong></p>
+        <p>Date de fin : <strong>${
+        AdminContentHelper.#formatDate(booking.endingDate)
+      }</strong></p>
+        <p>Etat : <strong>${
+        bookingState(booking.startingDate, booking.endingDate)
+      }</strong></>
       </div>
-      ${AdminContentHelper.#getEditOrDeletePart(
-        { id: booking._id,
-          itemName: booking.userName.split(" ").join("_"),
-          itemDetails: `userId:${booking.userId};startingDate:${booking.startingDate};endingDate:${booking.endingDate};createdAt:${createdAtTimestamp}`,
-          dataType: "booking",
-          removeEditBtn: isNotBookingInProgress,
-      })}`;
+      ${
+        AdminContentHelper.#getEditOrDeletePart(
+          {
+            id: booking._id,
+            itemName: booking.userName.split(" ").join("_"),
+            itemDetails:
+              `userId:${booking.userId};startingDate:${booking.startingDate};endingDate:${booking.endingDate};createdAt:${createdAtTimestamp}`,
+            dataType: "booking",
+            removeEditBtn: isNotBookingInProgress,
+          },
+        )
+      }`;
 
       FormBuilder.handleCards(bookingPrivatePart, "bookings", booking);
-      AdminContentHelper.#builder.insertChildren(bookingContainer, bookingPublicPart, bookingPrivatePart);
-      AdminContentHelper.#builder.insertChildren(elementsList, bookingContainer);
+      AdminContentHelper.#builder.insertChildren(
+        bookingContainer,
+        bookingPublicPart,
+        bookingPrivatePart,
+      );
+      AdminContentHelper.#builder.insertChildren(
+        elementsList,
+        bookingContainer,
+      );
     }
 
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
       elementsList,
     );
-  }
+  };
 
   /**
    * @param {string} className
    * @returns {{ detailsContainer: HTMLDivElement, elementsList: HTMLUListElement, dbInfos: HTMLDivElement }}
    */
   static #getCardMainElements = (selector) => {
-    const [elementsList, dbInfos] = AdminContentHelper.#builder.createHTMLElements("ul", "div");
+    const [elementsList, dbInfos] = AdminContentHelper.#builder
+      .createHTMLElements("ul", "div");
     return {
       detailsContainer: document.querySelector(`.${selector}-details`),
       elementsList,
       dbInfos,
     };
-  }
+  };
 
   /**
-   * @param {HTMLDivElement} root 
-   * @param {HTMLDivElement} children 
+   * @param {HTMLDivElement} root
+   * @param {HTMLDivElement} children
    */
   static #displayErrorMessage = (root, children) => {
     children.textContent = "Les données sont indisponibles.";
@@ -391,62 +431,62 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       root,
       children,
     );
-  }
+  };
 
   static #animCardExpansion = () => {
     for (const subtitle of document.querySelectorAll(".card h3")) {
       subtitle.addEventListener("click", (e) => {
-        const currentBtn = e.currentTarget.parentNode.querySelector("button[data-open]");
+        const currentBtn = e.currentTarget.parentNode.querySelector(
+          "button[data-open]",
+        );
         const containerToAnimate = currentBtn.previousElementSibling;
         /**
-         * @param {HTMLDivElement} container 
+         * @param {HTMLDivElement} container
          */
         const stretchOrRetract = (container) => {
           if (container.classList.contains("open")) {
             container.style.maxHeight = 0;
-
           } else {
             const [elementsList, databaseInfo] = container.children;
-  
+
             const {
               height: elementsListHeight,
               bottom: elementsListBottom,
             } = elementsList.getBoundingClientRect();
-  
+
             if (databaseInfo) {
               const {
                 height: databaseInfoHeight,
-                bottom: databaseInfoBottom, 
+                bottom: databaseInfoBottom,
               } = databaseInfo.getBoundingClientRect();
-  
+
               container.style.maxHeight = (
                 elementsListHeight + (
                   databaseInfoBottom - elementsListBottom
-                ) + databaseInfoHeight) + "px";
-
-              } else {
+                ) + databaseInfoHeight
+              ) + "px";
+            } else {
               container.style.maxHeight = elementsListHeight + "px";
             }
           }
         };
 
         // Animate button.
-        currentBtn.dataset.open === "false" 
+        currentBtn.dataset.open === "false"
           ? currentBtn.dataset.open = "true"
           : currentBtn.dataset.open = "false";
-        
+
         // Animate content.
         if (containerToAnimate.classList.contains("open")) {
           stretchOrRetract(containerToAnimate);
           containerToAnimate.classList.remove("open");
-
         } else {
           stretchOrRetract(containerToAnimate);
           containerToAnimate.classList.add("open");
         }
       });
     }
-  }
+  };
 
   /**
    * @param {{
@@ -455,7 +495,7 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
    * itemName: string;
    * itemDetails: string;
    * removeEditBtn: boolean
-   * }}  
+   * }}
    */
   static #getEditOrDeletePart = ({
     id,
@@ -466,19 +506,17 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
   }) => {
     return `
     <div>
-      ${removeEditBtn
-        ? ""
-        : 
-        (
-          `<button
+      ${
+      removeEditBtn ? "" : (
+        `<button
               data-action="edit"
               data-id="${id}"
               type="button"
             >
               Editer
             </button>`
-        )
-      }
+      )
+    }
       <button
         data-action="delete"
         data-id="${id}"
@@ -491,21 +529,18 @@ FormBuilder.handleCards(productPrivatePart, "products", productsFormValues);
       </button>
     </div>
     `;
-  }
+  };
 
   /**
-   * @param {string} path 
+   * @param {string} path
    */
   static #getData = async (path) => {
     try {
       const res = await fetch(AdminContentHelper.#host + path);
 
-      return res.ok
-       ? await res.json()
-       : { message: "Something went wrong"}; 
-      
+      return res.ok ? await res.json() : { message: "Something went wrong" };
     } catch (error) {
-      return { message: "Something went wrong"};
+      return { message: "Something went wrong" };
     }
-  }
+  };
 }

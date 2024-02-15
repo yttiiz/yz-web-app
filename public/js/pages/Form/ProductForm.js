@@ -4,7 +4,7 @@ import { ProductFormHelper } from "../../utils/ProductFormHelper.js";
 export class ProductFormPage extends PageBuilder {
   initForm = () => {
     const id = "#data-product";
-    
+
     /** @type {HTMLFormElement[]} */
     const forms = document.querySelectorAll(`${id} form`);
     const dialog = document.querySelector(`${id} dialog`);
@@ -112,7 +112,6 @@ export class ProductFormPage extends PageBuilder {
       isClassNameBooking
         ? ProductFormHelper.displayDialogUserBookingDetails(res)
         : ProductFormHelper.displayDialogUserReviewDetails(res);
-
     } else if (res.status === 401) {
       ProductFormHelper.displayDialogErrorInfoToUser(res);
     }

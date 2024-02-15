@@ -69,12 +69,10 @@ export class Validator {
     const isMsgSet = (message: string) => message.length !== messageLength;
 
     for (const [prop, value] of formData) {
-      
       if (typeof value === "string") {
-        
         // Skip unnecessary formData property.
         if (prop.includes("file")) continue;
-        
+
         // Check textarea field type.
         if (
           dataModel.content[key].type === "textarea" &&
@@ -84,19 +82,17 @@ export class Validator {
           isOk = false;
           break;
         }
-        
+
         // Check other field type.
         if (
           dataModel.content[key].type !== "textarea" &&
           (value as string).search(UNAUTHORIZED_CHARACTER) !== -1
         ) {
-          message += isMsgSet(message)
-          ? ""
-          : " des caractères non autorisés.";
+          message += isMsgSet(message) ? "" : " des caractères non autorisés.";
           isOk = false;
           break;
         }
-  
+
         // Check field content length.
         if (
           dataModel.content[key].maxLength &&
@@ -106,19 +102,17 @@ export class Validator {
             ? (message.replace(".", "") + " et en nombre trop importants.")
             : " des caractères en nombre trop importants.";
           isOk = false;
-  
+
           break;
         }
-
       } else {
-        
-      //Check file type.
+        //Check file type.
         const [photoModel] = dataModel.content
           .filter((item) => (
-            item.name === "photo" || item.name === "thumbnail" || item.name === "pictures"
-            )
-          );
-  
+            item.name === "photo" || item.name === "thumbnail" ||
+            item.name === "pictures"
+          ));
+
         const extFile = value.type.split("/").at(1) as string;
 
         if (photoModel.accept && photoModel.accept.includes(extFile)) {
@@ -132,13 +126,13 @@ export class Validator {
           break;
         }
       }
-      
+
       key++;
     }
 
     if (isOk) {
       const data: Record<string, FormDataEntryValue> = {};
-      
+
       for (const [key, value] of formData) {
         data[key] = value;
       }
@@ -153,7 +147,9 @@ export class Validator {
     const now = new Date();
     return {
       year: now.getFullYear(),
-      month: now.getMonth() + 1 < 10 ? (`0${now.getMonth() + 1}`) : (now.getMonth() + 1),
+      month: now.getMonth() + 1 < 10
+        ? (`0${now.getMonth() + 1}`)
+        : (now.getMonth() + 1),
       day: now.getDate() < 10 ? (`0${now.getDate()}`) : (now.getDate()),
     };
   }

@@ -30,10 +30,10 @@ export {
   load,
   MongoClient,
   MongoStore,
+  nodemailer,
   oak,
   ObjectId,
   Session,
-  nodemailer,
 };
 
 export type { Document, Filter, UpdateFilter };

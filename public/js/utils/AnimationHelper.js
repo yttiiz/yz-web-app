@@ -7,7 +7,7 @@ export class AnimationHelper {
     this.#handleShowPassword = handleShowPassword;
     this.#handleBurger();
     this.#handleShowPassword();
-   
+
     if (document.querySelector("button[data-modal]")) {
       this.#handleModalOnMobileDevice();
     }
@@ -19,7 +19,7 @@ export class AnimationHelper {
       const slider = sliderContainer.querySelector("figure");
       const sliderLength = slider.children.length;
       let index = 0;
-  
+
       /**
        * @param {Event} e
        */
@@ -27,22 +27,22 @@ export class AnimationHelper {
         const container = e.currentTarget;
         const width = container.clientWidth;
         const { x } = container.getBoundingClientRect();
-  
+
         const isRightClick = (e.clientX - x) >= (width / 2);
-  
+
         if (isRightClick) {
           if (index >= (sliderLength - 1)) return;
-  
+
           index++;
           this.#moveSlider(slider, sliderLength, index);
         } else {
           if (index <= 0) return;
-  
+
           index--;
           this.#moveSlider(slider, sliderLength, index);
         }
       };
-  
+
       sliderContainer.addEventListener("click", handleMotion);
     }
   }
@@ -186,7 +186,7 @@ export class AnimationHelper {
     const submenuHandler = (e) => {
       e.currentTarget.querySelector("div").classList.toggle("up");
       e.currentTarget.nextElementSibling.classList.toggle("none");
-    }
+    };
 
     /**
      * @param {Event} e
@@ -197,11 +197,9 @@ export class AnimationHelper {
 
       const isNavVisible = !nav.classList.contains("none");
       const isNotASpan = e.target.nodeName !== "SPAN";
-      const isNotTheBurger = (
-        !e.target.id === "burger" ||
-        !(e.target.type === "button")
-      );
-      
+      const isNotTheBurger = !e.target.id === "burger" ||
+        !(e.target.type === "button");
+
       if (isNavVisible && isNotTheBurger && isNotASpan) return;
       toggleElementClasslist(lines, nav);
     };
@@ -212,10 +210,9 @@ export class AnimationHelper {
     const windowHandler = (e) => {
       const lines = document.querySelectorAll("#burger > button > span");
       const nav = document.querySelector("#burger > nav");
-      
+
       if (e.target.closest("#burger")) {
         return;
-        
       } else if (!nav.classList.contains("none")) {
         toggleElementClasslist(lines, nav);
       }
@@ -228,7 +225,7 @@ export class AnimationHelper {
       for (const submenu of submenus) {
         submenu.addEventListener("click", submenuHandler);
       }
-      
+
       burger.addEventListener("click", burgerHandler);
       window.addEventListener("click", windowHandler);
     }
@@ -239,11 +236,15 @@ export class AnimationHelper {
     const modal = btn.nextElementSibling;
 
     modal.querySelector("h2").textContent = "Espace de connexion";
-    modal.querySelector("p").textContent = "Connectez-vous à votre compte ou créez-en un !";
+    modal.querySelector("p").textContent =
+      "Connectez-vous à votre compte ou créez-en un !";
 
     btn.addEventListener("click", () => modal.showModal());
-    modal.querySelector("header button").addEventListener("click", () => modal.close());
-  }
+    modal.querySelector("header button").addEventListener(
+      "click",
+      () => modal.close(),
+    );
+  };
 
   /**
    * @param {HTMLDivElement} slider

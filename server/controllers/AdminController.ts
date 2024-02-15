@@ -1,22 +1,22 @@
 import { DefaultController } from "./DefaultController.ts";
 import { dynamicRoutes } from "@dynamic-routes";
 import {
+  type DeleteItemParameterType,
   LogController,
+  type ProductAdminFormDataType,
   type RouterAppType,
   type RouterContextAppType,
   type SessionType,
-  type ProductAdminFormDataType,
-  type DeleteItemParameterType,
 } from "./mod.ts";
 import { ObjectId } from "@deps";
 import { Validator } from "@utils";
 import { FormDataType } from "@components";
 import type {
   BookingsType,
-  ProductSchemaType,
-  UserSchemaWithOptionalFieldsType,
   NotFoundMessageType,
+  ProductSchemaType,
   UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType,
 } from "@mongo";
 
 export class AdminController extends DefaultController {
@@ -44,17 +44,20 @@ export class AdminController extends DefaultController {
           const session: SessionType = ctx.state.session;
           const isUserConnected = session.has("userId");
           const userEmail = session.get("userEmail");
-          const user = await this.mongo.selectFromDB("users", userEmail, "email");
-          
+          const user = await this.mongo.selectFromDB(
+            "users",
+            userEmail,
+            "email",
+          );
+
           if ("message" in user) {
             return this.response(ctx, "", 302, "/");
-            
           } else if (isUserConnected && user.role !== "admin") {
             return this.response(ctx, "", 302, "/");
           }
 
           const users = await this.mongo.connectionTo("users");
-        
+
           if ("message" in users) {
             return this.response(ctx, "", 302, "/");
           }
@@ -65,9 +68,9 @@ export class AdminController extends DefaultController {
               id: "data-admin",
               css: "admin",
               title: isUserConnected
-              ? "bienvenue sur la plateforme d'admin"
-              : "connexion à l'admin"
-            }
+                ? "bienvenue sur la plateforme d'admin"
+                : "connexion à l'admin",
+            },
           );
 
           this.response(
@@ -75,11 +78,10 @@ export class AdminController extends DefaultController {
             body,
             200,
           );
-
         } catch (error) {
           this.helper.writeLog(error);
         }
-      }
+      },
     );
   }
 
@@ -99,7 +101,7 @@ export class AdminController extends DefaultController {
 
   private putUser() {
     const userRoute = `/${dynamicRoutes.get("user")}:id`; // "/user/:id"
-    
+
     this.router?.put(
       userRoute,
       async (ctx: RouterContextAppType<typeof userRoute>) => {
@@ -109,7 +111,7 @@ export class AdminController extends DefaultController {
           const dataModel = await this.helper.convertJsonToObject(
             "/server/data/admin/user-form.json",
           ) as FormDataType;
-          
+
           const dataParsed = Validator.dataParser(
             formData,
             dataModel,
@@ -134,14 +136,17 @@ export class AdminController extends DefaultController {
           // Remove 'delePicture' cause is unnecessary at this step.
           delete dataParsed.data["deletePicture"];
 
-          const user: UserSchemaWithIDType | NotFoundMessageType = await this.mongo.selectFromDB("users", _id);
-          
-          if (!('_id' in user)) {
+          const user: UserSchemaWithIDType | NotFoundMessageType = await this
+            .mongo.selectFromDB("users", _id);
+
+          if (!("_id" in user)) {
             return this.response(
               ctx,
-              { 
+              {
                 title: "Erreur serveur",
-                message: "Le serveur ne répond pas. Veuillez réessayer ultérieurement !" },
+                message:
+                  "Le serveur ne répond pas. Veuillez réessayer ultérieurement !",
+              },
               200,
             );
           }
@@ -159,7 +164,7 @@ export class AdminController extends DefaultController {
           );
 
           return this.response(
-            ctx, 
+            ctx,
             {
               title: "Modification utilisateur",
               message: this.msgToAdmin`Le profil de ${
@@ -168,7 +173,6 @@ export class AdminController extends DefaultController {
             },
             200,
           );
-            
         } catch (error) {
           this.helper.writeLog(error);
         }
@@ -194,8 +198,7 @@ export class AdminController extends DefaultController {
             "type": "file",
             "name": "thumbnail",
             "accept": ".png, .jpg, .webp, .jpeg",
-          },
-          {
+          }, {
             "type": "file",
             "name": "pictures",
             "accept": ".png, .jpg, .webp, .jpeg",
@@ -231,8 +234,8 @@ export class AdminController extends DefaultController {
             thumbnail,
             pictures,
           } = dataParsed.data as ProductAdminFormDataType;
-          
-          // Convert object to 'Product' document. 
+
+          // Convert object to 'Product' document.
           const document: Partial<
             Omit<ProductSchemaType, "reviewId" | "bookingId">
           > = {
@@ -249,8 +252,8 @@ export class AdminController extends DefaultController {
           if (thumbnail) {
             const alt = `image principale ${name}`;
             const src = await this.helper.writePicFile(
-              thumbnail, 
-              alt.replaceAll(" ", '_'),
+              thumbnail,
+              alt.replaceAll(" ", "_"),
             );
 
             document["thumbnail"] = { src, alt };
@@ -265,7 +268,9 @@ export class AdminController extends DefaultController {
           let isPictureUpdate = true;
 
           if (pictures) {
-            const alt = `${name} - ${type}, le ${this.helper.displayDate({ style: "normal" })}`;
+            const alt = `${name} - ${type}, le ${
+              this.helper.displayDate({ style: "normal" })
+            }`;
             const src = await this.helper.writePicFile(
               pictures,
               `${name}_${Math.round((Math.random() + 1) * 1000)}`,
@@ -283,13 +288,12 @@ export class AdminController extends DefaultController {
             ctx,
             {
               title: "Modification appartement",
-              message: this.msgToAdmin`L'appartement ${
-                name as string
-              } ${isUpdate && isPictureUpdate} été`,
+              message: this.msgToAdmin`L'appartement ${name as string} ${
+                isUpdate && isPictureUpdate
+              } été`,
             },
             200,
           );
-
         } catch (error) {
           this.helper.writeLog(error);
         }
@@ -326,7 +330,7 @@ export class AdminController extends DefaultController {
           }
 
           const data = dataParsed.data as unknown as BookingsType;
-          
+
           // Even 'createdAt' is typed as number, it's a string.
           const itemValue = +(data.createdAt);
           data.createdAt = itemValue;
@@ -343,15 +347,15 @@ export class AdminController extends DefaultController {
             ctx,
             {
               title: "Modification réservation",
-              message: this.msgToAdmin`La réservation de ${data.userName} ${isUpdate} été`,
+              message: this
+                .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été`,
             },
             200,
           );
-          
         } catch (error) {
           this.helper.writeLog(error);
-        }        
-      }
+        }
+      },
     );
   }
 
@@ -363,7 +367,7 @@ export class AdminController extends DefaultController {
           ctx,
           collection: "users",
           identifier: "L'utilisateur",
-        })
+        });
       },
     );
   }
@@ -376,7 +380,7 @@ export class AdminController extends DefaultController {
           ctx,
           collection: "products",
           identifier: "L'appartement",
-        })
+        });
       },
     );
   }
@@ -389,7 +393,7 @@ export class AdminController extends DefaultController {
           ctx,
           collection: "bookings",
           identifier: "La réservation de",
-        })
+        });
       },
     );
   }
@@ -398,18 +402,17 @@ export class AdminController extends DefaultController {
     ctx,
     collection,
     identifier,
-  }: DeleteItemParameterType<T>,
-  ) {
+  }: DeleteItemParameterType<T>) {
     let itemName = "";
     const formData = await ctx.request.body.formData();
 
     // Set item name
-    (formData.get("itemName") as string).includes("_") 
+    (formData.get("itemName") as string).includes("_")
       ? itemName = (
         formData.get("itemName") as string
       ).split("_").join(" ")
       : itemName = formData.get("itemName") as string;
-    
+
     if (collection === "bookings" || collection === "reviews") {
       const bookingToDelete = {
         userId: formData.get("userId"),
@@ -418,9 +421,9 @@ export class AdminController extends DefaultController {
         endingDate: formData.get("endingDate"),
         createdAt: +(formData.get("createdAt") as string),
       };
-      
+
       const isItemDelete = await this.mongo.removeItemFromDB(
-        new ObjectId(formData.get("id") as string), 
+        new ObjectId(formData.get("id") as string),
         bookingToDelete,
         collection,
         collection,
@@ -429,16 +432,14 @@ export class AdminController extends DefaultController {
       return this.response(
         ctx,
         {
-          message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
-            isItemDelete
-          } été${"delete"}`,
+          message: this
+            .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
       );
-
     } else {
       const result = await this.mongo.deleteFromDB(
-        new ObjectId(formData.get("id") as string), 
+        new ObjectId(formData.get("id") as string),
         collection,
       );
 
@@ -447,9 +448,8 @@ export class AdminController extends DefaultController {
       return this.response(
         ctx,
         {
-          message: this.msgToAdmin`${`${identifier} ${itemName}`} ${
-            isItemDelete
-          } été${"delete"}`,
+          message: this
+            .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
       );
@@ -462,7 +462,7 @@ export class AdminController extends DefaultController {
         .reduce((num, chunk, i) => {
           i === 0
             ? num += +chunk
-            : num += (+chunk / (Math.pow(10, chunk.length)));
+            : num += +chunk / (Math.pow(10, chunk.length));
           return num;
         }, 0)
       : +str;
@@ -474,9 +474,8 @@ export class AdminController extends DefaultController {
     isUpdate: boolean,
     updateOrDeleteStr?: "delete" | "update",
   ) => (
-    `${str[0]}${name}${str[1]}${
-      isUpdate ? "a bien" : "n'a pas"
-    }${str[2]} ${
-      updateOrDeleteStr ? "supprimé" : "mis à jour"}.`
+    `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${str[2]} ${
+      updateOrDeleteStr ? "supprimé" : "mis à jour"
+    }.`
   );
 }

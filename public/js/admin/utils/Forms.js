@@ -5,22 +5,25 @@ export class Forms {
 
   static init = () => {
     for (const dialog of document.querySelectorAll("#data-admin dialog")) {
-      
-      if (!dialog.dataset.hasOwnProperty("profil") && !dialog.dataset.hasOwnProperty("response")) {
+      if (
+        !dialog.dataset.hasOwnProperty("profil") &&
+        !dialog.dataset.hasOwnProperty("response")
+      ) {
         dialog.querySelector("form")
-        .addEventListener("submit", Forms.#handleForm);
+          .addEventListener("submit", Forms.#handleForm);
       }
-
     }
-  }
+  };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   static #handleForm = async (e) => {
     e.preventDefault();
 
-    const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty("delete");
+    const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty(
+      "delete",
+    );
     const formData = Forms.#setFormData(e.target);
 
     if (e.target.action.includes("booking")) {
@@ -35,9 +38,7 @@ export class Forms {
         );
     }
 
-    const method = isDeleteForm
-      ? "DELETE"
-      : "PUT";
+    const method = isDeleteForm ? "DELETE" : "PUT";
 
     const res = await fetch(e.target.action, {
       method,
@@ -47,11 +48,11 @@ export class Forms {
     isDeleteForm
       ? Forms.#displayDeleteMessage(e.target, await res.json())
       : Forms.#displayMessage(e.target, await res.json());
-  }
+  };
 
   /**
-   * @param {FormData} formData 
-   * @param {HTMLFormElement} form 
+   * @param {FormData} formData
+   * @param {HTMLFormElement} form
    */
   static #insertDatasetsInFormDataFromEditBtn = (formData, form) => {
     for (const item of ["userId", "userName", "createdAt"]) {
@@ -63,23 +64,23 @@ export class Forms {
   };
 
   /**
-   * @param {FormData} formData 
-   * @param {HTMLFormElement} form 
+   * @param {FormData} formData
+   * @param {HTMLFormElement} form
    */
   static #insertDatasetsInFormDataFromDeleteBtn = (formData, form) => {
     /**
-     * @param {string} item 
+     * @param {string} item
      */
     const recoverData = (item) => {
       form.dataset[item].split(";")
-      .map((details) => {
-        const [name, value] = details.split(":");
-        formData.append(
-          name,
-          value,
-        );
-      })
-    }
+        .map((details) => {
+          const [name, value] = details.split(":");
+          formData.append(
+            name,
+            value,
+          );
+        });
+    };
 
     for (const item of ["id", "itemName", "itemDetails"]) {
       if (item === "itemDetails") {
@@ -90,36 +91,36 @@ export class Forms {
       formData.append(
         item,
         form.dataset[item],
-      )
+      );
     }
   };
-  
+
   /**
    * @param {HTMLDialogElement} form
-   * @param {{ title: string; message: string }}  
+   * @param {{ title: string; message: string }}
    */
   static #displayMessage = (form, { title, message }) => {
     const responseDialog = document.querySelector("dialog[data-response]");
 
     responseDialog.querySelector("h2").textContent = title;
     responseDialog.querySelector("p").textContent = message;
-    
+
     form.closest("dialog").close();
     responseDialog.showModal();
-  }
+  };
 
   /**
    * @param {HTMLDialogElement} form
-   * @param {{ message: string }}  
+   * @param {{ message: string }}
    */
   static #displayDeleteMessage = (form, { message }) => {
     const spanResponse = form.nextElementSibling;
     const paragraph = form.previousElementSibling;
-    
+
     spanResponse.textContent = message;
 
     form.classList.add("none");
     paragraph.classList.add("none");
     spanResponse.classList.remove("none");
-  }
+  };
 }

@@ -3,7 +3,9 @@ import { PageBuilder } from "../Builder.js";
 
 export class BookingFormPage extends PageBuilder {
   initForm = () => {
-    const cancelForms = document.querySelectorAll("#data-booking .booking-card form");
+    const cancelForms = document.querySelectorAll(
+      "#data-booking .booking-card form",
+    );
     const dialog = document.querySelector("#data-booking dialog");
 
     // Init forms submission.
@@ -19,10 +21,10 @@ export class BookingFormPage extends PageBuilder {
       .addEventListener("click", () => {
         dialog.close();
       });
-  }
+  };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    */
   #submitHandler = async (e) => {
     e.preventDefault();
@@ -33,12 +35,12 @@ export class BookingFormPage extends PageBuilder {
     const bookingStart = e.target.dataset.bookingStart;
     const bookingEnd = e.target.dataset.bookingEnd;
     const bookingCreatedAt = e.target.dataset.bookingCreatedAt;
-    
+
     formData.append("bookingId", bookingId);
     formData.append("bookingStart", bookingStart);
     formData.append("bookingEnd", bookingEnd);
     formData.append("bookingCreatedAt", bookingCreatedAt);
-    
+
     const res = await fetch(e.target.action, {
       method: "DELETE",
       body: formData,
@@ -47,5 +49,5 @@ export class BookingFormPage extends PageBuilder {
     if (res.ok && res.status === 200) {
       BookingFormHelper.displayDialogCancelledBooking(res);
     }
-  }
+  };
 }

@@ -1,11 +1,11 @@
 import { Document, oak, ObjectId } from "@deps";
 import type {
+  CollectionType,
+  NotFoundMessageType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
-  CollectionType,
-  NotFoundMessageType,
 } from "@mongo";
 import { AppState } from "@utils";
 
@@ -40,9 +40,9 @@ export type DataResponseType =
 
 // Session
 export type SessionType = {
-  get: <T extends (string | "userId")>(value: T) => (
-    T extends "userId" ? ObjectId : string
-  );
+  get: <T extends (string | "userId")>(
+    value: T,
+  ) => T extends "userId" ? ObjectId : string;
   set: (key: string, value: unknown) => void;
   flash: (key: string, value: string | null) => void;
   has: (value: string) => boolean;
@@ -101,7 +101,7 @@ export type DeleteFromDBType = (
 ) => Promise<number>;
 
 export type DeleteItemParameterType<T extends string> = {
-  ctx: RouterContextAppType<T>,
+  ctx: RouterContextAppType<T>;
   collection: string;
   identifier: string;
 };

@@ -7,23 +7,22 @@ import type { ReturnBookingAvailabilityType } from "./mod.ts";
 
 export class Handler {
   public static rateAverage(
-    ratesOrReviewsDocument: (
+    ratesOrReviewsDocument:
       | ReviewsProductSchemaWithIDType
-      | number[]
-    ),
+      | number[],
     rateCount = 0,
   ) {
     let rateSummary = 0;
     const reviews = "_id" in ratesOrReviewsDocument
-     ? ratesOrReviewsDocument.reviews
-     : ratesOrReviewsDocument;
+      ? ratesOrReviewsDocument.reviews
+      : ratesOrReviewsDocument;
 
     for (const review of reviews) {
       rateCount++;
 
       typeof review === "number"
-      ? (rateSummary += review)
-      : (rateSummary += review.rate);
+        ? (rateSummary += review)
+        : (rateSummary += review.rate);
     }
 
     return new Intl.NumberFormat("fr-FR", {
@@ -81,14 +80,16 @@ export class Handler {
     nextBookings = Handler.sortFromClosestToOlderBookings(nextBookings);
 
     for (const booking of nextBookings) {
-      const isInsideBooking = 
-        Handler.getTime(newBooking.startingDate) > Handler.getTime(booking.startingDate) &&
-        Handler.getTime(newBooking.startingDate) <= Handler.getTime(booking.endingDate);
+      const isInsideBooking = Handler.getTime(newBooking.startingDate) >
+          Handler.getTime(booking.startingDate) &&
+        Handler.getTime(newBooking.startingDate) <=
+          Handler.getTime(booking.endingDate);
 
-      const isSurroundingBooking = 
-        Handler.getTime(newBooking.startingDate) < Handler.getTime(booking.startingDate) &&
-        Handler.getTime(newBooking.endingDate) >= Handler.getTime(booking.endingDate);
-      
+      const isSurroundingBooking = Handler.getTime(newBooking.startingDate) <
+          Handler.getTime(booking.startingDate) &&
+        Handler.getTime(newBooking.endingDate) >=
+          Handler.getTime(booking.endingDate);
+
       if (isInsideBooking || isSurroundingBooking) {
         bool = false;
         return {
@@ -113,12 +114,12 @@ export class Handler {
         Handler.getTime(booking.startingDate) > today.getTime() ||
         Handler.getTime(booking.endingDate) < today.getTime()
       ) {
-
         // Add 1 to month cause it start at 0.
         const month = today.getMonth() + 1;
 
-        return `${today.getFullYear()}-${month < 10 ? `0${month}` : month}-${today.getDate()}`;
-
+        return `${today.getFullYear()}-${
+          month < 10 ? `0${month}` : month
+        }-${today.getDate()}`;
       } else {
         return booking.endingDate;
       }
@@ -140,5 +141,4 @@ export class Handler {
   private static getTime(date: string) {
     return new Date(date).getTime();
   }
-    
 }

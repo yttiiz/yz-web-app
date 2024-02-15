@@ -1,14 +1,11 @@
 // TODO to be removed (reset "session" in BD)
-import { ObjectId, FindCursor } from "../dependencies/deps.ts";
+import { FindCursor, ObjectId } from "../dependencies/deps.ts";
 import { Http } from "@utils";
 import { RouterContextAppType } from "../controllers/types.ts";
 //
 
 import { oak } from "@deps";
-import {
-  Mongo,
-  UserSchemaWithIDType,
-} from "@mongo";
+import { Mongo, UserSchemaWithIDType } from "@mongo";
 import { AppState } from "@utils";
 import {
   AdminController,
@@ -45,9 +42,9 @@ router.get(
       id: string;
       data: {
         _flash: {
-          message?: string
-        }
-      }
+          message?: string;
+        };
+      };
     };
 
     if ("message" in sessions) {
@@ -57,22 +54,20 @@ router.get(
         async (session) => {
           const _id = session._id;
           if (!session.data._flash.message) {
-
             await Mongo.deleteFromDB(_id, "session");
           }
-        }
-      )
+        },
+      );
     }
-    
+
     const url = new URL("/", Deno.env.get("APP_URL"));
 
     new Http(ctx)
-    .setHeaders({
-      name: "Content-Type",
-      value: "application/json"
-
-    })
-    .redirect(url)
-    .setResponse(JSON.stringify({ message: "session clean"}), 200)
-  }
-)
+      .setHeaders({
+        name: "Content-Type",
+        value: "application/json",
+      })
+      .redirect(url)
+      .setResponse(JSON.stringify({ message: "session clean" }), 200);
+  },
+);

@@ -1,13 +1,12 @@
 import { nodemailer } from "@deps";
 import { Helper } from "./mod.ts";
 import type {
-  SendParameterType,
   CredentialsType,
-  MailConfigType
+  MailConfigType,
+  SendParameterType,
 } from "./mod.ts";
 
 export class Mailer {
-  
   // Outlook config
   private static OUTLOOK_CONFIG: MailConfigType = {
     host: "smtp-mail.outlook.com",
@@ -25,19 +24,18 @@ export class Mailer {
   public static async send({
     to,
     receiver,
-  }: SendParameterType,
-  ) {
+  }: SendParameterType) {
     const {
       hostinger: {
         email,
         username,
         password,
-      }
+      },
     }: CredentialsType = await Helper.convertJsonToObject(
       "/server/data/credentials/email.credentials.json",
     );
 
-    const transporter =  nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       host: Mailer.HOSTINGER_CONFIG.host,
       port: Mailer.HOSTINGER_CONFIG.port,
       secure: Mailer.HOSTINGER_CONFIG.secure,
@@ -58,13 +56,13 @@ export class Mailer {
     await Helper.writeEmailLog(
       `Email envoyé le ${
         Helper.displayDate({ style: "normal" })
-      }. Id : ${info.messageId},`
+      }. Id : ${info.messageId},`,
     );
   }
 
   private static plainText(receiver: string) {
     return `Félicitations ${receiver}.\nNous avons bien enregistré votre réservation...`;
-  };
+  }
 
   private static html(receiver: string) {
     return `<h1>Félicitations ${receiver}</h1>

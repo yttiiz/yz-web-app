@@ -1,10 +1,10 @@
 import { MongoClient, MongoStore, ObjectId } from "@deps";
 import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
-import { 
-  UpdateItemIntoDBParameterType,
+import {
   CollectionType,
   SelectFromDBType,
+  UpdateItemIntoDBParameterType,
 } from "./types.ts";
 
 /**
@@ -14,7 +14,9 @@ export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
 
-  public static async connectionTo<T extends Document = Document>(collection: string): CollectionType<T> {
+  public static async connectionTo<T extends Document = Document>(
+    collection: string,
+  ): CollectionType<T> {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
@@ -56,8 +58,7 @@ export class Mongo {
     key,
     itemKey,
     itemValue,
-  }: UpdateItemIntoDBParameterType<T>
-  ) {
+  }: UpdateItemIntoDBParameterType<T>) {
     return await Mongo.update({
       collection,
       filter: { [`${key}.${itemKey}`]: itemValue },
@@ -87,7 +88,7 @@ export class Mongo {
       const id: ObjectId = await selectedCollection.insertOne(data);
       return id.toHexString();
     }
-    
+
     return Mongo.errorMsg;
   }
 
@@ -114,7 +115,7 @@ export class Mongo {
 
       return { message };
     }
-    
+
     return { message: Mongo.errorMsg };
   }
 
@@ -135,7 +136,6 @@ export class Mongo {
     try {
       const db = await Mongo.client.connect(url);
       return new MongoStore(db, "session");
-
     } catch (error) {
       Helper.writeLog(error);
     }
@@ -170,7 +170,6 @@ export class Mongo {
         Deno.env.get("DATABASE_URL") as string,
       );
       return db.collection<T>(collection);
-      
     } catch (error) {
       Helper.writeLog(error);
     }

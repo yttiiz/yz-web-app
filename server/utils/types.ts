@@ -28,7 +28,7 @@ export type FormDataAppType = {
   birth: string;
   password: string;
   job: string;
-  photo: File | undefined,
+  photo: File | undefined;
 };
 
 export type CredentialsDataType = {

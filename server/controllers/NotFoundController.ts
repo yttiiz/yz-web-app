@@ -18,7 +18,7 @@ export class NotFoundController extends DefaultController {
         title: "page inexistante",
       },
     );
-    
+
     return this.response(ctx, body, status);
   }
 }

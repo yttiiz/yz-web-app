@@ -67,7 +67,9 @@ export type ComponentType<
   ) = "Body",
   U extends (
     | string
-    | (<A extends (...args: any) => any>(arg: Parameters<A>) => string | Promise<string>)
+    | (<A extends (...args: any) => any>(
+      arg: Parameters<A>,
+    ) => string | Promise<string>)
   ) = string,
 > = {
   name: T;
@@ -86,9 +88,10 @@ export type SubMenuDataType = {
 };
 
 export type ItemDataTypeAndUserRelationship =
-  (ItemDataType | SubMenuDataType) & {
-  isRelatedToUser: boolean;
-};
+  & (ItemDataType | SubMenuDataType)
+  & {
+    isRelatedToUser: boolean;
+  };
 
 export type TitleAndDescriptionType = {
   title: string;
@@ -100,10 +103,9 @@ export type ButtonType = {
   btnLink?: string;
 };
 
-export type InformativeContentAndButtonType = (
-  ButtonType &
-  TitleAndDescriptionType
-);
+export type InformativeContentAndButtonType =
+  & ButtonType
+  & TitleAndDescriptionType;
 
 export type FormAttributesType = {
   action: string;
@@ -188,7 +190,7 @@ export type FormDataType = FormAttributesType & {
 export type DashboardDetailsType = {
   title: string;
   className: string;
-}
+};
 
 export type DashboardDataType = {
   title: string;
@@ -199,13 +201,14 @@ export type DashboardDataType = {
 
 export type DeleteAccountDataType = {
   deleteAccount: InformativeContentAndButtonType;
-  deleteModal: InformativeContentAndButtonType &
-  FormAttributesType
+  deleteModal:
+    & InformativeContentAndButtonType
+    & FormAttributesType;
 };
 
-export type CancelBookingFormType = 
-  FormAttributesType & 
-  Pick<ButtonType, "btnText">;
+export type CancelBookingFormType =
+  & FormAttributesType
+  & Pick<ButtonType, "btnText">;
 
 export type BookingCardDataType = {
   createdAtTitle: string;

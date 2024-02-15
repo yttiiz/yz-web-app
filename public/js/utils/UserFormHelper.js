@@ -32,7 +32,7 @@ export class UserFormHelper extends DefaultFormHelper {
     const span = document.querySelector("form > span");
 
     span.textContent = message;
-    
+
     if (span.classList.contains("none")) {
       span.classList.remove("none");
     }
@@ -62,13 +62,13 @@ export class UserFormHelper extends DefaultFormHelper {
     const dialog = document.querySelector(id + " > dialog");
 
     if (photo) {
-      // Set img src to new photo's path. 
+      // Set img src to new photo's path.
       document.querySelector(id + " figure > img")
-      .src = photo;
+        .src = photo;
 
       // Hide user photo details div.
       document.querySelector(".user-photo > div")
-      .classList.add("none");
+        .classList.add("none");
     }
 
     UserFormHelper.setProfilDialogContent(

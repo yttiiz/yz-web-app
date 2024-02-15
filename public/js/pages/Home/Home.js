@@ -14,23 +14,25 @@ export class HomePage extends PageBuilder {
    * @param {Types.Users} users
    */
   renderContent = (users) => {
-    const sharedBtn = document.querySelectorAll(".social-btns button:last-of-type");
+    const sharedBtn = document.querySelectorAll(
+      ".social-btns button:last-of-type",
+    );
     /** @type {HTMLDialogElement} */
     const dialog = document.querySelector(`#data-home dialog`);
 
     // Init display event 'share link' dialog modal.
     for (const btn of sharedBtn) {
       btn.addEventListener("click", (e) => {
-        
         // Select 'li' (card) then 'h3'.
         const productName = e.currentTarget.closest("li")
-        .querySelector("h3").textContent;
+          .querySelector("h3").textContent;
 
         DefaultFormHelper.setHomeDialogContent(
           dialog,
           {
             title: "Partagez sur les réseaux",
-            paragraph: `Copiez le lien vers <b>${productName}</b>, ci-dessous, pour le partager où vous le souhaitez.`,
+            paragraph:
+              `Copiez le lien vers <b>${productName}</b>, ci-dessous, pour le partager où vous le souhaitez.`,
           },
           e.currentTarget,
         );
@@ -43,7 +45,7 @@ export class HomePage extends PageBuilder {
     dialog.querySelector("button[data-close]")
       .addEventListener("click", () => {
         dialog.close();
-    });
+      });
 
     const sections = [
       this.#renderSection(users, this.#renderUsers),

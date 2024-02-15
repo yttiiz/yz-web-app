@@ -28,10 +28,9 @@ export const SectionAuthForm: ComponentType<
           data-style="user-${action.replace("/", "")}"
         >
           <h3>
-          Renseignez vos ${path === "/register"
-              ? "informations"
-              : "identifiants"
-            }
+          Renseignez vos ${
+      path === "/register" ? "informations" : "identifiants"
+    }
           </h3>
           <div>
             ${InputsForm.html({ content })}

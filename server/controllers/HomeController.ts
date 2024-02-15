@@ -5,12 +5,11 @@ import type {
   RouterContextAppType,
 } from "./mod.ts";
 import type {
+  ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
-  ProductSchemaWithIDType
 } from "@mongo";
 
 export class HomeController extends DefaultController {
-
   constructor(router: RouterAppType) {
     super(router);
     this.index();
@@ -21,32 +20,35 @@ export class HomeController extends DefaultController {
       "/",
       async (ctx: RouterContextAppType<"/">) => {
         const data: ProductsDataType = {};
-        const cursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
+        const cursor = await this.mongo.connectionTo<ProductSchemaWithIDType>(
+          "products",
+        );
 
         try {
           if ("message" in cursor) {
-              const body = await this.createHtmlFile(
-                ctx,
-                {
-                  id: "data-home",
-                  css: "home",
-                  data: this.errorMsg,
-                },
-              );
-  
-              this.response(
-                ctx,
-                body,
-                200,
-              );
+            const body = await this.createHtmlFile(
+              ctx,
+              {
+                id: "data-home",
+                css: "home",
+                data: this.errorMsg,
+              },
+            );
 
+            this.response(
+              ctx,
+              body,
+              200,
+            );
           } else {
             await cursor
               .map((document, key) => data[key + 1] = document);
 
             for await (const key of Object.keys(data)) {
               const id = data[key as unknown as keyof typeof data]._id;
-              const reviews = await this.mongo.selectFromDB<ReviewsProductSchemaWithIDType>(
+              const reviews = await this.mongo.selectFromDB<
+                ReviewsProductSchemaWithIDType
+              >(
                 "reviews",
                 id.toString(),
                 "productId",

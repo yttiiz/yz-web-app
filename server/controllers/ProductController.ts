@@ -1,21 +1,17 @@
 import { Document, ObjectId } from "@deps";
 import { dynamicRoutes } from "@dynamic-routes";
 import { DefaultController } from "./DefaultController.ts";
-import {
-  RouterAppType,
-  RouterContextAppType,
-} from "./mod.ts";
+import { RouterAppType, RouterContextAppType } from "./mod.ts";
 import {
   BookingsProductSchemaWithIDType,
+  NotFoundMessageType,
   ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
-  NotFoundMessageType,
 } from "@mongo";
 import { Handler, Mailer, Validator } from "@utils";
 import { ProductDataType } from "@/server/components/types.ts";
 
 export class ProductController extends DefaultController {
-
   constructor(router: RouterAppType) {
     super(router);
     this.getProduct();
@@ -38,9 +34,15 @@ export class ProductController extends DefaultController {
               "productId",
             );
 
-          const product = await this.mongo.selectFromDB<ProductSchemaWithIDType>("products", _id);
-          const reviews = await getFromDB<ReviewsProductSchemaWithIDType>("reviews");
-          const bookings = await getFromDB<BookingsProductSchemaWithIDType>("bookings");
+          const product = await this.mongo.selectFromDB<
+            ProductSchemaWithIDType
+          >("products", _id);
+          const reviews = await getFromDB<ReviewsProductSchemaWithIDType>(
+            "reviews",
+          );
+          const bookings = await getFromDB<BookingsProductSchemaWithIDType>(
+            "bookings",
+          );
 
           if ("_id" in product && "_id" in reviews && "_id" in bookings) {
             const actualOrFutureBookings = Handler
@@ -60,7 +62,6 @@ export class ProductController extends DefaultController {
             });
 
             this.response(ctx, body, 200);
-
           } else {
             const body = await this.createHtmlFile(
               ctx,
@@ -110,7 +111,7 @@ export class ProductController extends DefaultController {
             401,
           );
         }
-        
+
         const {
           "starting-date": startingDate,
           "ending-date": endingDate,
@@ -127,8 +128,12 @@ export class ProductController extends DefaultController {
           createdAt: Date.now(),
         };
 
-        const product = await this.getProductFromDB<ProductSchemaWithIDType>(id);
-        const bookings = await this.mongo.selectFromDB<BookingsProductSchemaWithIDType>(
+        const product = await this.getProductFromDB<ProductSchemaWithIDType>(
+          id,
+        );
+        const bookings = await this.mongo.selectFromDB<
+          BookingsProductSchemaWithIDType
+        >(
           "bookings",
           id,
           "productId",
@@ -184,10 +189,9 @@ export class ProductController extends DefaultController {
                 200,
               )
               : this.response(ctx, "", 503);
-
           } else {
             const { booking } = bookingsAvailability;
-            
+
             this.response(
               ctx,
               {
@@ -243,12 +247,12 @@ export class ProductController extends DefaultController {
             401,
           );
         }
-        
+
         const {
-            id,
-            review,
-            rate,
-            className,
+          id,
+          review,
+          rate,
+          className,
         } = dataParsed.data as Record<string, string>;
 
         const { userId, userName } = await this.getUserInfo(ctx);
@@ -261,7 +265,9 @@ export class ProductController extends DefaultController {
           timestamp: Date.now(),
         };
 
-        const product = await this.getProductFromDB<ProductSchemaWithIDType>(id);
+        const product = await this.getProductFromDB<ProductSchemaWithIDType>(
+          id,
+        );
 
         if ("_id" in product) {
           const { reviewId } = product;

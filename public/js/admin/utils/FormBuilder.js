@@ -1,8 +1,8 @@
 import * as Types from "../../types/types.js";
 import {
-  hydrateSelect,
+  handleInputFile,
   hydrateInput,
-  handleInputFile
+  hydrateSelect,
 } from "../../utils/_commonFunctions.js";
 
 export class FormBuilder {
@@ -11,9 +11,9 @@ export class FormBuilder {
   static #handleInputFile = handleInputFile;
 
   /**
-   * @param {HTMLDivElement} container 
-   * @param {string} dataType 
-   * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
+   * @param {HTMLDivElement} container
+   * @param {string} dataType
+   * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data
    */
   static handleCards = (
     container,
@@ -22,86 +22,99 @@ export class FormBuilder {
   ) => {
     const [
       editOrDeleteBtn,
-      deleteBtn
+      deleteBtn,
     ] = container.querySelector("div:last-of-type").children;
-    
+
     // Bookings cards can have only a 'delete' button (if its ending date is over).
     if (deleteBtn) {
-      editOrDeleteBtn.addEventListener("click", (e) => FormBuilder.#editButtonHandler(e, dataType, data));
-      deleteBtn?.addEventListener("click", (e) => FormBuilder.#deleteButtonHandler(e))
-      
+      editOrDeleteBtn.addEventListener(
+        "click",
+        (e) => FormBuilder.#editButtonHandler(e, dataType, data),
+      );
+      deleteBtn?.addEventListener(
+        "click",
+        (e) => FormBuilder.#deleteButtonHandler(e),
+      );
     } else {
-      editOrDeleteBtn.addEventListener("click", (e) => FormBuilder.#deleteButtonHandler(e));
+      editOrDeleteBtn.addEventListener(
+        "click",
+        (e) => FormBuilder.#deleteButtonHandler(e),
+      );
     }
   };
   /**
    * Inserts an `img` element and a `figure` before each input related to pictures.
-   * @param {HTMLDialogElement} dialog 
+   * @param {HTMLDialogElement} dialog
    */
   static insertPictureIn = (dialog) => {
     const form = dialog.querySelector("form");
-    const inputThumbnail = form.querySelector("input[name=\"thumbnail-file\"]");
-    const inputPictures = form.querySelector("input[name=\"pictures-file\"]");
+    const inputThumbnail = form.querySelector('input[name="thumbnail-file"]');
+    const inputPictures = form.querySelector('input[name="pictures-file"]');
     const buttons = form.querySelectorAll("label button");
-  
+
     const img = document.createElement("img");
     img.setAttribute("data-name", "thumbnail");
-    
+
     const figure = document.createElement("figure");
     figure.setAttribute("data-name", "pictures");
-  
+
     inputThumbnail.closest("label").appendChild(img);
     inputPictures.closest("label").appendChild(figure);
-  
+
     // Add handle search picture listener to buttons.
     const names = ["thumbnail", "pictures"];
-    
+
     for (let i = 0; i <= buttons.length - 1; i++) {
-      buttons[i].addEventListener("click", (e) => FormBuilder.#handleInputFile(e, names[i]));
+      buttons[i].addEventListener(
+        "click",
+        (e) => FormBuilder.#handleInputFile(e, names[i]),
+      );
     }
   };
 
   /**
    * Fills `img` in dialog.
-   * @param {Types.Product} data 
-   * @param {HTMLDialogElement} dialog 
+   * @param {Types.Product} data
+   * @param {HTMLDialogElement} dialog
    */
   static #fillImgs = (data, dialog) => {
     // Set main image.
     if (dialog.querySelector("form > label > img")) {
       const img = dialog.querySelector("form > label > img");
       const { src, alt } = data[img.dataset.name];
-  
-      img.src = src; img.alt = alt;
+
+      img.src = src;
+      img.alt = alt;
     }
-  
+
     // Set all figure images.
     if (dialog.querySelector("form > label > figure")) {
       const figure = dialog.querySelector("form > label > figure");
-  
+
       if (figure.children.length > 0) {
         figure.innerHTML = "";
       }
-  
+
       for (const item of data[figure.dataset.name]) {
         const imgContainer = document.createElement("div");
         const { src, alt } = item;
-  
-        imgContainer.innerHTML = `<img src="${src}" alt="${alt}" /><button title="supprimer"><span></span><span></span></button>`;
-  
+
+        imgContainer.innerHTML =
+          `<img src="${src}" alt="${alt}" /><button title="supprimer"><span></span><span></span></button>`;
+
         figure.appendChild(imgContainer);
       }
     }
   };
 
   /**
-   * @param {Types.User | Types.Product | Types.BookingsRegistred & { productName: string }} data 
-   * @param {HTMLDialogElement} dialog 
-   * @param {(data: Types.Product, dialog: HTMLDialogElement) => void} [fillImgs] 
+   * @param {Types.User | Types.Product | Types.BookingsRegistred & { productName: string }} data
+   * @param {HTMLDialogElement} dialog
+   * @param {(data: Types.Product, dialog: HTMLDialogElement) => void} [fillImgs]
    */
   static #insertData = (data, dialog, fillImgs) => {
     const labels = dialog.querySelector("form").querySelectorAll("label");
-    
+
     for (const label of labels) {
       if (label.querySelector("input")) {
         const input = label.querySelector("input");
@@ -128,36 +141,35 @@ export class FormBuilder {
   };
 
   /**
-   * @param {Types.User} data 
-   * @param {HTMLDialogElement} dialog 
+   * @param {Types.User} data
+   * @param {HTMLDialogElement} dialog
    */
   static #handleFieldsetUserPhotoDisplay = (data, dialog) => {
     const fieldset = dialog.querySelector("fieldset");
-      
+
     if (data["photo"].includes("default")) {
       if (!(fieldset.classList.contains("none"))) {
         fieldset.classList.add("none");
-        
+
         for (const input of fieldset.querySelectorAll("input")) {
           input.removeAttribute("required");
         }
       }
-
     } else {
-        if (fieldset.classList.contains("none")) {
-          fieldset.classList.remove("none");
+      if (fieldset.classList.contains("none")) {
+        fieldset.classList.remove("none");
 
-          for (const input of fieldset.querySelectorAll("input")) {
-            input.setAttribute("required", true);
-          }
+        for (const input of fieldset.querySelectorAll("input")) {
+          input.setAttribute("required", true);
         }
+      }
     }
   };
 
   /**
-   * @param {Event} e 
-   * @param {string} dataType 
-   * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data 
+   * @param {Event} e
+   * @param {string} dataType
+   * @param {Types.Users | Types.Products | Types.BookingsRegistred & { productName: string }} data
    */
   static #editButtonHandler = (
     e,
@@ -166,14 +178,12 @@ export class FormBuilder {
   ) => {
     /**
      * Set `form` action to current data.
-     * @param {HTMLDialogElement} dialog 
-     * @param {string} route 
-     * @param {string} id 
+     * @param {HTMLDialogElement} dialog
+     * @param {string} route
+     * @param {string} id
      */
     const setFormAction = (dialog, route, id) => {
-      dialog.querySelector("form").action = (
-        `${location.origin}/${route}/${id}`
-      );
+      dialog.querySelector("form").action = `${location.origin}/${route}/${id}`;
     };
     const dialog = document.querySelector(`dialog[data-${dataType}]`);
     let dataTitle = "";
@@ -182,16 +192,17 @@ export class FormBuilder {
     for (const key in data) {
       if (dataType !== "bookings") {
         if (data[key]._id === e.currentTarget.dataset.id) {
-          
-          switch(dataType) {
+          switch (dataType) {
             case "products": {
               dataTitle = `de l'appartement ${data[key].name}`;
               FormBuilder.#insertData(data[key], dialog, FormBuilder.#fillImgs);
               break;
             }
-            
+
             case "users": {
-              dataTitle = `du profil de ${data[key].firstname} ${data[key].lastname}`;
+              dataTitle = `du profil de ${data[key].firstname} ${
+                data[key].lastname
+              }`;
               FormBuilder.#insertData(data[key], dialog);
               break;
             }
@@ -200,9 +211,7 @@ export class FormBuilder {
           setFormAction(dialog, dataType.slice(0, -1), data[key]._id);
           break;
         }
-        
       } else {
-        
         dataTitle = `de la réservation de ${data.userName}`;
         FormBuilder.#insertData(data, dialog);
         setFormAction(dialog, dataType.slice(0, -1), data._id);
@@ -212,13 +221,14 @@ export class FormBuilder {
 
     // Set modal.
     dialog.querySelector("h2").textContent = `Modification ${dataTitle}`;
-    dialog.querySelector("p").innerHTML = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+    dialog.querySelector("p").innerHTML =
+      "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
 
     dialog.showModal();
   };
 
   /**
-   * @param {Event} e 
+   * @param {Event} e
    * @param {string} dataType
    */
   static #deleteButtonHandler = (e) => {
@@ -243,18 +253,21 @@ export class FormBuilder {
     }
 
     // Set modal text.
-    dialog.querySelector("h2").textContent = FormBuilder.#setText("h2", dataType);
+    dialog.querySelector("h2").textContent = FormBuilder.#setText(
+      "h2",
+      dataType,
+    );
     dialog.querySelector("p").textContent = FormBuilder.#setText("p", dataType);
 
     dialog.showModal();
   };
 
   /**
-   * @param {"h2" | "p"} tag 
-   * @param {string} dataType 
+   * @param {"h2" | "p"} tag
+   * @param {string} dataType
    */
   static #setText = (tag, dataType) => {
-    switch(dataType) {
+    switch (dataType) {
       case "user":
         dataType = "l'utilisateur";
         break;
@@ -262,11 +275,11 @@ export class FormBuilder {
         dataType = "l'appartement";
         break;
       default:
-        dataType = "la réservation"
+        dataType = "la réservation";
     }
 
     return tag === "h2"
       ? `Suppression de ${dataType}`
-      : `Etes-vous vraiment sûr de vouloir supprimer ${dataType}.`
+      : `Etes-vous vraiment sûr de vouloir supprimer ${dataType}.`;
   };
 }

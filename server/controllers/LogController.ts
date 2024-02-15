@@ -1,5 +1,5 @@
 import { Validator } from "@utils";
-import { 
+import {
   AdminController,
   AuthController,
   PathAppType,
@@ -15,7 +15,7 @@ export class LogController {
   constructor(defaultController: AuthController | AdminController) {
     this.default = defaultController;
     this.isAdmin = this.default instanceof AdminController;
-  };
+  }
 
   public loginHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
@@ -23,7 +23,7 @@ export class LogController {
     const dataModel = await this.default.helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
-    const session: SessionType = ctx.state.session; 
+    const session: SessionType = ctx.state.session;
     const formData = await ctx.request.body.formData();
 
     const dataParsed = Validator.dataParser(formData, dataModel);
@@ -38,9 +38,9 @@ export class LogController {
 
     const {
       email,
-      password
+      password,
     } = dataParsed.data as Record<string, string>;
-    
+
     const failedLogin = async (message: string) => {
       const failedLoginAttempts =
         (await ctx.state.session.get("failed-login-attempts") || 0) as number;
@@ -50,8 +50,16 @@ export class LogController {
 
     try {
       const user = this.isAdmin
-      ? await (this.default as AdminController).mongo.selectFromDB("users", email, "email")
-      : await (this.default as AuthController).mongo.selectFromDB("users", email, "email");
+        ? await (this.default as AdminController).mongo.selectFromDB(
+          "users",
+          email,
+          "email",
+        )
+        : await (this.default as AuthController).mongo.selectFromDB(
+          "users",
+          email,
+          "email",
+        );
 
       if ("_id" in user) {
         // Handle admin.
@@ -77,14 +85,11 @@ export class LogController {
             this.default.sessionFlashMsg(email),
           );
 
-          session.get("error")
-            ? session.flash("error", null)
-            : null;
+          session.get("error") ? session.flash("error", null) : null;
 
           this.isAdmin
             ? this.default.response(ctx, { message: "connected" }, 200)
             : this.default.response(ctx, "", 302, "/");
-
         } else {
           await failedLogin("mot de passe incorrect");
           this.default.response(
@@ -98,7 +103,6 @@ export class LogController {
       } else {
         if (user.message === "connexion failed") {
           this.default.response(ctx, "", 302, "/");
-
         } else {
           await failedLogin(user.message);
           this.default.response(ctx, user, 200);
@@ -116,7 +120,7 @@ export class LogController {
     await ctx.state.session.deleteSession();
 
     this.isAdmin
-      ? this.default.response(ctx, "", 302, "/admin" )
+      ? this.default.response(ctx, "", 302, "/admin")
       : this.default.response(ctx, "", 302, "/");
   };
-} 
+}

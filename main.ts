@@ -33,7 +33,9 @@ const sessionOpts = {
 };
 
 // Set Middlewares.
-app.use(Session.initMiddleware(store, sessionOpts) as unknown as MiddlewareAppType);
+app.use(
+  Session.initMiddleware(store, sessionOpts) as unknown as MiddlewareAppType,
+);
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(notFoundMiddleware);

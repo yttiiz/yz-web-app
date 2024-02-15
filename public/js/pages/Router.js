@@ -15,7 +15,7 @@ export class Router {
       case this.host: {
         const res = await this.#fetchData("users");
         const { HomePage } = await import("./Home/Home.js");
-        
+
         this.#home = new HomePage();
 
         if (res.ok && res.status === 200) {
@@ -31,7 +31,7 @@ export class Router {
       case this.host + "register":
       case this.host + "login": {
         const { UserFormPage } = await import("./Form/UserForm.js");
-        
+
         this.#userForm = new UserFormPage();
         this.#userForm.initForm();
         break;
@@ -40,7 +40,7 @@ export class Router {
       case this.host + "profil": {
         const res = await this.#fetchData("user-profil");
         const { UserFormPage } = await import("./Form/UserForm.js");
-        
+
         this.#userForm = new UserFormPage();
 
         if (res.ok && res.status === 200) {
@@ -65,7 +65,7 @@ export class Router {
       default:
         if (this.route.includes("product")) {
           const { ProductFormPage } = await import("./Form/ProductForm.js");
-    
+
           this.#productForm = new ProductFormPage();
           this.#productForm.initForm();
         }

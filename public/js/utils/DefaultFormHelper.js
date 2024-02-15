@@ -1,4 +1,4 @@
-import { setFormData, removeInputsValues } from "./_commonFunctions.js";
+import { removeInputsValues, setFormData } from "./_commonFunctions.js";
 
 export class DefaultFormHelper {
   constructor() {}
@@ -141,25 +141,27 @@ export class DefaultFormHelper {
     const sharedLink = btn.closest("div").nextElementSibling.href;
 
     input.value = sharedLink;
-    
-    dialog.querySelector("div > div button")
-    .addEventListener("click", async (e) => {
-      const permission = await navigator.permissions.query({ name: "clipboard-write"});
-      
-      if (permission.state === "granted" || permission.state === "prompt") {
-        // Write link to clipboard.
-        navigator.clipboard.writeText(sharedLink);
-        
-        input.select();
-        e.target.textContent = "Copié";
 
-        // Remove selected state and put back original text content.
-        setTimeout(() => {
-          window.getSelection().removeAllRanges();
-          e.target.textContent = "Copier";
-        }, 2000);
-      }
-    });
+    dialog.querySelector("div > div button")
+      .addEventListener("click", async (e) => {
+        const permission = await navigator.permissions.query({
+          name: "clipboard-write",
+        });
+
+        if (permission.state === "granted" || permission.state === "prompt") {
+          // Write link to clipboard.
+          navigator.clipboard.writeText(sharedLink);
+
+          input.select();
+          e.target.textContent = "Copié";
+
+          // Remove selected state and put back original text content.
+          setTimeout(() => {
+            window.getSelection().removeAllRanges();
+            e.target.textContent = "Copier";
+          }, 2000);
+        }
+      });
   };
 
   /**

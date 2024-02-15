@@ -1,6 +1,9 @@
 import { Validator } from "./mod.ts";
 import { Auth } from "@auth";
-import type { UserSchemaWithIDType, UserSchemaWithOptionalFieldsType } from "@mongo";
+import type {
+  UserSchemaWithIDType,
+  UserSchemaWithOptionalFieldsType,
+} from "@mongo";
 
 type DisplayDateType = {
   date?: number | Date;
@@ -13,7 +16,7 @@ export class Helper {
     month: "short",
     day: "numeric",
   };
-  
+
   private static longDateOpts: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
@@ -55,7 +58,7 @@ export class Helper {
     message: string,
   ) {
     await Deno.writeFile(
-      "server/log/email.txt", 
+      "server/log/email.txt",
       new TextEncoder().encode(`${message},\n`),
       Helper.writeOpts,
     );
@@ -70,7 +73,7 @@ export class Helper {
     lastname = Validator.normalizeString(lastname);
 
     const fullName = `${firstname.toLowerCase()}_${lastname.toLowerCase()}`;
-    return await Helper.writePicture(file, fullName, "users"); 
+    return await Helper.writePicture(file, fullName, "users");
   }
 
   public static async writePicFile(
@@ -79,7 +82,7 @@ export class Helper {
   ) {
     name = Validator.normalizeString(name);
 
-    return await Helper.writePicture(file, name, "products"); 
+    return await Helper.writePicture(file, name, "products");
   }
 
   private static async writePicture(
@@ -98,26 +101,25 @@ export class Helper {
   public static formatPrice(price: number) {
     return new Intl
       .NumberFormat("fr-FR", {
-        maximumFractionDigits: 2,
-        style: "currency",
-        currency: "EUR",
-      })
+      maximumFractionDigits: 2,
+      style: "currency",
+      currency: "EUR",
+    })
       .format(price);
   }
 
   public static displayDate({
     date,
     style = "long",
-  }: DisplayDateType,
-  ) {
+  }: DisplayDateType) {
     date = date ? date : new Date();
     return new Intl
       .DateTimeFormat(
-        "fr-FR",
-        style === "long" 
-          ? Helper.longDateOpts 
-          : (style === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
-      )
+      "fr-FR",
+      style === "long"
+        ? Helper.longDateOpts
+        : (style === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
+    )
       .format(date)
       .replace(",", " à");
   }
@@ -127,22 +129,20 @@ export class Helper {
     user: UserSchemaWithIDType,
     picPath?: string,
   ) {
-
     const trustData = Object.keys(data)
       .filter((key) => data[key] !== "" || data[key] !== undefined)
       .reduce((acc, key) => {
-
         if (data[key] instanceof File) {
           delete data[key];
-          
-          return acc;
 
+          return acc;
         } else {
           if (user[key as keyof typeof user] !== data[key]) {
             key === "birth"
               ? acc["birth"] = new Date(data[key] as string)
-              : acc[key as keyof Omit<typeof acc, "birth">] = data[key] as string;
-    
+              : acc[key as keyof Omit<typeof acc, "birth">] =
+                data[key] as string;
+
             return acc;
           }
 

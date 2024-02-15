@@ -6,16 +6,15 @@ import type {
   SelectUserFromDBType,
   UserDataType,
 } from "./mod.ts";
-import type {
-  UserSchemaWithIDType
-} from "@mongo";
+import type { UserSchemaWithIDType } from "@mongo";
 
 export class ApiController {
   private router;
   private collection;
   private selectFromDB;
   private helper;
-  private errorMsg = "Impossible de se connecter à la base de données de l'api.";
+  private errorMsg =
+    "Impossible de se connecter à la base de données de l'api.";
   private contentType = {
     name: "Content-Type",
     value: "application/json",
@@ -91,14 +90,15 @@ export class ApiController {
       "/user-form-content",
       async (ctx: RouterContextAppType<"/user-form-content">) => {
         try {
-          const content = await this.helper.convertJsonToObject("/server/data/profil/profil.json");
+          const content = await this.helper.convertJsonToObject(
+            "/server/data/profil/profil.json",
+          );
           this.response(ctx, JSON.stringify(content), 200);
-        
         } catch (error) {
           this.writeErrorLogAndSetResponse(ctx, error);
         }
-      }
-    )
+      },
+    );
   }
 
   private getDataFromDB(collection: string) {
@@ -117,7 +117,6 @@ export class ApiController {
             }),
             502,
           );
-
         } else {
           await cursor
             .map((document, key) => data[key + 1] = document);
@@ -130,7 +129,6 @@ export class ApiController {
           }
 
           this.response(ctx, JSON.stringify(data), 200);
-          
         }
       } catch (error) {
         this.writeErrorLogAndSetResponse(ctx, error);

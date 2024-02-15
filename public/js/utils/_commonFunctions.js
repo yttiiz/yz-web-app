@@ -28,7 +28,7 @@ const handleShowPassword = () => {
 };
 
 /**
- * @param {Event} e 
+ * @param {Event} e
  * @param {string} [name]
  */
 const handleInputFile = (e, name) => {
@@ -39,7 +39,7 @@ const handleInputFile = (e, name) => {
   let showFileInfos;
 
   /**
-   * @param {HTMLInputElement} input 
+   * @param {HTMLInputElement} input
    */
   const createInputTypeFile = (input, fileName = "photo") => {
     input = document.createElement("input");
@@ -63,7 +63,8 @@ const handleInputFile = (e, name) => {
         }).format(size / 1000);
 
         if (showFileInfos instanceof HTMLDivElement) {
-          showFileInfos.innerHTML = `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
+          showFileInfos.innerHTML =
+            `Fichier choisi : <b>${name}</b> (taille: ${sizeInKo} ko).`;
 
           if (showFileInfos.classList.contains("none")) {
             showFileInfos.classList.remove("none");
@@ -80,11 +81,13 @@ const handleInputFile = (e, name) => {
   e.currentTarget.closest("form").action.includes("/profil")
     ? showFileInfos = e.currentTarget.nextElementSibling
     : showFileInfos = e.currentTarget.closest("div").previousElementSibling;
-  
+
   if (e.currentTarget.parentNode.querySelector("input")) {
     input = e.currentTarget.parentNode.querySelector("input");
   } else {
-    input = name ? createInputTypeFile(input, name) : createInputTypeFile(input);
+    input = name
+      ? createInputTypeFile(input, name)
+      : createInputTypeFile(input);
     e.currentTarget.closest("div").insertBefore(input, e.currentTarget);
     handleFileContent(input, showFileInfos);
   }
@@ -99,7 +102,6 @@ const setFormData = (form) => {
   const formData = new FormData(form);
 
   for (const [key, value] of formData) {
-    
     const isItemToBeDeleted = (
       value === "" || // Empty field.
       (typeof value === "object" && value.size === 0) || // Empty file (image) field type.
@@ -110,7 +112,7 @@ const setFormData = (form) => {
       formData.delete(key);
     }
   }
-  
+
   return formData;
 };
 
@@ -130,14 +132,13 @@ const removeInputsValues = (labels) => {
 };
 
 /**
- * @param {HTMLInputElement} element 
- * @param {Record<string, string>} data 
+ * @param {HTMLInputElement} element
+ * @param {Record<string, string>} data
  */
 const hydrateInput = (element, data) => {
-  const isValueStringOrNumber = (
-    typeof data[element.name] === "string" || typeof data[element.name] === "number"
-  );
-  
+  const isValueStringOrNumber = typeof data[element.name] === "string" ||
+    typeof data[element.name] === "number";
+
   if (element.type !== "password" && isValueStringOrNumber) {
     element.type === "date"
       ? element.value = data[element.name].split("T").at(0)
@@ -146,8 +147,8 @@ const hydrateInput = (element, data) => {
 };
 
 /**
- * @param {HTMLSelectElement} element 
- * @param {Record<string, string>} data 
+ * @param {HTMLSelectElement} element
+ * @param {Record<string, string>} data
  */
 const hydrateSelect = (element, data) => {
   for (const option of element.children) {
@@ -159,10 +160,10 @@ const hydrateSelect = (element, data) => {
 };
 
 export {
-  handleShowPassword,
   handleInputFile,
+  handleShowPassword,
   hydrateInput,
   hydrateSelect,
-  setFormData,
   removeInputsValues,
+  setFormData,
 };

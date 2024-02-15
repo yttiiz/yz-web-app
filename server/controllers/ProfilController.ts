@@ -1,15 +1,11 @@
 import { ObjectId } from "@deps";
 import { DefaultController } from "./DefaultController.ts";
-import type {
-  RouterAppType,
-  RouterContextAppType,
-} from "./mod.ts";
+import type { RouterAppType, RouterContextAppType } from "./mod.ts";
 import { SessionType } from "@/server/controllers/types.ts";
 import { FormDataAppType, Validator } from "@utils";
 import { UserSchemaWithIDType } from "@mongo";
 
 export class ProfilController extends DefaultController {
-
   constructor(router: RouterAppType) {
     super(router);
     this.getProfil();
@@ -23,7 +19,6 @@ export class ProfilController extends DefaultController {
       async (ctx: RouterContextAppType<"/profil">) => {
         if (!ctx.state.session) {
           this.response(ctx, { errorMsg: this.errorMsg }, 302, "/");
-
         } else if (ctx.state.session.has("userFirstname")) {
           const body = await this.createHtmlFile(
             ctx,
@@ -35,7 +30,6 @@ export class ProfilController extends DefaultController {
           );
 
           this.response(ctx, body, 200);
-          
         } else {
           this.response(
             ctx,
@@ -65,12 +59,12 @@ export class ProfilController extends DefaultController {
         dataModel.content.push({
           type: "file",
           name: "photo",
-          accept: ".png, .jpg, .webp, .jpeg"
+          accept: ".png, .jpg, .webp, .jpeg",
         });
 
         const formData = await ctx.request.body.formData();
         const dataParsed = Validator.dataParser(formData, dataModel);
-    
+
         if (!dataParsed.isOk) {
           return this.response(
             ctx,
@@ -87,9 +81,9 @@ export class ProfilController extends DefaultController {
           FormDataAppType,
           "lastname" | "firstname" | "photo"
         >;
-        
+
         const userId = session.get("userId");
-        
+
         photo
           ? picPath = await this.helper.writeUserPicFile(
             photo,
@@ -97,10 +91,13 @@ export class ProfilController extends DefaultController {
             lastname,
           )
           : isNewPhoto = false;
-        
-        const user = await this.mongo.selectFromDB<UserSchemaWithIDType>("users", userId);
 
-        if (!('_id' in user)) {
+        const user = await this.mongo.selectFromDB<UserSchemaWithIDType>(
+          "users",
+          userId,
+        );
+
+        if (!("_id" in user)) {
           return this.response(
             ctx,
             { message: this.messageToUser(false) },
@@ -121,19 +118,22 @@ export class ProfilController extends DefaultController {
         );
 
         if (isUserUpdate || isNewPhoto) {
-          
           if (updatedData.firstname) {
             session.set("userFirstname", updatedData.firstname);
 
             const oldFullname = session.get("userFullname");
-            const newFullname = `${updatedData.firstname} ${oldFullname.split(" ")[1]}`;
+            const newFullname = `${updatedData.firstname} ${
+              oldFullname.split(" ")[1]
+            }`;
 
             session.set("userFullname", newFullname);
           }
 
           if (updatedData.lastname && !updatedData.firstname) {
             const oldFullname = session.get("userFullname");
-            const newFullname = `${oldFullname.split(" ")[0]} ${updatedData.lastname}`;
+            const newFullname = `${
+              oldFullname.split(" ")[0]
+            } ${updatedData.lastname}`;
 
             session.set("userFullname", newFullname);
           }
@@ -152,12 +152,9 @@ export class ProfilController extends DefaultController {
 
           this.response(
             ctx,
-            { message: this.messageToUser(isUserUpdate),
-              picPath,
-            },
+            { message: this.messageToUser(isUserUpdate), picPath },
             201,
           );
-
         } else {
           this.response(
             ctx,
