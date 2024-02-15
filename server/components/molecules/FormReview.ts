@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   type ComponentType,
   type MoleculeNameType,
@@ -11,20 +10,25 @@ import {
   InputDataType,
 } from "../mod.ts";
 
+type ParameterType = {
+  data: FormDataType;
+  isUserConnected: boolean;
+};
+
 export const FormReview: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "FormReview",
-  html: (
-    {
+  html: ({
+    data: {
       title,
       action,
       method,
       content,
-    }: FormDataType,
-    isUserConnected: boolean,
-  ) => {
+  },
+    isUserConnected,
+  }) => {
     let textArea: InputDataType = { type: "textarea" };
     const submitBtn: InputDataType[] = [];
     const inputs: InputDataType[] = [];

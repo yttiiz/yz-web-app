@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   ComponentType,
   MoleculeNameType,
@@ -7,16 +6,22 @@ import {
 } from "../mod.ts";
 import { ProductSchemaWithIDType } from "@mongo";
 
+type ParameterType = {
+  product: ProductSchemaWithIDType,
+  legend: string,
+  rate: string
+};
+
 export const ProductFigure: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "ProductFigure",
-  html: (
-    product: ProductSchemaWithIDType,
-    legend: string,
-    rate: string
-  ) => (
+  html: ({
+    product,
+    legend,
+    rate
+  }: ParameterType) => (
     `
     <figure>
       <figure

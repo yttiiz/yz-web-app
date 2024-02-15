@@ -1,17 +1,21 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { OnOffSvg, UserSvg } from "../mod.ts";
 import type { ComponentType, MoleculeNameType } from "../mod.ts";
 
+type ParameterType = {
+  userPhoto: string;
+  userFullname: string;
+};
+
 export const LogoutUserForm: ComponentType<
   MoleculeNameType,
-  (...arg: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "LogoutUserForm",
-  html: (
-    userPhoto: string,
-    userFullname: string,
-  ) => {
+  html: ({
+    userPhoto,
+    userFullname,
+  }: ParameterType) => {
     const greeting = (now = new Date().getHours()) => {
       return (now > 18 || now < 6)
        ? "Bonsoir"

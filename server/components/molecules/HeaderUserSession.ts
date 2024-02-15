@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
 LogoutUserForm,
   type ComponentType,
@@ -10,7 +9,7 @@ import { SessionType } from "@controllers";
 
 export const HeaderUserSession: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (session: SessionType) => string
 > = {
   name: "HeaderUserSession",
   html: (session: SessionType) => {
@@ -29,7 +28,10 @@ export const HeaderUserSession: ComponentType<
         : 
         (
           session.has("userFirstname")
-          ? (LogoutUserForm.html(photo, fullname)
+          ? (LogoutUserForm.html({
+              userPhoto: photo,
+              userFullname: fullname,
+            })
             .replace(
               "{{ user-firstname }}",
               firstname,

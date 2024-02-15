@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
 import { Dialog, ProductCard, ShareForm } from "../mod.ts";
 import type {
@@ -11,7 +10,7 @@ import { ProductSchemaWithIDType } from "@mongo";
 
 export const SectionProductsHome: ComponentType<
   OrganismNameType,
-  (...args: any[]) => Promise<string>
+  (products: Record<string, ProductSchemaWithIDType>) => Promise<string>
 > = {
   name: "SectionProductsHome",
   html: async (products: Record<string, ProductSchemaWithIDType>) => {

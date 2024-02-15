@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import { Helper, Handler } from "@utils";
 import type {
   ComponentType,
@@ -30,19 +29,24 @@ const {
   "/server/data/product/product.json",
 );
 
+type ParameterType = {
+  data: ProductFullDataType,
+  isUserConnected: boolean
+};
+
 export const SectionsProduct: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "SectionsProduct",
-  html: (
-    {
+  html: ({
+    data : {
       product,
       reviews,
       actualOrFutureBookings,
-    }: ProductFullDataType,
-    isUserConnected: boolean,
-  ) => {
+    },
+    isUserConnected,
+  }: ParameterType) => {
     return `
     <section>
       <div class="container">
@@ -51,48 +55,49 @@ export const SectionsProduct: ComponentType<
           <p>${product.description}</p>
         </div>
         <div class="product">
-          ${ProductFigure.html(
+          ${ProductFigure.html({
             product,
-            images.legend,
-            Handler.rateAverage(reviews),
-          )}
+            legend: images.legend,
+            rate: Handler.rateAverage(reviews),
+          })}
           <div>
             <div class="booking">
-              ${BookingDetails.html(
-                product.details,
-                Handler.sortFromClosestToOlderBookings(
+              ${BookingDetails.html({
+
+                details: product.details,
+                lastBooking: Handler.sortFromClosestToOlderBookings(
                   actualOrFutureBookings,
-                ).at(0),
-              )}
-              ${BookingForm.html(
-                booking,
+                )[0],
+              })}
+              ${BookingForm.html({
+                form: booking,
                 isUserConnected,
-                Handler.setInputDateMinAttribute(
+                date: Handler.setInputDateMinAttribute(
                   actualOrFutureBookings,
                 ),
-              )}
+              })}
             </div>
             <div class="description">
-              ${ProductDetails.html(
+              ${ProductDetails.html({
                 product,
-                description.infos,
-                description.title,
-              )}
+                descriptionInfo: description.infos,
+                descriptionTitle: description.title,
+              })}
             </div>
             <div id="reviews">
-              ${ReviewsDetails.html(
+              ${ReviewsDetails.html({
                 reviews,
-                reviewsAndRate.title,
-                reviewsAndRate.empty + (
+                reviewsTitle: reviewsAndRate.title,
+                reviewsEmpty: reviewsAndRate.empty + (
                   isUserConnected ? "." : ", en vous connectant."
                 ),
-              )}
+              })}
             </div>
             <div class="review-form">
-              ${FormReview.html(
-                reviewForm,
+              ${FormReview.html({
+                data: reviewForm,
                 isUserConnected
-              )}
+              })}
             </div>
           </div>
         </div>

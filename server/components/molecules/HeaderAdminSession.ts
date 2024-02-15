@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   LogoutAdminForm,
   type ComponentType,
@@ -9,7 +8,7 @@ import { SessionType } from "@controllers";
 
 export const HeaderAdminSession: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (session: SessionType) => string
 > = {
   name: "HeaderAdminSession",
   html: (session: SessionType) => {

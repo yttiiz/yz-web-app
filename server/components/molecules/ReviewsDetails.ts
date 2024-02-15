@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
 import {
   RateStars,
@@ -8,16 +7,22 @@ import {
 } from "../mod.ts";
 import { RateProductEnum, ReviewsProductSchemaWithIDType } from "@mongo";
 
+type ParameterType = {
+  reviews: ReviewsProductSchemaWithIDType,
+  reviewsTitle: string,
+  reviewsEmpty: string,
+};
+
 export const ReviewsDetails: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "ReviewsDetails",
-  html: (
-    reviews: ReviewsProductSchemaWithIDType,
-    reviewsTitle: string,
-    reviewsEmpty: string,
-  ) => (
+  html: ({
+    reviews,
+    reviewsTitle,
+    reviewsEmpty,
+  }: ParameterType) => (
     `
     <h3>${reviewsTitle}</h3>
     ${reviews.reviews.length > 0

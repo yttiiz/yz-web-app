@@ -400,6 +400,7 @@ header[data-header="site"] {
         width: 2rem;
         height: var(--height);
         clip-path: polygon(0 100%, 50% 0, 100% 100%);
+        border-bottom: 1px solid var(--light);
     }
 
     & > nav.none {

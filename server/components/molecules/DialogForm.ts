@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   type ComponentType,
   type MoleculeNameType,
@@ -9,15 +8,14 @@ import {
 
 export const DialogForm: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: FormDataType) => string
 > = {
   name: "DialogForm",
-  html: (
-    {
-      action,
-      method,
-      content,
-    }: FormDataType,
+  html: ({
+    action,
+    method,
+    content,
+  }: FormDataType,
   ) => {
     return `
     <form

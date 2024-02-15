@@ -1,21 +1,26 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   MoleculeNameType,
 } from "../mod.ts";
 import { FormDataType, InputsForm } from "../mod.ts";
 
+type ParameterType = {
+  form: FormDataType,
+  isUserConnected: boolean,
+  date?: string,
+};
+
 export const BookingForm: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "BookingForm",
-  html: (
-    form: FormDataType,
-    isUserConnected: boolean,
-    date?: string,
-  ) => (
+  html: ({
+    form,
+    isUserConnected,
+    date,
+  }: ParameterType) => (
     `
     <div>
       <h3>${form.title}</h3>

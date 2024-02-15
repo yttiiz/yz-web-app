@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   MoleculeNameType,
@@ -7,15 +6,20 @@ import type {
 import { BookingsType, DetailsProductType } from "@mongo";
 import { Handler, Helper } from "@utils";
 
+type ParameterType = {
+  details: DetailsProductType,
+  lastBooking: BookingsType,
+};
+
 export const BookingDetails: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: ParameterType) => string
 > = {
   name: "BookingDetails",
-  html: (
-    details: DetailsProductType,
-    lastBooking: BookingsType,
-  ) => {
+  html: ({
+    details,
+    lastBooking,
+  }: ParameterType) => {
     const {
       isAvailable,
       endingDate

@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   type ComponentType,
   type MoleculeNameType,
@@ -9,16 +8,15 @@ import {
 
 export const FormAdmin: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: FormDataType) => string
 > = {
   name: "FormAdmin",
-  html: (
-    {
-      title,
-      action,
-      method,
-      content,
-    }: FormDataType,
+  html: ({
+    title,
+    action,
+    method,
+    content,
+  }: FormDataType,
   ) => {
     return `
     <div>

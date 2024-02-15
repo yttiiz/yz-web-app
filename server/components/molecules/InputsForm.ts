@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { EyeOpenSvg, EyeShutSvg } from "../mod.ts";
 import { Validator } from "@utils";
@@ -10,7 +9,7 @@ import type {
 
 export const InputsForm: ComponentType<
   MoleculeNameType, 
-  (...args: any[]) => string
+  (arg: InputFormPropsType) => string
 > = {
   name: "InputsForm",
   html: ({

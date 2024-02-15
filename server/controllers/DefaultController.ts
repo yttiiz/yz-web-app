@@ -2,7 +2,12 @@
 import { oak } from "@deps";
 import * as layout from "@components";
 import { Helper, Http } from "@utils";
-import { Mongo, ProductSchemaWithIDType } from "@mongo";
+import {
+  BookingUserInfoType,
+  Mongo,
+  ProductFullDataType,
+  ProductSchemaWithIDType
+} from "@mongo";
 import type {
   PathAppType,
   ConfigPageType,
@@ -202,7 +207,7 @@ export class DefaultController {
     if (this.isConnexionToDBFailed(data)) {
       return main.replace(
         strToReplace,
-        layout.SectionErrorHome.html(data),
+        layout.SectionErrorHome.html(data as string),
       );
     } 
 
@@ -211,7 +216,9 @@ export class DefaultController {
       case "data-home": {
         return main.replace(
           strToReplace,
-          await layout.SectionProductsHome.html(data),
+          await layout.SectionProductsHome.html(
+            data as Record<string, ProductSchemaWithIDType>,
+            ),
         );
       }
 
@@ -219,10 +226,10 @@ export class DefaultController {
       case "data-product": {
         return main.replace(
           strToReplace,
-          layout.SectionsProduct.html(
-            data,
+          layout.SectionsProduct.html({
+            data: data as ProductFullDataType,
             isUserConnected,
-          ),
+          }),
         );
       }
 
@@ -231,7 +238,7 @@ export class DefaultController {
         return main.replace(
           strToReplace,
           layout.SectionsBooking.html(
-            data,
+            data as BookingUserInfoType[],
           ),
         );
       }

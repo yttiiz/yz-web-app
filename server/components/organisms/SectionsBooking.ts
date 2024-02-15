@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
 import { Dialog, BookingCard } from "../mod.ts";
@@ -18,7 +17,7 @@ card,
 
 export const SectionsBooking: ComponentType<
  OrganismNameType,
- (...args: any[]) => string
+ (bookingsUserInfo: BookingUserInfoType[]) => string
 > = {
   name: "SectionsBooking",
   html: (bookingsUserInfo: BookingUserInfoType[]) => {

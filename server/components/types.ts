@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export type TemplateNameType =
   | "Header"
   | "Main"
@@ -66,7 +67,7 @@ export type ComponentType<
   ) = "Body",
   U extends (
     | string
-    | (<A>(...args: A[]) => string | Promise<string>)
+    | (<A extends (...args: any) => any>(arg: Parameters<A>) => string | Promise<string>)
   ) = string,
 > = {
   name: T;

@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
 import type { ComponentType, HeadPageDataType } from "./mod.ts";
@@ -14,7 +13,7 @@ const {
 
 export const Body: ComponentType<
   "Body",
-  (...args: any[]) => string
+  (arg: SessionAndDataType) => string
 > = {
   name: "Body",
   html: ({

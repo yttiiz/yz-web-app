@@ -1,11 +1,10 @@
-// deno-lint-ignore-file no-explicit-any
 import { Helper } from "@utils";
 import { Dialog, InputsForm } from "../mod.ts";
 import type { ComponentType, FormDataType, OrganismNameType } from "../mod.ts";
 
 export const SectionAuthForm: ComponentType<
   OrganismNameType,
-  (...args: any[]) => Promise<string>
+  (path: string) => Promise<string>
 > = {
   name: "SectionAuthForm",
   html: async (path: string) => {

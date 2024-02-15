@@ -1,16 +1,16 @@
-// deno-lint-ignore-file no-explicit-any
-import type { ComponentType, MoleculeNameType } from "../mod.ts";
+import type { ButtonType, ComponentType, MoleculeNameType } from "../mod.ts";
+import { FormAttributesType } from "@/server/components/types.ts";
 
 export const DeleteAccountForm: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (arg: FormAttributesType & Pick<ButtonType, "btnText">) => string
 > = {
   name: "DeleteAccountForm",
   html: ({
     action,
     method,
     btnText,
-  }: any) => {
+  }: FormAttributesType & Pick<ButtonType, "btnText">) => {
     return `
       <form
         action="${action}"

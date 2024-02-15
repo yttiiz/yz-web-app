@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import { Helper, Handler } from "@utils";
 import { StarSvg, PicturesSlider, ShareSvg } from "../mod.ts";
 import type {
@@ -11,16 +10,17 @@ import {
   ReviewsProductSchemaWithIDType
 } from "@mongo";
 
+type ParameterType = (
+  ProductSchemaWithIDType &
+  { reviews?: ReviewsProductSchemaWithIDType }
+);
+
 export const ProductCard: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  (product: ParameterType) => string
 > = {
   name: "ProductCard",
-  html: (product: (
-      ProductSchemaWithIDType &
-      { reviews?: ReviewsProductSchemaWithIDType }
-    )
-  ) => {
+  html: (product: ParameterType) => {
     return `
       <li>
         <div>

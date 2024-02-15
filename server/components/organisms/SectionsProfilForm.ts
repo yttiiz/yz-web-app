@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
 import {
@@ -15,7 +14,13 @@ import type {
   DialogDataType,
  } from "../mod.ts";
 
-const data: FormDataType = await Helper.convertJsonToObject(
+ const {
+  title,
+  action,
+  method,
+  changePhoto,
+  content,
+}: FormDataType = await Helper.convertJsonToObject(
   "/server/data/profil/profil.json",
 );
 
@@ -27,17 +32,10 @@ const {
 
 export const SectionsProfilForm: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  () => string
 > = {
   name: "SectionsProfilForm",
-  html: ({
-    title,
-    action,
-    method,
-    changePhoto,
-    content,
-  }: FormDataType = data,
-  ) => {
+  html: () => {
     return `
     <section>
       <div class="container">

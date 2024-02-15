@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import {
   StarSvg,
   type ComponentType,
@@ -22,7 +21,7 @@ const displayStars = (rate: number) => {
 
 export const RateStars: ComponentType<
   MoleculeNameType,
-  (...args: any[]) => string
+  (rate: number) => string
 > = {
   name: "RateStars",
   html: (rate: number) => {

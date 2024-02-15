@@ -1,5 +1,4 @@
 // deno-fmt-ignore-file
-// deno-lint-ignore-file no-explicit-any
 import type {
   ComponentType,
   OrganismNameType,
@@ -7,7 +6,7 @@ import type {
 
 export const SectionErrorHome: ComponentType<
   OrganismNameType,
-  (...args: any[]) => string
+  (errorMsg: string) => string
 > = {
   name: "SectionErrorHome",
   html: (errorMsg: string) => {

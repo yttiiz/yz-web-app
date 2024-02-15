@@ -17,7 +17,7 @@ import type {
 
 export const SectionAdmin: ComponentType<
   OrganismNameType,
-  (...args: any[]) => Promise<string>
+  (isUserConnected: boolean) => Promise<string>
 > = {
   name: "SectionAdmin",
   html: async (isUserConnected: boolean) => {
