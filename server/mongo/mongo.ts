@@ -3,6 +3,7 @@ import type { Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
 import {
   CollectionType,
+  CreateClusterParamerType,
   SelectFromDBType,
   UpdateItemIntoDBParameterType,
 } from "./types.ts";
@@ -13,6 +14,7 @@ import {
 export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
+  private static clusterUrl: string;
 
   public static async connectionTo<T extends Document = Document>(
     collection: string,
@@ -20,7 +22,7 @@ export class Mongo {
     const selectedCollection = await Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
-      return selectedCollection?.find();
+      return selectedCollection.find();
     }
 
     return { message: Mongo.errorMsg };
@@ -135,7 +137,7 @@ export class Mongo {
   public static async setStore(url: string) {
     try {
       const db = await Mongo.client.connect(url);
-      return new MongoStore(db, "session");
+      return new MongoStore(db, "sessions");
     } catch (error) {
       Helper.writeLog(error);
     }
@@ -166,12 +168,22 @@ export class Mongo {
 
   private static async clientConnectTo<T extends Document>(collection: string) {
     try {
-      const db = await Mongo.client.connect(
-        Deno.env.get("DATABASE_URL") as string,
-      );
+      const db = await Mongo.client.connect(Mongo.clusterUrl);
       return db.collection<T>(collection);
     } catch (error) {
       Helper.writeLog(error);
     }
+  }
+
+  public static createClusterUrl({
+    username,
+    password,
+    host,
+  }: CreateClusterParamerType,
+  ) {
+    Mongo.clusterUrl = (
+      `mongodb+srv://${username}:${password}@${host}/main?authMechanism=SCRAM-SHA-1`
+    );
+    return Mongo.clusterUrl;
   }
 }

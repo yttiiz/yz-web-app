@@ -21,12 +21,20 @@ Object.keys(env)
 const {
   PORT,
   HOST: hostname,
-  DATABASE_URL,
+  CLUSTER_HOST: host,
+  CLUSTER_USERNAME: username,
+  CLUSTER_PASSWORD: password,
   APP_SESSION_NAME,
 } = Deno.env.toObject();
 
+const clusterUrl = Mongo.createClusterUrl({
+  username,
+  password,
+  host,
+});
+
 // Set session store.
-const store = await Mongo.setStore(DATABASE_URL);
+const store = await Mongo.setStore(clusterUrl);
 const sessionOpts = {
   expireAfterSeconds: 7 * 24 * 60 * 60,
   sessionCookieName: APP_SESSION_NAME,
@@ -48,9 +56,8 @@ app.addEventListener("listen", ({
   secure,
 }) => {
   console.log(`
-    ++++++++++++++++++++++++++++++++++++++++
+    +++++++++++++++++++++++++++++++++++++++++
     Server listening on ${secure ? "https" : "http"}://${hostname}:${port}
-    Welcome to my Deno Application !!
-    ++++++++++++++++++++++++++++++++++++++++
+    +++++++++++++++++++++++++++++++++++++++++
     `);
 });

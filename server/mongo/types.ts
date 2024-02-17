@@ -5,6 +5,12 @@ type SchemaWithID<T> = T & {
 };
 
 // Mongo types
+export type CreateClusterParamerType = {
+  username: string;
+  password: string;
+  host: string;
+};
+
 export type UpdateItemIntoDBParameterType<T> = {
   data: T;
   collection: string;

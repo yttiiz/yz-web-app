@@ -28,13 +28,16 @@ export class UserFormPage extends PageBuilder {
       );
     }
 
-    if (document.querySelector("dialog")) {
-      const modal = document.querySelector("dialog");
-      const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
+    if (document.querySelectorAll("dialog").length > 0) {
+      const modals = document.querySelectorAll("dialog");
 
-      // Set button to abort deleting
-      for (const btn of modalCancelledBtn) {
-        btn.addEventListener("click", this.#hideModalHandler);
+      for (const modal of modals) {
+        const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
+  
+        // Set button to abort deleting
+        for (const btn of modalCancelledBtn) {
+          btn.addEventListener("click", this.#hideModalHandler);
+        }
       }
     }
   };
