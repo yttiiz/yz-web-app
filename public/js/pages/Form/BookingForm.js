@@ -3,10 +3,11 @@ import { PageBuilder } from "../Builder.js";
 
 export class BookingFormPage extends PageBuilder {
   initForm = () => {
+    const id = "#data-booking";
     const cancelForms = document.querySelectorAll(
-      "#data-booking .booking-card form",
+      `${id} .booking-card form`,
     );
-    const dialog = document.querySelector("#data-booking dialog");
+    const dialog = document.querySelector(`${id} dialog`);
 
     // Init forms submission.
     for (const form of cancelForms) {

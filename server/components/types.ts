@@ -190,10 +190,12 @@ export type FormDataType = FormAttributesType & {
 export type DashboardDetailsType = {
   title: string;
   className: string;
+  isAccordeon: boolean;
 };
 
 export type DashboardDataType = {
   title: string;
+  analytics: DashboardDetailsType;
   users: DashboardDetailsType;
   products: DashboardDetailsType;
   bookings: DashboardDetailsType;

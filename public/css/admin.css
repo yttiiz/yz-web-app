@@ -301,7 +301,7 @@
             position: relative;
         }
 
-        & > div h3 {
+        & > div h3.accordeon-title {
             position: relative;
             z-index: 1;
             cursor: pointer;
@@ -330,6 +330,9 @@
             transform: rotateZ(225deg);
         }
     }
+}
+.analytics-details {
+
 }
 
 .users-details,

@@ -270,9 +270,13 @@ export class AdminContentHelper extends DefaultFormHelper {
       );
     }
 
+    dbInfos.innerHTML = `
+    <p>Si vous souhaitez ajouter un <strong>nouveau logement</strong>, cliquez <a href="/admin-create-product">ici</a>.</p>`;
+
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
       elementsList,
+      dbInfos,
     );
   };
 
