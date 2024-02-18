@@ -13,6 +13,7 @@ DashboardCard,
   name: "AdminDashboard",
   html: ({
     title,
+    analytics,
     users,
     products,
     bookings,
@@ -23,6 +24,9 @@ DashboardCard,
       <h1>${title}</h1>
     </div>
     <div class="admin-dashboard">
+      <div class="card">
+        ${DashboardCard.html(analytics)}
+      </div>
       <div class="card">
         ${DashboardCard.html(users)}
       </div>

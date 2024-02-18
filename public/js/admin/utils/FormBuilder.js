@@ -10,6 +10,8 @@ export class FormBuilder {
   static #hydrateInput = hydrateInput;
   static #handleInputFile = handleInputFile;
 
+  static #warningText = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+
   /**
    * @param {HTMLDivElement} container
    * @param {string} dataType
@@ -61,6 +63,13 @@ export class FormBuilder {
     inputThumbnail.closest("label").appendChild(img);
     inputPictures.closest("label").appendChild(figure);
 
+    FormBuilder.#handleSearchPhoto(buttons);
+  };
+
+  /**
+   * @param {NodeList<HTMLButtonElement>} buttons 
+   */
+  static #handleSearchPhoto = (buttons) => {
     // Add handle search picture listener to buttons.
     const names = ["thumbnail", "pictures"];
 
@@ -221,8 +230,7 @@ export class FormBuilder {
 
     // Set modal.
     dialog.querySelector("h2").textContent = `Modification ${dataTitle}`;
-    dialog.querySelector("p").innerHTML =
-      "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+    dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
 
     dialog.showModal();
   };
@@ -260,6 +268,20 @@ export class FormBuilder {
     dialog.querySelector("p").textContent = FormBuilder.#setText("p", dataType);
 
     dialog.showModal();
+  };
+
+  static createButtonHandler = (container) => {
+    const dialog = document.querySelector("dialog[data-create-product]");
+    const buttons = dialog.querySelectorAll("form > label button");
+
+    dialog.querySelector("h2").textContent = "Ajouter un appartement";
+    dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
+    
+    FormBuilder.#handleSearchPhoto(buttons);
+
+    container.querySelector("button").addEventListener("click", () => {
+      dialog.showModal();
+    })
   };
 
   /**

@@ -36,7 +36,7 @@ new ApiController(
 router.get(
   "/reset",
   async (ctx: RouterContextAppType<"/reset">) => {
-    const sessions = await Mongo.connectionTo("session");
+    const sessions = await Mongo.connectionTo("sessions");
     type SessionDBType = {
       _id: ObjectId;
       id: string;
@@ -54,7 +54,7 @@ router.get(
         async (session) => {
           const _id = session._id;
           if (!session.data._flash.message) {
-            await Mongo.deleteFromDB(_id, "session");
+            await Mongo.deleteFromDB(_id, "sessions");
           }
         },
       );
@@ -68,6 +68,6 @@ router.get(
         value: "application/json",
       })
       .redirect(url)
-      .setResponse(JSON.stringify({ message: "session clean" }), 200);
+      .setResponse(JSON.stringify({ message: "sessions clean" }), 200);
   },
 );

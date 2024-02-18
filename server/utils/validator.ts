@@ -71,7 +71,10 @@ export class Validator {
     for (const [prop, value] of formData) {
       if (typeof value === "string") {
         // Skip unnecessary formData property.
-        if (prop.includes("file")) continue;
+        if (prop.includes("file") || prop.includes("price")) {
+          key++;
+          continue;
+        };
 
         // Check textarea field type.
         if (

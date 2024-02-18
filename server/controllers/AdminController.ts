@@ -15,6 +15,7 @@ import type {
   BookingsType,
   NotFoundMessageType,
   ProductSchemaType,
+  ProductSchemaWithIDType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
@@ -28,6 +29,7 @@ export class AdminController extends DefaultController {
     this.getAdmin();
     this.postAdminLogin();
     this.postAdminLogout();
+    this.postCreateProduct();
     this.putUser();
     this.putProduct();
     this.putBooking();
@@ -96,6 +98,175 @@ export class AdminController extends DefaultController {
     this.router?.post(
       "/admin-logout",
       this.log.logoutHandler,
+    );
+  }
+
+  private postCreateProduct() {
+    this.router?.post(
+      "/admin-create-product",
+      async (ctx: RouterContextAppType<"/admin-create-product">) => {
+        try {
+          const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/create-product-form.json",
+          ) as FormDataType;
+
+          this.addFileModelTo(dataModel);
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Enregistrement non effectué",
+                message: dataParsed.message,
+              },
+              401,
+            );
+          }
+
+          // 1. Retreive all values needed.
+          const {
+            name,
+            type,
+            area,
+            rooms,
+            price,
+            description,
+            thumbnail,
+            pictures,
+          } = dataParsed.data as ProductAdminFormDataType;
+
+          const title = "Ajout appartement";
+          const alt = `image principale ${name.toLocaleLowerCase()}`;
+
+          let isAllDocumentsInsertCorrectly = true;
+          let productDocument: Omit<ProductSchemaWithIDType, "bookingId" | "reviewId">;
+          
+          if (thumbnail && pictures) {
+            // 2. If 'thumbnail' & 'pictures' are defined, set document.
+            productDocument = {
+              _id: new ObjectId(),
+              name,
+              description,
+              details: {
+                rooms: +rooms,
+                area: +area,
+                price: this.convertToNumber(price),
+                type,
+              },
+              thumbnail: {
+                alt,
+                src: await this.helper.writePicFile(
+                  thumbnail,
+                  alt.replaceAll(" ", "_"),
+                  ),
+              },
+              pictures: [
+                {
+                  alt: `${name.toLocaleLowerCase()} - ${type}, le ${
+                    this.helper.displayDate({ style: "normal" })
+                  }`,
+                  src: await this.helper.writePicFile(
+                    pictures,
+                    `${name.toLocaleLowerCase()}_${Math.round((Math.random() + 1) * 1000)}`,
+                  ),
+                }
+              ] 
+            };
+
+            // 3. Insert document in database...
+            const productId = await this.mongo.insertIntoDB(
+              productDocument,
+              "products",
+            );
+
+            if (!(productId.includes("failed"))) {
+              // 4. ...create 'bookings' document related to current product...
+              const bookingDocument = {
+                _id: new ObjectId(),
+                productName: name,
+                productId,
+                bookings: [],
+              };
+              
+              const bookingId = await this.mongo.insertIntoDB(
+                bookingDocument, 
+                "bookings"
+              );
+            
+              // 5. ...and 'reviews' document related to current product...
+              const reviewDocument = {
+                _id: new ObjectId(),
+                productName: name,
+                productId,
+                reviews: [],
+              };
+  
+              const reviewId = await this.mongo.insertIntoDB(
+                reviewDocument, 
+                "reviews"
+              );
+  
+              const isBookingAndReviewDocumentsOk = (
+                !(bookingId.includes("failed")) &&
+                !(reviewId.includes("failed"))
+              );
+  
+              // 6. ...finally set 'bookingId' & 'reviewId' in product document.
+              if (isBookingAndReviewDocumentsOk) {
+                const newProductDocument: Partial<ProductSchemaWithIDType> = { ...productDocument }; 
+                
+                newProductDocument["bookingId"] = bookingId;
+                newProductDocument["reviewId"] = reviewId;
+                
+                isAllDocumentsInsertCorrectly = await this.mongo.updateToDB(
+                    new ObjectId(productId),
+                  newProductDocument,
+                  "products",
+                );
+
+              } else { isAllDocumentsInsertCorrectly = false; }
+
+            } else { isAllDocumentsInsertCorrectly = false; }
+
+            isAllDocumentsInsertCorrectly
+              ? this.response(
+                ctx,
+                {
+                  title,
+                  message: this.msgToAdmin`L'appartement ${name} ${true} été${"add"}`
+                },
+                200,
+              )
+              : this.response(
+                ctx,
+                {
+                  title,
+                  message: this.msgToAdmin`L'appartement ${name} ${false} été${"add"}`
+                },
+                200,
+              );
+
+          } else {
+            this.response(
+              ctx,
+              {
+                title,
+                message: "Vous devez obligatoirement joindre des images pour créer un nouvel appartement."
+              },
+              200,
+            );
+          }
+
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      }
     );
   }
 
@@ -169,7 +340,7 @@ export class AdminController extends DefaultController {
               title: "Modification utilisateur",
               message: this.msgToAdmin`Le profil de ${
                 user.firstname + " " + user.lastname
-              } ${isUpdate} été`,
+              } ${isUpdate} été${"update"}`,
             },
             200,
           );
@@ -193,20 +364,7 @@ export class AdminController extends DefaultController {
             "/server/data/admin/product-form.json",
           ) as FormDataType;
 
-          // Add additional types to check in 'dataModel'.
-          const files = [{
-            "type": "file",
-            "name": "thumbnail",
-            "accept": ".png, .jpg, .webp, .jpeg",
-          }, {
-            "type": "file",
-            "name": "pictures",
-            "accept": ".png, .jpg, .webp, .jpeg",
-          }];
-
-          for (const file of files) {
-            dataModel.content.push(file);
-          }
+          this.addFileModelTo(dataModel);
 
           const dataParsed = Validator.dataParser(
             formData,
@@ -290,7 +448,7 @@ export class AdminController extends DefaultController {
               title: "Modification appartement",
               message: this.msgToAdmin`L'appartement ${name as string} ${
                 isUpdate && isPictureUpdate
-              } été`,
+              } été${"update"}`,
             },
             200,
           );
@@ -348,7 +506,7 @@ export class AdminController extends DefaultController {
             {
               title: "Modification réservation",
               message: this
-                .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été`,
+                .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été${"update"}`,
             },
             200,
           );
@@ -456,6 +614,23 @@ export class AdminController extends DefaultController {
     }
   }
 
+  private addFileModelTo(dataModel: FormDataType) {
+    // Add additional types to check in 'dataModel'.
+    const files = [{
+      "type": "file",
+      "name": "thumbnail",
+      "accept": ".png, .jpg, .webp, .jpeg",
+    }, {
+      "type": "file",
+      "name": "pictures",
+      "accept": ".png, .jpg, .webp, .jpeg",
+    }];
+
+    for (const file of files) {
+      dataModel.content.push(file);
+    }
+  };
+
   private convertToNumber = (str: string) => {
     return str.includes(",")
       ? str.split(",")
@@ -472,10 +647,15 @@ export class AdminController extends DefaultController {
     str: TemplateStringsArray,
     name: string,
     isUpdate: boolean,
-    updateOrDeleteStr?: "delete" | "update",
+    updateOrDeleteStr?: "delete" | "update" | "add",
   ) => (
     `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${str[2]} ${
-      updateOrDeleteStr ? "supprimé" : "mis à jour"
+      updateOrDeleteStr === "delete"
+      ? "supprimé"
+      : (updateOrDeleteStr === "update"
+        ? "mis à jour"
+        : "ajouté"
+      )
     }.`
   );
 }

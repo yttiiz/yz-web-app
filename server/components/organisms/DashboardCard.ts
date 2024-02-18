@@ -13,15 +13,25 @@ export const DashboardCard: ComponentType<
   html: ({
     title,
     className,
+    isAccordeon,
   }: DashboardDetailsType,
   ) => {
     return `
       <div>
-        <h3>${title}</h3>
+        <h3${isAccordeon ? ` class="accordeon-title"` : ""}>
+          ${title}
+        </h3>
         <div class="${className}"></div>
-        <button type="button" data-open="false">
-          <span></span>
-        </button>
+        ${isAccordeon
+          ?
+          (
+          `<button type="button" data-open="false">
+            <span></span>
+          </button>
+          `
+          )
+          : ""
+        }
       </div>`
   },
 };

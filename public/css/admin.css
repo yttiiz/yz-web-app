@@ -301,7 +301,7 @@
             position: relative;
         }
 
-        & > div h3 {
+        & > div h3.accordeon-title {
             position: relative;
             z-index: 1;
             cursor: pointer;
@@ -330,6 +330,9 @@
             transform: rotateZ(225deg);
         }
     }
+}
+.analytics-details {
+    
 }
 
 .users-details,
@@ -435,7 +438,6 @@
         }
     }
 
-
     & strong {
         font-weight: 400;
     }
@@ -461,6 +463,24 @@
 .products-details.open,
 .bookings-details.open {
     margin-top: var(--base-size);
+}
+
+.products-details {
+    & > div {
+        display: flex;
+        flex-direction: column;
+        gap: var(--base-size);
+
+        & button {
+            width: max-content;
+            font-size: var(--base-size);
+            font-weight: 500;
+            color: var(--white);
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            background: var(--secondary-color);
+        }
+    }
 }
 
 #eye-password,
