@@ -183,10 +183,23 @@ export class AdminController extends DefaultController {
             const productId = await this.mongo.insertIntoDB(
               productDocument,
               "products",
-            );
+              );
 
-            if (!(productId.includes("failed"))) {
-              // 4. ...create 'bookings' document related to current product...
+              if (!(productId.includes("failed"))) {
+              // 4. ...create 'review' document related to current product...
+                const reviewDocument = {
+                _id: new ObjectId(),
+                productName: name,
+                productId,
+                reviews: [],
+              };
+  
+              const reviewId = await this.mongo.insertIntoDB(
+                reviewDocument, 
+                "reviews",
+              );
+                
+              // 5. ...and 'booking' document related to current product...
               const bookingDocument = {
                 _id: new ObjectId(),
                 productName: name,
@@ -196,36 +209,23 @@ export class AdminController extends DefaultController {
               
               const bookingId = await this.mongo.insertIntoDB(
                 bookingDocument, 
-                "bookings"
-              );
-            
-              // 5. ...and 'reviews' document related to current product...
-              const reviewDocument = {
-                _id: new ObjectId(),
-                productName: name,
-                productId,
-                reviews: [],
-              };
-  
-              const reviewId = await this.mongo.insertIntoDB(
-                reviewDocument, 
-                "reviews"
+                "bookings",
               );
   
               const isBookingAndReviewDocumentsOk = (
-                !(bookingId.includes("failed")) &&
-                !(reviewId.includes("failed"))
+                !(reviewId.includes("failed")) &&
+                !(bookingId.includes("failed"))
               );
   
               // 6. ...finally set 'bookingId' & 'reviewId' in product document.
               if (isBookingAndReviewDocumentsOk) {
                 const newProductDocument: Partial<ProductSchemaWithIDType> = { ...productDocument }; 
                 
-                newProductDocument["bookingId"] = bookingId;
                 newProductDocument["reviewId"] = reviewId;
+                newProductDocument["bookingId"] = bookingId;
                 
                 isAllDocumentsInsertCorrectly = await this.mongo.updateToDB(
-                    new ObjectId(productId),
+                  new ObjectId(productId),
                   newProductDocument,
                   "products",
                 );
