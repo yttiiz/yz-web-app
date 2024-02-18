@@ -63,6 +63,13 @@ export class FormBuilder {
     inputThumbnail.closest("label").appendChild(img);
     inputPictures.closest("label").appendChild(figure);
 
+    FormBuilder.#handleSearchPhoto(buttons);
+  };
+
+  /**
+   * @param {NodeList<HTMLButtonElement>} buttons 
+   */
+  static #handleSearchPhoto = (buttons) => {
     // Add handle search picture listener to buttons.
     const names = ["thumbnail", "pictures"];
 
@@ -264,13 +271,15 @@ export class FormBuilder {
   };
 
   static createButtonHandler = (container) => {
-    const button = container.querySelector("button");
-    const dialog = document.querySelector(`dialog[data-create-product]`);
+    const dialog = document.querySelector("dialog[data-create-product]");
+    const buttons = dialog.querySelectorAll("form > label button");
 
     dialog.querySelector("h2").textContent = "Ajouter un appartement";
     dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
+    
+    FormBuilder.#handleSearchPhoto(buttons);
 
-    button.addEventListener("click", () => {
+    container.querySelector("button").addEventListener("click", () => {
       dialog.showModal();
     })
   };

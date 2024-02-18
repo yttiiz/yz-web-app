@@ -1,5 +1,5 @@
 {
-  "action": "admin-create-product",
+  "action": "/admin-create-product",
   "method": "POST",
   "content": [
     {

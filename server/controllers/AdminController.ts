@@ -106,11 +106,30 @@ export class AdminController extends DefaultController {
       async (ctx: RouterContextAppType<"/admin-create-product">) => {
         try {
           const formData = await ctx.request.body.formData();
+          const dataModel = await this.helper.convertJsonToObject(
+            "/server/data/admin/create-product-form.json",
+          ) as FormDataType;
 
-          for (const [key, value] of formData) {
-            console.log("key :", key, "value :", value)
+          this.addFileModelTo(dataModel);
+
+          const dataParsed = Validator.dataParser(
+            formData,
+            dataModel,
+          );
+
+          if (!dataParsed.isOk) {
+            return this.response(
+              ctx,
+              {
+                title: "Enregistrement non effectué",
+                message: dataParsed.message,
+              },
+              401,
+            );
           }
 
+          // TODO implements logic here.
+          
           return this.response(
             ctx,
             {
@@ -221,20 +240,7 @@ export class AdminController extends DefaultController {
             "/server/data/admin/product-form.json",
           ) as FormDataType;
 
-          // Add additional types to check in 'dataModel'.
-          const files = [{
-            "type": "file",
-            "name": "thumbnail",
-            "accept": ".png, .jpg, .webp, .jpeg",
-          }, {
-            "type": "file",
-            "name": "pictures",
-            "accept": ".png, .jpg, .webp, .jpeg",
-          }];
-
-          for (const file of files) {
-            dataModel.content.push(file);
-          }
+          this.addFileModelTo(dataModel);
 
           const dataParsed = Validator.dataParser(
             formData,
@@ -483,6 +489,23 @@ export class AdminController extends DefaultController {
       );
     }
   }
+
+  private addFileModelTo(dataModel: FormDataType) {
+    // Add additional types to check in 'dataModel'.
+    const files = [{
+      "type": "file",
+      "name": "thumbnail",
+      "accept": ".png, .jpg, .webp, .jpeg",
+    }, {
+      "type": "file",
+      "name": "pictures",
+      "accept": ".png, .jpg, .webp, .jpeg",
+    }];
+
+    for (const file of files) {
+      dataModel.content.push(file);
+    }
+  };
 
   private convertToNumber = (str: string) => {
     return str.includes(",")
