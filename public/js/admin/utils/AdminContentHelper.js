@@ -271,8 +271,10 @@ export class AdminContentHelper extends DefaultFormHelper {
     }
 
     dbInfos.innerHTML = `
-    <p>Si vous souhaitez ajouter un <strong>nouveau logement</strong>, cliquez <a href="/admin-create-product">ici</a>.</p>`;
+    <p>Si vous souhaitez ajouter un <strong>nouvel appartement</strong>, cliquez sur le bouton ci-dessus :</p>
+    <button type="button" data-create-product>Ajouter un appartement</button>`;
 
+    FormBuilder.createButtonHandler(dbInfos);
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
       elementsList,

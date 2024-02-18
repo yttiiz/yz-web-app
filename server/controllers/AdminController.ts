@@ -28,6 +28,7 @@ export class AdminController extends DefaultController {
     this.getAdmin();
     this.postAdminLogin();
     this.postAdminLogout();
+    this.postCreateProduct();
     this.putUser();
     this.putProduct();
     this.putBooking();
@@ -96,6 +97,33 @@ export class AdminController extends DefaultController {
     this.router?.post(
       "/admin-logout",
       this.log.logoutHandler,
+    );
+  }
+
+  private postCreateProduct() {
+    this.router?.post(
+      "/admin-create-product",
+      async (ctx: RouterContextAppType<"/admin-create-product">) => {
+        try {
+          const formData = await ctx.request.body.formData();
+
+          for (const [key, value] of formData) {
+            console.log("key :", key, "value :", value)
+          }
+
+          return this.response(
+            ctx,
+            {
+              title: "Test",
+              message: "Message"
+            },
+            200,
+          );
+
+        } catch (error) {
+          this.helper.writeLog(error);
+        }
+      }
     );
   }
 

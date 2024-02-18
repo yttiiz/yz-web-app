@@ -21,6 +21,7 @@ export class Forms {
   static #handleForm = async (e) => {
     e.preventDefault();
 
+    const isCreateForm = e.target.action.includes("create");
     const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty(
       "delete",
     );
@@ -38,7 +39,12 @@ export class Forms {
         );
     }
 
-    const method = isDeleteForm ? "DELETE" : "PUT";
+    const method = isDeleteForm
+      ? "DELETE"
+      : (isCreateForm
+          ? "POST"
+          : "PUT"
+        );
 
     const res = await fetch(e.target.action, {
       method,

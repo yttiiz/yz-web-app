@@ -10,6 +10,8 @@ export class FormBuilder {
   static #hydrateInput = hydrateInput;
   static #handleInputFile = handleInputFile;
 
+  static #warningText = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+
   /**
    * @param {HTMLDivElement} container
    * @param {string} dataType
@@ -221,8 +223,7 @@ export class FormBuilder {
 
     // Set modal.
     dialog.querySelector("h2").textContent = `Modification ${dataTitle}`;
-    dialog.querySelector("p").innerHTML =
-      "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+    dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
 
     dialog.showModal();
   };
@@ -260,6 +261,18 @@ export class FormBuilder {
     dialog.querySelector("p").textContent = FormBuilder.#setText("p", dataType);
 
     dialog.showModal();
+  };
+
+  static createButtonHandler = (container) => {
+    const button = container.querySelector("button");
+    const dialog = document.querySelector(`dialog[data-create-product]`);
+
+    dialog.querySelector("h2").textContent = "Ajouter un appartement";
+    dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
+
+    button.addEventListener("click", () => {
+      dialog.showModal();
+    })
   };
 
   /**

@@ -64,8 +64,7 @@ export const InputsForm: ComponentType<
                     ${minLength ? ` minLength="${minLength}"` : ""}
                     ${maxLength ? ` maxLength="${maxLength}"` : ""}
                     ${value ? ` value="${value}"` : ""}
-                  >
-                  </textarea>`
+                  ></textarea>`
                 )
                 : 
                 (
