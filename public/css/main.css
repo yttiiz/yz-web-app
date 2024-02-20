@@ -61,6 +61,10 @@ body * {
     color: var(--dark);
 }
 
+body > div {
+    display: none !important;
+}
+
 input::-ms-input-placeholder {
     color: #999;
 }
@@ -165,6 +169,8 @@ dialog {
     }
 
     & > header {
+        position: sticky;
+        top: 0;
         background: var(--light);
         display: grid;
         justify-content: space-between;
