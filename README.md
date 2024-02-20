@@ -37,6 +37,9 @@ HOST=127.0.0.1
 APP_URL="http://127.0.0.1:3000"
 APP_SESSION_NAME="your_session_name"
 DATABASE_URL="your/database/url"
+CLUSTER_HOST="your/cluster/url"
+CLUSTER_USERNAME="your_cluster_username"
+CLUSTER_PASSWORD="your_cluster_password"
 ```
 
 Then, you can start working with the applicatiton by running this command :
