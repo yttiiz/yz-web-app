@@ -30,7 +30,7 @@ export const ProductDetails: ComponentType<
         `<li>
           <b>${descriptionInfo[key as keyof typeof descriptionInfo]} :</b> 
           ${key === "area"
-            ? `${product.details[key as keyof typeof product.details]}m<sup>2</sup>`
+            ? `${product.details[key as keyof typeof product.details]}m²`
             : product.details[key as keyof typeof product.details]
           }
         </li>`

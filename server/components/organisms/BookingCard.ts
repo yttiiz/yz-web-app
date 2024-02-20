@@ -73,7 +73,7 @@ type ParameterType = {
             <span data-rate="${Handler.rateAverage(rates)}">${StarSvg.html}</span>
             <ul>
               <li>${type} ${details.type}</li>
-              <li>${area} ${details.area}m<sup>2</sup></li>
+              <li>${area} ${details.area}m²</li>
               <li>${rooms} ${details.rooms}</li>
             </ul>
             <p><strong>${Helper.formatPrice(details.price)}</strong> la nuit</p>
