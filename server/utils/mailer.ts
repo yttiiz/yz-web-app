@@ -1,7 +1,6 @@
 import { nodemailer } from "@deps";
 import { Helper } from "./mod.ts";
 import type {
-  CredentialsType,
   MailConfigType,
   SendParameterType,
 } from "./mod.ts";
@@ -25,15 +24,12 @@ export class Mailer {
     to,
     receiver,
   }: SendParameterType) {
+
     const {
-      hostinger: {
-        email,
-        username,
-        password,
-      },
-    }: CredentialsType = await Helper.convertJsonToObject(
-      "/server/data/credentials/email.credentials.json",
-    );
+      EMAIL_ADDRESS: email,
+      EMAIL_USERNAME: username,
+      EMAIL_PASSWORD: password,
+    } = Deno.env.toObject();
 
     const transporter = nodemailer.createTransport({
       host: Mailer.HOSTINGER_CONFIG.host,

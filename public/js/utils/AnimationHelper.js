@@ -60,8 +60,7 @@ export class AnimationHelper {
      *  nextBtn: HTMLButtonElement;
      *  sliderLength: number;
      *  index: number;
-     * }} param0
-     * @param {string} className
+     * }}
      */
     const changeBtnsVisibility = ({
       prevBtn,

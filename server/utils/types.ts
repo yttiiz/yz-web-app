@@ -31,19 +31,6 @@ export type FormDataAppType = {
   photo: File | undefined;
 };
 
-export type CredentialsDataType = {
-  email: string;
-  username: string;
-  password: string;
-};
-
-export type ClientMailType = "outlook" | "hostinger";
-
-export type CredentialsType = Record<
-  ClientMailType,
-  CredentialsDataType
->;
-
 export type SendParameterType = {
   to: string;
   receiver: string;

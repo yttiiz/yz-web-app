@@ -21,9 +21,9 @@ Object.keys(env)
 const {
   PORT,
   HOST: hostname,
-  CLUSTER_HOST: host,
-  CLUSTER_USERNAME: username,
-  CLUSTER_PASSWORD: password,
+  DATABASE_HOST: host,
+  DATABASE_USERNAME: username,
+  DATABASE_PASSWORD: password,
   APP_SESSION_NAME,
 } = Deno.env.toObject();
 
