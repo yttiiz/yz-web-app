@@ -28,6 +28,7 @@ export type MoleculeNameType =
   | "HeaderNavigation"
   | "HeaderUserSession"
   | "HeaderAdminSession"
+  | "HeroBanner"
   | "TextAreaForm"
   | "Login"
   | "LogoutUserForm"
@@ -118,7 +119,13 @@ export type ProductDescriptionType = {
   rooms: string;
 };
 
-export type HomePageDataType = TitleAndDescriptionType;
+export type HomePageDataType = {
+  hero: TitleAndDescriptionType & {
+    imgSrc: string;
+    imgAlt: string;
+  };
+  appartment: TitleAndDescriptionType;
+};
 
 export type CommonInputType = {
   name?: string;

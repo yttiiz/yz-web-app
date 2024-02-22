@@ -42,6 +42,7 @@ export * from "./molecules/InputsGroupForm.ts";
 export * from "./molecules/HeaderNavigation.ts";
 export * from "./molecules/HeaderUserSession.ts";
 export * from "./molecules/HeaderAdminSession.ts";
+export * from "./molecules/HeroBanner.ts";
 export * from "./molecules/TextAreaForm.ts";
 export * from "./molecules/DeleteForm.ts";
 export * from "./molecules/DeleteAccount.ts";

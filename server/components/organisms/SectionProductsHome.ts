@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { Dialog, ProductCard, ShareForm } from "../mod.ts";
+import { Dialog, HeroBanner, ProductCard, ShareForm } from "../mod.ts";
 import type {
   ComponentType,
   HomePageDataType,
@@ -15,18 +15,26 @@ export const SectionProductsHome: ComponentType<
   name: "SectionProductsHome",
   html: async (products: Record<string, ProductSchemaWithIDType>) => {
     const {
-      title,
-      paragraph,
+      hero,
+      appartment,
     }: HomePageDataType = await Helper.convertJsonToObject(
       `/server/data/home/home.json`,
     );
 
     return `
     <section>
+      ${HeroBanner.html({
+        title: hero.title,
+        paragraph: hero.paragraph,
+        imgSrc: hero.imgSrc,
+        imgAlt: hero.imgAlt,
+      })}
+    </section>
+    <section>
       <div class="container">
         <div>
-          <h1>${title}</h1>
-          <p>${paragraph}</p>
+          <h1>${appartment.title}</h1>
+          <p>${appartment.paragraph}</p>
         </div>
         <ul class="products">
           ${Object.keys(products)
