@@ -36,10 +36,12 @@ PORT=3000
 HOST=127.0.0.1
 APP_URL="http://127.0.0.1:3000"
 APP_SESSION_NAME="your_session_name"
-DATABASE_URL="your/database/url"
-CLUSTER_HOST="your/cluster/url"
-CLUSTER_USERNAME="your_cluster_username"
-CLUSTER_PASSWORD="your_cluster_password"
+DATABASE_HOST="your/database/url"
+DATABASE_USERNAME="your_database_username"
+DATABASE_PASSWORD="your_database_password"
+EMAIL_ADDRESS="your_email_address"
+EMAIL_USERNAME="your_email_username"
+EMAIL_PASSWORD="your_email_password"
 ```
 
 Then, you can start working with the applicatiton by running this command :
