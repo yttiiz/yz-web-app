@@ -104,6 +104,7 @@ export class ProductFormPage extends PageBuilder {
     const res = await fetch(e.target.action, {
       method: "POST",
       body: formData,
+      mode: "no-cors"
     });
 
     if (res.ok) {
