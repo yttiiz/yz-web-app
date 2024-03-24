@@ -49,6 +49,7 @@ export class Forms {
     const res = await fetch(e.target.action, {
       method,
       body: formData,
+      mode: "cors"
     });
 
     isDeleteForm
