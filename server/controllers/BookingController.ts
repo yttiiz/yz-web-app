@@ -30,17 +30,17 @@ export class BookingController extends DefaultController {
           const data: BookingUserInfoType[] = [];
           const userId = (ctx.state.session as SessionType).get("userId");
 
-          const bookingsCursor = await this.mongo.connectionTo<
-            BookingsProductSchemaWithIDType
-          >("bookings");
-          const productsCursor = await this.mongo.connectionTo<
-            ProductSchemaWithIDType
-          >("products");
-          const reviewsCursor = await this.mongo.connectionTo<
-            ReviewsProductSchemaWithIDType
-          >("reviews");
-
           try {
+            const bookingsCursor = await this.mongo.connectionTo<
+              BookingsProductSchemaWithIDType
+            >("bookings");
+            const productsCursor = await this.mongo.connectionTo<
+              ProductSchemaWithIDType
+            >("products");
+            const reviewsCursor = await this.mongo.connectionTo<
+              ReviewsProductSchemaWithIDType
+            >("reviews");
+
             if (
               ("message" in bookingsCursor &&
                 bookingsCursor["message"].includes("failed")) ||
