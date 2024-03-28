@@ -74,7 +74,7 @@ export class Validator {
         if (prop.includes("file") || prop.includes("price")) {
           key++;
           continue;
-        };
+        }
 
         // Check textarea field type.
         if (

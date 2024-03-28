@@ -10,7 +10,8 @@ export class FormBuilder {
   static #hydrateInput = hydrateInput;
   static #handleInputFile = handleInputFile;
 
-  static #warningText = "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
+  static #warningText =
+    "Les modifications apportées seront directement envoyées à la base de données. <b>Soyez bien sûrs des informations que vous renseignés</b>.";
 
   /**
    * @param {HTMLDivElement} container
@@ -67,7 +68,7 @@ export class FormBuilder {
   };
 
   /**
-   * @param {NodeList<HTMLButtonElement>} buttons 
+   * @param {NodeList<HTMLButtonElement>} buttons
    */
   static #handleSearchPhoto = (buttons) => {
     // Add handle search picture listener to buttons.
@@ -276,12 +277,12 @@ export class FormBuilder {
 
     dialog.querySelector("h2").textContent = "Ajouter un appartement";
     dialog.querySelector("p").innerHTML = FormBuilder.#warningText;
-    
+
     FormBuilder.#handleSearchPhoto(buttons);
 
     container.querySelector("button").addEventListener("click", () => {
       dialog.showModal();
-    })
+    });
   };
 
   /**

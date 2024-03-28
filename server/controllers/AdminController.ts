@@ -145,8 +145,11 @@ export class AdminController extends DefaultController {
           const alt = `image principale ${name.toLocaleLowerCase()}`;
 
           let isAllDocumentsInsertCorrectly = true;
-          let productDocument: Omit<ProductSchemaWithIDType, "bookingId" | "reviewId">;
-          
+          let productDocument: Omit<
+            ProductSchemaWithIDType,
+            "bookingId" | "reviewId"
+          >;
+
           if (thumbnail && pictures) {
             // 2. If 'thumbnail' & 'pictures' are defined, set document.
             productDocument = {
@@ -164,7 +167,7 @@ export class AdminController extends DefaultController {
                 src: await this.helper.writePicFile(
                   thumbnail,
                   alt.replaceAll(" ", "_"),
-                  ),
+                ),
               },
               pictures: [
                 {
@@ -173,32 +176,34 @@ export class AdminController extends DefaultController {
                   }`,
                   src: await this.helper.writePicFile(
                     pictures,
-                    `${name.toLocaleLowerCase()}_${Math.round((Math.random() + 1) * 1000)}`,
+                    `${name.toLocaleLowerCase()}_${
+                      Math.round((Math.random() + 1) * 1000)
+                    }`,
                   ),
-                }
-              ] 
+                },
+              ],
             };
 
             // 3. Insert document in database...
             const productId = await this.mongo.insertIntoDB(
               productDocument,
               "products",
-              );
+            );
 
-              if (!(productId.includes("failed"))) {
+            if (!(productId.includes("failed"))) {
               // 4. ...create 'review' document related to current product...
-                const reviewDocument = {
+              const reviewDocument = {
                 _id: new ObjectId(),
                 productName: name,
                 productId,
                 reviews: [],
               };
-  
+
               const reviewId = await this.mongo.insertIntoDB(
-                reviewDocument, 
+                reviewDocument,
                 "reviews",
               );
-                
+
               // 5. ...and 'booking' document related to current product...
               const bookingDocument = {
                 _id: new ObjectId(),
@@ -206,40 +211,40 @@ export class AdminController extends DefaultController {
                 productId,
                 bookings: [],
               };
-              
+
               const bookingId = await this.mongo.insertIntoDB(
-                bookingDocument, 
+                bookingDocument,
                 "bookings",
               );
-  
-              const isBookingAndReviewDocumentsOk = (
+
+              const isBookingAndReviewDocumentsOk =
                 !(reviewId.includes("failed")) &&
-                !(bookingId.includes("failed"))
-              );
-  
+                !(bookingId.includes("failed"));
+
               // 6. ...finally set 'bookingId' & 'reviewId' in product document.
               if (isBookingAndReviewDocumentsOk) {
-                const newProductDocument: Partial<ProductSchemaWithIDType> = { ...productDocument }; 
-                
+                const newProductDocument: Partial<ProductSchemaWithIDType> = {
+                  ...productDocument,
+                };
+
                 newProductDocument["reviewId"] = reviewId;
                 newProductDocument["bookingId"] = bookingId;
-                
+
                 isAllDocumentsInsertCorrectly = await this.mongo.updateToDB(
                   new ObjectId(productId),
                   newProductDocument,
                   "products",
                 );
-
-              } else { isAllDocumentsInsertCorrectly = false; }
-
-            } else { isAllDocumentsInsertCorrectly = false; }
+              } else isAllDocumentsInsertCorrectly = false;
+            } else isAllDocumentsInsertCorrectly = false;
 
             isAllDocumentsInsertCorrectly
               ? this.response(
                 ctx,
                 {
                   title,
-                  message: this.msgToAdmin`L'appartement ${name} ${true} été${"add"}`
+                  message: this
+                    .msgToAdmin`L'appartement ${name} ${true} été${"add"}`,
                 },
                 200,
               )
@@ -247,26 +252,26 @@ export class AdminController extends DefaultController {
                 ctx,
                 {
                   title,
-                  message: this.msgToAdmin`L'appartement ${name} ${false} été${"add"}`
+                  message: this
+                    .msgToAdmin`L'appartement ${name} ${false} été${"add"}`,
                 },
                 200,
               );
-
           } else {
             this.response(
               ctx,
               {
                 title,
-                message: "Vous devez obligatoirement joindre des images pour créer un nouvel appartement."
+                message:
+                  "Vous devez obligatoirement joindre des images pour créer un nouvel appartement.",
               },
               200,
             );
           }
-
         } catch (error) {
           this.helper.writeLog(error);
         }
-      }
+      },
     );
   }
 
@@ -629,7 +634,7 @@ export class AdminController extends DefaultController {
     for (const file of files) {
       dataModel.content.push(file);
     }
-  };
+  }
 
   private convertToNumber = (str: string) => {
     return str.includes(",")
@@ -651,11 +656,8 @@ export class AdminController extends DefaultController {
   ) => (
     `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${str[2]} ${
       updateOrDeleteStr === "delete"
-      ? "supprimé"
-      : (updateOrDeleteStr === "update"
-        ? "mis à jour"
-        : "ajouté"
-      )
+        ? "supprimé"
+        : (updateOrDeleteStr === "update" ? "mis à jour" : "ajouté")
     }.`
   );
 }

@@ -1,9 +1,6 @@
 import { nodemailer } from "@deps";
 import { Helper } from "./mod.ts";
-import type {
-  MailConfigType,
-  SendParameterType,
-} from "./mod.ts";
+import type { MailConfigType, SendParameterType } from "./mod.ts";
 
 export class Mailer {
   // Outlook config
@@ -24,7 +21,6 @@ export class Mailer {
     to,
     receiver,
   }: SendParameterType) {
-
     const {
       EMAIL_ADDRESS: email,
       EMAIL_USERNAME: username,

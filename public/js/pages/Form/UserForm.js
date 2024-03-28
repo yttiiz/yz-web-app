@@ -33,7 +33,7 @@ export class UserFormPage extends PageBuilder {
 
       for (const modal of modals) {
         const modalCancelledBtn = modal.querySelectorAll("button[data-close]");
-  
+
         // Set button to abort deleting
         for (const btn of modalCancelledBtn) {
           btn.addEventListener("click", this.#hideModalHandler);
@@ -98,7 +98,7 @@ export class UserFormPage extends PageBuilder {
     const res = await fetch(e.target.action, {
       method: method ?? "POST",
       body: formData,
-      mode: "no-cors"
+      mode: "no-cors",
     });
 
     if (location.pathname !== "/profil") {

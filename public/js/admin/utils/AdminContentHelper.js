@@ -229,9 +229,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       <div>
         <p>Nom : <strong>${products[key].name}</strong></p>
         <p>Type : <strong>${products[key].details.type}</strong></p>
-        <p>Superficie : <strong>${
-        products[key].details.area
-      } m²</strong></p>
+        <p>Superficie : <strong>${products[key].details.area} m²</strong></p>
         <p>Pièces : <strong>${products[key].details.rooms}</strong></p>
       </div>`;
 

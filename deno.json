@@ -25,7 +25,7 @@
   },
   "lock": false,
   "fmt": {
-    "useTabs": true,
+    "useTabs": false,
     "lineWidth": 80,
     "indentWidth": 2,
     "semiColons": true,

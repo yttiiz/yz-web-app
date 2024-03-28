@@ -179,11 +179,9 @@ export class Mongo {
     username,
     password,
     host,
-  }: CreateClusterParamerType,
-  ) {
-    Mongo.clusterUrl = (
-      `mongodb+srv://${username}:${password}@${host}/main?authMechanism=SCRAM-SHA-1`
-    );
+  }: CreateClusterParamerType) {
+    Mongo.clusterUrl =
+      `mongodb+srv://${username}:${password}@${host}/main?authMechanism=SCRAM-SHA-1`;
     return Mongo.clusterUrl;
   }
 }
