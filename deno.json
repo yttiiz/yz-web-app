@@ -13,15 +13,7 @@
     "@router": "./server/router/router.ts",
     "@dynamic-routes": "./server/router/mod.ts",
     "@utils": "./server/utils/mod.ts",
-    "@auth": "./server/auth/mod.ts",
-    "env": "https://deno.land/std@0.202.0/dotenv/mod.ts",
-    "encode": "https://deno.land/std@0.188.0/encoding/hex.ts",
-    "oak": "https://deno.land/x/oak/mod.ts",
-    "oak-session": "https://deno.land/x/oak_sessions/mod.ts",
-    "mongoose": "https://deno.land/x/mongo@v0.31.2/mod.ts",
-    "mongo-find": "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts",
-    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
-    "nodemailer": "npm:nodemailer"
+    "@auth": "./server/auth/mod.ts"
   },
   "lock": false,
   "fmt": {

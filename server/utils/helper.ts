@@ -37,6 +37,7 @@ export class Helper {
   private static writeOpts: Deno.WriteFileOptions = {
     create: true,
     append: true,
+    mode: 764,
   };
 
   public static async convertJsonToObject(
@@ -96,7 +97,7 @@ export class Helper {
     const ext = file.type.split("/").at(1) as string;
     const pic = `img/${dir}/${name}.${ext}`;
 
-    await Deno.writeFile(`public/${pic}`, file.stream());
+    await Deno.writeFile(`public/${pic}`, file.stream(), Helper.writeOpts);
 
     return pic;
   }

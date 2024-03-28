@@ -1,7 +1,7 @@
 //====================================| Deno imports |====================================//
-import * as oak from "oak";
-import { MongoStore, Session } from "oak-session";
-import { load } from "env";
+import * as oak from "https://deno.land/x/oak/mod.ts";
+import { MongoStore, Session } from "https://deno.land/x/oak_sessions/mod.ts";
+import { load } from "https://deno.land/std@0.202.0/dotenv/mod.ts";
 import {
   Binary,
   Bson,
@@ -12,11 +12,11 @@ import {
   MongoClient,
   ObjectId,
   UpdateFilter,
-} from "mongoose";
-import { FindCursor } from "mongo-find";
-import { decode, encode } from "encode";
-import * as bcrypt from "bcrypt";
-import * as nodemailer from "nodemailer";
+} from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { FindCursor } from "https://deno.land/x/mongo@v0.31.2/src/collection/commands/find.ts";
+import { decode, encode } from "https://deno.land/std@0.188.0/encoding/hex.ts";
+import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
+import * as nodemailer from "npm:nodemailer";
 
 export {
   bcrypt,

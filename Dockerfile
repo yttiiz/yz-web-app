@@ -6,6 +6,7 @@ WORKDIR /app
 USER deno
 
 COPY server/dependencies/deps.ts .
+RUN deno cache deps.ts
 COPY . .
 
 RUN deno cache main.ts
