@@ -25,6 +25,9 @@ Deno.test({
 Deno.test({
   name: helper`display date`,
   fn() {
-    assertEquals("24 juil. 1980", Helper.displayDate({ date: new Date("1980-7-24"), style: "normal"}))
+    assertEquals("24 juil. 1980", Helper.displayDate({
+      date: new Date("1980-7-24"),
+      style: "normal"
+    }));
   }
 })
