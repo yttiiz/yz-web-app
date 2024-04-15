@@ -26,6 +26,11 @@
     "include": ["server/", "public/", "tests/"],
     "exclude": ["README.md"]
   },
+  "lint": {
+    "rules": {
+      "exclude": ["no-unused-vars"]
+    }
+  },
   "tasks": {
     "cache:reload": "deno cache --reload ./**/*.ts",
     "fmt": "deno fmt",

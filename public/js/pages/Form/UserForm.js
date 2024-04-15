@@ -107,7 +107,7 @@ export class UserFormPage extends PageBuilder {
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
       if (res.redirected) {
-        window.location.href = res.url;
+        globalThis.location.href = res.url;
       } else {
         switch (e.target.action) {
           case location.origin + "/login":

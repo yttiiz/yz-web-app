@@ -48,8 +48,8 @@ export class Router {
             "profil",
             await res.json(),
           );
-          break;
         }
+        break;
       }
 
       //============[ BOOKING ]============//
@@ -77,7 +77,7 @@ export class Router {
   /**
    * @param {string} route
    */
-  async #fetchData(route) {
+  #fetchData(route) {
     return fetch(`${this.host}${route}`);
   }
 }

@@ -88,20 +88,23 @@ Deno.test({
     // Correct fields
     const fields1 = [
       { key: "name", value: "John" },
-      { key: "age", value: "45" }
+      { key: "age", value: "45" },
     ];
     const formData1 = new FormData();
-    
+
     for (const { key, value } of fields1) {
       formData1.append(key, value);
     }
 
     // Unexpected fields
     const fields2 = [
-      { key: "name", value: "(function(){document.querySelector(\"body\").innerHTML=\"\"})()"}
+      {
+        key: "name",
+        value: '(function(){document.querySelector("body").innerHTML=""})()',
+      },
     ];
     const formData2 = new FormData();
-    for (const { key, value} of fields2) {
+    for (const { key, value } of fields2) {
       formData2.append(key, value);
     }
 
@@ -111,8 +114,12 @@ Deno.test({
     );
 
     assertEquals(
-      { isOk: false, message: "Il semble que votre saisie contient : des caractères non autorisés." },
-      Validator.dataParser(formData2, dataModel)
-    )
+      {
+        isOk: false,
+        message:
+          "Il semble que votre saisie contient : des caractères non autorisés.",
+      },
+      Validator.dataParser(formData2, dataModel),
+    );
   },
 });

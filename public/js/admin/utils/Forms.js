@@ -6,8 +6,8 @@ export class Forms {
   static init = () => {
     for (const dialog of document.querySelectorAll("#data-admin dialog")) {
       if (
-        !dialog.dataset.hasOwnProperty("profil") &&
-        !dialog.dataset.hasOwnProperty("response")
+        !Object.prototype.hasOwnProperty.call(dialog.dataset, "profil") &&
+        !Object.prototype.hasOwnProperty.call(dialog.dataset, "response")
       ) {
         dialog.querySelector("form")
           .addEventListener("submit", Forms.#handleForm);
@@ -22,7 +22,8 @@ export class Forms {
     e.preventDefault();
 
     const isCreateForm = e.target.action.includes("create");
-    const isDeleteForm = e.target.closest("dialog").dataset.hasOwnProperty(
+    const isDeleteForm = Object.prototype.hasOwnProperty.call(
+      e.target.closest("dialog").dataset,
       "delete",
     );
     const formData = Forms.#setFormData(e.target);
