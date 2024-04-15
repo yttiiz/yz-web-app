@@ -39,12 +39,7 @@ export class Forms {
         );
     }
 
-    const method = isDeleteForm
-      ? "DELETE"
-      : (isCreateForm
-          ? "POST"
-          : "PUT"
-        );
+    const method = isDeleteForm ? "DELETE" : (isCreateForm ? "POST" : "PUT");
 
     const res = await fetch(e.target.action, {
       method,

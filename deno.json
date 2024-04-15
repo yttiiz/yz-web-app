@@ -23,7 +23,7 @@
     "semiColons": true,
     "singleQuote": false,
     "proseWrap": "preserve",
-    "include": ["server/", "public/"],
+    "include": ["server/", "public/", "tests/"],
     "exclude": ["README.md"]
   },
   "tasks": {

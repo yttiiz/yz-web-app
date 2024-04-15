@@ -7,7 +7,7 @@ export class Validator {
       .replace(/\p{Diacritic}/gu, "");
   }
 
-  public static limitDates(date: string | undefined) {
+  public static limitDates(date?: string | undefined) {
     if (date) {
       return {
         min: date,
@@ -43,7 +43,7 @@ export class Validator {
 
   public static minAndMaxDateParser(
     label: string,
-    startingDate: string | undefined,
+    startingDate?: string | undefined,
   ) {
     return label.includes("naissance")
       ? (
