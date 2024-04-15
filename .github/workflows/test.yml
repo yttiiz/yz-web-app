@@ -30,8 +30,8 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Verify formatting
-        run: deno task fmt
+      - name: Verify lint & formatting
+        run: deno task lint-fmt
 
       - name: Run tests
         run: deno task test
