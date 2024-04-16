@@ -1,39 +1,5 @@
-import { assertEquals } from "./deps.ts";
-import { Helper, Validator } from "../server/utils/mod.ts";
-
-const task = (str: TemplateStringsArray, utility = "Helper") => (
-  `${utility} -> method (${str[0]})`
-);
-
-Deno.test({
-  name: task`convert json to object`,
-  async fn() {
-    assertEquals(
-      { firstname: "John", lastname: "Doe", age: 45 },
-      await Helper.convertJsonToObject("/tests/data.test.json"),
-    );
-  },
-});
-
-Deno.test({
-  name: task`formate price`,
-  fn() {
-    assertEquals("35,25\xa0€", Helper.formatPrice(35.25));
-  },
-});
-
-Deno.test({
-  name: task`display date`,
-  fn() {
-    assertEquals(
-      "24 juil. 1980",
-      Helper.displayDate({
-        date: new Date("1980-7-24"),
-        style: "normal",
-      }),
-    );
-  },
-});
+import { assertEquals, task } from "./deps.ts";
+import { Validator } from "../server/utils/mod.ts";
 
 Deno.test({
   name: task`normalise string (NFD)${"Validator"}`,
@@ -87,7 +53,7 @@ Deno.test({
 
     // Correct fields
     const fields1 = [
-      { key: "name", value: "John" },
+      { key: "name", value: "Marcus" },
       { key: "age", value: "45" },
     ];
     const formData1 = new FormData();
@@ -109,7 +75,7 @@ Deno.test({
     }
 
     assertEquals(
-      { isOk: true, data: { name: "John", age: "45" } },
+      { isOk: true, data: { name: "Marcus", age: "45" } },
       Validator.dataParser(formData1, dataModel),
     );
 
