@@ -32,6 +32,7 @@
     }
   },
   "tasks": {
+    "load": "deno cache server/dependencies/deps.ts",
     "cache:reload": "deno cache --reload ./**/*.ts",
     "fmt": "deno fmt",
     "lint-fmt": "deno lint && deno fmt --check",

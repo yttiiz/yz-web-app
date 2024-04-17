@@ -1,4 +1,4 @@
-import { assertEquals, task } from "./deps.ts";
+import { assertEquals, task } from "./test-deps.ts";
 import { Handler } from "../server/utils/mod.ts";
 import { BookingsType } from "@mongo";
 
