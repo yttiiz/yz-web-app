@@ -1,4 +1,4 @@
-import * as Type from "../../types/types.js";
+import * as Types from "../../types/types.js";
 import {
   handleInputFile,
   handleShowPassword,
@@ -39,7 +39,7 @@ export class AdminProfilHelper {
   };
 
   /**
-   * @param {{ userData: Type.User; formContent: Type.FormContentType }}
+   * @param {{ userData: Types.User; formContent: Types.FormContentType }}
    * @param {HTMLDialogElement} dialog
    */
   static #displayDialogAdminProfil = (
@@ -114,7 +114,7 @@ export class AdminProfilHelper {
   };
 
   /**
-   * @param {Type.User} userData
+   * @param {Types.User} userData
    */
   static #createChangePictureContainer = (userData) => {
     const container = document.createElement("div");
@@ -175,7 +175,7 @@ export class AdminProfilHelper {
 
   /**
    * @param {HTMLDivElement} input
-   * @param {Type.FormInputType} inputData
+   * @param {Types.FormInputType} inputData
    */
   static #createInput = (input, inputData) => {
     input.setAttribute("type", inputData.type);

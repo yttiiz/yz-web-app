@@ -5,7 +5,6 @@ export class BookingFormHelper extends DefaultFormHelper {
    * @param {Response} response
    */
   static displayDialogCancelledBooking = async (response) => {
-    const status = response.status;
     const { message } = await response.json();
 
     const dialog = document.querySelector("#data-booking > dialog");

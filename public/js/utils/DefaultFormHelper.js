@@ -39,7 +39,6 @@ export class DefaultFormHelper {
       isUserConnected,
       title,
       paragraph,
-      status,
     },
   ) => {
     dialog.querySelector("h2").textContent = title;
@@ -106,7 +105,7 @@ export class DefaultFormHelper {
             dialog.querySelector("button")
               .removeEventListener("click", handler);
             dialog.querySelector("button")
-              .addEventListener("click", () => window.location.href = "/");
+              .addEventListener("click", () => globalThis.location.href = "/");
           }
           break;
         }
@@ -157,7 +156,7 @@ export class DefaultFormHelper {
 
           // Remove selected state and put back original text content.
           setTimeout(() => {
-            window.getSelection().removeAllRanges();
+            globalThis.getSelection().removeAllRanges();
             e.target.textContent = "Copier";
           }, 2000);
         }

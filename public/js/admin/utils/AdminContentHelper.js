@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 import { PageBuilder } from "../../pages/Builder.js";
 import { FormBuilder } from "./FormBuilder.js";
@@ -543,7 +544,7 @@ export class AdminContentHelper extends DefaultFormHelper {
       const res = await fetch(AdminContentHelper.#host + path);
 
       return res.ok ? await res.json() : { message: "Something went wrong" };
-    } catch (error) {
+    } catch (_) {
       return { message: "Something went wrong" };
     }
   };

@@ -31,7 +31,7 @@ export class Handler {
     }).format(rateSummary === 0 ? 0 : rateSummary / rateCount);
   }
 
-  public static getProductAvailability(booking: BookingsType | undefined) {
+  public static getProductAvailability(booking?: BookingsType | undefined) {
     if (booking) {
       const today = Date.now();
       const startingDate = new Date(booking.startingDate).getTime();

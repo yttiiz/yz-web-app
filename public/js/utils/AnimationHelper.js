@@ -226,7 +226,7 @@ export class AnimationHelper {
       }
 
       burger.addEventListener("click", burgerHandler);
-      window.addEventListener("click", windowHandler);
+      globalThis.addEventListener("click", windowHandler);
     }
   };
 
