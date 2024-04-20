@@ -40,7 +40,7 @@ export class Router {
       }
 
       case this.host + "profil": {
-        const res = await this.#fetchData("user-profil");
+        const res = await this.#fetchData(`user-profil?apiKey=${this.#apiKey}`);
         const { UserFormPage } = await import("./Form/UserForm.js");
 
         this.#userForm = new UserFormPage();

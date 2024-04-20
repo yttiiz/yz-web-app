@@ -52,6 +52,17 @@ export class ApiController {
     this.router.get(
       "/user-profil",
       async (ctx: RouterContextAppType<"/user-profil">) => {
+        if (this.isNotAuthorized(ctx)) {
+          return this.response(
+            ctx,
+            JSON.stringify({
+              errorMsg:
+                "Accès non autorisé : La clé d'api n'est pas bonne ou non fourni.",
+            }),
+            403,
+          );
+        }
+
         try {
           const email = await ctx.state.session.get("userEmail");
           const {
