@@ -108,15 +108,16 @@ export class ApiController {
       const data: UserDataType = {};
       const cursor = await this.collection(collection);
 
-			if (this.isNotAuthorized(ctx)) {
-				return this.response(
-					ctx,
-					JSON.stringify({
-						errorMsg: "Accès non autorisé : La clé d'api n'est pas bonne ou non fourni.",
-					}),
-					403,
-				);
-			}
+      if (this.isNotAuthorized(ctx)) {
+        return this.response(
+          ctx,
+          JSON.stringify({
+            errorMsg:
+              "Accès non autorisé : La clé d'api n'est pas bonne ou non fourni.",
+          }),
+          403,
+        );
+      }
 
       try {
         if ("message" in cursor) {
@@ -171,7 +172,7 @@ export class ApiController {
   }
 
   private isNotAuthorized<T extends string>(
-    ctx: RouterContextAppType<T>
+    ctx: RouterContextAppType<T>,
   ) {
     return !(
       ctx.request.url.searchParams.get("apiKey") === Deno.env.get("API_KEY")

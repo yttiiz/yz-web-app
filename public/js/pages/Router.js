@@ -3,7 +3,7 @@ export class Router {
   #userForm;
   #bookingForm;
   #productForm;
-  #apiKey
+  #apiKey;
 
   constructor() {
     this.route = location.href;
