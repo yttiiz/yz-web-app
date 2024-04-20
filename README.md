@@ -78,4 +78,7 @@ which allow you to write files, read files and connect to the internet.
 
 ## Is the app has tests ?
 
-**There's no test here**. You can trust in you ! 😊
+Yes, of course. There are **[tests](./tests/)** for utils classes. Run this command below to see them :
+```sh
+deno task test
+```

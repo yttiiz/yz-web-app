@@ -3,17 +3,19 @@ export class Router {
   #userForm;
   #bookingForm;
   #productForm;
+  #apiKey
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
+    this.#apiKey = "ESdv9jDqQGsuL9XEsqlS6KWN";
     this.#router();
   }
 
   async #router() {
     switch (this.route) {
       case this.host: {
-        const res = await this.#fetchData("users");
+        const res = await this.#fetchData(`users?apiKey=${this.#apiKey}`);
         const { HomePage } = await import("./Home/Home.js");
 
         this.#home = new HomePage();
