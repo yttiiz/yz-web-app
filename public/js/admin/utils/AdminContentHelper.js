@@ -2,6 +2,7 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 import { PageBuilder } from "../../pages/Builder.js";
 import { FormBuilder } from "./FormBuilder.js";
+import { getApiKey } from "../../utils/_commonFunctions.js";
 import * as Types from "../../types/types.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
@@ -541,7 +542,7 @@ export class AdminContentHelper extends DefaultFormHelper {
    */
   static #getData = async (path) => {
     try {
-      const res = await fetch(AdminContentHelper.#host + path);
+      const res = await fetch(AdminContentHelper.#host + path + getApiKey());
 
       return res.ok ? await res.json() : { message: "Something went wrong" };
     } catch (_) {

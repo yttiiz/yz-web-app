@@ -159,7 +159,10 @@ const hydrateSelect = (element, data) => {
   }
 };
 
+const getApiKey = () => "?apiKey=ESdv9jDqQGsuL9XEsqlS6KWN";
+
 export {
+  getApiKey,
   handleInputFile,
   handleShowPassword,
   hydrateInput,

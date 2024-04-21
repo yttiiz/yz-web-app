@@ -1,3 +1,5 @@
+import { getApiKey } from "../utils/_commonFunctions.js";
+
 export class Router {
   #home;
   #userForm;
@@ -8,14 +10,14 @@ export class Router {
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
-    this.#apiKey = "ESdv9jDqQGsuL9XEsqlS6KWN";
+    this.#apiKey = getApiKey();
     this.#router();
   }
 
   async #router() {
     switch (this.route) {
       case this.host: {
-        const res = await this.#fetchData(`users?apiKey=${this.#apiKey}`);
+        const res = await this.#fetchData(`users${this.#apiKey}`);
         const { HomePage } = await import("./Home/Home.js");
 
         this.#home = new HomePage();
@@ -40,7 +42,7 @@ export class Router {
       }
 
       case this.host + "profil": {
-        const res = await this.#fetchData(`user-profil?apiKey=${this.#apiKey}`);
+        const res = await this.#fetchData(`user-profil${this.#apiKey}`);
         const { UserFormPage } = await import("./Form/UserForm.js");
 
         this.#userForm = new UserFormPage();
