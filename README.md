@@ -15,7 +15,7 @@ The application configuration is define in the `deno.json` file. It's the ID
 card of the project, where alias to the main folders, compiler options and
 dependencies import are set.
 
-## How Garveys it works ?
+## How does it works ?
 
 First of all, you have to install a **_MongoDB_** tool on your machine.
 
@@ -78,4 +78,7 @@ which allow you to write files, read files and connect to the internet.
 
 ## Is the app has tests ?
 
-**There's no test here**. You can trust in you ! 😊
+Yes, of course. There are **[tests](./tests/)** for utils classes. Run this command below to see them :
+```sh
+deno task test
+```

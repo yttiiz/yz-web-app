@@ -1,5 +1,6 @@
 import * as Types from "../../types/types.js";
 import {
+  getApiKey,
   handleInputFile,
   handleShowPassword,
   setFormData,
@@ -18,10 +19,10 @@ export class AdminProfilHelper {
    */
   static init = async (buttons) => {
     const userDataResponse = await fetch(
-      AdminProfilHelper.#host + "user-profil",
+      AdminProfilHelper.#host + "user-profil" + getApiKey(),
     );
     const formContentResponse = await fetch(
-      AdminProfilHelper.#host + "user-form-content",
+      AdminProfilHelper.#host + "user-form-content" + getApiKey(),
     );
 
     if (userDataResponse.ok && formContentResponse.ok) {

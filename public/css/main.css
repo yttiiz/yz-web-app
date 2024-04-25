@@ -400,7 +400,7 @@ header[data-header="site"] {
         width: max-content;
         top: calc(var(--burger-height) + 2.5rem);
         box-shadow: var(--box-shadow);
-        z-index: 1;
+        z-index: 5;
     }
 
     & > nav::before {

@@ -1,6 +1,5 @@
 deno.lock
 .env
-.vscode
 server/log/*
 server/backup/*
 server/data/credentials/*
