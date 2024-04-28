@@ -74,11 +74,12 @@ which allow you to write files, read files and connect to the internet.
 ### Client side :
 
 - The basics **css**, **img**, **js** folders, request by the client on every
-  route.
+  routes.
 
 ## Is the app has tests ?
 
 Yes, of course. There are **[tests](./tests/)** for utils classes. Run this command below to see them :
+
 ```sh
 deno task test
 ```
