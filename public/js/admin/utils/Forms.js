@@ -45,6 +45,9 @@ export class Forms {
     const res = await fetch(e.target.action, {
       method,
       body: formData,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       mode: "cors",
     });
 

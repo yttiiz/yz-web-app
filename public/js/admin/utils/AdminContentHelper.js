@@ -539,10 +539,14 @@ export class AdminContentHelper extends DefaultFormHelper {
 
   /**
    * @param {string} path
+   * @param {number} [limit]
    */
-  static #getData = async (path) => {
+  static #getData = async (path, limit) => {
     try {
-      const res = await fetch(AdminContentHelper.#host + path + getApiKey());
+      const res = await fetch(
+        AdminContentHelper.#host + path + getApiKey() +
+          (limit ? `&limit=${limit}` : ""),
+      );
 
       return res.ok ? await res.json() : { message: "Something went wrong" };
     } catch (_) {

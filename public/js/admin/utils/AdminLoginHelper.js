@@ -14,6 +14,9 @@ export class AdminLoginHelper extends DefaultFormHelper {
     const res = await fetch(e.target.action, {
       method: "POST",
       body: formData,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     });
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
