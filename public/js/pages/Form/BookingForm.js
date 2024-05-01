@@ -45,6 +45,9 @@ export class BookingFormPage extends PageBuilder {
     const res = await fetch(e.target.action, {
       method: "DELETE",
       body: formData,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       mode: "cors",
     });
 

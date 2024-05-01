@@ -7,6 +7,7 @@ import type {
   UserDataType,
 } from "./mod.ts";
 import type { UserSchemaWithIDType } from "@mongo";
+import { Document, FindCursor } from "@deps";
 
 export class ApiController {
   private router;
@@ -116,7 +117,8 @@ export class ApiController {
     const path = "/" + collection;
 
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      const data: UserDataType = {};
+      let data: UserDataType = {};
+      const limit = ctx.request.url.searchParams.get("limit") ?? "";
       const cursor = await this.collection(collection);
 
       if (this.isNotAuthorized(ctx)) {
@@ -140,8 +142,7 @@ export class ApiController {
             502,
           );
         } else {
-          await cursor
-            .map((document, key) => data[key + 1] = document);
+          data = await this.queryDocuments({ limit, cursor, data });
 
           // Remove "hash" property from `users` object.
           for (const key in data) {
@@ -188,5 +189,29 @@ export class ApiController {
     return !(
       ctx.request.url.searchParams.get("apiKey") === Deno.env.get("API_KEY")
     );
+  }
+
+  private async queryDocuments({
+    limit,
+    cursor,
+    data,
+  }: {
+    limit: string | undefined;
+    cursor: FindCursor<Document>;
+    data: UserDataType;
+  }) {
+    if (limit && typeof (+limit) === "number") {
+      for (let i = 0; i < +limit; i++) {
+        const document = await cursor.next();
+        if (!document) break;
+
+        data[i + 1] = document;
+      }
+    } else {
+      await cursor
+        .map((document, key) => data[key + 1] = document);
+    }
+
+    return data;
   }
 }
