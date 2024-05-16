@@ -79,11 +79,16 @@ export class AdminContentHelper extends DefaultFormHelper {
    * @param {Types.Users} users
    */
   static #setUsersCard = (users) => {
+    const usersPerPage = 2;
+
     const {
       detailsContainer,
-      elementsList,
+      _,
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("users");
+
+    /** @type {[HTMLDivElement]} */
+    const [usersLists] = AdminContentHelper.#builder.createHTMLElements("span");
 
     const getAge = (date) => {
       return new Date(Date.now() - new Date(date).getTime())
@@ -97,7 +102,9 @@ export class AdminContentHelper extends DefaultFormHelper {
       );
     }
 
-    for (const key in users) {
+    for (const key of Object.keys(users)) {
+      const index = (+key) - 1;
+
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [
         userContainer,
@@ -144,7 +151,17 @@ export class AdminContentHelper extends DefaultFormHelper {
         userPublicPart,
         userPrivatePart,
       );
-      AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
+
+      if (index === 0 || index % usersPerPage === 0) {
+        const [list] = AdminContentHelper.#builder.createHTMLElements("ul");
+
+        AdminContentHelper.#builder.insertChildren(list, userContainer);
+        AdminContentHelper.#builder.insertChildren(usersLists, list);
+
+      } else {
+        const list = usersLists.querySelectorAll("ul");
+        AdminContentHelper.#builder.insertChildren(list[list.length - 1], userContainer);
+      }
     }
 
     const { usersCount, adminRoleCount } = ((users) => {
@@ -156,12 +173,28 @@ export class AdminContentHelper extends DefaultFormHelper {
       };
     })(users);
 
+    
     dbInfos.innerHTML = `
     <p>Il y a <strong>${usersCount} utilisateurs</strong>, dont <strong>${adminRoleCount}</strong> avec le rôle <strong>admin</strong>.</p>`;
+    
+    // Set pages number then set container and list width.
+    const pagesNumber = AdminContentHelper.#getPagesNumber(usersCount, usersPerPage);
+    
+    usersLists.style.width = `${pagesNumber * 100}%`;
+    usersLists.querySelectorAll("ul")
+      .forEach(list => {
+        list.style.width = `${100 / pagesNumber}%`;
+      });
+
+    if (pagesNumber > 1) {
+      dbInfos.appendChild(
+        AdminContentHelper.#getPagination(usersCount, usersPerPage),
+      );
+    }
 
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
-      elementsList,
+      usersLists,
       dbInfos,
     );
   };
@@ -425,6 +458,44 @@ export class AdminContentHelper extends DefaultFormHelper {
       elementsList,
       dbInfos,
     };
+  };
+
+  /**
+   * @param {number} userLength
+   * @param {number} elementPerPage
+   */
+  static #getPagination = (userLength, elementPerPage) => {
+    const [pagination] = AdminContentHelper.#builder.createHTMLElements("div");
+    const pages = AdminContentHelper.#getPagesNumber(userLength, elementPerPage);
+
+    for (let i = 0; i < pages; i++) {
+      const [button] = AdminContentHelper.#builder.createHTMLElements("button");
+      button.textContent = i + 1;
+      button.addEventListener("click", AdminContentHelper.#switchPages)
+      pagination.appendChild(button);
+    }
+
+    return pagination;
+  };
+
+  /**
+   * @param {number} userLength
+   * @param {number} elementPerPage
+   */
+  static #getPagesNumber = (userLength, elementPerPage) => {
+    return Math.floor(
+      (userLength / elementPerPage) +
+        (userLength % elementPerPage === 0 ? 0 : 1),
+    )
+  };
+
+  static #switchPages = (e) => {
+    const button = e.currentTarget;
+    const index = +(button.textContent) - 1;
+    const slidesContainer = button.closest(".users-details");
+    const slides = slidesContainer.querySelector("span");
+    const { width } = slidesContainer.getBoundingClientRect();
+    slides.style.transform = `translateX(-${width * index}px)`
   };
 
   /**

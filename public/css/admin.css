@@ -331,6 +331,7 @@
         }
     }
 }
+
 .analytics-details {
     
 }
@@ -341,29 +342,33 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height var(--smooth), margin-top var(--smooth);
+
+    & span {
+        display: flex;
+    }
     
-    & > ul,
-    & > ul > li > div {
+    & ul,
+    & ul > li > div {
         gap: calc(var(--base-size) * 1.5);
     }
 
-    & > ul {
+    & ul {
         list-style: none;
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
 
-    & > ul > li.admin {
+    & ul > li.admin {
         background: var(--admin-color);
     }
 
-    & > ul > li > div,
-    & > ul > li > div:first-of-type > div,
-    & > ul > li > div:last-of-type > div:not(:first-of-type) {
+    & ul > li > div,
+    & ul > li > div:first-of-type > div,
+    & ul > li > div:last-of-type > div:not(:first-of-type) {
         display: flex;
     }
 
-    & > ul > li {
+    & ul > li {
         overflow: hidden;
         border: .1rem solid rgb(var(--black-rvb) / .1);
         border-radius: var(--btn-border-radius);
@@ -449,8 +454,23 @@
     & > div {
         margin-top: inherit;
 
-        & p {
+        & p,
+        & button {
             font-size: calc(var(--base-size) * 1.25);
+        }
+
+        & div {
+            display: flex;
+            gap: var(--base-size);
+            justify-content: center;
+            margin-top: calc(var(--base-size) * .5);
+            padding-top: calc(var(--base-size) * .5);
+            border-top: .1rem solid var(--light);
+        }
+
+        & div button {
+            padding: calc(var(--base-size) * .25) calc(var(--base-size) * .5);
+            background: var(--light);
         }
 
         & strong {
