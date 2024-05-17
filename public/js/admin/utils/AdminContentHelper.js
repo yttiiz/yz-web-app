@@ -79,11 +79,16 @@ export class AdminContentHelper extends DefaultFormHelper {
    * @param {Types.Users} users
    */
   static #setUsersCard = (users) => {
+    const usersPerPage = 10;
+
     const {
       detailsContainer,
-      elementsList,
+      _,
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("users");
+
+    /** @type {[HTMLDivElement]} */
+    const [usersLists] = AdminContentHelper.#builder.createHTMLElements("span");
 
     const getAge = (date) => {
       return new Date(Date.now() - new Date(date).getTime())
@@ -97,7 +102,9 @@ export class AdminContentHelper extends DefaultFormHelper {
       );
     }
 
-    for (const key in users) {
+    for (const key of Object.keys(users)) {
+      const index = (+key) - 1;
+
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLDivElement]} */
       const [
         userContainer,
@@ -144,7 +151,19 @@ export class AdminContentHelper extends DefaultFormHelper {
         userPublicPart,
         userPrivatePart,
       );
-      AdminContentHelper.#builder.insertChildren(elementsList, userContainer);
+
+      if (index === 0 || index % usersPerPage === 0) {
+        const [list] = AdminContentHelper.#builder.createHTMLElements("ul");
+
+        AdminContentHelper.#builder.insertChildren(list, userContainer);
+        AdminContentHelper.#builder.insertChildren(usersLists, list);
+      } else {
+        const list = usersLists.querySelectorAll("ul");
+        AdminContentHelper.#builder.insertChildren(
+          list[list.length - 1],
+          userContainer,
+        );
+      }
     }
 
     const { usersCount, adminRoleCount } = ((users) => {
@@ -159,9 +178,27 @@ export class AdminContentHelper extends DefaultFormHelper {
     dbInfos.innerHTML = `
     <p>Il y a <strong>${usersCount} utilisateurs</strong>, dont <strong>${adminRoleCount}</strong> avec le rôle <strong>admin</strong>.</p>`;
 
+    // Set pages number then set container and list width.
+    const pagesNumber = AdminContentHelper.#getPagesNumber(
+      usersCount,
+      usersPerPage,
+    );
+
+    usersLists.style.width = `${pagesNumber * 100}%`;
+    usersLists.querySelectorAll("ul")
+      .forEach((list) => {
+        list.style.width = `${100 / pagesNumber}%`;
+      });
+
+    if (pagesNumber > 1) {
+      dbInfos.appendChild(
+        AdminContentHelper.#getPagination(usersCount, usersPerPage),
+      );
+    }
+
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
-      elementsList,
+      usersLists,
       dbInfos,
     );
   };
@@ -425,6 +462,127 @@ export class AdminContentHelper extends DefaultFormHelper {
       elementsList,
       dbInfos,
     };
+  };
+
+  /**
+   * @param {number} userLength
+   * @param {number} elementPerPage
+   */
+  static #getPagination = (userLength, elementPerPage) => {
+    const [pagination] = AdminContentHelper.#builder.createHTMLElements("div");
+    const pages = AdminContentHelper.#getPagesNumber(
+      userLength,
+      elementPerPage,
+    );
+
+    const buildArrow = (direction) => {
+      const arrow = document.createElement("button");
+      if (direction === "left") {
+        arrow.name = "left-arrow";
+        arrow.classList.add("left-arrow");
+      } else {
+        arrow.name = "right-arrow";
+        arrow.classList.add("right-arrow");
+      }
+      arrow.type = "button";
+      arrow.addEventListener("click", AdminContentHelper.#switchPagesWithArrow);
+      pagination.appendChild(arrow);
+    };
+
+    // left arrow build.
+    buildArrow("left");
+
+    for (let i = 0; i < pages; i++) {
+      const [button] = AdminContentHelper.#builder.createHTMLElements("button");
+      button.textContent = i + 1;
+      button.type = "button";
+      button.addEventListener("click", AdminContentHelper.#switchPages);
+      pagination.appendChild(button);
+
+      if (i === 0) {
+        button.classList.add("active");
+      }
+    }
+
+    // right arrow build.
+    buildArrow("right");
+
+    return pagination;
+  };
+
+  /**
+   * @param {number} userLength
+   * @param {number} elementPerPage
+   */
+  static #getPagesNumber = (userLength, elementPerPage) => {
+    return Math.floor(
+      (userLength / elementPerPage) +
+        (userLength % elementPerPage === 0 ? 0 : 1),
+    );
+  };
+
+  static #switchPages = (e) => {
+    const button = e.currentTarget;
+    AdminContentHelper.#handleActiveClassName(button);
+
+    const index = +(button.textContent) - 1;
+    const container = button.closest(".users-details");
+    AdminContentHelper.#moveSlider({ container, index });
+  };
+
+  static #switchPagesWithArrow = (e) => {
+    const button = e.currentTarget;
+    const container = button.closest(".users-details");
+    const isLeftArrow = button.name === "left-arrow";
+    let index;
+
+    const isOffset = () => {
+      if (isLeftArrow) {
+        const firstButton = button.nextElementSibling;
+        return firstButton.classList.contains("active") ? true : false;
+      } else {
+        const lastButton = button.previousElementSibling;
+        return lastButton.classList.contains("active") ? true : false;
+      }
+    };
+
+    if (isOffset()) return;
+    else {
+      for (const btn of button.parentNode.children) {
+        if (btn.classList.contains("active")) {
+          btn.classList.remove("active");
+
+          isLeftArrow
+            ? index = (+btn.textContent) - 2
+            : index = +btn.textContent;
+        }
+      }
+
+      AdminContentHelper.#moveSlider({ container, index });
+
+      for (const btn of button.parentNode.children) {
+        (+btn.textContent) === index + 1 ? btn.classList.add("active") : null;
+      }
+    }
+  };
+
+  static #moveSlider = ({
+    container,
+    index,
+  }) => {
+    const slides = container.querySelector("span");
+    const { width } = container.getBoundingClientRect();
+    slides.style.transform = `translateX(-${width * index}px)`;
+  };
+
+  static #handleActiveClassName = (button) => {
+    for (const btn of button.parentNode.children) {
+      if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+      }
+    }
+
+    button.classList.add("active");
   };
 
   /**
