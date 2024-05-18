@@ -277,6 +277,10 @@ header[data-header="site"] {
         display: inherit;
         align-items: center;
         gap: calc(var(--base-size) * .625);
+        
+        & > form {
+            display: inherit;
+        }
 
         & > form button,
         & > form svg {

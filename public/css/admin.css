@@ -1,4 +1,6 @@
 #data-admin {
+	height: 100%;
+
 	& form div.none {
 		display: none;
 	}
@@ -12,6 +14,7 @@
 	}
 
 	& section[data-admin] {
+		height: inherit;
 		background: var(--light);
 	}
 
@@ -337,6 +340,9 @@
 }
 
 .analytics-details {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--base-size);
 }
 
 .users-details,
@@ -520,6 +526,7 @@
 	}
 }
 
+.analytics-details.expanded,
 .users-details.open,
 .products-details.open,
 .bookings-details.open {
@@ -607,7 +614,7 @@
 }
 
 @media screen and (max-width: 650px) {
-	.users-details > ul > li,
+	.users-details > span > ul > li,
 	.products-details > ul > li,
 	.bookings-details > ul > li {
 		flex-direction: column;
@@ -615,7 +622,7 @@
 }
 
 @media screen and (max-width: 500px) {
-	.users-details,
+	.users-details > span,
 	.products-details,
 	.bookings-details {
 		& > ul > li > div {

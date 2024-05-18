@@ -4,6 +4,7 @@ import { PageBuilder } from "../../pages/Builder.js";
 import { FormBuilder } from "./FormBuilder.js";
 import { getApiKey } from "../../utils/_commonFunctions.js";
 import * as Types from "../../types/types.js";
+import { AdminChartsHelper } from "./AdminChartsHelper.js";
 
 export class AdminContentHelper extends DefaultFormHelper {
   static #host = location.origin + "/";
@@ -65,6 +66,12 @@ export class AdminContentHelper extends DefaultFormHelper {
 
       return allData;
     })("users", "products", "bookings");
+
+    // Set charts.
+    AdminChartsHelper.setCharts({
+      dataChartOne: [2, 2.2, 5, 10, 49, 150, 700],
+      dataChartTwo: [250, 60, 70, 91, 125],
+    });
 
     // Set cards.
     AdminContentHelper.#setUsersCard(users);
