@@ -8,6 +8,7 @@ import type {
 
 type ParameterType = {
   isUserConnected: boolean;
+  isAdmin: boolean;
   items: ItemDataTypeAndUserRelationship[];
   data: ItemDataType[];
 };
@@ -19,6 +20,7 @@ export const HeaderNavigation: ComponentType<
   name: "HeaderNavigation",
   html: ({
     isUserConnected,
+    isAdmin,
     items,
     data,
   }: ParameterType) => {
@@ -48,14 +50,23 @@ export const HeaderNavigation: ComponentType<
                 </ul>
               </li>`
              )
-            :
-            (
-              `<li>
-                <a href="${item.link}">
-                  ${item.text}
-                </a>
-              </li>`
-            )
+            : item.link.includes("admin")
+              ? (isAdmin ?
+                (`<li>
+                    <a href="${item.link}">
+                      ${item.text}
+                    </a>
+                  </li>`
+                ) : ""
+              )
+              :
+              (
+                `<li>
+                  <a href="${item.link}">
+                    ${item.text}
+                  </a>
+                </li>`
+              )
           )
         )).join("")}
       </ul>

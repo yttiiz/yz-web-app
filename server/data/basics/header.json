@@ -1,7 +1,7 @@
 {
   "logo": {
     "link": "/",
-    "text": "Yz"
+    "text": "Villa Jacqueline"
   },
   "items": [
     {
@@ -10,19 +10,19 @@
       "isRelatedToUser": true
     },
     {
-      "name": "Appartements",
+      "name": "Les appartements",
       "isRelatedToUser": false,
       "relatedItems": []
     },
     {
-      "link": "#",
-      "text": "Item 3",
+      "link": "/#around",
+      "text": "Les endroits à visiter",
       "isRelatedToUser": false
     },
     {
-      "link": "#",
-      "text": "Item 4",
-      "isRelatedToUser": false
+      "link": "/admin",
+      "text": "Gestion des données (admin)",
+      "isRelatedToUser": true
     }
   ],
   "login": [
