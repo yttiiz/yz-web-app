@@ -14,7 +14,7 @@
  * @property {string} role
  */
 
-/** @typedef {Record<number, User>} Users Users list */
+/** @typedef {Record<string, User>} Users Users list */
 
 // Products ///////////////////////////
 
@@ -44,7 +44,7 @@
  * @property {string} reviewId
  */
 
-/** @typedef {Record<number, Product>} Products Products list */
+/** @typedef {Record<string, Product>} Products Products list */
 
 // Bookings ///////////////////////////
 
@@ -65,7 +65,30 @@
  * @property {string} productId
  */
 
-/** @typedef {Record<number, Booking} Bookings Bookings list */
+/** @typedef {Record<string, Booking} Bookings Bookings list */
+
+// Charts ///////////////////////////
+
+/**
+ * @typedef {Object} ChartBuildType
+ * @property {HTMLDivElement} element
+ * @property {string} name
+ * @property {string} title
+ * @property {number[]} categories
+ * @property {(number | string)[]} data
+ * @property {"area" | "bar" | "donut"} chartType
+ * @property {"solid" | "gradient"} fillType
+ */
+
+/*=================================================| FUNCTIONS |=================================================*/
+
+/**
+ * @typedef {Object} ChartDataType
+ * @property {number[]} chartData
+ * @property {string[]} chartCategories
+ */
+
+/** @typedef {(data: ChartDataType, source: User | Booking) => void} FilterFunctionType */
 
 /*=================================================| INTERFACE |=================================================*/
 

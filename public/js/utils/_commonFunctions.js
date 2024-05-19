@@ -7,19 +7,19 @@ const handleShowPassword = () => {
   /** @param {Event} e **/
   const handler = (e) => {
     // handle eye icon
-    e.currentTarget.closest("div")
+    e.currentTarget
+      .closest("div")
       .querySelector(".none")
       .classList.remove("none");
 
     e.currentTarget.classList.add("none");
 
     // handle input type
-    const input = e.currentTarget.closest("div")
-      .previousElementSibling;
+    const input = e.currentTarget.closest("div").previousElementSibling;
 
     input["type"] === "password"
-      ? input["type"] = "text"
-      : input["type"] = "password";
+      ? (input["type"] = "text")
+      : (input["type"] = "password");
   };
 
   for (const eye of eyeIcons) {
@@ -79,8 +79,8 @@ const handleInputFile = (e, name) => {
 
   // Check if it's Profil or Register form.
   e.currentTarget.closest("form").action.includes("/profil")
-    ? showFileInfos = e.currentTarget.nextElementSibling
-    : showFileInfos = e.currentTarget.closest("div").previousElementSibling;
+    ? (showFileInfos = e.currentTarget.nextElementSibling)
+    : (showFileInfos = e.currentTarget.closest("div").previousElementSibling);
 
   if (e.currentTarget.parentNode.querySelector("input")) {
     input = e.currentTarget.parentNode.querySelector("input");
@@ -102,11 +102,9 @@ const setFormData = (form) => {
   const formData = new FormData(form);
 
   for (const [key, value] of formData) {
-    const isItemToBeDeleted = (
-      value === "" || // Empty field.
+    const isItemToBeDeleted = value === "" || // Empty field.
       (typeof value === "object" && value.size === 0) || // Empty file (image) field type.
-      key.includes("file") // Field type text with file name.
-    );
+      key.includes("file"); // Field type text with file name.
 
     if (isItemToBeDeleted) {
       formData.delete(key);
@@ -122,11 +120,11 @@ const setFormData = (form) => {
 const removeInputsValues = (labels) => {
   for (let i = 0; i < labels.length - 1; i++) {
     labels[i].querySelector("textarea")
-      ? labels[i].querySelector("textarea").value = ""
+      ? (labels[i].querySelector("textarea").value = "")
       : null;
 
     labels[i].querySelector("input")
-      ? labels[i].querySelector("input").value = ""
+      ? (labels[i].querySelector("input").value = "")
       : null;
   }
 };
@@ -141,8 +139,8 @@ const hydrateInput = (element, data) => {
 
   if (element.type !== "password" && isValueStringOrNumber) {
     element.type === "date"
-      ? element.value = data[element.name].split("T").at(0)
-      : element.value = data[element.name];
+      ? (element.value = data[element.name].split("T").at(0))
+      : (element.value = data[element.name]);
   }
 };
 
@@ -161,7 +159,25 @@ const hydrateSelect = (element, data) => {
 
 const getApiKey = () => "?apiKey=ESdv9jDqQGsuL9XEsqlS6KWN";
 
+/**
+ * @param {string} date
+ */
+const getAge = (date) => {
+  return new Date(Date.now() - new Date(date).getTime())
+    .getFullYear() - 1970;
+};
+
+/**
+ * @param {"true" | "false"} bool
+ */
+const setLoadingAction = (bool, titles = "h3") => {
+  for (const subtitle of document.querySelectorAll(titles)) {
+    subtitle.parentNode.dataset.loading = bool;
+  }
+};
+
 export {
+  getAge,
   getApiKey,
   handleInputFile,
   handleShowPassword,
@@ -169,4 +185,5 @@ export {
   hydrateSelect,
   removeInputsValues,
   setFormData,
+  setLoadingAction,
 };

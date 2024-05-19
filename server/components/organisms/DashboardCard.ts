@@ -17,7 +17,7 @@ export const DashboardCard: ComponentType<
   }: DashboardDetailsType,
   ) => {
     return `
-      <div>
+      <div data-loading="true">
         <h3${isAccordeon ? ` class="accordeon-title"` : ""}>
           ${title}
         </h3>
