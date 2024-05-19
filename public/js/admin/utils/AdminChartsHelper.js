@@ -1,4 +1,5 @@
 import { PageBuilder } from "../../pages/Builder.js";
+import { setLoadingAction } from "../../utils/_commonFunctions.js";
 
 export class AdminChartsHelper {
   static #builder = new PageBuilder();
@@ -37,6 +38,7 @@ export class AdminChartsHelper {
       });
 
       container.classList.add("expanded");
+      setLoadingAction("false");
     }
   };
 
@@ -49,13 +51,15 @@ export class AdminChartsHelper {
   }) => {
     const opts = {
       chart: {
-        type: "line",
+        type: "area",
+        stacked: true,
         toolbar: {
           show: false,
         },
       },
       stroke: {
-        curve: "smooth",
+        curve: "straight",
+        width: 0,
       },
       series: [{
         name,
@@ -64,16 +68,19 @@ export class AdminChartsHelper {
       title: {
         text: title,
         align: "left",
-        margin: 10,
+        margin: 20,
         offsetX: 0,
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: "14px",
-          fontWeight: "bold",
+          fontSize: "20px",
+          fontWeight: "700",
           fontFamily: "'Jost', sans-serif",
-          color: "#263238",
+          color: "var(--primary-color)",
         },
+      },
+      fill: {
+        type: "gradient",
       },
       xaxis: {
         categories,

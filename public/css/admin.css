@@ -308,13 +308,36 @@
 			position: relative;
 		}
 
-		& > div h3.accordeon-title {
+		& > div h3 {
 			position: relative;
+		}
+
+		& > div[data-loading="true"] h3::after {
+			content: url(../img/icons/loading-sm.png);
+			display: flex;
+			right: 0;
+			top: 50%;
+			transform-origin: center center;
+			position: absolute;
+			width: max-content;
+			aspect-ratio: 1 / 1;
+			animation: spin-rotate 1s linear infinite;
+		}
+
+		& > div[data-loading="false"] h3::after {
+			display: none;
+		}
+
+		& > div h3.accordeon-title {
 			z-index: 1;
 			cursor: pointer;
 		}
 
-		& > div > button {
+		& > div[data-loading="true"] > button {
+			display: none;
+		}
+
+		& > div[data-loading="false"] > button {
 			width: calc(var(--base-size) * 1.5);
 			aspect-ratio: 1 / 1;
 			display: flex;
@@ -339,10 +362,22 @@
 	}
 }
 
+@keyframes spin-rotate {
+	from {
+		transform: translateY(-50%) rotateZ(0);
+	} to {
+		transform: translateY(-50%) rotateZ(360deg);
+	}
+}
+
 .analytics-details {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--base-size);
+
+	& > div {
+		border-top: 0.1rem solid rgb(var(--black-rvb) / 0.15);
+	}
 }
 
 .users-details,
