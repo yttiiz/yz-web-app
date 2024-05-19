@@ -78,6 +78,7 @@ export class LogController {
             "userFullname",
             `${user.firstname} ${user.lastname}`,
           );
+          session.set("isAdmin", user.role === "admin");
           session.set("userId", user._id);
           session.set("failed-login-attempts", null);
           session.flash(

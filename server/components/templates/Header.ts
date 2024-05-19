@@ -52,6 +52,7 @@ export const Header: ComponentType<
                 </button>
                 ${HeaderNavigation.html({
                   isUserConnected: session.has("userFirstname"),
+                  isAdmin: (session.get("isAdmin") as unknown as boolean) === true,
                   items,
                   data,
                 })}
