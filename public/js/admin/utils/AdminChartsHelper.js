@@ -1,40 +1,64 @@
 import { PageBuilder } from "../../pages/Builder.js";
-import { setLoadingAction } from "../../utils/_commonFunctions.js";
+import { getAge, setLoadingAction } from "../../utils/_commonFunctions.js";
+import * as Types from "../../types/types.js";
 
 export class AdminChartsHelper {
   static #builder = new PageBuilder();
 
+  /**
+   * @param {Types.Users} users
+   * @param {Types.Bookings} bookings
+   */
   static setCharts = ({
-    dataChartOne,
-    dataChartTwo,
+    users,
+    bookings,
   }) => {
     const container = document.querySelector(".analytics-details");
 
     if (window.ApexCharts && container) {
       const [
-        chartCard1,
-        chartCard2,
+        usersCard,
+        bookingsCard,
       ] = AdminChartsHelper.#builder.createHTMLElements("div", "div");
 
       AdminChartsHelper.#builder.insertChildren(
         container,
-        chartCard1,
-        chartCard2,
+        usersCard,
+        bookingsCard,
       );
 
+      const {
+        chartData: usersData,
+        chartCategories: usersCategories,
+      } = AdminChartsHelper.#filter(users, (data, user) => {
+        data.chartData.push(getAge(user.birth));
+        data.chartCategories.push(user.firstname);
+      });
+
+      const {
+        chartData: bookingsData,
+        chartCategories: bookingsCategories,
+      } = AdminChartsHelper.#filter(bookings, (data, booking) => {
+        data.chartData.push(booking.bookings.length);
+        data.chartCategories.push(booking.productName);
+      });
+
       AdminChartsHelper.#buildChart({
-        data: dataChartOne,
+        data: usersData,
         name: "Utilisateurs",
         title: "Utilisateurs",
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-        element: chartCard1,
+        categories: usersCategories,
+        element: usersCard,
+        fillType: "gradient",
       });
+
       AdminChartsHelper.#buildChart({
-        data: dataChartTwo,
+        data: bookingsData,
         name: "Réservations",
         title: "Réservations",
-        categories: [2020, 2021, 2022, 2023, 2024],
-        element: chartCard2,
+        categories: bookingsCategories,
+        element: bookingsCard,
+        chartType: "bar",
       });
 
       container.classList.add("expanded");
@@ -42,16 +66,39 @@ export class AdminChartsHelper {
     }
   };
 
+  /**
+   * @param {Types.Users | Types.Bookings} sources
+   * @param {Types.FilterFunctionType} fn
+   */
+  static #filter = (sources, fn) => {
+    /** @type {Types.ChartDataType} */
+    const data = {
+      chartData: [],
+      chartCategories: [],
+    };
+
+    for (const key of Object.keys(sources)) {
+      fn(data, sources[key]);
+    }
+
+    return data;
+  };
+
+  /**
+   * @param {Types.ChartBuildType}
+   */
   static #buildChart = ({
     element,
     name,
     categories,
     title,
     data,
+    chartType = "area",
+    fillType = "solid",
   }) => {
     const opts = {
       chart: {
-        type: "area",
+        type: chartType,
         stacked: true,
         toolbar: {
           show: false,
@@ -80,7 +127,7 @@ export class AdminChartsHelper {
         },
       },
       fill: {
-        type: "gradient",
+        type: fillType,
       },
       xaxis: {
         categories,

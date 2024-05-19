@@ -313,7 +313,7 @@
 		}
 
 		& > div[data-loading="true"] h3::after {
-			content: url(../img/icons/loading-sm.png);
+			content: url(../img/icons/loading-sm.svg);
 			display: flex;
 			right: 0;
 			top: 50%;

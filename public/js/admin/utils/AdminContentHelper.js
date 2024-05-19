@@ -2,7 +2,7 @@
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 import { PageBuilder } from "../../pages/Builder.js";
 import { FormBuilder } from "./FormBuilder.js";
-import { getApiKey, setLoadingAction } from "../../utils/_commonFunctions.js";
+import { getAge, getApiKey } from "../../utils/_commonFunctions.js";
 import * as Types from "../../types/types.js";
 import { AdminChartsHelper } from "./AdminChartsHelper.js";
 
@@ -69,8 +69,8 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     // Set charts.
     AdminChartsHelper.setCharts({
-      dataChartOne: [2, 2.2, 5, 10, 49, 150, 700],
-      dataChartTwo: [250, 60, 70, 91, 125],
+      users,
+      bookings,
     });
 
     // Set cards.
@@ -96,11 +96,6 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     /** @type {[HTMLDivElement]} */
     const [usersLists] = AdminContentHelper.#builder.createHTMLElements("span");
-
-    const getAge = (date) => {
-      return new Date(Date.now() - new Date(date).getTime())
-        .getFullYear() - 1970;
-    };
 
     if ("message" in users) {
       return AdminContentHelper.#displayErrorMessage(
