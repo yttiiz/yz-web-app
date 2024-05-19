@@ -15,7 +15,7 @@ export class AdminChartsHelper {
   }) => {
     const container = document.querySelector(".analytics-details");
 
-    if (window.ApexCharts && container) {
+    if (globalThis.ApexCharts && container) {
       const [
         usersCard,
         bookingsCard,
