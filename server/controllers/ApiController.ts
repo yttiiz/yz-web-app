@@ -127,7 +127,6 @@ export class ApiController {
               address,
             });
             this.response(ctx, JSON.stringify(data), 200);
-            
           } else {
             this.response(ctx, JSON.stringify({ error: res.statusText }), 404);
           }
