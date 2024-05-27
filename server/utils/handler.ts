@@ -138,6 +138,18 @@ export class Handler {
     ));
   }
 
+  public static getIncomingDate(days: number) {
+    const DAY = 1000 * 60 * 60 * 24;
+
+    const day = new Date(Date.now() + (DAY * days)).getDate();
+    const month = new Date(Date.now() + (DAY * days)).getMonth() + 1;
+    const year = new Date(Date.now() + (DAY * days)).getFullYear();
+
+    return `${year}-${month >= 10 ? month : `0${month}`}-${
+      day >= 10 ? day : `0${day}`
+    }`;
+  }
+
   private static getTime(date: string) {
     return new Date(date).getTime();
   }

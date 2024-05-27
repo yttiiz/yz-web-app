@@ -41,8 +41,8 @@ Deno.test({
   fn() {
     const bookingsEmpty: BookingsType[] = [], bookingsSet: BookingsType[] = [];
     const booking = {
-      startingDate: "2024-05-22",
-      endingDate: "2024-05-25",
+      startingDate: Handler.getIncomingDate(2),
+      endingDate: Handler.getIncomingDate(5),
       createdAt: Date.now(),
       userId: "00001",
       userName: "Marcus Garvey",
