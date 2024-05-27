@@ -329,6 +329,54 @@
         }
     }
 
+    & section ul.visits-cards {
+        grid-template-columns: 1fr;
+        
+        & > li {
+            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 60% auto;
+        }
+
+        & > li figure {
+            height: calc(var(--base-size) * 20);
+            border-radius: var(--base-size);
+            overflow: hidden;
+        }
+
+        & > li figure img {
+            object-fit: cover;
+            object-position: 50% 50%;
+            aspect-ratio: 16 / 9;
+            width: 100%;
+        }
+
+        & > li div {
+            display: grid;
+            gap: var(--base-size);
+        }
+
+        & > li p {
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        & > li div a {
+            width: max-content;
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            border: var(--border-black-25-percent);
+            background: var(--white);
+            transition: var(--smooth);
+        }
+
+        & > li div a:hover {
+            background: rgb(var(--black-rvb) / .05);
+        }
+    }
+
     & section ul.users > li {
         & > div {
             gap: .5rem;
