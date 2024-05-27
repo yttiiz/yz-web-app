@@ -339,7 +339,6 @@
         }
 
         & > li figure {
-            height: calc(var(--base-size) * 20);
             border-radius: var(--base-size);
             overflow: hidden;
         }
@@ -427,16 +426,35 @@
 }
 
 @media screen and (max-width: 1080px) {
-    #data-home .products header > div:last-of-type {
-        position: relative;
-
-        & > span {
-            line-height: 1;
-            position: absolute;
-            bottom: 0;
-            right: 0;
+    #data-home {
+        & .products header > div:last-of-type {
+            position: relative;
+    
+            & > span {
+                line-height: 1;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
         }
-    }
+    
+        & section ul.visits-cards {
+            & > li,
+            & > li > div {
+                gap: calc(var(--base-size) * .75);
+            }
+
+            & > li {
+                grid-template-columns: unset;
+            }
+
+            & > li:not(:last-child) {
+                border-bottom: .1rem solid rgb(var(--black-rvb) / .1);
+                padding-bottom: calc(var(--base-size) * 2);
+            }
+        }
+
+    } 
 }
 
 @media screen and (max-width: 960px) {
