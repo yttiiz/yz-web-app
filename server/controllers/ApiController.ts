@@ -7,7 +7,7 @@ import type {
   UserDataType,
 } from "./mod.ts";
 import type { UserSchemaWithIDType } from "@mongo";
-import { Document, FindCursor } from "@deps";
+import { cheerio, Document, FindCursor } from "@deps";
 
 export class ApiController {
   private router;
@@ -35,6 +35,7 @@ export class ApiController {
     this.bookings();
     this.userProfil();
     this.getUserFormContent();
+    this.getDataFromGuadeloupeIslandsWebsite();
   }
 
   private users() {
@@ -90,6 +91,40 @@ export class ApiController {
             }),
             200,
           );
+        } catch (error) {
+          this.writeErrorLogAndSetResponse(ctx, error);
+        }
+      },
+    );
+  }
+
+  private getDataFromGuadeloupeIslandsWebsite() {
+    this.router?.get(
+      "/guadeloupe-islands",
+      async (ctx: RouterContextAppType<"/guadeloupe-islands">) => {
+        const host = "https://www.lesilesdeguadeloupe.com",
+          address = host + "/tourisme/fr-fr";
+
+        if (this.isNotAuthorized(ctx)) {
+          return this.response(
+            ctx,
+            JSON.stringify({
+              errorMsg:
+                "Accès non autorisé : La clé d'api n'est pas bonne ou non fourni.",
+            }),
+            403,
+          );
+        }
+
+        try {
+          const res = await fetch(address);
+
+          if (res.ok && res.status === 200) {
+            const data = this.handleHtmlPage({ html: await res.text(), host });
+            this.response(ctx, JSON.stringify(data), 200);
+          } else {
+            this.response(ctx, JSON.stringify({ error: res.statusText }), 404);
+          }
         } catch (error) {
           this.writeErrorLogAndSetResponse(ctx, error);
         }
@@ -211,6 +246,34 @@ export class ApiController {
       await cursor
         .map((document, key) => data[key + 1] = document);
     }
+
+    return data;
+  }
+
+  private handleHtmlPage({ html, host }: { html: string; host: string }) {
+    const data: Record<string, Record<string, string>> = {};
+    let index = 0;
+
+    const $ = cheerio.load(html);
+
+    $(".carousel-item", html)
+      .each(function () {
+        const link = $(this).children("a");
+        const href = host + link.attr("href");
+        const image = host + link.children("img").attr("src");
+        const text = link.children("div").children("span").children("span")
+          .text();
+
+        if (href && image) {
+          data[`${index + 1}`] = {
+            href,
+            image,
+            text,
+          };
+        }
+
+        index++;
+      });
 
     return data;
   }

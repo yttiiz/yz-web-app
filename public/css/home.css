@@ -329,6 +329,42 @@
         }
     }
 
+    & section ul.visits-cards {
+        grid-template-columns: 1fr;
+        
+        & > li {
+            display: flex;
+            align-items: start;
+        }
+
+        & > li figure {
+            width: 60%;
+            height: calc(var(--base-size) * 20);
+            border-radius: var(--base-size);
+            overflow: hidden;
+        }
+
+        & > li img {
+            object-fit: cover;
+            object-position: 50% 50%;
+            aspect-ratio: 16 / 9;
+            width: 100%;
+        }
+
+        & > li a {
+            width: max-content;
+            padding: var(--btn-padding);
+            border-radius: var(--btn-border-radius);
+            border: var(--border-black-25-percent);
+            background: var(--white);
+            transition: var(--smooth);
+        }
+
+        & > li a:hover {
+            background: rgb(var(--black-rvb) / .05);
+        }
+    }
+
     & section ul.users > li {
         & > div {
             gap: .5rem;

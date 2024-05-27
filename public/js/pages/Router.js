@@ -17,7 +17,7 @@ export class Router {
   async #router() {
     switch (this.route) {
       case this.host: {
-        const res = await this.#fetchData(`users${this.#apiKey}`);
+        const res = await this.#fetchData(`guadeloupe-islands${this.#apiKey}`);
         const { HomePage } = await import("./Home/Home.js");
 
         this.#home = new HomePage();
