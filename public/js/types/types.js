@@ -80,6 +80,17 @@
  * @property {"solid" | "gradient"} fillType
  */
 
+// Visits (www.lesilesdeguadeloupe.com) ///////////////////////////
+
+/**
+ * @typedef {Object} Visit
+ * @property {string} image
+ * @property {string} href
+ * @property {string} text
+ */
+
+/** @typedef {Record<string, Visit} Visits Bookings list */
+
 /*=================================================| FUNCTIONS |=================================================*/
 
 /**

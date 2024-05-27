@@ -129,8 +129,12 @@ export class HomePage extends PageBuilder {
     return section;
   };
 
+  /**
+   * @param {Types.Visits} visits 
+   * @param {HTMLUListElement} visitsList 
+   */
   #renderVisits = (visits, visitsList) => {
-    for (const key in visits) {
+    for (const key of Object.keys(visits)) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLImageElement]} */
       const [container, figure, img] = this.createHTMLElements("li", "figure", "img");
       
