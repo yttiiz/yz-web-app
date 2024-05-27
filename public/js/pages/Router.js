@@ -17,7 +17,6 @@ export class Router {
   async #router() {
     switch (this.route) {
       case this.host: {
-        const start = Date.now();
         const res = await this.#fetchData(`guadeloupe-islands${this.#apiKey}`);
         const { HomePage } = await import("./Home/Home.js");
 
@@ -25,7 +24,6 @@ export class Router {
 
         if (res.ok && res.status === 200) {
           this.#home.renderContent(await res.json());
-          console.log(`time : ${Date.now() - start} ms`);
           break;
         }
 
