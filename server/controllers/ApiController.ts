@@ -103,7 +103,8 @@ export class ApiController {
       "/guadeloupe-islands",
       async (ctx: RouterContextAppType<"/guadeloupe-islands">) => {
         const host = "https://www.lesilesdeguadeloupe.com",
-          address = host + "/tourisme/fr-fr";
+          address = host +
+            "/tourisme/fr-fr/circuits/randonneesguadeloupe-lesincontournables";
 
         if (this.isNotAuthorized(ctx)) {
           return this.response(
@@ -120,8 +121,13 @@ export class ApiController {
           const res = await fetch(address);
 
           if (res.ok && res.status === 200) {
-            const data = this.handleHtmlPage({ html: await res.text(), host });
+            const data = this.handleHtmlPage({
+              html: await res.text(),
+              host,
+              address,
+            });
             this.response(ctx, JSON.stringify(data), 200);
+            
           } else {
             this.response(ctx, JSON.stringify({ error: res.statusText }), 404);
           }
@@ -250,29 +256,33 @@ export class ApiController {
     return data;
   }
 
-  private handleHtmlPage({ html, host }: { html: string; host: string }) {
+  private handleHtmlPage(
+    { html, host, address }: { html: string; host: string; address: string },
+  ) {
     const data: Record<string, Record<string, string>> = {};
     let index = 0;
 
     const $ = cheerio.load(html);
 
-    $(".carousel-item", html)
+    $(".push-tour", html)
       .each(function () {
-        const link = $(this).children("a");
-        const href = host + link.attr("href");
-        const image = host + link.children("img").attr("src");
-        const text = link.children("div").children("span").children("span")
-          .text();
+        const $image = host +
+          $(this).children(".picture").children("picture").children("img").attr(
+            "src",
+          );
+        const $title = $(this).children(".text").children("h3").text();
+        const $text = $(this).children(".text").children("p").text();
 
-        if (href && image) {
+        if ($title && $image) {
           data[`${index + 1}`] = {
-            href,
-            image,
-            text,
+            href: address,
+            image: $image,
+            text: $text,
+            title: $title,
           };
-        }
 
-        index++;
+          index++;
+        }
       });
 
     return data;

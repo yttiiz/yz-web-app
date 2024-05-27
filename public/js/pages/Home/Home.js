@@ -130,25 +130,37 @@ export class HomePage extends PageBuilder {
   };
 
   /**
-   * @param {Types.Visits} visits 
-   * @param {HTMLUListElement} visitsList 
+   * @param {Types.Visits} visits
+   * @param {HTMLUListElement} visitsList
    */
   #renderVisits = (visits, visitsList) => {
     for (const key of Object.keys(visits)) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLImageElement]} */
-      const [container, figure, img] = this.createHTMLElements("li", "figure", "img");
-      
-      /** @type {[HTMLHeadingElement, HTMLButtonElement]} */
-      const [content, subtitle, link] = this.createHTMLElements("div", "h3", "a");
+      const [container, figure, img] = this.createHTMLElements(
+        "li",
+        "figure",
+        "img",
+      );
+
+      /** @type {[HTMLDivElement, HTMLHeadingElement, HTMLParagraphElement, HTMLAnchorElement]} */
+      const [content, subtitle, paragraph, link] = this.createHTMLElements(
+        "div",
+        "h3",
+        "p",
+        "a",
+      );
 
       img.src = visits[key].image;
-      subtitle.textContent = visits[key].text;
+      subtitle.textContent = visits[key].title;
+      paragraph.textContent = visits[key].text;
       link.href = visits[key].href;
+      link.target = "_blank";
       link.textContent = "En savoir plus";
+
       visitsList.className = "visits-cards";
 
       this.insertChildren(figure, img);
-      this.insertChildren(content, subtitle, link);
+      this.insertChildren(content, subtitle, paragraph, link);
       this.insertChildren(container, figure, content);
       this.insertChildren(visitsList, container);
     }

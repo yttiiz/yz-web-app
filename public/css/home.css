@@ -333,25 +333,37 @@
         grid-template-columns: 1fr;
         
         & > li {
-            display: flex;
-            align-items: start;
+            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 60% auto;
         }
 
         & > li figure {
-            width: 60%;
             height: calc(var(--base-size) * 20);
             border-radius: var(--base-size);
             overflow: hidden;
         }
 
-        & > li img {
+        & > li figure img {
             object-fit: cover;
             object-position: 50% 50%;
             aspect-ratio: 16 / 9;
             width: 100%;
         }
 
-        & > li a {
+        & > li div {
+            display: grid;
+            gap: var(--base-size);
+        }
+
+        & > li p {
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        & > li div a {
             width: max-content;
             padding: var(--btn-padding);
             border-radius: var(--btn-border-radius);
@@ -360,7 +372,7 @@
             transition: var(--smooth);
         }
 
-        & > li a:hover {
+        & > li div a:hover {
             background: rgb(var(--black-rvb) / .05);
         }
     }
