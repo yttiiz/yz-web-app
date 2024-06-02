@@ -29,7 +29,6 @@ new AdminController(router);
 new ApiController(
   router,
   Mongo.connectionTo,
-  Mongo.selectFromDB<UserSchemaWithIDType>,
 );
 
 // TODO to be removed (reset "session" in BD)

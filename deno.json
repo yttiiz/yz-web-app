@@ -13,7 +13,8 @@
     "@router": "./server/router/router.ts",
     "@dynamic-routes": "./server/router/mod.ts",
     "@utils": "./server/utils/mod.ts",
-    "@auth": "./server/auth/mod.ts"
+    "@auth": "./server/auth/mod.ts",
+    "@services": "/server/services/mod.ts"
   },
   "lock": false,
   "fmt": {

@@ -1,5 +1,6 @@
 //====================================| Deno imports |====================================//
 import * as oak from "https://deno.land/x/oak/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { MongoStore, Session } from "https://deno.land/x/oak_sessions/mod.ts";
 import { load } from "https://deno.land/std@0.202.0/dotenv/mod.ts";
 import {
@@ -34,6 +35,7 @@ export {
   MongoStore,
   nodemailer,
   oak,
+  oakCors,
   ObjectId,
   Session,
 };

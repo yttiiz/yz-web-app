@@ -3,16 +3,16 @@ import type {
   GetCollectionType,
   RouterAppType,
   RouterContextAppType,
-  SelectUserFromDBType,
-  UserDataType,
 } from "./mod.ts";
-import type { UserSchemaWithIDType } from "@mongo";
-import { cheerio, Document, FindCursor } from "@deps";
+import { getUserProfilService } from "@/server/services/getUserProfilService.ts";
+import {
+  fetchDataFromGuadeloupeIslandsWebsiteService,
+  handleDataRetreiveFromDBService,
+} from "@/server/services/mod.ts";
 
 export class ApiController {
   private router;
   private collection;
-  private selectFromDB;
   private helper;
   private errorMsg =
     "Impossible de se connecter à la base de données de l'api.";
@@ -21,14 +21,9 @@ export class ApiController {
     value: "application/json",
   };
 
-  constructor(
-    router: RouterAppType,
-    collection: GetCollectionType,
-    selectFromDB: SelectUserFromDBType,
-  ) {
+  constructor(router: RouterAppType, collection: GetCollectionType) {
     this.router = router;
     this.collection = collection;
-    this.selectFromDB = selectFromDB;
     this.helper = Helper;
     this.users();
     this.products();
@@ -66,31 +61,9 @@ export class ApiController {
         }
 
         try {
-          const email = await ctx.state.session.get("userEmail");
-          const {
-            firstname,
-            lastname,
-            birth,
-            job,
-            photo,
-          } = await this.selectFromDB(
-            "users",
-            email,
-            "email",
-          ) as UserSchemaWithIDType;
+          const data = await getUserProfilService(ctx);
 
-          this.response(
-            ctx,
-            JSON.stringify({
-              firstname,
-              lastname,
-              birth,
-              job,
-              photo,
-              email,
-            }),
-            200,
-          );
+          this.response(ctx, data, 200);
         } catch (error) {
           this.writeErrorLogAndSetResponse(ctx, error);
         }
@@ -102,10 +75,6 @@ export class ApiController {
     this.router?.get(
       "/guadeloupe-islands",
       async (ctx: RouterContextAppType<"/guadeloupe-islands">) => {
-        const host = "https://www.lesilesdeguadeloupe.com",
-          address = host +
-            "/tourisme/fr-fr/circuits/randonneesguadeloupe-lesincontournables";
-
         if (this.isNotAuthorized(ctx)) {
           return this.response(
             ctx,
@@ -118,18 +87,9 @@ export class ApiController {
         }
 
         try {
-          const res = await fetch(address);
-
-          if (res.ok && res.status === 200) {
-            const data = this.handleHtmlPage({
-              html: await res.text(),
-              host,
-              address,
-            });
-            this.response(ctx, JSON.stringify(data), 200);
-          } else {
-            this.response(ctx, JSON.stringify({ error: res.statusText }), 404);
-          }
+          const { data, status } =
+            await fetchDataFromGuadeloupeIslandsWebsiteService();
+          this.response(ctx, data, status);
         } catch (error) {
           this.writeErrorLogAndSetResponse(ctx, error);
         }
@@ -157,10 +117,6 @@ export class ApiController {
     const path = "/" + collection;
 
     this.router.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      let data: UserDataType = {};
-      const limit = ctx.request.url.searchParams.get("limit") ?? "";
-      const cursor = await this.collection(collection);
-
       if (this.isNotAuthorized(ctx)) {
         return this.response(
           ctx,
@@ -172,6 +128,8 @@ export class ApiController {
         );
       }
 
+      const cursor = await this.collection(collection);
+
       try {
         if ("message" in cursor) {
           this.response(
@@ -182,14 +140,10 @@ export class ApiController {
             502,
           );
         } else {
-          data = await this.queryDocuments({ limit, cursor, data });
-
-          // Remove "hash" property from `users` object.
-          for (const key in data) {
-            for (const prop in data[key]) {
-              if (prop === "hash") delete data[key][prop];
-            }
-          }
+          const data = await handleDataRetreiveFromDBService({
+            ctx,
+            cursor,
+          });
 
           this.response(ctx, JSON.stringify(data), 200);
         }
@@ -218,72 +172,12 @@ export class ApiController {
     data: string,
     status: number,
   ) {
-    new Http(ctx)
-      .setHeaders(this.contentType)
-      .setResponse(data, status);
+    new Http(ctx).setHeaders(this.contentType).setResponse(data, status);
   }
 
-  private isNotAuthorized<T extends string>(
-    ctx: RouterContextAppType<T>,
-  ) {
+  private isNotAuthorized<T extends string>(ctx: RouterContextAppType<T>) {
     return !(
       ctx.request.url.searchParams.get("apiKey") === Deno.env.get("API_KEY")
     );
-  }
-
-  private async queryDocuments({
-    limit,
-    cursor,
-    data,
-  }: {
-    limit: string | undefined;
-    cursor: FindCursor<Document>;
-    data: UserDataType;
-  }) {
-    if (limit && typeof (+limit) === "number") {
-      for (let i = 0; i < +limit; i++) {
-        const document = await cursor.next();
-        if (!document) break;
-
-        data[i + 1] = document;
-      }
-    } else {
-      await cursor
-        .map((document, key) => data[key + 1] = document);
-    }
-
-    return data;
-  }
-
-  private handleHtmlPage(
-    { html, host, address }: { html: string; host: string; address: string },
-  ) {
-    const data: Record<string, Record<string, string>> = {};
-    let index = 0;
-
-    const $ = cheerio.load(html);
-
-    $(".push-tour", html)
-      .each(function () {
-        const $image = host +
-          $(this).children(".picture").children("picture").children("img").attr(
-            "src",
-          );
-        const $title = $(this).children(".text").children("h3").text();
-        const $text = $(this).children(".text").children("p").text();
-
-        if ($title && $image) {
-          data[`${index + 1}`] = {
-            href: address,
-            image: $image,
-            text: $text,
-            title: $title,
-          };
-
-          index++;
-        }
-      });
-
-    return data;
   }
 }
