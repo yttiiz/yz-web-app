@@ -312,8 +312,7 @@
 			position: relative;
 		}
 
-		& > div[data-loading="true"] h3::after {
-			content: url(../img/icons/loading-sm.svg);
+		& > div[data-loading="true"] h3 figure {
 			display: flex;
 			right: 0;
 			top: 50%;
@@ -324,7 +323,7 @@
 			animation: spin-rotate 1s linear infinite;
 		}
 
-		& > div[data-loading="false"] h3::after {
+		& > div[data-loading="false"] h3 figure {
 			display: none;
 		}
 
