@@ -8,7 +8,7 @@ import {
 } from "@controllers";
 import { Auth } from "@auth";
 
-export class LogController {
+export class LogService {
   default;
   isAdmin;
 
@@ -29,21 +29,15 @@ export class LogController {
     const dataParsed = Validator.dataParser(formData, dataModel);
 
     if (!dataParsed.isOk) {
-      return this.default.response(
-        ctx,
-        { message: dataParsed.message },
-        200,
-      );
+      return this.default.response(ctx, { message: dataParsed.message }, 200);
     }
 
-    const {
-      email,
-      password,
-    } = dataParsed.data as Record<string, string>;
+    const { email, password } = dataParsed.data as Record<string, string>;
 
     const failedLogin = async (message: string) => {
-      const failedLoginAttempts =
-        (await ctx.state.session.get("failed-login-attempts") || 0) as number;
+      const failedLoginAttempts = ((await ctx.state.session.get(
+        "failed-login-attempts",
+      )) || 0) as number;
       session.set("failed-login-attempts", failedLoginAttempts + 1);
       session.flash("error", message);
     };
@@ -74,17 +68,11 @@ export class LogController {
           session.set("userEmail", email);
           session.set("userFirstname", user.firstname);
           session.set("userPhoto", user.photo);
-          session.set(
-            "userFullname",
-            `${user.firstname} ${user.lastname}`,
-          );
+          session.set("userFullname", `${user.firstname} ${user.lastname}`);
           session.set("isAdmin", user.role === "admin");
           session.set("userId", user._id);
           session.set("failed-login-attempts", null);
-          session.flash(
-            "message",
-            this.default.sessionFlashMsg(email),
-          );
+          session.flash("message", this.default.sessionFlashMsg(email));
 
           session.get("error") ? session.flash("error", null) : null;
 

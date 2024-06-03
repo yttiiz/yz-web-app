@@ -5,8 +5,8 @@ import type {
   RouterContextAppType,
 } from "./mod.ts";
 import {
-  getUserProfilService,
   fetchDataFromGuadeloupeIslandsWebsiteService,
+  getUserProfilService,
   handleDataRetreiveFromDBService,
 } from "@services";
 

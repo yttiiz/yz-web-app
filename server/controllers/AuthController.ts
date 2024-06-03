@@ -1,6 +1,6 @@
 import { Auth } from "@auth";
 import { DefaultController } from "./DefaultController.ts";
-import { LogController } from "./mod.ts";
+import { LogService } from "@services";
 import type {
   PathAppType,
   RouterAppType,
@@ -13,7 +13,7 @@ export class AuthController extends DefaultController {
 
   constructor(router: RouterAppType) {
     super(router);
-    this.log = new LogController(this);
+    this.log = new LogService(this);
     this.getLoginRoute();
     this.getRegisterRoute();
     this.postLoginRoute();
@@ -48,15 +48,12 @@ export class AuthController extends DefaultController {
       if ("message" in users) {
         this.response(ctx, "", 302, "/");
       } else {
-        const body = await this.createHtmlFile(
-          ctx,
-          {
-            id: "data-user-form",
-            css: "user-form",
-            title,
-            path,
-          },
-        );
+        const body = await this.createHtmlFile(ctx, {
+          id: "data-user-form",
+          css: "user-form",
+          title,
+          path,
+        });
 
         this.response(ctx, body, 200);
       }
@@ -89,36 +86,32 @@ export class AuthController extends DefaultController {
 
     let picPath: string;
 
-    const {
-      lastname,
-      firstname,
-      email,
-      birth,
-      password,
-      job,
-      photo,
-    } = dataParsed.data as FormDataAppType;
+    const { lastname, firstname, email, birth, password, job, photo } =
+      dataParsed.data as FormDataAppType;
 
     photo
-      ? picPath = await this.helper.writeUserPicFile(
+      ? (picPath = await this.helper.writeUserPicFile(
         photo,
         firstname,
         lastname,
-      )
-      : picPath = this.defaultImg;
+      ))
+      : (picPath = this.defaultImg);
 
     const hash = await Auth.hashPassword(password as string);
 
-    const userId = await this.mongo.insertIntoDB({
-      firstname,
-      lastname,
-      email,
-      birth: new Date(birth),
-      role: "user",
-      job,
-      hash,
-      photo: picPath,
-    }, "users");
+    const userId = await this.mongo.insertIntoDB(
+      {
+        firstname,
+        lastname,
+        email,
+        birth: new Date(birth),
+        role: "user",
+        job,
+        hash,
+        photo: picPath,
+      },
+      "users",
+    );
 
     userId === "connexion failed"
       ? this.response(ctx, { errorMsg: this.errorMsg }, 502)

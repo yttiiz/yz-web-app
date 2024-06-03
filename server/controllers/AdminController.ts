@@ -2,7 +2,6 @@ import { DefaultController } from "./DefaultController.ts";
 import { dynamicRoutes } from "@dynamic-routes";
 import {
   type DeleteItemParameterType,
-  LogController,
   type ProductAdminFormDataType,
   type RouterAppType,
   type RouterContextAppType,
@@ -19,13 +18,14 @@ import type {
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
+import { LogService } from "@services";
 
 export class AdminController extends DefaultController {
   private log;
 
   constructor(router: RouterAppType) {
     super(router);
-    this.log = new LogController(this);
+    this.log = new LogService(this);
     this.getAdmin();
     this.postAdminLogin();
     this.postAdminLogout();
@@ -39,66 +39,46 @@ export class AdminController extends DefaultController {
   }
 
   private getAdmin() {
-    this.router?.get(
-      "/admin",
-      async (ctx: RouterContextAppType<"/admin">) => {
-        try {
-          const session: SessionType = ctx.state.session;
-          const isUserConnected = session.has("userId");
-          const userEmail = session.get("userEmail");
-          const user = await this.mongo.selectFromDB(
-            "users",
-            userEmail,
-            "email",
-          );
+    this.router?.get("/admin", async (ctx: RouterContextAppType<"/admin">) => {
+      try {
+        const session: SessionType = ctx.state.session;
+        const isUserConnected = session.has("userId");
+        const userEmail = session.get("userEmail");
+        const user = await this.mongo.selectFromDB("users", userEmail, "email");
 
-          if ("message" in user) {
-            return this.response(ctx, "", 302, "/");
-          } else if (isUserConnected && user.role !== "admin") {
-            return this.response(ctx, "", 302, "/");
-          }
-
-          const users = await this.mongo.connectionTo("users");
-
-          if ("message" in users) {
-            return this.response(ctx, "", 302, "/");
-          }
-
-          const body = await this.createHtmlFile(
-            ctx,
-            {
-              id: "data-admin",
-              css: "admin",
-              title: isUserConnected
-                ? "bienvenue sur la plateforme d'admin"
-                : "connexion à l'admin",
-            },
-          );
-
-          this.response(
-            ctx,
-            body,
-            200,
-          );
-        } catch (error) {
-          this.helper.writeLog(error);
+        if ("message" in user) {
+          return this.response(ctx, "", 302, "/");
+        } else if (isUserConnected && user.role !== "admin") {
+          return this.response(ctx, "", 302, "/");
         }
-      },
-    );
+
+        const users = await this.mongo.connectionTo("users");
+
+        if ("message" in users) {
+          return this.response(ctx, "", 302, "/");
+        }
+
+        const body = await this.createHtmlFile(ctx, {
+          id: "data-admin",
+          css: "admin",
+          title: isUserConnected
+            ? "bienvenue sur la plateforme d'admin"
+            : "connexion à l'admin",
+        });
+
+        this.response(ctx, body, 200);
+      } catch (error) {
+        this.helper.writeLog(error);
+      }
+    });
   }
 
   private postAdminLogin() {
-    this.router?.post(
-      "/admin",
-      this.log.loginHandler,
-    );
+    this.router?.post("/admin", this.log.loginHandler);
   }
 
   private postAdminLogout() {
-    this.router?.post(
-      "/admin-logout",
-      this.log.logoutHandler,
-    );
+    this.router?.post("/admin-logout", this.log.logoutHandler);
   }
 
   private postCreateProduct() {
@@ -107,16 +87,13 @@ export class AdminController extends DefaultController {
       async (ctx: RouterContextAppType<"/admin-create-product">) => {
         try {
           const formData = await ctx.request.body.formData();
-          const dataModel = await this.helper.convertJsonToObject(
+          const dataModel = (await this.helper.convertJsonToObject(
             "/server/data/admin/create-product-form.json",
-          ) as FormDataType;
+          )) as FormDataType;
 
           this.addFileModelTo(dataModel);
 
-          const dataParsed = Validator.dataParser(
-            formData,
-            dataModel,
-          );
+          const dataParsed = Validator.dataParser(formData, dataModel);
 
           if (!dataParsed.isOk) {
             return this.response(
@@ -172,12 +149,16 @@ export class AdminController extends DefaultController {
               pictures: [
                 {
                   alt: `${name.toLocaleLowerCase()} - ${type}, le ${
-                    this.helper.displayDate({ style: "normal" })
+                    this.helper.displayDate(
+                      { style: "normal" },
+                    )
                   }`,
                   src: await this.helper.writePicFile(
                     pictures,
                     `${name.toLocaleLowerCase()}_${
-                      Math.round((Math.random() + 1) * 1000)
+                      Math.round(
+                        (Math.random() + 1) * 1000,
+                      )
                     }`,
                   ),
                 },
@@ -190,7 +171,7 @@ export class AdminController extends DefaultController {
               "products",
             );
 
-            if (!(productId.includes("failed"))) {
+            if (!productId.includes("failed")) {
               // 4. ...create 'review' document related to current product...
               const reviewDocument = {
                 _id: new ObjectId(),
@@ -218,8 +199,7 @@ export class AdminController extends DefaultController {
               );
 
               const isBookingAndReviewDocumentsOk =
-                !(reviewId.includes("failed")) &&
-                !(bookingId.includes("failed"));
+                !reviewId.includes("failed") && !bookingId.includes("failed");
 
               // 6. ...finally set 'bookingId' & 'reviewId' in product document.
               if (isBookingAndReviewDocumentsOk) {
@@ -284,14 +264,11 @@ export class AdminController extends DefaultController {
         try {
           const _id = new ObjectId(ctx.params.id);
           const formData = await ctx.request.body.formData();
-          const dataModel = await this.helper.convertJsonToObject(
+          const dataModel = (await this.helper.convertJsonToObject(
             "/server/data/admin/user-form.json",
-          ) as FormDataType;
+          )) as FormDataType;
 
-          const dataParsed = Validator.dataParser(
-            formData,
-            dataModel,
-          );
+          const dataParsed = Validator.dataParser(formData, dataModel);
 
           if (!dataParsed.isOk) {
             return this.response(
@@ -333,11 +310,7 @@ export class AdminController extends DefaultController {
           );
 
           const data: UserSchemaWithOptionalFieldsType = { ...updatedData };
-          const isUpdate = await this.mongo.updateToDB(
-            _id,
-            data,
-            "users",
-          );
+          const isUpdate = await this.mongo.updateToDB(_id, data, "users");
 
           return this.response(
             ctx,
@@ -365,16 +338,13 @@ export class AdminController extends DefaultController {
         try {
           const _id = new ObjectId(ctx.params.id);
           const formData = await ctx.request.body.formData();
-          const dataModel = await this.helper.convertJsonToObject(
+          const dataModel = (await this.helper.convertJsonToObject(
             "/server/data/admin/product-form.json",
-          ) as FormDataType;
+          )) as FormDataType;
 
           this.addFileModelTo(dataModel);
 
-          const dataParsed = Validator.dataParser(
-            formData,
-            dataModel,
-          );
+          const dataParsed = Validator.dataParser(formData, dataModel);
 
           if (!dataParsed.isOk) {
             return this.response(
@@ -432,7 +402,9 @@ export class AdminController extends DefaultController {
 
           if (pictures) {
             const alt = `${name} - ${type}, le ${
-              this.helper.displayDate({ style: "normal" })
+              this.helper.displayDate({
+                style: "normal",
+              })
             }`;
             const src = await this.helper.writePicFile(
               pictures,
@@ -472,14 +444,11 @@ export class AdminController extends DefaultController {
       async (ctx: RouterContextAppType<typeof bookingRoute>) => {
         try {
           const formData = await ctx.request.body.formData();
-          const dataModel = await this.helper.convertJsonToObject(
+          const dataModel = (await this.helper.convertJsonToObject(
             "/server/data/admin/booking-form.json",
-          ) as FormDataType;
+          )) as FormDataType;
 
-          const dataParsed = Validator.dataParser(
-            formData,
-            dataModel,
-          );
+          const dataParsed = Validator.dataParser(formData, dataModel);
 
           if (!dataParsed.isOk) {
             return this.response(
@@ -495,7 +464,7 @@ export class AdminController extends DefaultController {
           const data = dataParsed.data as unknown as BookingsType;
 
           // Even 'createdAt' is typed as number, it's a string.
-          const itemValue = +(data.createdAt);
+          const itemValue = +data.createdAt;
           data.createdAt = itemValue;
 
           const isUpdate = await this.mongo.updateItemIntoDB({
@@ -523,16 +492,13 @@ export class AdminController extends DefaultController {
   }
 
   private deleteUser() {
-    this.router?.delete(
-      "/user",
-      async (ctx: RouterContextAppType<"/user">) => {
-        return await this.deleteItem({
-          ctx,
-          collection: "users",
-          identifier: "L'utilisateur",
-        });
-      },
-    );
+    this.router?.delete("/user", async (ctx: RouterContextAppType<"/user">) => {
+      return await this.deleteItem({
+        ctx,
+        collection: "users",
+        identifier: "L'utilisateur",
+      });
+    });
   }
 
   private deleteProduct() {
@@ -571,10 +537,8 @@ export class AdminController extends DefaultController {
 
     // Set item name
     (formData.get("itemName") as string).includes("_")
-      ? itemName = (
-        formData.get("itemName") as string
-      ).split("_").join(" ")
-      : itemName = formData.get("itemName") as string;
+      ? (itemName = (formData.get("itemName") as string).split("_").join(" "))
+      : (itemName = formData.get("itemName") as string);
 
     if (collection === "bookings" || collection === "reviews") {
       const bookingToDelete = {
@@ -621,15 +585,18 @@ export class AdminController extends DefaultController {
 
   private addFileModelTo(dataModel: FormDataType) {
     // Add additional types to check in 'dataModel'.
-    const files = [{
-      "type": "file",
-      "name": "thumbnail",
-      "accept": ".png, .jpg, .webp, .jpeg",
-    }, {
-      "type": "file",
-      "name": "pictures",
-      "accept": ".png, .jpg, .webp, .jpeg",
-    }];
+    const files = [
+      {
+        type: "file",
+        name: "thumbnail",
+        accept: ".png, .jpg, .webp, .jpeg",
+      },
+      {
+        type: "file",
+        name: "pictures",
+        accept: ".png, .jpg, .webp, .jpeg",
+      },
+    ];
 
     for (const file of files) {
       dataModel.content.push(file);
@@ -638,13 +605,12 @@ export class AdminController extends DefaultController {
 
   private convertToNumber = (str: string) => {
     return str.includes(",")
-      ? str.split(",")
-        .reduce((num, chunk, i) => {
-          i === 0
-            ? num += +chunk
-            : num += +chunk / (Math.pow(10, chunk.length));
-          return num;
-        }, 0)
+      ? str.split(",").reduce((num, chunk, i) => {
+        i === 0
+          ? (num += +chunk)
+          : (num += +chunk / Math.pow(10, chunk.length));
+        return num;
+      }, 0)
       : +str;
   };
 
@@ -653,11 +619,12 @@ export class AdminController extends DefaultController {
     name: string,
     isUpdate: boolean,
     updateOrDeleteStr?: "delete" | "update" | "add",
-  ) => (
+  ) =>
     `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${str[2]} ${
       updateOrDeleteStr === "delete"
         ? "supprimé"
-        : (updateOrDeleteStr === "update" ? "mis à jour" : "ajouté")
-    }.`
-  );
+        : updateOrDeleteStr === "update"
+        ? "mis à jour"
+        : "ajouté"
+    }.`;
 }

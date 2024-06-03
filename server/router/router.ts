@@ -5,7 +5,7 @@ import { RouterContextAppType } from "../controllers/types.ts";
 //
 
 import { oak } from "@deps";
-import { Mongo, UserSchemaWithIDType } from "@mongo";
+import { Mongo } from "@mongo";
 import { AppState } from "@utils";
 import {
   AdminController,
