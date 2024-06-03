@@ -37,7 +37,7 @@ export class Helper {
   private static writeOpts: Deno.WriteFileOptions = {
     create: true,
     append: true,
-    mode: 764,
+    mode: 777,
   };
 
   public static async convertJsonToObject(
