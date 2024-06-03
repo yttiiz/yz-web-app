@@ -72,7 +72,7 @@ export class DefaultController {
     }
   }
 
-  protected async createHtmlFile<T extends string>(
+  public async createHtmlFile<T extends string>(
     ctx: RouterContextAppType<T> | oak.Context, {
       id,
       css,

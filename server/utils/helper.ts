@@ -4,6 +4,7 @@ import type {
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
 } from "@mongo";
+import { FormDataType } from "@components";
 
 type DisplayDateType = {
   date?: number | Date;
@@ -165,5 +166,36 @@ export class Helper {
     }
 
     return trustData;
+  }
+
+  public static addFileModelTo(dataModel: FormDataType) {
+    // Add additional types to check in 'dataModel'.
+    const files = [
+      {
+        type: "file",
+        name: "thumbnail",
+        accept: ".png, .jpg, .webp, .jpeg",
+      },
+      {
+        type: "file",
+        name: "pictures",
+        accept: ".png, .jpg, .webp, .jpeg",
+      },
+    ];
+
+    for (const file of files) {
+      dataModel.content.push(file);
+    }
+  }
+
+  public static convertToNumber(str: string) {
+    return str.includes(",")
+      ? str.split(",").reduce((num, chunk, i) => {
+        i === 0
+          ? (num += +chunk)
+          : (num += +chunk / Math.pow(10, chunk.length));
+        return num;
+      }, 0)
+      : +str;
   }
 }

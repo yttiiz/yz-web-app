@@ -38,6 +38,8 @@ export class Forms {
           formData,
           e.target,
         );
+    } else {
+      Forms.#insertDatasetsInFormDataFromDeleteBtn(formData, e.target);
     }
 
     const method = isDeleteForm ? "DELETE" : (isCreateForm ? "POST" : "PUT");
@@ -74,6 +76,10 @@ export class Forms {
    * @param {HTMLFormElement} form
    */
   static #insertDatasetsInFormDataFromDeleteBtn = (formData, form) => {
+    const items = form.action.includes("booking")
+      ? ["id", "itemName", "itemDetails"]
+      : ["id", "itemName"];
+
     /**
      * @param {string} item
      */
@@ -88,7 +94,7 @@ export class Forms {
         });
     };
 
-    for (const item of ["id", "itemName", "itemDetails"]) {
+    for (const item of items) {
       if (item === "itemDetails") {
         recoverData(item);
         continue;
