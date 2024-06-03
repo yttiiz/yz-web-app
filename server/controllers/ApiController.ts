@@ -4,11 +4,11 @@ import type {
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
-import { getUserProfilService } from "@/server/services/getUserProfilService.ts";
 import {
+  getUserProfilService,
   fetchDataFromGuadeloupeIslandsWebsiteService,
   handleDataRetreiveFromDBService,
-} from "@/server/services/mod.ts";
+} from "@services";
 
 export class ApiController {
   private router;
