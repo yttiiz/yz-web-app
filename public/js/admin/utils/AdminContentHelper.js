@@ -90,7 +90,6 @@ export class AdminContentHelper extends DefaultFormHelper {
 
     const {
       detailsContainer,
-      _,
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("users");
 
@@ -327,9 +326,12 @@ export class AdminContentHelper extends DefaultFormHelper {
   static #setBookingsCard = (bookings) => {
     const {
       detailsContainer,
-      elementsList,
       dbInfos,
     } = AdminContentHelper.#getCardMainElements("bookings");
+    const [elementsList] = AdminContentHelper.#builder.createHTMLElements(
+      "span",
+    );
+    const bookingsPerPage = 10;
 
     if ("message" in bookings) {
       return AdminContentHelper.#displayErrorMessage(
@@ -375,6 +377,8 @@ export class AdminContentHelper extends DefaultFormHelper {
     }
 
     sortBookings.sort((a, b) => a.createdAt - b.createdAt);
+
+    let index = 0;
 
     for (const booking of sortBookings) {
       const [
@@ -440,15 +444,47 @@ export class AdminContentHelper extends DefaultFormHelper {
         bookingPublicPart,
         bookingPrivatePart,
       );
-      AdminContentHelper.#builder.insertChildren(
-        elementsList,
-        bookingContainer,
+
+      if (index === 0 || index % bookingsPerPage === 0) {
+        const [list] = AdminContentHelper.#builder.createHTMLElements("ul");
+
+        AdminContentHelper.#builder.insertChildren(list, bookingContainer);
+        AdminContentHelper.#builder.insertChildren(elementsList, list);
+      } else {
+        const list = elementsList.querySelectorAll("ul");
+        AdminContentHelper.#builder.insertChildren(
+          list[list.length - 1],
+          bookingContainer,
+        );
+      }
+
+      index++;
+    }
+
+    const bookingsCount = Object.keys(sortBookings).length;
+
+    // Set pages number then set container and list width.
+    const pagesNumber = AdminContentHelper.#getPagesNumber(
+      bookingsCount,
+      bookingsPerPage,
+    );
+
+    elementsList.style.width = `${pagesNumber * 100}%`;
+    elementsList.querySelectorAll("ul")
+      .forEach((list) => {
+        list.style.width = `${100 / pagesNumber}%`;
+      });
+
+    if (pagesNumber > 1) {
+      dbInfos.appendChild(
+        AdminContentHelper.#getPagination(bookingsCount, bookingsPerPage),
       );
     }
 
     AdminContentHelper.#builder.insertChildren(
       detailsContainer,
       elementsList,
+      dbInfos,
     );
   };
 
@@ -528,13 +564,13 @@ export class AdminContentHelper extends DefaultFormHelper {
     AdminContentHelper.#handleActiveClassName(button);
 
     const index = +(button.textContent) - 1;
-    const container = button.closest(".users-details");
+    const container = button.closest(".accordeon-container");
     AdminContentHelper.#moveSlider({ container, index });
   };
 
   static #switchPagesWithArrow = (e) => {
     const button = e.currentTarget;
-    const container = button.closest(".users-details");
+    const container = button.closest(".accordeon-container");
     const isLeftArrow = button.name === "left-arrow";
     let index;
 

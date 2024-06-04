@@ -24,7 +24,7 @@ export const DashboardCard: ComponentType<
             <img src="../img/icons/loading-sm.svg" alt="loading" />
           </figure>
         </h3>
-        <div class="${className}"></div>
+        <div class="${className}${isAccordeon ? " accordeon-container" : ""}"></div>
         ${isAccordeon
           ?
           (
