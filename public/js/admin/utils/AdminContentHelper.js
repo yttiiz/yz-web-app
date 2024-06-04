@@ -153,18 +153,13 @@ export class AdminContentHelper extends DefaultFormHelper {
         userPrivatePart,
       );
 
-      if (index === 0 || index % usersPerPage === 0) {
-        const [list] = AdminContentHelper.#builder.createHTMLElements("ul");
-
-        AdminContentHelper.#builder.insertChildren(list, userContainer);
-        AdminContentHelper.#builder.insertChildren(usersLists, list);
-      } else {
-        const list = usersLists.querySelectorAll("ul");
-        AdminContentHelper.#builder.insertChildren(
-          list[list.length - 1],
-          userContainer,
-        );
-      }
+      AdminContentHelper.#setListsContent({
+        container: usersLists,
+        itemsPerPage: usersPerPage,
+        item: userContainer,
+        insertChildren: AdminContentHelper.#builder.insertChildren,
+        index,
+      });
     }
 
     const { usersCount, adminRoleCount } = ((users) => {
@@ -185,11 +180,12 @@ export class AdminContentHelper extends DefaultFormHelper {
       usersPerPage,
     );
 
-    usersLists.style.width = `${pagesNumber * 100}%`;
-    usersLists.querySelectorAll("ul")
-      .forEach((list) => {
-        list.style.width = `${100 / pagesNumber}%`;
-      });
+    AdminContentHelper.#setContainerListsStyle({
+      container: usersLists,
+      pagesNumber,
+      itemsCount: usersCount,
+      itemsPerPage: usersPerPage,
+    });
 
     if (pagesNumber > 1) {
       dbInfos.appendChild(
@@ -445,18 +441,13 @@ export class AdminContentHelper extends DefaultFormHelper {
         bookingPrivatePart,
       );
 
-      if (index === 0 || index % bookingsPerPage === 0) {
-        const [list] = AdminContentHelper.#builder.createHTMLElements("ul");
-
-        AdminContentHelper.#builder.insertChildren(list, bookingContainer);
-        AdminContentHelper.#builder.insertChildren(elementsList, list);
-      } else {
-        const list = elementsList.querySelectorAll("ul");
-        AdminContentHelper.#builder.insertChildren(
-          list[list.length - 1],
-          bookingContainer,
-        );
-      }
+      AdminContentHelper.#setListsContent({
+        container: elementsList,
+        itemsPerPage: bookingsPerPage,
+        item: bookingContainer,
+        insertChildren: AdminContentHelper.#builder.insertChildren,
+        index,
+      });
 
       index++;
     }
@@ -469,11 +460,12 @@ export class AdminContentHelper extends DefaultFormHelper {
       bookingsPerPage,
     );
 
-    elementsList.style.width = `${pagesNumber * 100}%`;
-    elementsList.querySelectorAll("ul")
-      .forEach((list) => {
-        list.style.width = `${100 / pagesNumber}%`;
-      });
+    AdminContentHelper.#setContainerListsStyle({
+      container: elementsList,
+      pagesNumber,
+      itemsCount: bookingsCount,
+      itemsPerPage: bookingsPerPage,
+    });
 
     if (pagesNumber > 1) {
       dbInfos.appendChild(
@@ -557,6 +549,60 @@ export class AdminContentHelper extends DefaultFormHelper {
       (userLength / elementPerPage) +
         (userLength % elementPerPage === 0 ? 0 : 1),
     );
+  };
+
+  /**
+   * @param {{
+   * container: HTMLSpanElement;
+   * pagesNumber: number;
+   * itemsCount: number;
+   * itemsPerPage: number;
+   * }}
+   */
+  static #setContainerListsStyle = (
+    { container, pagesNumber, itemsCount, itemsPerPage },
+  ) => {
+    container.style.width = `${pagesNumber * 100}%`;
+    container.querySelectorAll("ul")
+      .forEach((list) => {
+        list.style.width = `${100 / pagesNumber}%`;
+
+        if (itemsCount >= itemsPerPage) {
+          let gridTemplateRow = "";
+
+          for (let i = 0; i < (itemsPerPage / 2); i++) {
+            gridTemplateRow += "1fr ";
+          }
+
+          list.style.gridTemplateRows = gridTemplateRow.trim();
+        }
+      });
+  };
+
+  /**
+   * @param {{
+   * container: HTMLSpanElement;
+   * index: number;
+   * itemsPerPage: number;
+   * insertChildren: (...args) => void;
+   * item: HTMLLIElement
+   * }}
+   */
+  static #setListsContent = (
+    { container, index, itemsPerPage, insertChildren, item },
+  ) => {
+    if (index === 0 || index % itemsPerPage === 0) {
+      const list = document.createElement("ul");
+
+      insertChildren(list, item);
+      insertChildren(container, list);
+    } else {
+      const list = container.querySelectorAll("ul");
+      insertChildren(
+        list[list.length - 1],
+        item,
+      );
+    }
   };
 
   static #switchPages = (e) => {
