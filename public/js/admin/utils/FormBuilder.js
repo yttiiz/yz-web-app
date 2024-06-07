@@ -259,6 +259,8 @@ export class FormBuilder {
 
     if (dataType === "booking") {
       form.dataset.itemDetails = e.currentTarget.dataset.itemDetails;
+    } else if (form.dataset.itemDetails) {
+      form.removeAttribute("data-item-details");
     }
 
     // Set modal text.

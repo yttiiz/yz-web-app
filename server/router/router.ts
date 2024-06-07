@@ -5,7 +5,7 @@ import { RouterContextAppType } from "../controllers/types.ts";
 //
 
 import { oak } from "@deps";
-import { Mongo, UserSchemaWithIDType } from "@mongo";
+import { Mongo } from "@mongo";
 import { AppState } from "@utils";
 import {
   AdminController,
@@ -29,7 +29,6 @@ new AdminController(router);
 new ApiController(
   router,
   Mongo.connectionTo,
-  Mongo.selectFromDB<UserSchemaWithIDType>,
 );
 
 // TODO to be removed (reset "session" in BD)

@@ -1,4 +1,4 @@
-import { Validator } from "@utils";
+import { FormDataAppType, Validator } from "@utils";
 import {
   AdminController,
   AuthController,
@@ -8,7 +8,7 @@ import {
 } from "@controllers";
 import { Auth } from "@auth";
 
-export class LogController {
+export class LogService {
   default;
   isAdmin;
 
@@ -29,21 +29,15 @@ export class LogController {
     const dataParsed = Validator.dataParser(formData, dataModel);
 
     if (!dataParsed.isOk) {
-      return this.default.response(
-        ctx,
-        { message: dataParsed.message },
-        200,
-      );
+      return this.default.response(ctx, { message: dataParsed.message }, 200);
     }
 
-    const {
-      email,
-      password,
-    } = dataParsed.data as Record<string, string>;
+    const { email, password } = dataParsed.data as Record<string, string>;
 
     const failedLogin = async (message: string) => {
-      const failedLoginAttempts =
-        (await ctx.state.session.get("failed-login-attempts") || 0) as number;
+      const failedLoginAttempts = ((await ctx.state.session.get(
+        "failed-login-attempts",
+      )) || 0) as number;
       session.set("failed-login-attempts", failedLoginAttempts + 1);
       session.flash("error", message);
     };
@@ -74,17 +68,11 @@ export class LogController {
           session.set("userEmail", email);
           session.set("userFirstname", user.firstname);
           session.set("userPhoto", user.photo);
-          session.set(
-            "userFullname",
-            `${user.firstname} ${user.lastname}`,
-          );
+          session.set("userFullname", `${user.firstname} ${user.lastname}`);
           session.set("isAdmin", user.role === "admin");
           session.set("userId", user._id);
           session.set("failed-login-attempts", null);
-          session.flash(
-            "message",
-            this.default.sessionFlashMsg(email),
-          );
+          session.flash("message", this.default.sessionFlashMsg(email));
 
           session.get("error") ? session.flash("error", null) : null;
 
@@ -123,5 +111,64 @@ export class LogController {
     this.isAdmin
       ? this.default.response(ctx, "", 302, "/admin")
       : this.default.response(ctx, "", 302, "/");
+  };
+
+  public registerHandler = async <T extends PathAppType>(
+    ctx: RouterContextAppType<T>,
+  ) => {
+    const dataModel = await this.default.helper.convertJsonToObject(
+      `/server/data/authentication${ctx.request.url.pathname}.json`,
+    );
+    const formData = await ctx.request.body.formData();
+    const dataParsed = Validator.dataParser(formData, dataModel);
+
+    if (!dataParsed.isOk) {
+      return this.default.response(
+        ctx,
+        { title: "Avertissement", message: dataParsed.message },
+        200,
+      );
+    }
+
+    let picPath: string;
+
+    const { lastname, firstname, email, birth, password, job, photo } =
+      dataParsed.data as FormDataAppType;
+
+    photo
+      ? (picPath = await this.default.helper.writeUserPicFile(
+        photo,
+        firstname,
+        lastname,
+      ))
+      : (picPath = this.default.defaultImg);
+
+    const hash = await Auth.hashPassword(password as string);
+
+    const userId = await this.default.mongo.insertIntoDB(
+      {
+        firstname,
+        lastname,
+        email,
+        birth: new Date(birth),
+        role: "user",
+        job,
+        hash,
+        photo: picPath,
+      },
+      "users",
+    );
+
+    userId === "connexion failed"
+      ? this.default.response(ctx, { errorMsg: this.default.errorMsg }, 502)
+      : this.default.response(
+        ctx,
+        {
+          title: "Bienvenue " + firstname,
+          message:
+            `${firstname} ${lastname}, votre profil a été créé avec succès.`,
+        },
+        200,
+      );
   };
 }

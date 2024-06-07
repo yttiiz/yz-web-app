@@ -1,4 +1,4 @@
-import { load, oak, Session } from "@deps";
+import { load, oak, oakCors, Session } from "@deps";
 import { notFoundMiddleware, staticsFilesMiddleware } from "@middlewares";
 import { Mongo } from "@mongo";
 import { router } from "@router";
@@ -25,6 +25,7 @@ const {
   DATABASE_USERNAME: username,
   DATABASE_PASSWORD: password,
   APP_SESSION_NAME,
+  DOMAIN_AUTHORIZED: origin,
 } = Deno.env.toObject();
 
 const clusterUrl = Mongo.createClusterUrl({
@@ -44,6 +45,7 @@ const sessionOpts = {
 app.use(
   Session.initMiddleware(store, sessionOpts) as unknown as MiddlewareAppType,
 );
+app.use(oakCors({ origin, optionsSuccessStatus: 200 }))
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(notFoundMiddleware);

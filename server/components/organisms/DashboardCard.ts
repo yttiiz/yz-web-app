@@ -20,8 +20,11 @@ export const DashboardCard: ComponentType<
       <div data-loading="true">
         <h3${isAccordeon ? ` class="accordeon-title"` : ""}>
           ${title}
+          <figure>
+            <img src="../img/icons/loading-sm.svg" alt="loading" />
+          </figure>
         </h3>
-        <div class="${className}"></div>
+        <div class="${className}${isAccordeon ? " accordeon-container" : ""}"></div>
         ${isAccordeon
           ?
           (

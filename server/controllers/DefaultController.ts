@@ -27,8 +27,8 @@ export class DefaultController {
   );
   
   protected MAX_SIZE = 10_000_000;
-  protected defaultImg = "/img/users/default.png";
   
+  public defaultImg = "/img/users/default.png";
   public errorMsg = `Impossible de se connecter à la base de données. ${this.ERROR_CODE}`;
   public sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
   public router;
@@ -72,7 +72,7 @@ export class DefaultController {
     }
   }
 
-  protected async createHtmlFile<T extends string>(
+  public async createHtmlFile<T extends string>(
     ctx: RouterContextAppType<T> | oak.Context, {
       id,
       css,
