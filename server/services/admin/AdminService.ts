@@ -5,13 +5,6 @@ import {
   RouterContextAppType,
   SessionType,
 } from "@controllers";
-import { Validator } from "@utils";
-import { FormDataType } from "@components";
-import {
-  NotFoundMessageType,
-  UserSchemaWithIDType,
-  UserSchemaWithOptionalFieldsType,
-} from "@mongo";
 import { ObjectId } from "@deps";
 
 export class AdminService {
@@ -55,76 +48,6 @@ export class AdminService {
       });
 
       this.default.response(ctx, body, 200);
-    } catch (error) {
-      this.default.helper.writeLog(error);
-    }
-  };
-
-  public putUserHandler = async <T extends string>(
-    ctx: RouterContextAppType<T>,
-  ) => {
-    try {
-      const _id = new ObjectId(ctx.params.id);
-      const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
-        "/server/data/admin/user-form.json",
-      )) as FormDataType;
-
-      const dataParsed = Validator.dataParser(formData, dataModel);
-
-      if (!dataParsed.isOk) {
-        return this.default.response(
-          ctx,
-          {
-            title: "Modification non effectuée",
-            message: dataParsed.message,
-          },
-          401,
-        );
-      }
-
-      // Check to remove user photo.
-      if (dataParsed.data["deletePicture"] === "oui") {
-        dataParsed.data["photo"] = this.default.defaultImg;
-      }
-
-      // Remove 'delePicture' cause is unnecessary at this step.
-      delete dataParsed.data["deletePicture"];
-
-      const user: UserSchemaWithIDType | NotFoundMessageType = await this
-        .default.mongo.selectFromDB("users", _id);
-
-      if (!("_id" in user)) {
-        return this.default.response(
-          ctx,
-          {
-            title: "Erreur serveur",
-            message:
-              "Le serveur ne répond pas. Veuillez réessayer ultérieurement !",
-          },
-          200,
-        );
-      }
-
-      const updatedData = await this.default.helper
-        .removeEmptyOrUnchangedFields(
-          dataParsed.data,
-          user,
-        );
-
-      const data: UserSchemaWithOptionalFieldsType = { ...updatedData };
-      const isUpdate = await this.default.mongo.updateToDB(_id, data, "users");
-
-      return this.default.response(
-        ctx,
-        {
-          title: "Modification utilisateur",
-          message: this.default.helper.msgToAdmin`Le profil de ${
-            user.firstname + " " + user.lastname
-          } ${isUpdate} été${"update"}`,
-        },
-        200,
-      );
     } catch (error) {
       this.default.helper.writeLog(error);
     }

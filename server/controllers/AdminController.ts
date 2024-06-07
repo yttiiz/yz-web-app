@@ -1,20 +1,28 @@
 import { DefaultController } from "./DefaultController.ts";
 import { dynamicRoutes } from "@dynamic-routes";
-import { type RouterAppType, type RouterContextAppType } from "./mod.ts";
-import { AdminService, BookingService, LogService, ProductService } from "@services";
+import type { RouterAppType, RouterContextAppType } from "./mod.ts";
+import {
+  AdminService,
+  BookingService,
+  LogService,
+  ProductService,
+  UserService,
+} from "@services";
 
 export class AdminController extends DefaultController {
-  private logService;
   private adminService;
-  private bookingService;
+  private logService;
+  private userService;
   private productService;
+  private bookingService;
 
   constructor(router: RouterAppType) {
     super(router);
-    this.logService = new LogService(this);
     this.adminService = new AdminService(this);
-    this.bookingService = new BookingService(this);
+    this.logService = new LogService(this);
+    this.userService = new UserService(this);
     this.productService = new ProductService(this);
+    this.bookingService = new BookingService(this);
     this.getAdmin();
     this.postAdminLogin();
     this.postAdminLogout();
@@ -49,7 +57,7 @@ export class AdminController extends DefaultController {
   private putUser() {
     const userRoute = `/${dynamicRoutes.get("user")}:id`; // "/user/:id"
 
-    this.router?.put(userRoute, this.adminService.putUserHandler);
+    this.router?.put(userRoute, this.userService.putHandler);
   }
 
   private putProduct() {

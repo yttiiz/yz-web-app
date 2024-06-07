@@ -1,4 +1,8 @@
-import { DefaultController, RouterContextAppType, SessionType } from "@controllers";
+import {
+  DefaultController,
+  RouterContextAppType,
+  SessionType,
+} from "@controllers";
 import {
   BookingsProductSchemaWithIDType,
   BookingsType,
