@@ -286,7 +286,7 @@ export class BookingService {
         {
           title: "Modification réservation",
           message: Helper
-            .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été${"update"}`,
+            .messageToAdmin`La réservation de ${data.userName} ${isUpdate} été${"update"}`,
         },
         200,
       );
@@ -305,16 +305,12 @@ export class BookingService {
       fields[key] = value;
     }
 
-    const {
-      bookingId,
-      bookingStart,
-      bookingEnd,
-      bookingCreatedAt,
-    } = fields as Record<string, string>;
+    const { bookingId, bookingStart, bookingEnd, bookingCreatedAt } =
+      fields as Record<string, string>;
 
     const _id = new ObjectId(bookingId);
     const bookingToDelete = {
-      userId: ((ctx.state.session as SessionType).get("userId")).toString(),
+      userId: (ctx.state.session as SessionType).get("userId").toString(),
       userName: (ctx.state.session as SessionType).get("userFullname"),
       startingDate: bookingStart,
       endingDate: bookingEnd,

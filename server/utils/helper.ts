@@ -50,18 +50,14 @@ export class Helper {
     return JSON.parse(decoder.decode(file));
   }
 
-  public static async writeLog(
-    { message }: { message: string },
-  ) {
+  public static async writeLog({ message }: { message: string }) {
     const errorMsg = `(${Helper.displayDate({})}) ${message},\n`;
     const content = new TextEncoder().encode(errorMsg);
 
     await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
   }
 
-  public static async writeEmailLog(
-    message: string,
-  ) {
+  public static async writeEmailLog(message: string) {
     await Deno.writeFile(
       "server/log/email.txt",
       new TextEncoder().encode(`${message},\n`),
@@ -81,20 +77,13 @@ export class Helper {
     return await Helper.writePicture(file, fullName, "users");
   }
 
-  public static async writePicFile(
-    file: File,
-    name: string,
-  ) {
+  public static async writePicFile(file: File, name: string) {
     name = Validator.normalizeString(name);
 
     return await Helper.writePicture(file, name, "products");
   }
 
-  private static async writePicture(
-    file: File,
-    name: string,
-    dir: string,
-  ) {
+  private static async writePicture(file: File, name: string, dir: string) {
     const ext = file.type.split("/").at(1) as string;
     const pic = `img/${dir}/${name}.${ext}`;
 
@@ -104,26 +93,22 @@ export class Helper {
   }
 
   public static formatPrice(price: number) {
-    return new Intl
-      .NumberFormat("fr-FR", {
+    return new Intl.NumberFormat("fr-FR", {
       maximumFractionDigits: 2,
       style: "currency",
       currency: "EUR",
-    })
-      .format(price);
+    }).format(price);
   }
 
-  public static displayDate({
-    date,
-    style = "long",
-  }: DisplayDateType) {
+  public static displayDate({ date, style = "long" }: DisplayDateType) {
     date = date ? date : new Date();
-    return new Intl
-      .DateTimeFormat(
+    return new Intl.DateTimeFormat(
       "fr-FR",
       style === "long"
         ? Helper.longDateOpts
-        : (style === "short" ? Helper.shortDateOpts : Helper.baseDateOpts),
+        : style === "short"
+        ? Helper.shortDateOpts
+        : Helper.baseDateOpts,
     )
       .format(date)
       .replace(",", " à");
@@ -144,9 +129,10 @@ export class Helper {
         } else {
           if (user[key as keyof typeof user] !== data[key]) {
             key === "birth"
-              ? acc["birth"] = new Date(data[key] as string)
-              : acc[key as keyof Omit<typeof acc, "birth">] =
-                data[key] as string;
+              ? (acc["birth"] = new Date(data[key] as string))
+              : (acc[key as keyof Omit<typeof acc, "birth">] = data[
+                key
+              ] as string);
 
             return acc;
           }
@@ -199,7 +185,7 @@ export class Helper {
       : +str;
   }
 
-  public static msgToAdmin(
+  public static messageToAdmin(
     str: TemplateStringsArray,
     name: string,
     isUpdate: boolean,
@@ -214,5 +200,15 @@ export class Helper {
         ? "mis à jour"
         : "ajouté"
     }.`;
+  }
+
+  public static messageToUser(
+    bool: boolean,
+    profilOrAccountStr = "profil",
+    updateOrDeleteStr = "mis à jour",
+  ) {
+    return `Votre ${profilOrAccountStr} ${
+      bool ? "a bien" : "n'a pas"
+    } été ${updateOrDeleteStr}.`;
   }
 }

@@ -6,6 +6,8 @@ import {
   SessionType,
 } from "@controllers";
 import { ObjectId } from "@deps";
+import { Helper } from "@utils";
+import { Mongo } from "@mongo";
 
 export class AdminService {
   private default;
@@ -21,7 +23,7 @@ export class AdminService {
       const session: SessionType = ctx.state.session;
       const isUserConnected = session.has("userId");
       const userEmail = session.get("userEmail");
-      const user = await this.default.mongo.selectFromDB(
+      const user = await Mongo.selectFromDB(
         "users",
         userEmail,
         "email",
@@ -33,7 +35,7 @@ export class AdminService {
         return this.default.response(ctx, "", 302, "/");
       }
 
-      const users = await this.default.mongo.connectionTo("users");
+      const users = await Mongo.connectionTo("users");
 
       if ("message" in users) {
         return this.default.response(ctx, "", 302, "/");
@@ -49,7 +51,7 @@ export class AdminService {
 
       this.default.response(ctx, body, 200);
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
     }
   };
 
@@ -75,7 +77,7 @@ export class AdminService {
         createdAt: +(formData.get("createdAt") as string),
       };
 
-      const isItemDelete = await this.default.mongo.removeItemFromDB(
+      const isItemDelete = await Mongo.removeItemFromDB(
         new ObjectId(formData.get("id") as string),
         bookingToDelete,
         collection,
@@ -85,13 +87,13 @@ export class AdminService {
       return this.default.response(
         ctx,
         {
-          message: this.default.helper
-            .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
+          message: Helper
+            .messageToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
       );
     } else {
-      const result = await this.default.mongo.deleteFromDB(
+      const result = await Mongo.deleteFromDB(
         new ObjectId(formData.get("id") as string),
         collection,
       );
@@ -101,8 +103,8 @@ export class AdminService {
       return this.default.response(
         ctx,
         {
-          message: this.default.helper
-            .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
+          message: Helper
+            .messageToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
       );

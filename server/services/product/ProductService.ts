@@ -1,6 +1,7 @@
 import {
   DefaultController,
   ProductAdminFormDataType,
+  ProductsDataType,
   RouterContextAppType,
 } from "@controllers";
 import { FormDataType } from "@components";
@@ -78,6 +79,53 @@ export class ProductService {
     }
   };
 
+  public getProducts = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
+    const data: ProductsDataType = {};
+    const cursor = await Mongo.connectionTo<ProductSchemaWithIDType>(
+      "products",
+    );
+
+    try {
+      if ("message" in cursor) {
+        const body = await this.default.createHtmlFile(ctx, {
+          id: "data-home",
+          css: "home",
+          data: this.default.errorMsg,
+        });
+
+        this.default.response(ctx, body, 200);
+      } else {
+        await cursor.map((document, key) => (data[key + 1] = document));
+
+        for await (const key of Object.keys(data)) {
+          const id = data[key as unknown as keyof typeof data]._id;
+          const reviews = await Mongo.selectFromDB<
+            ReviewsProductSchemaWithIDType
+          >(
+            "reviews",
+            id.toString(),
+            "productId",
+          );
+
+          if ("_id" in reviews) {
+            data[key as unknown as keyof typeof data].reviews = reviews;
+          }
+        }
+
+        const body = await this.default.createHtmlFile(ctx, {
+          id: "data-home",
+          css: "home",
+          data,
+        });
+        this.default.response(ctx, body, 200);
+      }
+    } catch (error) {
+      Helper.writeLog(error);
+    }
+  };
+
   public postCreate = async <T extends string>(
     ctx: RouterContextAppType<T>,
   ) => {
@@ -137,10 +185,7 @@ export class ProductService {
           },
           thumbnail: {
             alt,
-            src: await Helper.writePicFile(
-              thumbnail,
-              alt.replaceAll(" ", "_"),
-            ),
+            src: await Helper.writePicFile(thumbnail, alt.replaceAll(" ", "_")),
           },
           pictures: [
             {
@@ -162,10 +207,7 @@ export class ProductService {
         };
 
         // 3. Insert document in database...
-        const productId = await Mongo.insertIntoDB(
-          productDocument,
-          "products",
-        );
+        const productId = await Mongo.insertIntoDB(productDocument, "products");
 
         if (!productId.includes("failed")) {
           // 4. ...create 'review' document related to current product...
@@ -176,10 +218,7 @@ export class ProductService {
             reviews: [],
           };
 
-          const reviewId = await Mongo.insertIntoDB(
-            reviewDocument,
-            "reviews",
-          );
+          const reviewId = await Mongo.insertIntoDB(reviewDocument, "reviews");
 
           // 5. ...and 'booking' document related to current product...
           const bookingDocument = {
@@ -220,7 +259,7 @@ export class ProductService {
             {
               title,
               message: Helper
-                .msgToAdmin`L'appartement ${name} ${true} été${"add"}`,
+                .messageToAdmin`L'appartement ${name} ${true} été${"add"}`,
             },
             200,
           )
@@ -229,7 +268,7 @@ export class ProductService {
             {
               title,
               message: Helper
-                .msgToAdmin`L'appartement ${name} ${false} été${"add"}`,
+                .messageToAdmin`L'appartement ${name} ${false} été${"add"}`,
             },
             200,
           );
@@ -309,11 +348,7 @@ export class ProductService {
         document["thumbnail"] = { src, alt };
       }
 
-      const isUpdate = await Mongo.updateToDB(
-        _id,
-        document,
-        "products",
-      );
+      const isUpdate = await Mongo.updateToDB(_id, document, "products");
 
       let isPictureUpdate = true;
 
@@ -340,7 +375,7 @@ export class ProductService {
         ctx,
         {
           title: "Modification appartement",
-          message: Helper.msgToAdmin`L'appartement ${name as string} ${
+          message: Helper.messageToAdmin`L'appartement ${name as string} ${
             isUpdate && isPictureUpdate
           } été${"update"}`,
         },
