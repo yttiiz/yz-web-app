@@ -9,7 +9,6 @@ import {
 import { Validator } from "@utils";
 import { FormDataType } from "@components";
 import {
-  BookingsType,
   NotFoundMessageType,
   ProductSchemaType,
   ProductSchemaWithIDType,
@@ -19,7 +18,7 @@ import {
 import { ObjectId } from "@deps";
 
 export class AdminService {
-  default;
+  private default;
 
   constructor(defaultController: AdminController) {
     this.default = defaultController;
@@ -205,7 +204,7 @@ export class AdminService {
             ctx,
             {
               title,
-              message: this
+              message: this.default.helper
                 .msgToAdmin`L'appartement ${name} ${true} été${"add"}`,
             },
             200,
@@ -214,7 +213,7 @@ export class AdminService {
             ctx,
             {
               title,
-              message: this
+              message: this.default.helper
                 .msgToAdmin`L'appartement ${name} ${false} été${"add"}`,
             },
             200,
@@ -294,7 +293,7 @@ export class AdminService {
         ctx,
         {
           title: "Modification utilisateur",
-          message: this.msgToAdmin`Le profil de ${
+          message: this.default.helper.msgToAdmin`Le profil de ${
             user.firstname + " " + user.lastname
           } ${isUpdate} été${"update"}`,
         },
@@ -396,59 +395,10 @@ export class AdminService {
         ctx,
         {
           title: "Modification appartement",
-          message: this.msgToAdmin`L'appartement ${name as string} ${
+          message: this.default.helper
+            .msgToAdmin`L'appartement ${name as string} ${
             isUpdate && isPictureUpdate
           } été${"update"}`,
-        },
-        200,
-      );
-    } catch (error) {
-      this.default.helper.writeLog(error);
-    }
-  };
-
-  public putBookingHandler = async <T extends string>(
-    ctx: RouterContextAppType<T>,
-  ) => {
-    try {
-      const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
-        "/server/data/admin/booking-form.json",
-      )) as FormDataType;
-
-      const dataParsed = Validator.dataParser(formData, dataModel);
-
-      if (!dataParsed.isOk) {
-        return this.default.response(
-          ctx,
-          {
-            title: "Modification non effectuée",
-            message: dataParsed.message,
-          },
-          401,
-        );
-      }
-
-      const data = dataParsed.data as unknown as BookingsType;
-
-      // Even 'createdAt' is typed as number, it's a string.
-      const itemValue = +data.createdAt;
-      data.createdAt = itemValue;
-
-      const isUpdate = await this.default.mongo.updateItemIntoDB({
-        data,
-        collection: "bookings",
-        key: "bookings",
-        itemKey: "createdAt",
-        itemValue,
-      });
-
-      return this.default.response(
-        ctx,
-        {
-          title: "Modification réservation",
-          message: this
-            .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été${"update"}`,
         },
         200,
       );
@@ -489,7 +439,7 @@ export class AdminService {
       return this.default.response(
         ctx,
         {
-          message: this
+          message: this.default.helper
             .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
@@ -505,25 +455,11 @@ export class AdminService {
       return this.default.response(
         ctx,
         {
-          message: this
+          message: this.default.helper
             .msgToAdmin`${`${identifier} ${itemName}`} ${isItemDelete} été${"delete"}`,
         },
         200,
       );
     }
   };
-
-  private msgToAdmin = (
-    str: TemplateStringsArray,
-    name: string,
-    isUpdate: boolean,
-    updateOrDeleteStr?: "delete" | "update" | "add",
-  ) =>
-    `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${str[2]} ${
-      updateOrDeleteStr === "delete"
-        ? "supprimé"
-        : updateOrDeleteStr === "update"
-        ? "mis à jour"
-        : "ajouté"
-    }.`;
 }

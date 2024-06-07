@@ -198,4 +198,21 @@ export class Helper {
       }, 0)
       : +str;
   }
+
+  public static msgToAdmin(
+    str: TemplateStringsArray,
+    name: string,
+    isUpdate: boolean,
+    updateOrDeleteStr?: "delete" | "update" | "add",
+  ) {
+    return `${str[0]}${name}${str[1]}${isUpdate ? "a bien" : "n'a pas"}${
+      str[2]
+    } ${
+      updateOrDeleteStr === "delete"
+        ? "supprimé"
+        : updateOrDeleteStr === "update"
+        ? "mis à jour"
+        : "ajouté"
+    }.`;
+  }
 }

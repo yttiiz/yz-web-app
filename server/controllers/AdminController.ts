@@ -1,16 +1,18 @@
 import { DefaultController } from "./DefaultController.ts";
 import { dynamicRoutes } from "@dynamic-routes";
 import { type RouterAppType, type RouterContextAppType } from "./mod.ts";
-import { AdminService, LogService } from "@services";
+import { AdminService, BookingService, LogService } from "@services";
 
 export class AdminController extends DefaultController {
-  private log;
-  private service;
+  private logService;
+  private adminService;
+  private bookingService;
 
   constructor(router: RouterAppType) {
     super(router);
-    this.log = new LogService(this);
-    this.service = new AdminService(this);
+    this.logService = new LogService(this);
+    this.adminService = new AdminService(this);
+    this.bookingService = new BookingService(this);
     this.getAdmin();
     this.postAdminLogin();
     this.postAdminLogout();
@@ -24,45 +26,45 @@ export class AdminController extends DefaultController {
   }
 
   private getAdmin() {
-    this.router?.get("/admin", this.service.getAdminHandler);
+    this.router?.get("/admin", this.adminService.getAdminHandler);
   }
 
   private postAdminLogin() {
-    this.router?.post("/admin", this.log.loginHandler);
+    this.router?.post("/admin", this.logService.loginHandler);
   }
 
   private postAdminLogout() {
-    this.router?.post("/admin-logout", this.log.logoutHandler);
+    this.router?.post("/admin-logout", this.logService.logoutHandler);
   }
 
   private postCreateProduct() {
     this.router?.post(
       "/admin-create-product",
-      this.service.createProductHandler,
+      this.adminService.createProductHandler,
     );
   }
 
   private putUser() {
     const userRoute = `/${dynamicRoutes.get("user")}:id`; // "/user/:id"
 
-    this.router?.put(userRoute, this.service.putUserHandler);
+    this.router?.put(userRoute, this.adminService.putUserHandler);
   }
 
   private putProduct() {
     const productRoute = `/${dynamicRoutes.get("product")}:id`; // "/product/:id"
 
-    this.router?.put(productRoute, this.service.putProductHandler);
+    this.router?.put(productRoute, this.adminService.putProductHandler);
   }
 
   private putBooking() {
     const bookingRoute = `/${dynamicRoutes.get("booking")}:id`; // "/booking/:id"
 
-    this.router?.put(bookingRoute, this.service.putBookingHandler);
+    this.router?.put(bookingRoute, this.bookingService.putHandler);
   }
 
   private deleteUser() {
     this.router?.delete("/user", async (ctx: RouterContextAppType<"/user">) => {
-      return await this.service.deleteItem({
+      return await this.adminService.deleteItem({
         ctx,
         collection: "users",
         identifier: "L'utilisateur",
@@ -74,7 +76,7 @@ export class AdminController extends DefaultController {
     this.router?.delete(
       "/product",
       async (ctx: RouterContextAppType<"/product">) => {
-        return await this.service.deleteItem({
+        return await this.adminService.deleteItem({
           ctx,
           collection: "products",
           identifier: "L'appartement",
@@ -87,7 +89,7 @@ export class AdminController extends DefaultController {
     this.router?.delete(
       "/booking",
       async (ctx: RouterContextAppType<"/booking">) => {
-        return await this.service.deleteItem({
+        return await this.adminService.deleteItem({
           ctx,
           collection: "bookings",
           identifier: "La réservation de",
