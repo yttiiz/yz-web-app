@@ -26,7 +26,9 @@ export class BookingService {
     this.default = defaultController;
   }
 
-  public getBooking = async <T extends string>(ctx: RouterContextAppType<T>) => {
+  public getBooking = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
     if (ctx.state.session && ctx.state.session.has("userId")) {
       const data: BookingUserInfoType[] = [];
       const userId = (ctx.state.session as SessionType).get("userId");
@@ -123,7 +125,9 @@ export class BookingService {
     }
   };
 
-  public postHandler = async <T extends string>(ctx: RouterContextAppType<T>) => {
+  public postHandler = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
     const formData = await ctx.request.body.formData();
     const { booking } = (await Helper.convertJsonToObject(
       `/server/data/product/product.json`,
