@@ -1,8 +1,9 @@
 import { DefaultController, RouterContextAppType } from "@controllers";
 import { ObjectId } from "@deps";
 import { FormDataType } from "@components";
-import { Validator } from "@utils";
+import { Helper, Validator } from "@utils";
 import {
+  Mongo,
   NotFoundMessageType,
   UserSchemaWithIDType,
   UserSchemaWithOptionalFieldsType,
@@ -21,7 +22,7 @@ export class UserService {
     try {
       const _id = new ObjectId(ctx.params.id);
       const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
+      const dataModel = (await Helper.convertJsonToObject(
         "/server/data/admin/user-form.json",
       )) as FormDataType;
 
@@ -61,27 +62,36 @@ export class UserService {
         );
       }
 
-      const updatedData = await this.default.helper
+      const updatedData = await Helper
         .removeEmptyOrUnchangedFields(
           dataParsed.data,
           user,
         );
 
       const data: UserSchemaWithOptionalFieldsType = { ...updatedData };
-      const isUpdate = await this.default.mongo.updateToDB(_id, data, "users");
+      const isUpdate = await Mongo.updateToDB(_id, data, "users");
 
       return this.default.response(
         ctx,
         {
           title: "Modification utilisateur",
-          message: this.default.helper.msgToAdmin`Le profil de ${
+          message: Helper.msgToAdmin`Le profil de ${
             user.firstname + " " + user.lastname
           } ${isUpdate} été${"update"}`,
         },
         200,
       );
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
     }
+  };
+
+  public static getUserInfo = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
+    return {
+      userId: (await ctx.state.session.get("userId") as ObjectId).toHexString(),
+      userName: await ctx.state.session.get("userFullname") as string,
+    };
   };
 }

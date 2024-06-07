@@ -6,3 +6,4 @@ export * from "./admin/AdminService.ts";
 export * from "./user/UserService.ts";
 export * from "./booking/BookingService.ts";
 export * from "./product/ProductService.ts";
+export * from "./review/ReviewService.ts";

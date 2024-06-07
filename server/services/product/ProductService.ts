@@ -4,9 +4,16 @@ import {
   RouterContextAppType,
 } from "@controllers";
 import { FormDataType } from "@components";
-import { Validator } from "@utils";
-import { ProductSchemaType, ProductSchemaWithIDType } from "@mongo";
-import { ObjectId } from "@deps";
+import { Handler, Helper, Validator } from "@utils";
+import {
+  BookingsProductSchemaWithIDType,
+  Mongo,
+  NotFoundMessageType,
+  ProductSchemaType,
+  ProductSchemaWithIDType,
+  ReviewsProductSchemaWithIDType,
+} from "@mongo";
+import { Document, ObjectId } from "@deps";
 
 export class ProductService {
   private default;
@@ -15,14 +22,72 @@ export class ProductService {
     this.default = defaultController;
   }
 
-  postCreate = async <T extends string>(ctx: RouterContextAppType<T>) => {
+  public getProduct = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
+    try {
+      const _id = new ObjectId(ctx.params.id);
+      const getFromDB = async <U extends Document>(db: string) =>
+        await Mongo.selectFromDB<U>(db, ctx.params.id, "productId");
+
+      const product = await Mongo.selectFromDB<ProductSchemaWithIDType>(
+        "products",
+        _id,
+      );
+      const reviews = await getFromDB<ReviewsProductSchemaWithIDType>(
+        "reviews",
+      );
+      const bookings = await getFromDB<BookingsProductSchemaWithIDType>(
+        "bookings",
+      );
+
+      if ("_id" in product && "_id" in reviews && "_id" in bookings) {
+        const actualOrFutureBookings = Handler.getProductPresentOrNextBookings(
+          bookings.bookings,
+        );
+
+        const body = await this.default.createHtmlFile(ctx, {
+          id: "data-product",
+          css: "product",
+          data: {
+            product,
+            reviews,
+            actualOrFutureBookings,
+          },
+          title: "Aka " + product.name,
+        });
+
+        this.default.response(ctx, body, 200);
+      } else {
+        const body = await this.default.createHtmlFile(ctx, {
+          id: "data-not-found",
+          css: "not-found",
+          title: (product as NotFoundMessageType).message,
+        });
+
+        this.default.response(ctx, body, 404);
+      }
+    } catch (_) {
+      const body = await this.default.createHtmlFile(ctx, {
+        id: "data-not-found",
+        css: "not-found",
+        title: "page inexistante",
+      });
+
+      this.default.response(ctx, body, 404);
+    }
+  };
+
+  public postCreate = async <T extends string>(
+    ctx: RouterContextAppType<T>,
+  ) => {
     try {
       const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
+      const dataModel = (await Helper.convertJsonToObject(
         "/server/data/admin/create-product-form.json",
       )) as FormDataType;
 
-      this.default.helper.addFileModelTo(dataModel);
+      Helper.addFileModelTo(dataModel);
 
       const dataParsed = Validator.dataParser(formData, dataModel);
 
@@ -67,12 +132,12 @@ export class ProductService {
           details: {
             rooms: +rooms,
             area: +area,
-            price: this.default.helper.convertToNumber(price),
+            price: Helper.convertToNumber(price),
             type,
           },
           thumbnail: {
             alt,
-            src: await this.default.helper.writePicFile(
+            src: await Helper.writePicFile(
               thumbnail,
               alt.replaceAll(" ", "_"),
             ),
@@ -80,11 +145,11 @@ export class ProductService {
           pictures: [
             {
               alt: `${name.toLocaleLowerCase()} - ${type}, le ${
-                this.default.helper.displayDate(
+                Helper.displayDate(
                   { style: "normal" },
                 )
               }`,
-              src: await this.default.helper.writePicFile(
+              src: await Helper.writePicFile(
                 pictures,
                 `${name.toLocaleLowerCase()}_${
                   Math.round(
@@ -97,7 +162,7 @@ export class ProductService {
         };
 
         // 3. Insert document in database...
-        const productId = await this.default.mongo.insertIntoDB(
+        const productId = await Mongo.insertIntoDB(
           productDocument,
           "products",
         );
@@ -111,7 +176,7 @@ export class ProductService {
             reviews: [],
           };
 
-          const reviewId = await this.default.mongo.insertIntoDB(
+          const reviewId = await Mongo.insertIntoDB(
             reviewDocument,
             "reviews",
           );
@@ -124,7 +189,7 @@ export class ProductService {
             bookings: [],
           };
 
-          const bookingId = await this.default.mongo.insertIntoDB(
+          const bookingId = await Mongo.insertIntoDB(
             bookingDocument,
             "bookings",
           );
@@ -141,7 +206,7 @@ export class ProductService {
             newProductDocument["reviewId"] = reviewId;
             newProductDocument["bookingId"] = bookingId;
 
-            isAllDocumentsInsertCorrectly = await this.default.mongo.updateToDB(
+            isAllDocumentsInsertCorrectly = await Mongo.updateToDB(
               new ObjectId(productId),
               newProductDocument,
               "products",
@@ -154,7 +219,7 @@ export class ProductService {
             ctx,
             {
               title,
-              message: this.default.helper
+              message: Helper
                 .msgToAdmin`L'appartement ${name} ${true} été${"add"}`,
             },
             200,
@@ -163,7 +228,7 @@ export class ProductService {
             ctx,
             {
               title,
-              message: this.default.helper
+              message: Helper
                 .msgToAdmin`L'appartement ${name} ${false} été${"add"}`,
             },
             200,
@@ -180,7 +245,7 @@ export class ProductService {
         );
       }
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
     }
   };
 
@@ -190,11 +255,11 @@ export class ProductService {
     try {
       const _id = new ObjectId(ctx.params.id);
       const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
+      const dataModel = (await Helper.convertJsonToObject(
         "/server/data/admin/product-form.json",
       )) as FormDataType;
 
-      this.default.helper.addFileModelTo(dataModel);
+      Helper.addFileModelTo(dataModel);
 
       const dataParsed = Validator.dataParser(formData, dataModel);
 
@@ -229,14 +294,14 @@ export class ProductService {
         details: {
           rooms: +rooms,
           area: +area,
-          price: this.default.helper.convertToNumber(price),
+          price: Helper.convertToNumber(price),
           type,
         },
       };
 
       if (thumbnail) {
         const alt = `image principale ${name}`;
-        const src = await this.default.helper.writePicFile(
+        const src = await Helper.writePicFile(
           thumbnail,
           alt.replaceAll(" ", "_"),
         );
@@ -244,7 +309,7 @@ export class ProductService {
         document["thumbnail"] = { src, alt };
       }
 
-      const isUpdate = await this.default.mongo.updateToDB(
+      const isUpdate = await Mongo.updateToDB(
         _id,
         document,
         "products",
@@ -254,16 +319,16 @@ export class ProductService {
 
       if (pictures) {
         const alt = `${name} - ${type}, le ${
-          this.default.helper.displayDate({
+          Helper.displayDate({
             style: "normal",
           })
         }`;
-        const src = await this.default.helper.writePicFile(
+        const src = await Helper.writePicFile(
           pictures,
           `${name}_${Math.round((Math.random() + 1) * 1000)}`,
         );
 
-        isPictureUpdate = await this.default.mongo.addNewItemIntoDB(
+        isPictureUpdate = await Mongo.addNewItemIntoDB(
           _id,
           { src, alt },
           "products",
@@ -275,15 +340,19 @@ export class ProductService {
         ctx,
         {
           title: "Modification appartement",
-          message: this.default.helper
-            .msgToAdmin`L'appartement ${name as string} ${
+          message: Helper.msgToAdmin`L'appartement ${name as string} ${
             isUpdate && isPictureUpdate
           } été${"update"}`,
         },
         200,
       );
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
     }
+  };
+
+  public static getProductFromDB = async <T extends Document>(id: string) => {
+    const _id = new ObjectId(id);
+    return await Mongo.selectFromDB<T>("products", _id);
   };
 }

@@ -14,9 +14,10 @@ import {
   ProductSchemaWithIDType,
   ReviewsProductSchemaWithIDType,
 } from "@mongo";
-import { Validator } from "@utils";
-import { FormDataType } from "@components";
+import { Handler, Helper, Mailer, Validator } from "@utils";
+import { FormDataType, ProductDataType } from "@components";
 import { ObjectId } from "@deps";
+import { ProductService, UserService } from "@services";
 
 export class BookingService {
   private default;
@@ -115,10 +116,132 @@ export class BookingService {
           this.default.response(ctx, body, 200);
         }
       } catch (error) {
-        this.default.helper.writeLog(error);
+        Helper.writeLog(error);
       }
     } else {
       this.default.response(ctx, "", 302, "/");
+    }
+  };
+
+  public postHandler = async (ctx: RouterContextAppType<"/booking">) => {
+    const formData = await ctx.request.body.formData();
+    const { booking } = (await Helper.convertJsonToObject(
+      `/server/data/product/product.json`,
+    )) as ProductDataType;
+
+    const dataParsed = Validator.dataParser(formData, booking);
+
+    if (!dataParsed.isOk) {
+      return this.default.response(ctx, { message: dataParsed.message }, 401);
+    }
+
+    const {
+      "starting-date": startingDate,
+      "ending-date": endingDate,
+      id,
+    } = dataParsed.data as Record<string, string>;
+
+    const { userId, userName } = await UserService.getUserInfo(ctx);
+
+    const newBooking = {
+      userId,
+      userName,
+      startingDate,
+      endingDate,
+      createdAt: Date.now(),
+    };
+
+    const product = await ProductService.getProductFromDB<
+      ProductSchemaWithIDType
+    >(id);
+    const bookings = await Mongo.selectFromDB<BookingsProductSchemaWithIDType>(
+      "bookings",
+      id,
+      "productId",
+    );
+
+    if ("_id" in product && "_id" in bookings) {
+      const bookingsAvailability = Handler.compareBookings(
+        newBooking,
+        bookings,
+      );
+
+      if (bookingsAvailability.isAvailable) {
+        const { bookingId } = product;
+        const _bookingId = new ObjectId(bookingId);
+
+        const isInsertionOk = await Mongo.addNewItemIntoDB(
+          _bookingId,
+          newBooking,
+          "bookings",
+          "bookings",
+        );
+
+        if (isInsertionOk) {
+          try {
+            await Mailer.send({
+              to: ctx.state.session.get("userEmail"),
+              receiver: ctx.state.session.get("userFullname"),
+            });
+          } catch (error) {
+            Helper.writeLog(error);
+          }
+        }
+
+        isInsertionOk
+          ? this.default.response(
+            ctx,
+            {
+              title: "Réservation confirmée",
+              email: ctx.state.session.get("userEmail"),
+              message:
+                "Votre réservation du {{ start }} au {{ end }} a bien été enregistrée. Un e-mail de confirmation a été envoyé à l'adresse {{ email }}.",
+              booking: {
+                start: Helper.displayDate({
+                  date: new Date(newBooking.startingDate),
+                  style: "short",
+                }),
+                end: Helper.displayDate({
+                  date: new Date(newBooking.endingDate),
+                  style: "short",
+                }),
+              },
+            },
+            200,
+          )
+          : this.default.response(ctx, "", 503);
+      } else {
+        const { booking } = bookingsAvailability;
+
+        this.default.response(
+          ctx,
+          {
+            title: "Créneau indisponible",
+            message:
+              "Le logement est occupé du {{ start }} au {{ end }}. Choisissez un autre créneau.",
+            booking: {
+              start: Helper.displayDate({
+                date: new Date(booking.startingDate),
+                style: "short",
+              }),
+              end: Helper.displayDate({
+                date: new Date(booking.endingDate),
+                style: "short",
+              }),
+            },
+          },
+          200,
+        );
+      }
+    } else {
+      this.default.response(
+        ctx,
+        {
+          message:
+            "Le produit pour lequel vous souhaitez laisser un avis, est momentanément inaccessible.",
+        },
+        503,
+      );
     }
   };
 
@@ -127,7 +250,7 @@ export class BookingService {
   ) => {
     try {
       const formData = await ctx.request.body.formData();
-      const dataModel = (await this.default.helper.convertJsonToObject(
+      const dataModel = (await Helper.convertJsonToObject(
         "/server/data/admin/booking-form.json",
       )) as FormDataType;
 
@@ -150,7 +273,7 @@ export class BookingService {
       const itemValue = +data.createdAt;
       data.createdAt = itemValue;
 
-      const isUpdate = await this.default.mongo.updateItemIntoDB({
+      const isUpdate = await Mongo.updateItemIntoDB({
         data,
         collection: "bookings",
         key: "bookings",
@@ -162,13 +285,13 @@ export class BookingService {
         ctx,
         {
           title: "Modification réservation",
-          message: this.default.helper
+          message: Helper
             .msgToAdmin`La réservation de ${data.userName} ${isUpdate} été${"update"}`,
         },
         200,
       );
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
     }
   };
 
