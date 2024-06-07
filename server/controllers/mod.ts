@@ -2,6 +2,7 @@ export * from "./AdminController.ts";
 export * from "./AuthController.ts";
 export * from "./ApiController.ts";
 export * from "./BookingController.ts";
+export * from "./DefaultController.ts";
 export * from "./HomeController.ts";
 export * from "./ProductController.ts";
 export * from "./ProfilController.ts";

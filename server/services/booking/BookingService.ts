@@ -1,4 +1,4 @@
-import { RouterContextAppType, SessionType } from "@controllers";
+import { DefaultController, RouterContextAppType, SessionType } from "@controllers";
 import {
   BookingsProductSchemaWithIDType,
   BookingsType,
@@ -12,7 +12,6 @@ import {
 } from "@mongo";
 import { Validator } from "@utils";
 import { FormDataType } from "@components";
-import { DefaultController } from "@/server/controllers/DefaultController.ts";
 import { ObjectId } from "@deps";
 
 export class BookingService {

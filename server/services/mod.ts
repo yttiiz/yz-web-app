@@ -3,4 +3,5 @@ export * from "./api/handleDataRetreiveFromDBService.ts";
 export * from "./api/fetchDataFromGuadeloupeIslandsWebsiteService.ts";
 export * from "./log/LogService.ts";
 export * from "./admin/AdminService.ts";
-export * from "./booking/bookingService.ts";
+export * from "./booking/BookingService.ts";
+export * from "./product/ProductService.ts";
