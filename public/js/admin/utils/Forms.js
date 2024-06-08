@@ -38,24 +38,31 @@ export class Forms {
           formData,
           e.target,
         );
-    } else {
+    } else if (isDeleteForm) {
       Forms.#insertDatasetsInFormDataFromDeleteBtn(formData, e.target);
     }
 
     const method = isDeleteForm ? "DELETE" : (isCreateForm ? "POST" : "PUT");
 
-    const res = await fetch(e.target.action, {
-      method,
-      body: formData,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      mode: "cors",
-    });
+    try {
+      const res = await fetch(e.target.action, {
+        method,
+        body: formData,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        mode: "cors",
+      });
 
-    isDeleteForm
-      ? Forms.#displayDeleteMessage(e.target, await res.json())
-      : Forms.#displayMessage(e.target, await res.json());
+      if (res.ok) {
+        isDeleteForm
+          ? Forms.#displayDeleteMessage(e.target, await res.json())
+          : Forms.#displayMessage(e.target, await res.json());
+      }
+    } catch (error) {
+      //TODO improve that block scope
+      console.log(error);
+    }
   };
 
   /**
