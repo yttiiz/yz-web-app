@@ -1,8 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-export type TemplateNameType =
-  | "Header"
-  | "Main"
-  | "Footer";
+export type TemplateNameType = "Header" | "Main" | "Footer";
 
 export type OrganismNameType =
   | "SectionAuthForm"
@@ -10,7 +7,7 @@ export type OrganismNameType =
   | "SectionsProfilForm"
   | "SectionsBooking"
   | "SectionsProduct"
-  | "SectionProductsHome"
+  | "SectionsHome"
   | "SectionErrorHome"
   | "BookingCard"
   | "AdminDashboard"
@@ -59,19 +56,17 @@ export type AtomNameType =
   | "OnOffSvg";
 
 export type ComponentType<
-  T extends (
+  T extends
     | TemplateNameType
     | OrganismNameType
     | MoleculeNameType
     | AtomNameType
-    | "Body"
-  ) = "Body",
-  U extends (
+    | "Body" = "Body",
+  U extends
     | string
     | (<A extends (...args: any) => any>(
       arg: Parameters<A>,
-    ) => string | Promise<string>)
-  ) = string,
+    ) => string | Promise<string>) = string,
 > = {
   name: T;
   html: U;
@@ -89,7 +84,10 @@ export type SubMenuDataType = {
 };
 
 export type ItemDataTypeAndUserRelationship =
-  & (ItemDataType | SubMenuDataType)
+  & (
+    | ItemDataType
+    | SubMenuDataType
+  )
   & {
     isRelatedToUser: boolean;
   };
@@ -125,6 +123,9 @@ export type HomePageDataType = {
     imgAlt: string;
   };
   appartment: TitleAndDescriptionType;
+  visit: {
+    title: string;
+  };
 };
 
 export type CommonInputType = {
@@ -210,9 +211,7 @@ export type DashboardDataType = {
 
 export type DeleteAccountDataType = {
   deleteAccount: InformativeContentAndButtonType;
-  deleteModal:
-    & InformativeContentAndButtonType
-    & FormAttributesType;
+  deleteModal: InformativeContentAndButtonType & FormAttributesType;
 };
 
 export type CancelBookingFormType =

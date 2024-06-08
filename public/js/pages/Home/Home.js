@@ -12,7 +12,6 @@ export class HomePage extends PageBuilder {
 
   /**
    * @param {Types.Visits} visits
-   * @param {unknown} visits
    */
   renderContent = (visits) => {
     this.#setCardsSharedButtons({
@@ -20,41 +19,22 @@ export class HomePage extends PageBuilder {
       dialogSelector: "#data-home dialog",
     });
 
-    const sections = [
-      this.#renderSection({
-        items: visits,
-        title: "Les endroits à visiter",
-        renderer: this.#renderVisits,
-        id: "visits",
-      }),
-    ];
-
-    for (const section of sections) {
-      this.insertChildren(
-        this.#root,
-        section,
-      );
-    }
+    this.#renderVisits(visits);
   };
 
   /**
    * @param {{ errorMsg: string }} message
    */
   renderError = ({ errorMsg }) => {
-    /** @type {[HTMLDivElement, HTMLParagraphElement]} */
-    const [
-      section,
-    ] = this.createHTMLElements("section");
-
-    section.innerHTML = `
-    <div class="container">
-      <div>
-        <h1>Connexion impossible</h1>
-        <p>${errorMsg}</p>
-      </div>
-    </div>`;
-
-    this.insertChildren(this.#root, section);
+    if (document.querySelector("#visits")) {
+      document.querySelector("#visits").innerHTML = `
+      <div class="container">
+        <div>
+          <h1>Connexion impossible</h1>
+          <p>${errorMsg}</p>
+        </div>
+      </div>`;
+    }
   };
 
   /**
@@ -133,7 +113,10 @@ export class HomePage extends PageBuilder {
    * @param {Types.Visits} visits
    * @param {HTMLUListElement} visitsList
    */
-  #renderVisits = (visits, visitsList) => {
+  #renderVisits = (
+    visits,
+    visitsList = document.querySelector(".visits-cards"),
+  ) => {
     for (const key of Object.keys(visits)) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLImageElement]} */
       const [container, figure, img] = this.createHTMLElements(
@@ -164,7 +147,5 @@ export class HomePage extends PageBuilder {
       this.insertChildren(container, figure, content);
       this.insertChildren(visitsList, container);
     }
-
-    return visitsList;
   };
 }
