@@ -5,13 +5,14 @@ import type {
   RouterAppType,
   RouterContextAppType,
 } from "./mod.ts";
+import { Mongo } from "@mongo";
 
 export class AuthController extends DefaultController {
-  private log;
+  private logService;
 
   constructor(router: RouterAppType) {
     super(router);
-    this.log = new LogService(this);
+    this.logService = new LogService(this);
     this.getLoginRoute();
     this.getRegisterRoute();
     this.postLoginRoute();
@@ -24,11 +25,11 @@ export class AuthController extends DefaultController {
   }
 
   private postLoginRoute() {
-    this.postRoute("/login", this.log.loginHandler);
+    this.postRoute("/login", this.logService.loginHandler);
   }
 
   private postLogoutRoute() {
-    this.postRoute("/logout", this.log.logoutHandler);
+    this.postRoute("/logout", this.logService.logoutHandler);
   }
 
   private getRegisterRoute() {
@@ -36,12 +37,12 @@ export class AuthController extends DefaultController {
   }
 
   private postRegisterRoute() {
-    this.postRoute("/register", this.log.registerHandler);
+    this.postRoute("/register", this.logService.registerHandler);
   }
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      const users = await this.mongo.connectionTo("users");
+      const users = await Mongo.connectionTo("users");
 
       if ("message" in users) {
         this.response(ctx, "", 302, "/");

@@ -178,8 +178,8 @@ export class UserService {
       // Remove 'delePicture' cause is unnecessary at this step.
       delete dataParsed.data["deletePicture"];
 
-      const user: UserSchemaWithIDType | NotFoundMessageType = await this
-        .default.mongo.selectFromDB("users", _id);
+      const user: UserSchemaWithIDType | NotFoundMessageType = await Mongo
+        .selectFromDB("users", _id);
 
       if (!("_id" in user)) {
         return this.default.response(

@@ -3,19 +3,20 @@ import type { RouterAppType } from "./mod.ts";
 import { BookingService } from "@services";
 
 export class BookingController extends DefaultController {
-  #service;
+  private service;
+
   constructor(router: RouterAppType) {
     super(router);
-    this.#service = new BookingService(this);
+    this.service = new BookingService(this);
     this.getBooking();
     this.deleteBooking();
   }
 
   private getBooking() {
-    this.router?.get("/booking", this.#service.getBooking);
+    this.router?.get("/booking", this.service.getBooking);
   }
 
   private deleteBooking() {
-    this.router?.delete("/cancel-booking", this.#service.deleteBooking);
+    this.router?.delete("/cancel-booking", this.service.deleteBooking);
   }
 }

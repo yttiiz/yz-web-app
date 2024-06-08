@@ -32,15 +32,11 @@ export class DefaultController {
   public errorMsg = `Impossible de se connecter à la base de données. ${this.ERROR_CODE}`;
   public sessionFlashMsg = (email: string) => `connexion réussie pour : ${email}`;
   public router;
-  public helper;
-  public mongo;
   
   constructor(router?: RouterAppType) {
     router
       ? this.router = router
       : null;
-    this.helper = Helper;
-    this.mongo = Mongo;
   }
 
   public response<T extends PathAppType>(
@@ -138,7 +134,7 @@ export class DefaultController {
 
     try {
       const headerItems: { link: string; text: string }[] = [];
-      const cursor = await this.mongo.connectionTo<ProductSchemaWithIDType>("products");
+      const cursor = await Mongo.connectionTo<ProductSchemaWithIDType>("products");
       
       if (!("message" in cursor)) {
         await cursor
@@ -155,7 +151,7 @@ export class DefaultController {
       return defaultLinks;
       
     } catch (error) {
-      this.helper.writeLog(error);
+      Helper.writeLog(error);
       return defaultLinks;
     }
   };

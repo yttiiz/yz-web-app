@@ -1,4 +1,4 @@
-import { FormDataAppType, Validator } from "@utils";
+import { FormDataAppType, Helper, Validator } from "@utils";
 import {
   AdminController,
   AuthController,
@@ -7,6 +7,7 @@ import {
   SessionType,
 } from "@controllers";
 import { Auth } from "@auth";
+import { Mongo } from "@mongo";
 
 export class LogService {
   default;
@@ -20,7 +21,7 @@ export class LogService {
   public loginHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const dataModel = await this.default.helper.convertJsonToObject(
+    const dataModel = await Helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const session: SessionType = ctx.state.session;
@@ -43,17 +44,11 @@ export class LogService {
     };
 
     try {
-      const user = this.isAdmin
-        ? await (this.default as AdminController).mongo.selectFromDB(
-          "users",
-          email,
-          "email",
-        )
-        : await (this.default as AuthController).mongo.selectFromDB(
-          "users",
-          email,
-          "email",
-        );
+      const user = await Mongo.selectFromDB(
+        "users",
+        email,
+        "email",
+      );
 
       if ("_id" in user) {
         // Handle admin.
@@ -98,7 +93,7 @@ export class LogService {
         }
       }
     } catch (error) {
-      this.default.helper.writeLog(error);
+      Helper.writeLog(error);
       this.default.response(ctx, { errorMsg: this.default.errorMsg }, 500);
     }
   };
@@ -116,7 +111,7 @@ export class LogService {
   public registerHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const dataModel = await this.default.helper.convertJsonToObject(
+    const dataModel = await Helper.convertJsonToObject(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const formData = await ctx.request.body.formData();
@@ -136,7 +131,7 @@ export class LogService {
       dataParsed.data as FormDataAppType;
 
     photo
-      ? (picPath = await this.default.helper.writeUserPicFile(
+      ? (picPath = await Helper.writeUserPicFile(
         photo,
         firstname,
         lastname,
@@ -145,7 +140,7 @@ export class LogService {
 
     const hash = await Auth.hashPassword(password as string);
 
-    const userId = await this.default.mongo.insertIntoDB(
+    const userId = await Mongo.insertIntoDB(
       {
         firstname,
         lastname,
