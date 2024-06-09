@@ -83,6 +83,23 @@ export class UserFormPage extends PageBuilder {
   };
 
   /**
+   * @param {{ errorMsg: string }} message
+   */
+  renderError = ({ errorMsg }) => {
+    if (document.querySelector("#data-profil-form")) {
+      const container = document.querySelector("#data-profil-form")
+        .querySelector(".container");
+      const form = container.querySelector("form"),
+        paragraph = document.createElement("p");
+
+      paragraph.textContent = errorMsg;
+      paragraph.classList.add("error-msg");
+
+      container.insertBefore(paragraph, form);
+    }
+  };
+
+  /**
    * @param {Event} e
    */
   #submitHandler = async (e) => {

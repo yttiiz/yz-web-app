@@ -5,11 +5,13 @@ export class Router {
   #userForm;
   #bookingForm;
   #productForm;
+  #errorMsg;
   #apiKey;
 
   constructor() {
     this.route = location.href;
     this.host = location.origin + "/";
+    this.#errorMsg = "Une erreur est survenue lors du chargement des données.";
     this.#apiKey = getApiKey();
     this.#router();
   }
@@ -18,18 +20,25 @@ export class Router {
     switch (this.route) {
       case this.host:
       case this.host + "#visits": {
-        const res = await this.#fetchData(`guadeloupe-islands${this.#apiKey}`);
-        const { HomePage } = await import("./Home/Home.js");
+        try {
+          const res = await this.#fetchData(
+            `guadeloupe-islands${this.#apiKey}`,
+          );
+          const { HomePage } = await import("./Home/Home.js");
 
-        this.#home = new HomePage();
+          this.#home = new HomePage();
 
-        if (res.ok && res.status === 200) {
-          this.#home.renderContent(await res.json());
+          if (res.ok && res.status === 200) {
+            this.#home.renderContent(await res.json());
+            break;
+          }
+
+          this.#home.renderError({ errorMsg: this.#errorMsg });
+          break;
+        } catch (_) {
+          this.#home.renderError({ errorMsg: this.#errorMsg });
           break;
         }
-
-        this.#home.renderError(await res.json());
-        break;
       }
 
       //============[ USERS ]============//
@@ -43,18 +52,26 @@ export class Router {
       }
 
       case this.host + "profil": {
-        const res = await this.#fetchData(`user-profil${this.#apiKey}`);
-        const { UserFormPage } = await import("./Form/UserForm.js");
+        try {
+          const res = await this.#fetchData(`user-profil${this.#apiKey}`);
+          const { UserFormPage } = await import("./Form/UserForm.js");
 
-        this.#userForm = new UserFormPage();
+          this.#userForm = new UserFormPage();
 
-        if (res.ok && res.status === 200) {
-          this.#userForm.renderProfilForm(
-            "profil",
-            await res.json(),
-          );
+          if (res.ok && res.status === 200) {
+            this.#userForm.renderProfilForm(
+              "profil",
+              await res.json(),
+            );
+            break;
+          }
+
+          this.#userForm.renderError({ errorMsg: this.#errorMsg });
+          break;
+        } catch (_) {
+          this.#userForm.renderError({ errorMsg: this.#errorMsg });
+          break;
         }
-        break;
       }
 
       //============[ BOOKING ]============//

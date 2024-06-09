@@ -159,6 +159,14 @@
         }
     }
 
+    & .error-msg {
+        margin-top: 0;
+        padding: var(--base-size);
+        background: rgb(255 0 0 / .05);
+        border: .1rem solid rgb(255 0 0 / .2);
+        border-radius: var(--btn-border-radius);
+    }
+
     & dialog {
         & > div > form {
             padding-top: var(--base-size);
