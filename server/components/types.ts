@@ -48,6 +48,7 @@ export type AtomNameType =
   | "ShareForm"
   | "StarSvg"
   | "UserSvg"
+  | "DangerSvg"
   | "Logo"
   | "LoginRegister"
   | "EyeOpenSvg"

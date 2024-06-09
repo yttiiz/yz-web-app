@@ -18,6 +18,8 @@
     --black-rvb: 0 0 0;
     --white-rvb: 255 255 255;
     --border-black-25-percent: .1rem solid rgb(var(--black-rvb) / .25);
+    --danger-10-percent: rgb(158 42 43 / .1);
+    --danger-40-percent: rgb(158 42 43 / .4);
     --shadow: rgb(var(--black-rvb) / .85);
     --box-shadow: 0 0 15px rgb(var(--black-rvb) / .1);
 

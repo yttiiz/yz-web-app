@@ -160,11 +160,23 @@
     }
 
     & .error-msg {
+        display: flex;
+        gap: calc(var(--base-size) * .5);
         margin-top: 0;
         padding: var(--base-size);
-        background: rgb(255 0 0 / .05);
-        border: .1rem solid rgb(255 0 0 / .2);
+        background: var(--danger-10-percent);
+        border: .1rem solid var(--danger-40-percent);
         border-radius: var(--btn-border-radius);
+    }
+
+    & .error-msg svg {
+        width: calc(var(--base-size) * 1.5);
+        height: auto;
+        fill: var(--danger-40-percent);
+    }
+
+    & .error-msg.none {
+        display: none;
     }
 
     & dialog {

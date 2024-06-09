@@ -5,6 +5,7 @@ import {
   DeleteAccount,
   DeleteAccountForm,
   Dialog,
+  DangerSvg,
 } from "../mod.ts";
 import type {
   ComponentType,
@@ -40,6 +41,7 @@ export const SectionsProfilForm: ComponentType<
     <section>
       <div class="container">
         <h1>${title}</h1>
+        <p class="error-msg none">${DangerSvg.html}</p>
         <form
           action="${action}"
           method="${method}"
