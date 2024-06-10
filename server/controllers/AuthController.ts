@@ -4,6 +4,7 @@ import type {
   PathAppType,
   RouterAppType,
   RouterContextAppType,
+  SessionType,
 } from "./mod.ts";
 import { Mongo } from "@mongo";
 
@@ -42,6 +43,11 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
+      
+      if ((ctx.state.session as SessionType).has("userId")) {
+        return this.response(ctx, "", 302, "/");
+      }
+
       const users = await Mongo.connectionTo("users");
 
       if ("message" in users) {
