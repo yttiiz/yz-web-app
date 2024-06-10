@@ -43,7 +43,6 @@ export class AuthController extends DefaultController {
 
   private getRoute(path: PathAppType, title: string) {
     this.router?.get(path, async (ctx: RouterContextAppType<typeof path>) => {
-      
       if ((ctx.state.session as SessionType).has("userId")) {
         return this.response(ctx, "", 302, "/");
       }
