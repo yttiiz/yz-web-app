@@ -31,8 +31,10 @@ export class AdminChartsHelper {
         chartData: usersData,
         chartCategories: usersCategories,
       } = AdminChartsHelper.#filter(users, (data, user) => {
-        data.chartData.push(getAge(user.birth));
-        data.chartCategories.push(user.firstname);
+        if (user.role === "user") {
+          data.chartData.push(getAge(user.birth));
+          data.chartCategories.push(user.firstname);
+        }
       });
 
       const {
