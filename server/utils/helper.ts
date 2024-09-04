@@ -38,7 +38,7 @@ export class Helper {
   private static writeOpts: Deno.WriteFileOptions = {
     create: true,
     append: true,
-    mode: 777,
+    mode: 764,
   };
 
   public static async convertJsonToObject(
@@ -54,7 +54,11 @@ export class Helper {
     const errorMsg = `(${Helper.displayDate({})}) ${message},\n`;
     const content = new TextEncoder().encode(errorMsg);
 
-    await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
+    try {
+      await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
+    } catch (error) {
+      console.log("inside Helper.writeLog function :", error);
+    }
   }
 
   public static async writeEmailLog(message: string) {
