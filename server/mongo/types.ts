@@ -22,7 +22,7 @@ export type UpdateItemIntoDBParameterType<T> = {
 export type CollectionType<T extends Document> =
   | FindCursor<T>
   | NotFoundMessageType;
-  
+
 export type SelectFromDBType<T> = Promise<T | NotFoundMessageType>;
 
 export type NotFoundMessageType = { message: string };
