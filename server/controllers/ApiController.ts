@@ -155,7 +155,7 @@ export class ApiController {
 
   private writeErrorLogAndSetResponse<T extends string>(
     ctx: RouterContextAppType<T>,
-    error: { message: string },
+    error: unknown,
   ) {
     this.helper.writeLog(error);
     this.response(

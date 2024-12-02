@@ -34,8 +34,8 @@ new ApiController(
 // TODO to be removed (reset "session" in BD)
 router.get(
   "/reset",
-  async (ctx: RouterContextAppType<"/reset">) => {
-    const sessions = await Mongo.connectionTo("sessions");
+  (ctx: RouterContextAppType<"/reset">) => {
+    const sessions = Mongo.connectionTo("sessions");
     type SessionDBType = {
       _id: ObjectId;
       id: string;

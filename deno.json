@@ -1,7 +1,4 @@
 {
-  "compilerOptions": {
-    "allowJs": true
-  },
   "imports": {
     "@/": "./",
     "@components": "./server/components/mod.ts",
@@ -37,7 +34,7 @@
     "cache:reload": "deno cache --reload ./**/*.ts",
     "fmt": "deno fmt",
     "lint-fmt": "deno lint && deno fmt --check",
-    "start": "deno run -A --watch --allow-write --allow-read --allow-net main.ts",
+    "start": "deno run -A --watch main.ts",
     "test": "deno test --no-check --allow-read ./tests/*.test.ts",
     "check-bc": "deno task fmt && deno task test"
   }
