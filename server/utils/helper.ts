@@ -50,14 +50,17 @@ export class Helper {
     return JSON.parse(decoder.decode(file));
   }
 
-  public static async writeLog({ message }: { message: string }) {
-    const errorMsg = `(${Helper.displayDate({})}) ${message},\n`;
-    const content = new TextEncoder().encode(errorMsg);
+  public static async writeLog(error: unknown) {
+    if (error) {
+      const { message } = error as { message: string };
+      const errorMsg = `(${Helper.displayDate({})}) ${message},\n`;
+      const content = new TextEncoder().encode(errorMsg);
 
-    try {
-      await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
-    } catch (error) {
-      console.log("inside Helper.writeLog function :", error);
+      try {
+        await Deno.writeFile("server/log/log.txt", content, Helper.writeOpts);
+      } catch (error) {
+        console.log("inside Helper.writeLog function :", error);
+      }
     }
   }
 

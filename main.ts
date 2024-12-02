@@ -28,7 +28,7 @@ const {
   DOMAIN_AUTHORIZED: origin,
 } = Deno.env.toObject();
 
-const clusterUrl = Mongo.createClusterUrl({
+const clusterUrl = await Mongo.createClusterUrl({
   username,
   password,
   host,

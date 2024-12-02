@@ -1,5 +1,5 @@
 import { MongoClient, MongoStore, ObjectId } from "@deps";
-import type { Document, Filter, UpdateFilter } from "@deps";
+import type { Database, Document, Filter, UpdateFilter } from "@deps";
 import { Helper } from "@utils";
 import {
   CollectionType,
@@ -15,11 +15,12 @@ export class Mongo {
   private static client = new MongoClient();
   private static errorMsg = "connexion failed";
   private static clusterUrl: string;
+  private static db: Database;
 
-  public static async connectionTo<T extends Document = Document>(
+  public static connectionTo<T extends Document = Document>(
     collection: string,
   ): CollectionType<T> {
-    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
       return selectedCollection.find();
@@ -84,7 +85,7 @@ export class Mongo {
     data: T,
     collection: string,
   ) {
-    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
       const id: ObjectId = await selectedCollection.insertOne(data);
@@ -99,7 +100,7 @@ export class Mongo {
     identifier?: string | ObjectId,
     key?: string,
   ): SelectFromDBType<T> {
-    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = Mongo.clientConnectTo<T>(collection);
     const filter = typeof identifier === "string"
       ? { [key as string]: identifier } as unknown as Filter<T>
       : { _id: identifier };
@@ -125,7 +126,7 @@ export class Mongo {
     id: ObjectId,
     collection: string,
   ) {
-    const selectedCollection = await Mongo.clientConnectTo<T>(collection);
+    const selectedCollection = Mongo.clientConnectTo<T>(collection);
 
     if (selectedCollection) {
       return await selectedCollection.deleteOne({ _id: id });
@@ -152,7 +153,7 @@ export class Mongo {
     filter: Filter<Document>;
     update: UpdateFilter<Document>;
   }) {
-    const selectedCollection = await Mongo.clientConnectTo(collection);
+    const selectedCollection = Mongo.clientConnectTo(collection);
 
     if (selectedCollection) {
       const {
@@ -166,22 +167,21 @@ export class Mongo {
     return false;
   }
 
-  private static async clientConnectTo<T extends Document>(collection: string) {
-    try {
-      const db = await Mongo.client.connect(Mongo.clusterUrl);
-      return db.collection<T>(collection);
-    } catch (error) {
-      Helper.writeLog(error);
-    }
+  private static clientConnectTo<T extends Document>(collection: string) {
+    return Mongo.db.collection<T>(collection);
   }
 
-  public static createClusterUrl({
+  public static async createClusterUrl({
     username,
     password,
     host,
   }: CreateClusterParamerType) {
     Mongo.clusterUrl =
       `mongodb+srv://${username}:${password}@${host}/main?authMechanism=SCRAM-SHA-1`;
+
+    // Init "main" Database.
+    Mongo.db = await Mongo.client.connect(Mongo.clusterUrl);
+
     return Mongo.clusterUrl;
   }
 }
