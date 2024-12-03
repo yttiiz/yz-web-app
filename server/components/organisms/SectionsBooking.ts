@@ -11,7 +11,7 @@ import { BookingUserInfoType } from "@mongo";
 const {
 title,
 card,
-}: BookingDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<BookingDataType>(
 "/server/data/booking/booking.json",
 );
 

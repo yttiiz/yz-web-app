@@ -8,6 +8,7 @@ import {
 } from "@controllers";
 import { Auth } from "@auth";
 import { Mongo } from "@mongo";
+import type { FormDataType } from "@components";
 
 export class LogService {
   default;
@@ -21,9 +22,10 @@ export class LogService {
   public loginHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const dataModel = await Helper.convertJsonToObject(
+    const dataModel = await Helper.convertJsonToObject<FormDataType>(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
+
     const session: SessionType = ctx.state.session;
     const formData = await ctx.request.body.formData();
 
@@ -111,7 +113,7 @@ export class LogService {
   public registerHandler = async <T extends PathAppType>(
     ctx: RouterContextAppType<T>,
   ) => {
-    const dataModel = await Helper.convertJsonToObject(
+    const dataModel = await Helper.convertJsonToObject<FormDataType>(
       `/server/data/authentication${ctx.request.url.pathname}.json`,
     );
     const formData = await ctx.request.body.formData();

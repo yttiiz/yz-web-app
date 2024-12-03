@@ -14,8 +14,8 @@ export const SectionsHome: ComponentType<
 > = {
 	name: "SectionsHome",
 	html: async (products: Record<string, ProductSchemaWithIDType>) => {
-		const { hero, appartment, visit }: HomePageDataType =
-			await Helper.convertJsonToObject(`/server/data/home/home.json`);
+		const { hero, appartment, visit } =
+			await Helper.convertJsonToObject<HomePageDataType>(`/server/data/home/home.json`);
 
 		return `
     <section>

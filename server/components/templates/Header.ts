@@ -17,7 +17,7 @@ import { SessionAndDataType } from "@controllers";
 const {
   logo: { link, text },
   items,
-}: HeaderDataType = await Helper.convertJsonToObject("/server/data/basics/header.json");
+} = await Helper.convertJsonToObject<HeaderDataType>("/server/data/basics/header.json");
 
 export const Header: ComponentType<
   TemplateNameType,

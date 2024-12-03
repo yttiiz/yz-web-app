@@ -7,7 +7,7 @@ export const SectionAbout: ComponentType<
 > = {
   name: "SectionAbout",
   html: async () => {
-    const { title, textContent } = await Helper.convertJsonToObject(
+    const { title, textContent } = await Helper.convertJsonToObject<{ title: string; textContent: string }>(
       "/server/data/about/about.json",
     );
 

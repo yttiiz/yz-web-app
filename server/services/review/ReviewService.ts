@@ -14,9 +14,9 @@ export class ReviewService {
 
   public postHandler = async (ctx: RouterContextAppType<"/review-form">) => {
     const formData = await ctx.request.body.formData();
-    const { reviewForm } = await Helper.convertJsonToObject(
+    const { reviewForm } = await Helper.convertJsonToObject<ProductDataType>(
       `/server/data/product/product.json`,
-    ) as ProductDataType;
+    );
 
     const dataParsed = Validator.dataParser(
       formData,

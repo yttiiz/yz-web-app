@@ -50,7 +50,7 @@ export class UserService {
       isNewPhoto = true;
 
     const session: SessionType = ctx.state.session;
-    const dataModel = await Helper.convertJsonToObject(
+    const dataModel = await Helper.convertJsonToObject<FormDataType>(
       `/server/data/profil/profil.json`,
     );
 
@@ -153,9 +153,9 @@ export class UserService {
     try {
       const _id = new ObjectId(ctx.params.id);
       const formData = await ctx.request.body.formData();
-      const dataModel = (await Helper.convertJsonToObject(
+      const dataModel = await Helper.convertJsonToObject<FormDataType>(
         "/server/data/admin/user-form.json",
-      )) as FormDataType;
+      );
 
       const dataParsed = Validator.dataParser(formData, dataModel);
 

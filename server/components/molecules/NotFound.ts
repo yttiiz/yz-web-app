@@ -10,7 +10,7 @@ const {
   paragraph,
   btnLink,
   btnText,
-}: NotFoundDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<NotFoundDataType>(
   "/server/data/404/not.found.json",
 );
 
