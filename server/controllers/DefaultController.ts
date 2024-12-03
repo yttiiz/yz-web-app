@@ -227,14 +227,14 @@ export class DefaultController {
 				);
 			}
 
-			// Not found rendering.
-			case "data-not-found": {
-				return main.replace(strToReplace, layout.NotFound.html);
-			}
-			
 			// About rendering.
 			case "data-about": {
 				return main.replace(strToReplace, await layout.SectionAbout.html());
+			}
+			
+			// Not found rendering.
+			case "data-not-found": {
+				return main.replace(strToReplace, layout.NotFound.html);
 			}
 
 			default: {

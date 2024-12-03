@@ -1,23 +1,17 @@
+import { AboutService } from "@/server/services/about/AboutService.ts";
 import { DefaultController } from "./DefaultController.ts";
-import { RouterAppType, RouterContextAppType } from "@controllers";
+import { RouterAppType } from "@controllers";
 
 export class AboutController extends DefaultController {
-  constructor(router: RouterAppType) {
-    super(router);
-    this.getAbout();
-  }
+	private service;
 
-  private getAbout() {
-    this.router?.get(
-      "/about",
-      async <T extends string>(ctx: RouterContextAppType<T>) => {
-        const body = await this.createHtmlFile(ctx, {
-          id: "data-about",
-          css: "about",
-        });
+	constructor(router: RouterAppType) {
+		super(router);
+		this.service = new AboutService(this);
+		this.getAbout();
+	}
 
-        this.response(ctx, body, 200);
-      },
-    );
-  }
+	private getAbout() {
+		this.router?.get("/about", this.service.get);
+	}
 }
