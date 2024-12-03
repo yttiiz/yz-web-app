@@ -83,7 +83,7 @@ export class ProductService {
     ctx: RouterContextAppType<T>,
   ) => {
     const data: ProductsDataType = {};
-    const cursor = await Mongo.connectionTo<ProductSchemaWithIDType>(
+    const cursor = Mongo.connectionTo<ProductSchemaWithIDType>(
       "products",
     );
 
