@@ -1,18 +1,18 @@
 import { ComponentType, OrganismNameType } from "@components";
 import { Helper } from "@utils";
 
+const { title, textContent } = await Helper.convertJsonToObject<
+  { title: string; textContent: string }
+>(
+  "/server/data/about/about.json",
+);
+
 export const SectionAbout: ComponentType<
   OrganismNameType,
-  () => Promise<string>
+  () => string
 > = {
   name: "SectionAbout",
-  html: async () => {
-    const { title, textContent } = await Helper.convertJsonToObject<
-      { title: string; textContent: string }
-    >(
-      "/server/data/about/about.json",
-    );
-
+  html: () => {
     return `
       <section>
         <div class="container">

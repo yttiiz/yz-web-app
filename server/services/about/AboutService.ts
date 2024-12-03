@@ -11,9 +11,9 @@ export class AboutService {
     const body = await this.default.createHtmlFile(ctx, {
       id: "data-about",
       css: "about",
-      title: "contactez-nous"
+      title: "contactez-nous",
     });
 
     this.default.response(ctx, body, 200);
-  }
+  };
 }

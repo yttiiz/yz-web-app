@@ -3,15 +3,15 @@ import { DefaultController } from "./DefaultController.ts";
 import { RouterAppType } from "@controllers";
 
 export class AboutController extends DefaultController {
-	private service;
+  private service;
 
-	constructor(router: RouterAppType) {
-		super(router);
-		this.service = new AboutService(this);
-		this.getAbout();
-	}
+  constructor(router: RouterAppType) {
+    super(router);
+    this.service = new AboutService(this);
+    this.getAbout();
+  }
 
-	private getAbout() {
-		this.router?.get("/about", this.service.get);
-	}
+  private getAbout() {
+    this.router?.get("/about", this.service.get);
+  }
 }
