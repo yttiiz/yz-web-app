@@ -26,6 +26,7 @@ export type IdsType =
   | "data-user-form"
   | "data-profil-form"
   | "data-not-found"
+  | "data-about"
   | "data-booking";
 
 // Router

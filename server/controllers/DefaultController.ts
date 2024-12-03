@@ -231,6 +231,11 @@ export class DefaultController {
 			case "data-not-found": {
 				return main.replace(strToReplace, layout.NotFound.html);
 			}
+			
+			// About rendering.
+			case "data-about": {
+				return main.replace(strToReplace, await layout.SectionAbout.html());
+			}
 
 			default: {
 				// Auth form rendering.
