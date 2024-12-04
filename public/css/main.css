@@ -598,7 +598,8 @@ form[data-style] label {
   gap: 0.5rem;
 }
 
-form[data-style] input:not(input[type="submit"]) {
+form[data-style] input:not(input[type="submit"]),
+form[data-style] textarea {
   padding: calc(var(--base-size) * 0.625);
   border: var(--border-black-25-percent);
 }

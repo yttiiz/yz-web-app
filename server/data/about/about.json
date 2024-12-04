@@ -1,4 +1,47 @@
 {
-  "title": "Qui sommes-nous ?",
-  "textContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+  "title": "Vous souhaitez nous contacter ?",
+  "paragraph": "Besoin d'avoir plus d'informations ? Quelque chose ne vous semble pas clair ? Envoyez-nous un e-mail.",
+  "subtitle": "Ecrivez-nous !",
+  "action": "/about",
+  "method": "POST",
+  "content": [
+    {
+      "type": "text",
+      "label": "Prénom",
+      "placeholder": "Votre prénom...",
+      "name": "firstname",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "text",
+      "label": "Nom",
+      "placeholder": "Votre nom...",
+      "name": "lastname",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    {
+      "type": "email",
+      "label": "Email",
+      "placeholder": "Votre email...",
+      "name": "email",
+      "minLength": 2,
+      "maxLength": 40,
+      "autocomplete": "email"
+    },
+    {
+      "type": "textarea",
+      "label": "Message",
+      "placeholder": "Votre message...",
+      "name": "message",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 250
+    },
+    {
+      "type": "submit",
+      "value": "Envoyer"
+    }
+  ]
 }
