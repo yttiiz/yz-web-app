@@ -45,7 +45,7 @@ export class Mailer {
     const { email: userEmail, firstname, lastname, message } = content;
     const { email, password, brand } = Mailer.getClientMailDetails();
     const transporter = Mailer.getTransporter(email, password);
-    
+
     await transporter.sendMail({
       from: `${brand} - <${email}>`,
       to: email,
