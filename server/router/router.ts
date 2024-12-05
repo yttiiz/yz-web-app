@@ -8,11 +8,11 @@ import { oak } from "@deps";
 import { Mongo } from "@mongo";
 import { AppState } from "@utils";
 import {
-  AboutController,
   AdminController,
   ApiController,
   AuthController,
   BookingController,
+  ContactController,
   HomeController,
   ProductController,
   ProfilController,
@@ -27,7 +27,7 @@ new ProfilController(router);
 new ProductController(router);
 new BookingController(router);
 new AdminController(router);
-new AboutController(router);
+new ContactController(router);
 new ApiController(
   router,
   Mongo.connectionTo,

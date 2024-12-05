@@ -227,9 +227,9 @@ export class DefaultController {
 				);
 			}
 
-			// About rendering.
-			case "data-about": {
-				return main.replace(strToReplace, layout.SectionAbout.html());
+			// Contact rendering.
+			case "data-contact": {
+				return main.replace(strToReplace, layout.SectionContact.html());
 			}
 
 			// Not found rendering.

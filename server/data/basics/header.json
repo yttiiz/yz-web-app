@@ -20,6 +20,11 @@
       "isRelatedToUser": false
     },
     {
+      "link": "/contact",
+      "text": "Contactez-nous",
+      "isRelatedToUser": false
+    },
+    {
       "link": "/admin",
       "text": "Gestion des données (admin)",
       "isRelatedToUser": true

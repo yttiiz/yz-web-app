@@ -5,7 +5,7 @@ export class Router {
   #userForm;
   #bookingForm;
   #productForm;
-  #aboutForm;
+  #contactForm;
   #errorMsg;
   #apiKey;
 
@@ -60,10 +60,7 @@ export class Router {
           this.#userForm = new UserFormPage();
 
           if (res.ok && res.status === 200) {
-            this.#userForm.renderProfilForm(
-              "profil",
-              await res.json(),
-            );
+            this.#userForm.renderProfilForm("profil", await res.json());
             break;
           }
 
@@ -84,12 +81,12 @@ export class Router {
         break;
       }
 
-      //============[ BOOKING ]============//
-      case this.host + "about": {
-        const { AboutFormPage } = await import("./Form/AboutForm.js");
+      //============[ CONTACT ]============//
+      case this.host + "contact": {
+        const { ContactFormPage } = await import("./Form/ContactForm.js");
 
-        this.#aboutForm = new AboutFormPage();
-        this.#aboutForm.initForm();
+        this.#contactForm = new ContactFormPage();
+        this.#contactForm.initForm();
         break;
       }
 

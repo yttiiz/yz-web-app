@@ -1,22 +1,18 @@
-import { AboutFormHelper } from "../../utils/AboutFormHelper.js";
+import { ContactFormHelper } from "../../utils/ContactFormHelper.js";
 import { PageBuilder } from "../Builder.js";
 
-export class AboutFormPage extends PageBuilder {
-  initForm = (id = "#data-about") => {
+export class ContactFormPage extends PageBuilder {
+  initForm = (id = "#data-contact") => {
     /** @type {HTMLFormElement} */
     const form = document.querySelector(`${id} form`);
     const dialog = document.querySelector(`${id} dialog`);
 
-    form.addEventListener(
-      "submit",
-      (e) => this.#submitHandler(e),
-    );
+    form.addEventListener("submit", (e) => this.#submitHandler(e));
 
     // Init close event dialog modal.
-    dialog.querySelector("button[data-close]")
-      .addEventListener("click", () => {
-        dialog.close();
-      });
+    dialog.querySelector("button[data-close]").addEventListener("click", () => {
+      dialog.close();
+    });
   };
 
   /**
@@ -39,12 +35,12 @@ export class AboutFormPage extends PageBuilder {
       });
 
       if (res.ok) {
-        AboutFormHelper.removeInputsValues(labels);
+        ContactFormHelper.removeInputsValues(labels);
       }
 
-      AboutFormHelper.displayDialog(res);
+      ContactFormHelper.displayDialog(res);
     } catch (_) {
-      AboutFormHelper.displayDialog();
+      ContactFormHelper.displayDialog();
     }
   };
 }

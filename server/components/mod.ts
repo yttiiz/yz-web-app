@@ -14,7 +14,7 @@ export * from "./atoms/EyeOpenSvg.ts";
 export * from "./atoms/EyeShutSvg.ts";
 export * from "./atoms/OnOffSvg.ts";
 export * from "./atoms/CircleSvg.ts";
-export * from "./organisms/SectionAbout.ts";
+export * from "./organisms/SectionContact.ts";
 export * from "./organisms/SectionsProfilForm.ts";
 export * from "./organisms/SectionAuthForm.ts";
 export * from "./organisms/SectionAdmin.ts";

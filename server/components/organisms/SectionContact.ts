@@ -11,11 +11,11 @@ const { title, action, method, content, paragraph, subtitle } = await Helper
   .convertJsonToObject<
     FormDataType & { subtitle: string; paragraph: string }
   >(
-    "/server/data/about/about.json",
+    "/server/data/contact/contact.json",
   );
 
-export const SectionAbout: ComponentType<OrganismNameType, () => string> = {
-  name: "SectionAbout",
+export const SectionContact: ComponentType<OrganismNameType, () => string> = {
+  name: "SectionContact",
   html: () => {
     return `
       <section>

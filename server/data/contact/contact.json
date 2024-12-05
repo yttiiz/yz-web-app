@@ -2,7 +2,7 @@
   "title": "Vous souhaitez nous contacter ?",
   "paragraph": "Besoin d'avoir plus d'informations ? Quelque chose ne vous semble pas clair ? Envoyez-nous un e-mail.",
   "subtitle": "Ecrivez-nous !",
-  "action": "/about",
+  "action": "/contact",
   "method": "POST",
   "content": [
     {

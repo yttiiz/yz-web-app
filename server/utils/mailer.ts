@@ -1,7 +1,7 @@
 import { nodemailer } from "@deps";
 import { Helper } from "./mod.ts";
 import type { MailConfigType, SendParameterType } from "./mod.ts";
-import { AboutSendEmailContentType } from "@controllers";
+import { ContactSendEmailContentType } from "@controllers";
 
 export class Mailer {
   // Outlook config
@@ -18,10 +18,7 @@ export class Mailer {
     secure: true,
   };
 
-  public static async send({
-    to,
-    receiver,
-  }: SendParameterType) {
+  public static async send({ to, receiver }: SendParameterType) {
     const { email, password, username } = Mailer.getClientMailDetails();
     const transporter = Mailer.getTransporter(email, password);
     const info = await transporter.sendMail({
@@ -41,7 +38,9 @@ export class Mailer {
 
   public static async receive({
     content,
-  }: { content: AboutSendEmailContentType }) {
+  }: {
+    content: ContactSendEmailContentType;
+  }) {
     const { email: userEmail, firstname, lastname, message } = content;
     const { email, password, brand } = Mailer.getClientMailDetails();
     const transporter = Mailer.getTransporter(email, password);

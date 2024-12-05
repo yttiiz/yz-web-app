@@ -1,4 +1,4 @@
-export * from "./AboutController.ts";
+export * from "./ContactController.ts";
 export * from "./AdminController.ts";
 export * from "./AuthController.ts";
 export * from "./ApiController.ts";

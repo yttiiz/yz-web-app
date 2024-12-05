@@ -26,7 +26,7 @@ export type IdsType =
   | "data-user-form"
   | "data-profil-form"
   | "data-not-found"
-  | "data-about"
+  | "data-contact"
   | "data-booking";
 
 // Router
@@ -41,7 +41,7 @@ export type DataResponseType =
 
 // Session
 export type SessionType = {
-  get: <T extends (string | "userId")>(
+  get: <T extends string | "userId">(
     value: T,
   ) => T extends "userId" ? ObjectId : string;
   set: (key: string, value: unknown) => void;
@@ -64,15 +64,10 @@ export type ConfigPageType = {
   path?: string;
 };
 
-export type ConfigMainHtmlType =
-  & Omit<
-    ConfigPageType,
-    "css" | "title"
-  >
-  & {
-    main: string;
-    isUserConnected: boolean;
-  };
+export type ConfigMainHtmlType = Omit<ConfigPageType, "css" | "title"> & {
+  main: string;
+  isUserConnected: boolean;
+};
 
 // DB Generics
 export type GetCollectionType<T extends Document = Document> = (
@@ -110,8 +105,7 @@ export type DeleteItemParameterType<T extends string> = {
 // Users in DB
 export type UserDataType = Record<
   number,
-  & UserSchemaWithOptionalFieldsType
-  & { _id?: ObjectId }
+  UserSchemaWithOptionalFieldsType & { _id?: ObjectId }
 >;
 export type SelectUserFromDBType = SelectFromDBType<
   UserSchemaWithIDType | NotFoundMessageType
@@ -134,8 +128,8 @@ export type ProductAdminFormDataType = {
   pictures?: File;
 };
 
-// About Page
-export type AboutSendEmailContentType = {
+// Contact Page
+export type ContactSendEmailContentType = {
   email: string;
   firstname: string;
   lastname: string;

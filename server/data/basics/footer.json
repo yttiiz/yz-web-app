@@ -5,11 +5,11 @@
       "text": "Accueil"
     },
     {
-      "link": "/about",
+      "link": "/contact",
       "text": "Contactez-nous"
     },
     {
-      "link": "#",
+      "link": "/legal",
       "text": "Mentions légales"
     }
   ],

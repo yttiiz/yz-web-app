@@ -1,12 +1,12 @@
 import {
-  AboutSendEmailContentType,
+  ContactSendEmailContentType,
   DefaultController,
   RouterContextAppType,
 } from "@controllers";
 import { Helper, Mailer, Validator } from "@utils";
 import { FormDataType } from "@components";
 
-export class AboutService {
+export class ContactService {
   private default;
 
   constructor(defaultController: DefaultController) {
@@ -15,8 +15,8 @@ export class AboutService {
 
   public get = async <T extends string>(ctx: RouterContextAppType<T>) => {
     const body = await this.default.createHtmlFile(ctx, {
-      id: "data-about",
-      css: "about",
+      id: "data-contact",
+      css: "contact",
       title: "contactez-nous",
     });
 
@@ -27,7 +27,7 @@ export class AboutService {
     try {
       const formData = await ctx.request.body.formData();
       const dataModel = await Helper.convertJsonToObject<FormDataType>(
-        "/server/data/about/about.json",
+        "/server/data/contact/contact.json",
       );
 
       const dataParsed = Validator.dataParser(formData, dataModel);
@@ -43,12 +43,8 @@ export class AboutService {
         );
       }
 
-      const {
-        email,
-        firstname,
-        lastname,
-        message,
-      } = dataParsed.data as AboutSendEmailContentType;
+      const { email, firstname, lastname, message } = dataParsed
+        .data as ContactSendEmailContentType;
 
       const content = {
         email,

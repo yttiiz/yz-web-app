@@ -1,12 +1,12 @@
 import { DefaultFormHelper } from "./DefaultFormHelper.js";
 
-export class AboutFormHelper extends DefaultFormHelper {
+export class ContactFormHelper extends DefaultFormHelper {
   /**
    * @param {Response | undefined} response
    */
   static displayDialog = async (response) => {
     /** @type {HTMLDialogElement} */
-    const dialog = document.querySelector("#data-about > dialog");
+    const dialog = document.querySelector("#data-contact > dialog");
     const content = {
       title: "Erreur serveur",
       paragraph:
@@ -26,7 +26,7 @@ export class AboutFormHelper extends DefaultFormHelper {
       }
     }
 
-    AboutFormHelper.setUserDialogContent(dialog, content);
+    ContactFormHelper.setUserDialogContent(dialog, content);
 
     dialog.showModal();
   };
