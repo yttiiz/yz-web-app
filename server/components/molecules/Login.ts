@@ -10,7 +10,7 @@ import { Dialog } from "@/server/components/molecules/Dialog.ts";
 
 const {
   login,
-}: HeaderDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<HeaderDataType>(
   "/server/data/basics/header.json",
 );
 

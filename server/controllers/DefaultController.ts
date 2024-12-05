@@ -227,6 +227,11 @@ export class DefaultController {
 				);
 			}
 
+			// About rendering.
+			case "data-about": {
+				return main.replace(strToReplace, layout.SectionAbout.html());
+			}
+
 			// Not found rendering.
 			case "data-not-found": {
 				return main.replace(strToReplace, layout.NotFound.html);

@@ -25,7 +25,7 @@ const {
   reviewsAndRate,
   conditions,
   reviewForm,
-}: ProductDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<ProductDataType>(
   "/server/data/product/product.json",
 );
 

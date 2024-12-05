@@ -23,26 +23,26 @@ export const SectionAdmin: ComponentType<
   html: async (isUserConnected: boolean) => {
     let content: FormDataType | DashboardDataType;
     let userFormContent: any, productFormContent: any, createProductFormContent: any, bookingFormContent: any;
+    let container = "";
 
     if (isUserConnected) {
-      content = await Helper.convertJsonToObject("/server/data/admin/dashboard.json");
-      
+      content = await Helper.convertJsonToObject<DashboardDataType>("/server/data/admin/dashboard.json");
+      container = AdminDashboard.html(content);
+
       userFormContent = await Helper.convertJsonToObject("/server/data/admin/user-form.json");
       productFormContent = await Helper.convertJsonToObject("/server/data/admin/product-form.json");
       createProductFormContent = await Helper.convertJsonToObject("/server/data/admin/create-product-form.json");
       bookingFormContent = await Helper.convertJsonToObject("/server/data/admin/booking-form.json");
       
     } else {
-      content = await Helper.convertJsonToObject("/server/data/authentication/admin.json");
+      content = await Helper.convertJsonToObject<FormDataType>("/server/data/authentication/admin.json");
+      container = FormAdmin.html(content);
     }
 
     return `
     <section ${isUserConnected ? `data-admin="connected"` : ""}>
       <div class="container">
-        ${isUserConnected
-          ? AdminDashboard.html(content)
-          : FormAdmin.html(content)
-        }
+        ${container}
       </div>
     </section>
     ${Dialog.html({ dataset: "profil" })}

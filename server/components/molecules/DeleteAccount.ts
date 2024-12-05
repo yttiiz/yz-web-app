@@ -7,7 +7,7 @@ import type {
 
 const {
   deleteAccount,
-}: DeleteAccountDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<DeleteAccountDataType>(
   "/server/data/profil/delete.profil.json",
 );
 

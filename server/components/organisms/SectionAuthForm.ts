@@ -13,7 +13,7 @@ export const SectionAuthForm: ComponentType<
       action,
       method,
       content,
-    }: FormDataType = await Helper.convertJsonToObject(
+    } = await Helper.convertJsonToObject<FormDataType>(
       `/server/data/authentication${path}.json`,
     );
 

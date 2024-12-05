@@ -83,7 +83,7 @@ export class ProductService {
     ctx: RouterContextAppType<T>,
   ) => {
     const data: ProductsDataType = {};
-    const cursor = await Mongo.connectionTo<ProductSchemaWithIDType>(
+    const cursor = Mongo.connectionTo<ProductSchemaWithIDType>(
       "products",
     );
 
@@ -131,9 +131,9 @@ export class ProductService {
   ) => {
     try {
       const formData = await ctx.request.body.formData();
-      const dataModel = (await Helper.convertJsonToObject(
+      const dataModel = await Helper.convertJsonToObject<FormDataType>(
         "/server/data/admin/create-product-form.json",
-      )) as FormDataType;
+      );
 
       Helper.addFileModelTo(dataModel);
 
@@ -294,9 +294,9 @@ export class ProductService {
     try {
       const _id = new ObjectId(ctx.params.id);
       const formData = await ctx.request.body.formData();
-      const dataModel = (await Helper.convertJsonToObject(
+      const dataModel = await Helper.convertJsonToObject<FormDataType>(
         "/server/data/admin/product-form.json",
-      )) as FormDataType;
+      );
 
       Helper.addFileModelTo(dataModel);
 

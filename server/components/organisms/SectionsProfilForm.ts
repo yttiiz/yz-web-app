@@ -21,13 +21,13 @@ import type {
   method,
   changePhoto,
   content,
-}: FormDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<FormDataType>(
   "/server/data/profil/profil.json",
 );
 
 const {
   deleteModal,
-}: DeleteAccountDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<DeleteAccountDataType>(
   "/server/data/profil/delete.profil.json",
 );
 

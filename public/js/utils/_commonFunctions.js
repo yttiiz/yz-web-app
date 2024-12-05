@@ -118,13 +118,13 @@ const setFormData = (form) => {
  * @param {NodeListOf<HTMLLabelElement>} labels
  */
 const removeInputsValues = (labels) => {
-  for (let i = 0; i < labels.length - 1; i++) {
-    labels[i].querySelector("textarea")
-      ? (labels[i].querySelector("textarea").value = "")
+  for (const label of labels) {
+    label.querySelector("textarea")
+      ? (label.querySelector("textarea").value = "")
       : null;
 
-    labels[i].querySelector("input")
-      ? (labels[i].querySelector("input").value = "")
+    label.querySelector("input")
+      ? (label.querySelector("input").value = "")
       : null;
   }
 };

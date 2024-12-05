@@ -26,6 +26,7 @@ export type IdsType =
   | "data-user-form"
   | "data-profil-form"
   | "data-not-found"
+  | "data-about"
   | "data-booking";
 
 // Router
@@ -131,4 +132,12 @@ export type ProductAdminFormDataType = {
   description: string;
   thumbnail?: File;
   pictures?: File;
+};
+
+// About Page
+export type AboutSendEmailContentType = {
+  email: string;
+  firstname: string;
+  lastname: string;
+  message: string;
 };

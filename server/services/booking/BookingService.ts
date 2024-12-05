@@ -129,9 +129,9 @@ export class BookingService {
     ctx: RouterContextAppType<T>,
   ) => {
     const formData = await ctx.request.body.formData();
-    const { booking } = (await Helper.convertJsonToObject(
+    const { booking } = await Helper.convertJsonToObject<ProductDataType>(
       `/server/data/product/product.json`,
-    )) as ProductDataType;
+    );
 
     const dataParsed = Validator.dataParser(formData, booking);
 
@@ -254,9 +254,9 @@ export class BookingService {
   ) => {
     try {
       const formData = await ctx.request.body.formData();
-      const dataModel = (await Helper.convertJsonToObject(
+      const dataModel = await Helper.convertJsonToObject<FormDataType>(
         "/server/data/admin/booking-form.json",
-      )) as FormDataType;
+      );
 
       const dataParsed = Validator.dataParser(formData, dataModel);
 

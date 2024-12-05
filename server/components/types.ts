@@ -12,6 +12,7 @@ export type OrganismNameType =
   | "BookingCard"
   | "AdminDashboard"
   | "DashboardCard"
+  | "SectionAbout"
   | "ProductCard";
 
 export type MoleculeNameType =

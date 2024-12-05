@@ -11,7 +11,7 @@ const {
   basicItems,
   relatedItems,
   copyrights,
-}: FooterDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<FooterDataType>(
   "/server/data/basics/footer.json",
 );
 

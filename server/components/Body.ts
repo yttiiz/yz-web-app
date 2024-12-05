@@ -7,7 +7,7 @@ const {
   title,
   description,
   openGraph,
-}: HeadPageDataType = await Helper.convertJsonToObject(
+} = await Helper.convertJsonToObject<HeadPageDataType>(
   "/server/data/basics/app.json",
 );
 

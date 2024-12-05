@@ -41,10 +41,10 @@ export class Helper {
     mode: 764,
   };
 
-  public static async convertJsonToObject(
+  public static async convertJsonToObject<T = unknown>(
     path: string,
     decoder = new TextDecoder("utf-8"),
-  ) {
+  ): Promise<T> {
     const file = await Deno.readFile(Deno.cwd() + path);
 
     return JSON.parse(decoder.decode(file));
