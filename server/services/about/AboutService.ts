@@ -1,4 +1,8 @@
-import { AboutSendEmailContentType, DefaultController, RouterContextAppType } from "@controllers";
+import {
+  AboutSendEmailContentType,
+  DefaultController,
+  RouterContextAppType,
+} from "@controllers";
 import { Helper, Mailer, Validator } from "@utils";
 import { FormDataType } from "@components";
 
@@ -50,8 +54,8 @@ export class AboutService {
         email,
         firstname,
         lastname,
-        message
-      }
+        message,
+      };
 
       Mailer.receive({ content });
 

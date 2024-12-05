@@ -49,7 +49,8 @@ export class Mailer {
       from: `${brand} - <${email}>`,
       to: email,
       subject: "Formulaire de contact",
-      text: `Message de ${firstname} ${lastname}\nEmail : ${userEmail}\nMessage : ${message}`,
+      text:
+        `Message de ${firstname} ${lastname}\nEmail : ${userEmail}\nMessage : ${message}`,
       html: `<h1>Message de ${firstname} ${lastname}</h1>
         <p>Email : ${userEmail}</p>
         <p>Message : ${message}</p>`,
@@ -81,7 +82,7 @@ export class Mailer {
       username,
       brand,
       password,
-    }
+    };
   }
 
   private static plainText(receiver: string) {

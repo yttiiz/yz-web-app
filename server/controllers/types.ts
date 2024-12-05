@@ -140,4 +140,4 @@ export type AboutSendEmailContentType = {
   firstname: string;
   lastname: string;
   message: string;
-}
+};
