@@ -10,6 +10,7 @@
       "label": "Prénom",
       "placeholder": "Votre prénom...",
       "name": "firstname",
+      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -18,6 +19,7 @@
       "label": "Nom",
       "placeholder": "Votre nom...",
       "name": "lastname",
+      "required": true,
       "minLength": 2,
       "maxLength": 40
     },
@@ -26,6 +28,7 @@
       "label": "Email",
       "placeholder": "Votre email...",
       "name": "email",
+      "required": true,
       "minLength": 2,
       "maxLength": 40,
       "autocomplete": "email"

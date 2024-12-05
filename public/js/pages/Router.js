@@ -5,6 +5,7 @@ export class Router {
   #userForm;
   #bookingForm;
   #productForm;
+  #aboutForm;
   #errorMsg;
   #apiKey;
 
@@ -80,6 +81,15 @@ export class Router {
 
         this.#bookingForm = new BookingFormPage();
         this.#bookingForm.initForm();
+        break;
+      }
+
+      //============[ BOOKING ]============//
+      case this.host + "about": {
+        const { AboutFormPage } = await import("./Form/AboutForm.js");
+
+        this.#aboutForm = new AboutFormPage();
+        this.#aboutForm.initForm();
         break;
       }
 

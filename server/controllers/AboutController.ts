@@ -9,9 +9,14 @@ export class AboutController extends DefaultController {
     super(router);
     this.service = new AboutService(this);
     this.getAbout();
+    this.postAbout();
   }
 
   private getAbout() {
     this.router?.get("/about", this.service.get);
+  }
+
+  private postAbout() {
+    this.router?.post("/about", this.service.post);
   }
 }

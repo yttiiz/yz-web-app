@@ -1,5 +1,6 @@
 import {
   ComponentType,
+  Dialog,
   FormDataType,
   InputsForm,
   OrganismNameType,
@@ -36,6 +37,7 @@ export const SectionAbout: ComponentType<OrganismNameType, () => string> = {
           </div> 
         </div> 
       </section>
+      ${Dialog.html({})}
     `;
   },
 };
