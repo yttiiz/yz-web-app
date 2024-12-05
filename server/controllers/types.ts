@@ -133,3 +133,11 @@ export type ProductAdminFormDataType = {
   thumbnail?: File;
   pictures?: File;
 };
+
+// About Page
+export type AboutSendEmailContentType = {
+  email: string;
+  firstname: string;
+  lastname: string;
+  message: string;
+}

@@ -1,5 +1,5 @@
-import { DefaultController, RouterContextAppType } from "@controllers";
-import { Helper, Validator } from "@utils";
+import { AboutSendEmailContentType, DefaultController, RouterContextAppType } from "@controllers";
+import { Helper, Mailer, Validator } from "@utils";
 import { FormDataType } from "@components";
 
 export class AboutService {
@@ -39,7 +39,21 @@ export class AboutService {
         );
       }
 
-      //TODO Data to be treated
+      const {
+        email,
+        firstname,
+        lastname,
+        message,
+      } = dataParsed.data as AboutSendEmailContentType;
+
+      const content = {
+        email,
+        firstname,
+        lastname,
+        message
+      }
+
+      Mailer.receive({ content });
 
       this.default.response(
         ctx,
