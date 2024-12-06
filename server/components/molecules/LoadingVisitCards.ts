@@ -9,16 +9,21 @@ export const LoadingVisitCards: ComponentType<
   () => string
 > = {
 	name: "LoadingVisitCards",
-	html: () => (
-		`<li>
-      <figure>
-        <img src="" alt="loading image"/>
-      </figure>
-      <div>
-        <h3>Loading subtitle</h3>
-        <p>Loading text</p>
-        <a href="/" target="_blank">En savoir plus</a>
-      </div>
-    </li>`
-    ),
+	html: () => {
+    let content = "";
+    
+    for (let i = 0; i < 4; i++) {
+      content += `
+      <li class="loader">
+        <div></div>
+        <div>
+          <h3>&nbsp;</h3>
+          <p>&nbsp;</p>
+          <span>&nbsp;</span>
+        </div>
+      </li>`;
+    }
+
+    return content;
+  }
 };
