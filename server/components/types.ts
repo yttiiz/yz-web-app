@@ -28,6 +28,7 @@ export type MoleculeNameType =
   | "HeaderAdminSession"
   | "HeroBanner"
   | "TextAreaForm"
+  | "LoadingVisitCards"
   | "Login"
   | "LogoutUserForm"
   | "LogoutAdminForm"
