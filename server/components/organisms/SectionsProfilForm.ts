@@ -41,6 +41,7 @@ export const SectionsProfilForm: ComponentType<
     <section>
       <div class="container">
         <h1>${title}</h1>
+        <h3 class="loading">Chargement de vos données...</h3>
         <p class="error-msg none">${DangerSvg.html}</p>
         <form
           action="${action}"
@@ -51,7 +52,7 @@ export const SectionsProfilForm: ComponentType<
           <div>
             <div class="user-photo">
               <figure>
-                <img src="/img/users/default.png" alt="default user image" />
+                <img src="" alt="&nbsp;" />
               </figure>
               <button type="button">${changePhoto ?? "change picture"}</button>
               <div class="none"></div>

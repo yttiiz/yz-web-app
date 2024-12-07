@@ -1,6 +1,6 @@
 // deno-fmt-ignore-file
 import { Helper } from "@utils";
-import { Dialog, HeroBanner, ProductCard, ShareForm } from "../mod.ts";
+import { Dialog, HeroBanner, LoadingVisitCards, ProductCard, ShareForm } from "../mod.ts";
 import type {
 	ComponentType,
 	HomePageDataType,
@@ -42,7 +42,9 @@ export const SectionsHome: ComponentType<
     <section id="visits">
       <div class="container">
         <h1>${visit.title}</h1>
-        <ul class="visits-cards"></ul>
+        <ul class="visits-cards">
+          ${LoadingVisitCards.html()}
+        </ul>
       </div>
     </section>
     ${Dialog.html({ component: ShareForm.html })}`;

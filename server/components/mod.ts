@@ -41,6 +41,7 @@ export * from "./molecules/LogoutAdminForm.ts";
 export * from "./molecules/Login.ts";
 export * from "./molecules/InputsForm.ts";
 export * from "./molecules/InputsGroupForm.ts";
+export * from "./molecules/LoadingVisitCards.ts";
 export * from "./molecules/HeaderNavigation.ts";
 export * from "./molecules/HeaderUserSession.ts";
 export * from "./molecules/HeaderAdminSession.ts";

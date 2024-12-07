@@ -3,11 +3,8 @@ import * as Types from "../../types/types.js";
 import { DefaultFormHelper } from "../../utils/DefaultFormHelper.js";
 
 export class HomePage extends PageBuilder {
-  #root;
-
   constructor() {
     super();
-    this.#root = document.querySelector("#data-home");
   }
 
   /**
@@ -76,40 +73,6 @@ export class HomePage extends PageBuilder {
   };
 
   /**
-   * @param {{
-   * items: Types.Visits;
-   * renderer: () => HTMLElement;
-   * id: string;
-   * title: string;
-   * listItems: HTMLUListElement;
-   * }}
-   */
-  #renderSection = ({
-    items,
-    renderer,
-    id,
-    title,
-    listItems = document.createElement("ul"),
-  }) => {
-    const [
-      section,
-      container,
-      titleElement,
-    ] = this.createHTMLElements("section", "div", "h1");
-
-    listItems = renderer(items, listItems);
-
-    container.classList.add("container");
-
-    titleElement.textContent = title;
-    this.insertChildren(container, titleElement, listItems);
-    this.insertChildren(section, container);
-    section.id = id;
-
-    return section;
-  };
-
-  /**
    * @param {Types.Visits} visits
    * @param {HTMLUListElement} visitsList
    */
@@ -117,6 +80,9 @@ export class HomePage extends PageBuilder {
     visits,
     visitsList = document.querySelector(".visits-cards"),
   ) => {
+    // Remove loading content
+    visitsList.innerHTML = "";
+
     for (const key of Object.keys(visits)) {
       /** @type {[HTMLLIElement, HTMLDivElement, HTMLImageElement]} */
       const [container, figure, img] = this.createHTMLElements(
