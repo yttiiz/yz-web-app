@@ -48,6 +48,7 @@ export const Body: ComponentType<
         <link rel="icon" href="./img/favicon.svg" type="image/svg+xml">
       </head>
       <body>
+        <script>0</script>
         <noscript>
           <h1>
             JavaScript est désactivé sur votre navigateur
