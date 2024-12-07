@@ -17,6 +17,15 @@ export class HomePage extends PageBuilder {
     });
 
     this.#renderVisits(visits);
+    this.handleHomeLink();
+  };
+
+  /**
+   * Prevent page to reload on click on home link.
+   */
+  handleHomeLink = () => {
+    const link = document.querySelector("#logo > a");
+    link.addEventListener("click", (e) => e.preventDefault());
   };
 
   /**
