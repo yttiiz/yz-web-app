@@ -113,10 +113,13 @@
 
     & .user-photo img {
       border-radius: 50%;
-      background: linear-gradient(to right, #eee 0%, #ddd 20%, #eee 40%);
-      animation: placeholderAnimate 5s infinite linear forwards;
       width: 100%;
       aspect-ratio: 1 / 1;
+    }
+
+    & .user-photo img.loading-image {
+      background: linear-gradient(to right, #eee 0%, #ddd 20%, #eee 40%);
+      animation: placeholderAnimate 5s infinite linear forwards;
     }
 
     & .user-photo input {

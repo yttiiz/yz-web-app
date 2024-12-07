@@ -10,12 +10,17 @@ export class UserFormPage extends PageBuilder {
       `#data-${id}-form form`,
     );
 
-    // Remove loading text in 'profil' page.
-    const container = document.querySelector(`#data-${id}-form .container`);
-    const textLoader = container.querySelector(".loading");
+    // Handle loading animation in 'profil' page.
+    if (document.querySelector(".loading-text")) {
+      const container = document.querySelector(`#data-${id}-form .container`);
+      const loadingText = document.querySelector(".loading-text");
+      const image = container.querySelector("img.loading-image");
 
-    if (container && textLoader) {
-      container.removeChild(textLoader);
+      // Remove loading text.
+      container.removeChild(loadingText);
+
+      // Remove image loading animation.
+      image.classList.remove("loading-image");
     }
 
     form.addEventListener(
