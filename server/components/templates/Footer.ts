@@ -38,7 +38,7 @@ export const Footer: ComponentType<
                 basicItems
                   .map((item) => (
                     `<li>
-                      <a href="${item.link}">${item.text}</a>
+                      <a href="${item.link}" class="${item.className}">${item.text}</a>
                     </li>`)
                   ).join("")
               }
@@ -48,7 +48,7 @@ export const Footer: ComponentType<
                 relatedItems
                   .map((item) => (
                     `<li>
-                      <a href="${item.link}">${item.text}</a>
+                      <a href="${item.link}" class="${item.className}">${item.text}</a>
                     </li>`)
                   ).join("")
               }
