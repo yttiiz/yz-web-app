@@ -82,6 +82,10 @@
 }
 
 #data-profil-form {
+  & .loading {
+    color: #ddd;
+  }
+
   & section form {
     display: flex;
     flex-direction: column;
@@ -109,6 +113,8 @@
 
     & .user-photo img {
       border-radius: 50%;
+      background: linear-gradient(to right, #eee 0%, #ddd 20%, #eee 40%);
+      animation: placeholderAnimate 5s infinite linear forwards;
       width: 100%;
       aspect-ratio: 1 / 1;
     }
@@ -138,11 +144,11 @@
     & .user-photo > div.show-file b {
       font-weight: 400;
     }
-
+    
     & .user-photo > div.none {
       display: none;
     }
-
+    
     & .user-infos {
       width: 100%;
       display: grid;
@@ -260,6 +266,15 @@
 
   & input {
     display: none;
+  }
+}
+
+@keyframes placeholderAnimate {
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
   }
 }
 

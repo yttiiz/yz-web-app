@@ -10,6 +10,14 @@ export class UserFormPage extends PageBuilder {
       `#data-${id}-form form`,
     );
 
+    // Remove loading text in 'profil' page.
+    const container = document.querySelector(`#data-${id}-form .container`);
+    const textLoader = container.querySelector(".loading");
+
+    if (container && textLoader) {
+      container.removeChild(textLoader);
+    }
+
     form.addEventListener(
       "submit",
       (e) => this.#submitHandler(e),
@@ -118,7 +126,8 @@ export class UserFormPage extends PageBuilder {
     });
 
     if (location.pathname !== "/profil") {
-      UserFormHelper.removeInputsValues(e.target.children);
+      const labels = e.target.querySelectorAll("label");
+      UserFormHelper.removeInputsValues(labels);
     }
 
     if (res.ok && (res.status === 200 || res.status === 201)) {
