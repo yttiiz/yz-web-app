@@ -11,8 +11,9 @@ export const LoadingVisitCards: ComponentType<
 	name: "LoadingVisitCards",
 	html: () => {
     let content = "";
-    
-    for (let i = 0; i < 4; i++) {
+    const round = 4;
+
+    for (let i = 0; i < round; i++) {
       content += `
       <li class="loader">
         <div></div>

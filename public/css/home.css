@@ -373,29 +373,29 @@
     & > li div a:hover {
       background: rgb(var(--black-rvb) / 0.05);
     }
-  
-    /* =======| Loader  |======= */ 
+
+    /* =======| Loader  |======= */
     & .loader > div:first-child,
     & .loader > div:last-child h3,
     & .loader > div:last-child p,
     & .loader > div:last-child span {
       border-radius: var(--base-size);
     }
-    
+
     & .loader > div:first-child {
       background: linear-gradient(to right, #eee 0%, #ddd 20%, #eee 40%);
       animation: placeholderAnimate 2s infinite linear forwards;
       aspect-ratio: 16 / 9;
       width: 100%;
     }
-    
+
     & .loader > div:last-child h3,
     & .loader > div:last-child p,
     & .loader > div:last-child span {
       background: linear-gradient(to right, #eee 0%, #ddd 40%, #eee 80%);
       animation: placeholderAnimate 2.6s infinite linear forwards;
     }
-    
+
     & .loader > div:last-child span {
       padding: var(--base-size);
     }
@@ -494,6 +494,10 @@
 }
 
 @keyframes placeholderAnimate {
-  0%{ background-position: -600px 0; }
-  100%{ background-position: 600px 0; }
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
 }
