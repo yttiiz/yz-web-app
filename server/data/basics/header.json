@@ -7,6 +7,7 @@
     {
       "link": "/booking",
       "text": "Mes réservations",
+      "className": "header-booking",
       "isRelatedToUser": true
     },
     {
@@ -17,15 +18,18 @@
     {
       "link": "/#visits",
       "text": "Les endroits à visiter",
+      "className": "header-visits",
       "isRelatedToUser": false
     },
     {
       "link": "/contact",
       "text": "Contactez-nous",
+      "className": "header-contact",
       "isRelatedToUser": false
     },
     {
       "link": "/admin",
+      "className": "header-admin",
       "text": "Gestion des données (admin)",
       "isRelatedToUser": true
     }
