@@ -21,13 +21,13 @@ export class Router {
     switch (this.route) {
       case this.host:
       case this.host + "#visits": {
+        const { HomePage } = await import("./Home/Home.js");
+        this.#home = new HomePage();
+
         try {
           const res = await this.#fetchData(
             `guadeloupe-islands${this.#apiKey}`,
           );
-          const { HomePage } = await import("./Home/Home.js");
-
-          this.#home = new HomePage();
 
           if (res.ok && res.status === 200) {
             this.#home.renderContent(await res.json());
@@ -53,11 +53,11 @@ export class Router {
       }
 
       case this.host + "profil": {
+        const { UserFormPage } = await import("./Form/UserForm.js");
+        this.#userForm = new UserFormPage();
+
         try {
           const res = await this.#fetchData(`user-profil${this.#apiKey}`);
-          const { UserFormPage } = await import("./Form/UserForm.js");
-
-          this.#userForm = new UserFormPage();
 
           if (res.ok && res.status === 200) {
             this.#userForm.renderProfilForm("profil", await res.json());

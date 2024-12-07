@@ -82,7 +82,7 @@
 }
 
 #data-profil-form {
-  & .loading {
+  & .loading-text {
     color: #ddd;
   }
 
