@@ -144,11 +144,11 @@
     & .user-photo > div.show-file b {
       font-weight: 400;
     }
-    
+
     & .user-photo > div.none {
       display: none;
     }
-    
+
     & .user-infos {
       width: 100%;
       display: grid;
