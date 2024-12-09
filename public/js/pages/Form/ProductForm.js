@@ -38,7 +38,8 @@ export class ProductFormPage extends PageBuilder {
    * Prevent page to reload on click on product link.
    */
   #handleProductLink = () => {
-    const productName = document.querySelector("h1")?.textContent?.split(" ")[1].toLowerCase();
+    const productName = document.querySelector("h1")?.textContent?.split(" ")[1]
+      .toLowerCase();
     const productLink = document.querySelector(".header-" + productName);
 
     productLink.addEventListener("click", (e) => e.preventDefault());
