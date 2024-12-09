@@ -24,8 +24,11 @@ export class HomePage extends PageBuilder {
    * Prevent page to reload on click on home link.
    */
   handleHomeLink = () => {
-    const link = document.querySelector("#logo > a");
-    link.addEventListener("click", (e) => e.preventDefault());
+    const logoLink = document.querySelector("#logo > a");
+    const footerLink = document.querySelector(".footer-home");
+
+    logoLink.addEventListener("click", (e) => e.preventDefault());
+    footerLink.addEventListener("click", (e) => e.preventDefault());
   };
 
   /**
