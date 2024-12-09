@@ -13,6 +13,18 @@ export class ContactFormPage extends PageBuilder {
     dialog.querySelector("button[data-close]").addEventListener("click", () => {
       dialog.close();
     });
+    this.handleContactLink();
+  };
+
+  /**
+   * Prevent page to reload on click on contact link.
+   */
+  handleContactLink = () => {
+    const headerLink = document.querySelector(".header-contact");
+    const footerLink = document.querySelector(".footer-contact");
+
+    headerLink.addEventListener("click", (e) => e.preventDefault());
+    footerLink.addEventListener("click", (e) => e.preventDefault());
   };
 
   /**

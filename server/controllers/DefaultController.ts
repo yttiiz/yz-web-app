@@ -122,8 +122,8 @@ export class DefaultController {
 		const defaultLinks = [{ link: "/", text: "Accueil" }];
 
 		try {
-			const headerItems: { link: string; text: string }[] = [];
-			const cursor = await Mongo.connectionTo<ProductSchemaWithIDType>(
+			const headerItems: { link: string; text: string; className: string }[] = [];
+			const cursor = Mongo.connectionTo<ProductSchemaWithIDType>(
 				"products",
 			);
 
@@ -132,6 +132,7 @@ export class DefaultController {
 					headerItems.push({
 						link: "/product/" + document._id.toString(),
 						text: document.name,
+						className: "header-" + document.name.toLocaleLowerCase(),
 					});
 				});
 

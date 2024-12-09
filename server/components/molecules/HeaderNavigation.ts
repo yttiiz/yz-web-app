@@ -42,7 +42,7 @@ export const HeaderNavigation: ComponentType<
                 <ul class="none">
                   ${data.map((subItem) => (
                     `<li>
-                      <a href="${subItem.link}">
+                      <a href="${subItem.link}" class="${subItem.className}">
                         Aka ${subItem.text}
                       </a>
                     </li>`
@@ -53,7 +53,7 @@ export const HeaderNavigation: ComponentType<
             : item.link.includes("admin")
               ? (isAdmin ?
                 (`<li>
-                    <a href="${item.link}">
+                    <a href="${item.link}" class="${item.className}">
                       ${item.text}
                     </a>
                   </li>`
@@ -62,7 +62,7 @@ export const HeaderNavigation: ComponentType<
               :
               (
                 `<li>
-                  <a href="${item.link}">
+                  <a href="${item.link}" class="${item.className}">
                     ${item.text}
                   </a>
                 </li>`
