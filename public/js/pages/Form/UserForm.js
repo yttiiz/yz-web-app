@@ -10,6 +10,8 @@ export class UserFormPage extends PageBuilder {
       `#data-${id}-form form`,
     );
 
+    this.#handleUserLink();
+
     // Handle loading animation in 'profil' page.
     if (document.querySelector(".loading-text")) {
       const container = document.querySelector(`#data-${id}-form .container`);
@@ -51,6 +53,38 @@ export class UserFormPage extends PageBuilder {
         for (const btn of modalCancelledBtn) {
           btn.addEventListener("click", this.#hideModalHandler);
         }
+      }
+    }
+  };
+
+  /**
+   * Prevent page to reload on click on login/profil link.
+   */
+  #handleUserLink = () => {
+    if (document.querySelector("#user-session .login")) {
+      const loginLink = document.querySelectorAll("#user-session .login a");
+      const path = globalThis.location.pathname.split("/")[1];
+
+      switch (path) {
+        case "login": {
+          loginLink[0].addEventListener("click", (e) => e.preventDefault());
+          break;
+        }
+
+        case "register": {
+          loginLink[1].addEventListener("click", (e) => e.preventDefault());
+          break;
+        }
+      }
+    }
+
+    if (document.querySelector("#user-session span[data-profil-link]")) {
+      const profilLink = document.querySelectorAll(
+        "#user-session span[data-profil-link] > a",
+      );
+
+      for (const link of profilLink) {
+        link.addEventListener("click", (e) => e.preventDefault());
       }
     }
   };
