@@ -79,8 +79,10 @@ export class UserFormPage extends PageBuilder {
     }
 
     if (document.querySelector("#user-session span[data-profil-link]")) {
-      const profilLink = document.querySelectorAll("#user-session span[data-profil-link] > a");
-      
+      const profilLink = document.querySelectorAll(
+        "#user-session span[data-profil-link] > a",
+      );
+
       for (const link of profilLink) {
         link.addEventListener("click", (e) => e.preventDefault());
       }
