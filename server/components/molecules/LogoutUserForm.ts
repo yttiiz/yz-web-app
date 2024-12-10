@@ -29,10 +29,10 @@ export const LogoutUserForm: ComponentType<
           ${OnOffSvg.html}
         </button>
       </form>
-      <span>
+      <span data-profil-link>
         ${greeting()} <a href=\"/profil\">{{ user-firstname }}</a>
       </span>
-      <span>
+      <span data-profil-link>
         <a href=\"/profil\">
         ${userPhoto.includes("default")
           ? UserSvg.html
