@@ -9,6 +9,8 @@ export class BookingFormPage extends PageBuilder {
     );
     const dialog = document.querySelector(`${id} dialog`);
 
+    this.#handleBookingLink();
+
     // Init forms submission.
     for (const form of cancelForms) {
       form.addEventListener(
@@ -22,6 +24,16 @@ export class BookingFormPage extends PageBuilder {
       .addEventListener("click", () => {
         dialog.close();
       });
+  };
+
+  /**
+   * Prevent page to reload on click on booking link.
+   */
+  #handleBookingLink = () => {
+    const path = globalThis.location.pathname.split("/")[1];
+    const bookingLink = document.querySelector(".header-" + path);
+
+    bookingLink.addEventListener("click", (e) => e.preventDefault());
   };
 
   /**
