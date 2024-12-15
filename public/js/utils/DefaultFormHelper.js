@@ -145,8 +145,8 @@ export class DefaultFormHelper {
 
     if (isBrowserFirefox) {
       const container = dialog.querySelector("div > div");
-      const copyBtn = container.querySelector("button");
-      return container.removeChild(copyBtn);
+      const btnCopy = container.querySelector("button");
+      return container.removeChild(btnCopy);
     }
 
     dialog.querySelector("div > div button")
