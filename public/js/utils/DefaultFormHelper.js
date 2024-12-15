@@ -138,11 +138,11 @@ export class DefaultFormHelper {
 
     const isBrowserFirefox = globalThis.navigator.userAgent.includes("Firefox");
     const input = dialog.querySelector("input");
-    
+
     const sharedLink = btn.closest("div").nextElementSibling.href;
-    
+
     input.value = sharedLink;
-    
+
     if (isBrowserFirefox) {
       const container = dialog.querySelector("div > div");
       const copyBtn = container.querySelector("button");
