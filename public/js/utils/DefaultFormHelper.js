@@ -123,7 +123,7 @@ export class DefaultFormHelper {
    * title: string;
    * paragraph: string;
    * }} param
-   * @param {HTMLButtonElement} btn
+   * @param {HTMLButtonElement?} btn
    */
   static setHomeDialogContent = (
     dialog,
@@ -136,10 +136,18 @@ export class DefaultFormHelper {
     dialog.querySelector("h2").textContent = title;
     dialog.querySelector("p").innerHTML = paragraph;
 
+    const isBrowserFirefox = globalThis.navigator.userAgent.includes("Firefox");
     const input = dialog.querySelector("input");
+    
     const sharedLink = btn.closest("div").nextElementSibling.href;
-
+    
     input.value = sharedLink;
+    
+    if (isBrowserFirefox) {
+      const container = dialog.querySelector("div > div");
+      const copyBtn = container.querySelector("button");
+      return container.removeChild(copyBtn);
+    }
 
     dialog.querySelector("div > div button")
       .addEventListener("click", async (e) => {
