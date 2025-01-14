@@ -19,9 +19,10 @@ Deno.test({
   name: task`limit age${"Validator"}`,
   fn() {
     const getDate = (num: number) => {
-      let [year, month, day] = (
-        new Date().toISOString().split("T").at(0) as string
-      ).split("-");
+      let [day, month, year] = (
+        new Date().toLocaleString().split(" ").at(0) as string
+      ).split("/");
+
       year = `${+year - num}`;
       return `${year}-${month}-${day}`;
     };
@@ -33,7 +34,14 @@ Deno.test({
 Deno.test({
   name: task`date parser limiter${"Validator"}`,
   fn() {
-    const min = new Date().toISOString().split("T").at(0) as string;
+    const min = (new Date()
+      .toLocaleString()
+      .split(" ")
+      .at(0) as string)
+      .split("/")
+      .reverse()
+      .join("-");
+
     assertEquals(`min="${min}"`, Validator.minAndMaxDateParser("test"));
   },
 });
