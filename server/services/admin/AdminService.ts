@@ -35,7 +35,7 @@ export class AdminService {
         return this.default.response(ctx, "", 302, "/");
       }
 
-      const users = await Mongo.connectionTo("users");
+      const users = Mongo.connectionTo("users");
 
       if ("message" in users) {
         return this.default.response(ctx, "", 302, "/");

@@ -47,7 +47,7 @@ export class AuthController extends DefaultController {
         return this.response(ctx, "", 302, "/");
       }
 
-      const users = await Mongo.connectionTo("users");
+      const users = Mongo.connectionTo("users");
 
       if ("message" in users) {
         this.response(ctx, "", 302, "/");

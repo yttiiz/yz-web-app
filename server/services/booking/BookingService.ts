@@ -34,13 +34,13 @@ export class BookingService {
       const userId = (ctx.state.session as SessionType).get("userId");
 
       try {
-        const bookingsCursor = await Mongo.connectionTo<
+        const bookingsCursor = Mongo.connectionTo<
           BookingsProductSchemaWithIDType
         >("bookings");
-        const productsCursor = await Mongo.connectionTo<
+        const productsCursor = Mongo.connectionTo<
           ProductSchemaWithIDType
         >("products");
-        const reviewsCursor = await Mongo.connectionTo<
+        const reviewsCursor = Mongo.connectionTo<
           ReviewsProductSchemaWithIDType
         >("reviews");
 
