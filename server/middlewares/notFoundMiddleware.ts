@@ -12,7 +12,7 @@ export const notFoundMiddleware = async (
 
     await notFound.handle404Response(
       ctx,
-      error.status,
+      (error as { status: number }).status,
     );
   }
 };
