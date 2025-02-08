@@ -9,3 +9,5 @@ server/data/fixtures
 #Do not ignore this file.
 !public/img/favicon.svg
 !public/img/icons
+!public/img/hero
+!public/img/products
