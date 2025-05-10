@@ -20,7 +20,7 @@ Deno.test({
   fn() {
     const getDate = (num: number) => {
       let [day, month, year] = (
-        new Date().toLocaleString().split(" ").at(0) as string
+        new Date().toLocaleString("fr-FR").split(" ").at(0) as string
       ).split("/");
 
       year = `${+year - num}`;
@@ -35,7 +35,7 @@ Deno.test({
   name: task`date parser limiter${"Validator"}`,
   fn() {
     const min = (new Date()
-      .toLocaleString()
+      .toLocaleString("fr-FR")
       .split(" ")
       .at(0) as string)
       .split("/")
