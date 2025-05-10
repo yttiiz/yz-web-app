@@ -15,36 +15,36 @@ Deno.test({
   },
 });
 
-// Deno.test({
-//   name: task`limit age${"Validator"}`,
-//   fn() {
-//     const getDate = (num: number) => {
-//       let [day, month, year] = (
-//         new Date().toLocaleString().split(" ").at(0) as string
-//       ).split("/");
+Deno.test({
+  name: task`limit age${"Validator"}`,
+  fn() {
+    const getDate = (num: number) => {
+      let [day, month, year] = (
+        new Date().toLocaleString().split(" ").at(0) as string
+      ).split("/");
 
-//       year = `${+year - num}`;
-//       return `${year}-${month}-${day}`;
-//     };
-//     const min = getDate(100), max = getDate(18);
-//     assertEquals({ min, max }, Validator.limitAge());
-//   },
-// });
+      year = `${+year - num}`;
+      return `${year}-${month}-${day}`;
+    };
+    const min = getDate(100), max = getDate(18);
+    assertEquals({ min, max }, Validator.limitAge());
+  },
+});
 
-// Deno.test({
-//   name: task`date parser limiter${"Validator"}`,
-//   fn() {
-//     const min = (new Date()
-//       .toLocaleString()
-//       .split(" ")
-//       .at(0) as string)
-//       .split("/")
-//       .reverse()
-//       .join("-");
+Deno.test({
+  name: task`date parser limiter${"Validator"}`,
+  fn() {
+    const min = (new Date()
+      .toLocaleString()
+      .split(" ")
+      .at(0) as string)
+      .split("/")
+      .reverse()
+      .join("-");
 
-//     assertEquals(`min="${min}"`, Validator.minAndMaxDateParser("test"));
-//   },
-// });
+    assertEquals(`min="${min}"`, Validator.minAndMaxDateParser("test"));
+  },
+});
 
 Deno.test({
   name: task`form data parser${"Validator"}`,
