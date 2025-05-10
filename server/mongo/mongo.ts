@@ -182,7 +182,7 @@ export class Mongo {
       : `mongodb+srv://${username}:${password}@${host}/main?authMechanism=SCRAM-SHA-1`;
 
     console.log(Mongo.clusterUrl);
-    
+
     // Init "main" Database.
     Mongo.db = await Mongo.client.connect(Mongo.clusterUrl);
 
