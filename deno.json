@@ -32,9 +32,11 @@
   "tasks": {
     "load": "deno cache server/dependencies/deps.ts",
     "cache:reload": "deno cache --reload ./**/*.ts",
+    "load-local-db": "sudo systemctl start mongod.service",
     "fmt": "deno fmt",
     "lint-fmt": "deno lint && deno fmt --check",
-    "start": "deno run -A --watch main.ts",
+    "start": "deno run -A --env-file=.env.production --watch main.ts",
+    "dev": "deno task load-local-db && deno run -A --env-file=.env.local --watch main.ts",
     "test": "deno test --no-check -A ./tests/*.test.ts",
     "check-bc": "deno task fmt && deno task test"
   }

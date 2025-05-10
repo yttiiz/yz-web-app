@@ -1,5 +1,7 @@
 deno.lock
 .env
+.env.production
+.env.local
 server/log/*
 server/backup/*
 server/data/credentials/*

@@ -9,6 +9,7 @@ export type CreateClusterParamerType = {
   username: string;
   password: string;
   host: string;
+  env: string;
 };
 
 export type UpdateItemIntoDBParameterType<T> = {
